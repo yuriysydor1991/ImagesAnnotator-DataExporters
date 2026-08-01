@@ -1,0 +1,280 @@
+FROM jenkins/jenkins:lts
+
+USER root 
+
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y libstdc++6 build-essential git cmake g++
+RUN apt install -y clang-format
+RUN apt install -y cppcheck
+RUN apt install -y valgrind
+RUN apt install -y flatpak flatpak-builder
+RUN apt install -y clang-tidy
+RUN apt install -y libgtest-dev
+RUN apt install -y libgmock-dev
+
+RUN apt install -y meson
+RUN apt install -y pkg-config liblog4cpp5-dev
+RUN apt install -y libboost-all-dev
+
+RUN apt install -y qt6-base-dev qt6-base-dev-tools \
+  qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
+  qml6-module-qtquick qml6-module-qtqml-workerscript \
+  qml6-module-qtquick-templates qml6-module-qtquick-window \
+  qtquickcontrols2-5-dev libqt6gui6 qml-module-qtquick2 \
+  qml-module-qtquick-controls2 qml-module-qtquick-dialogs \
+  qml-module-qtquick-layouts qml-module-qtquick-shapes \
+  libqt6quick6 libqt6quickcontrols2-6 libqt6opengl6-dev \
+  libqt6openglwidgets6 qt6-webview-dev qml6-module-qtwebview \
+  qt6-webengine-dev libqt6webenginecore6 qt6-webengine-dev-tools \
+  qml6-module-qtquick-controls
+  
+RUN apt install -y libopengl-dev libgl-dev
+
+RUN apt install -y pkg-config libgtkmm-3.0-dev
+RUN apt install -y libgtkmm-4.0-dev libwebkitgtk-6.0-dev
+
+RUN apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-net-dev
+
+RUN apt install -y freeglut3-dev libglew-dev
+RUN apt install -y libcurl4-openssl-dev
+RUN apt install -y libpqxx-dev
+RUN apt install -y libmysqlcppconn-dev
+
+RUN apt install -y gnuplot
+
+RUN apt install -y snapd
+
+RUN apt install -y mesa-common-dev ffmpeg
+
+RUN apt install -y wget curl htop btop 
+RUN apt install -y nmap traceroute whois
+RUN apt install -y automake autoconf autoconf-doc fdupes
+
+RUN apt install -y libopencv-dev libopencv-dnn-dev libopencv-imgcodecs-dev \
+  libopencv-imgproc-dev opencv-data opencv-doc
+
+RUN apt install -y nano
+
+RUN apt install -y firebird-dev
+RUN apt install -y libsdl3-dev libsdl3-image-dev libsdl3-ttf-dev libgl1-mesa-dev
+
+RUN apt install -y libnotify-dev
+RUN apt install -y libgstreamerd-3-dev libgstreamermm-1.0-dev libgstreamer1.0-dev
+WORKDIR /src/wxWidgets
+RUN git clone --branch v3.3.2 https://github.com/wxWidgets/wxWidgets.git wxWidgets
+WORKDIR /src/wxWidgets/wxWidgets
+RUN git submodule update --init
+WORKDIR /src/wxWidgets/
+RUN cmake -S wxWidgets -B wxWidgets-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+RUN cmake --build wxWidgets-build -j$(nproc)
+RUN cmake --install wxWidgets-build --prefix /usr
+
+ARG srcD=/usr/src
+ARG prefixD=/usr
+
+
+# Witty
+WORKDIR $srcD
+
+RUN git clone --single-branch --progress --branch 4.11.4 --depth 1 https://github.com/emweb/wt.git wt
+
+ARG wtDir=$srcD/wt
+ARG wtBDir=$wtDir/build
+
+WORKDIR $srcD/wt
+
+RUN cmake -B $wtBDir -S $srcD/wt  -DENABLE_LIBWTDBO=OFF -DENABLE_OPENGL=OFF \
+  -DENABLE_FIREBIRD=OFF -DENABLE_POSTGRES=OFF -DENABLE_SQLITE=OFF \
+  -DENABLE_MYSQL=OFF -DENABLE_MSSQLSERVER=OFF -DINSTALL_DOCUMENTATION=OFF \
+  -DBUILD_EXAMPLES=OFF -DENABLE_QT4=OFF -DENABLE_QT5=OFF -DENABLE_QT6=OFF \
+  -DENABLE_LIBWTTEST=OFF -DENABLE_PANGO=OFF -DENABLE_HARU=OFF -DCONNECTOR_FCGI=OFF \
+  -DBUILD_TESTS=OFF -DCONNECTOR_ISAPI=OFF
+RUN cmake --build $wtBDir -j$(nproc)
+RUN cmake --install $wtBDir --prefix $prefixD
+
+
+# SQLite
+WORKDIR $srcD
+
+RUN git clone https://github.com/SRombauts/SQLiteCpp.git
+
+WORKDIR $srcD/SQLiteCpp
+
+RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$prefixD
+RUN cmake --build build -j$(nproc)
+RUN cmake --install build --prefix $prefixD
+
+
+# MongoDB
+WORKDIR $srcD
+
+RUN git clone --single-branch --progress --branch master --depth 1  https://github.com/mongodb/mongo-c-driver.git mongo-c-driver
+WORKDIR $srcD/mongo-c-driver
+
+RUN cmake -B $srcD/mongo-c-driver/build -S $srcD/mongo-c-driver -DENABLE_TESTS=OFF -DENABLE_EXAMPLES=OFF -DCMAKE_INSTALL_LIBDIR=lib
+RUN cmake --build $srcD/mongo-c-driver/build -j$(nproc) --target all
+RUN cmake --install $srcD/mongo-c-driver/build --prefix /usr
+
+
+WORKDIR $srcD/
+
+RUN git clone --progress https://github.com/mongodb/mongo-cxx-driver.git mongo-cxx-driver
+WORKDIR $srcD/mongo-cxx-driver
+
+RUN cmake -B $srcD/mongo-cxx-driver/build -S $srcD/mongo-cxx-driver -DCMAKE_INSTALL_LIBDIR=lib \
+  -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
+RUN cmake --build $srcD/mongo-cxx-driver/build -j$(nproc) --target all
+RUN cmake --install $srcD/mongo-cxx-driver/build
+
+
+WORKDIR $srcD
+
+ARG prjName=matplotplusplus
+ARG matPlotScr=$srcD/$prjName
+ARG matPlotBuild=$srcD/$prjName-build-docker-singlerun
+
+RUN git clone https://github.com/alandefreitas/matplotplusplus.git $prjName
+RUN cmake -B $matPlotBuild -S $matPlotScr \
+    -DMATPLOTPP_BUILD_EXAMPLES=OFF \
+    -DMATPLOTPP_BUILD_SHARED_LIBS=ON \
+    -DMATPLOTPP_BUILD_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
+    -DCMAKE_INSTALL_PREFIX=$prefixD
+RUN cmake --build $matPlotBuild -j$(nproc)
+RUN cmake --install $matPlotBuild --prefix $prefixD
+
+RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+RUN flatpak install -y runtime/org.freedesktop.Platform/x86_64/24.08
+RUN flatpak install -y runtime/org.freedesktop.Sdk/x86_64/24.08
+RUN flatpak install -y runtime/org.kde.Platform/x86_64/6.8
+RUN flatpak install -y runtime/org.kde.Sdk/x86_64/6.8
+
+
+# SDBus-C++
+WORKDIR $srcD
+
+ARG sdbuscxxName=sdbus-cpp
+ARG sdbuscxxScr=$srcD/$sdbuscxxName
+ARG sdbuscxxBuild=$srcD/$sdbuscxxName-build-docker-singlerun
+
+RUN git clone --branch v2.1.0 --depth 1 https://github.com/Kistler-Group/sdbus-cpp.git $sdbuscxxName
+RUN cmake -B $sdbuscxxBuild -S $sdbuscxxScr \
+    -DSDBUSCPP_BUILD_DOCS=OFF \
+    -DCMAKE_INSTALL_PREFIX=$prefixD
+RUN cmake --build $sdbuscxxBuild -j$(nproc)
+RUN cmake --install $sdbuscxxBuild --prefix $prefixD
+
+
+RUN apt install -y qt6-webview-dev qml6-module-qtwebview \
+  qt6-webengine-dev libqt6webenginecore6 qt6-webengine-dev-tools
+
+
+WORKDIR $srcD
+
+
+RUN git clone --branch maintenance --depth 1 https://github.com/yuriysydor1991/cpp-app-template.git cpp-app-template
+RUN cp -R $srcD/cpp-app-template/misc/Jenkins/Jenkins-exported-jobs/ /usr/share/jenkins/ref/jobs-import/
+
+RUN cat > /usr/share/jenkins/ref/plugins.txt <<'EOF'
+# Job organization
+cloudbees-folder
+
+# Security / Auth
+matrix-auth
+ldap
+
+# Credentials
+credentials-binding
+
+# Build management
+build-timeout
+timestamper
+ws-cleanup
+
+# Build tools
+ant
+gradle
+
+# SCM
+git
+
+# Pipeline
+workflow-aggregator
+
+# GitHub
+github-branch-source
+pipeline-github-lib
+
+# Agents
+ssh-slaves
+
+# UI
+dark-theme
+theme-manager
+
+# Email
+email-ext
+mailer
+
+# Markup
+antisamy-markup-formatter
+
+# Visualization
+pipeline-graph-view
+
+# Library dependency
+jsoup
+
+instance-identity
+command-launcher
+jdk-tool
+pipeline-stage-view
+github
+ssh-credentials
+credentials
+plain-credentials
+scm-api
+branch-api
+workflow-job
+workflow-cps
+workflow-support
+workflow-basic-steps
+workflow-durable-task-step
+workflow-scm-step
+EOF
+
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
+
+RUN cat > /usr/share/jenkins/ref/init.groovy.d/import-jobs.groovy <<'EOF'
+import jenkins.model.Jenkins
+
+def jenkins = Jenkins.instance
+def jobsDir = new File('/usr/share/jenkins/ref/jobs-import')
+
+if (!jobsDir.exists()) {
+  println "No jobs-import directory found"
+  return
+}
+
+jobsDir.eachFileMatch(~/.*\.xml/) { file ->
+  def jobName = file.name.replaceFirst(/\.xml$/, '')
+
+  if (jenkins.getItem(jobName) != null) {
+    println "Job '${jobName}' already exists, skipping"
+    return
+  }
+
+  println "Importing job '${jobName}' from ${file}"
+  file.withInputStream { stream ->
+    jenkins.createProjectFromXML(jobName, stream)
+  }
+}
+
+jenkins.save()
+EOF
+
+
+CMD ["jenkins.sh"]

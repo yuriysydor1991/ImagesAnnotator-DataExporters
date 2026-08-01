@@ -1,0 +1,4 @@
+nullPointer:assert.cpp
+missingIncludeSystem
+unusedStructMember
+functionConst

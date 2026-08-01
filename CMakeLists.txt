@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.13)
+
+project(
+  CppAppTemplate
+  VERSION 0.11.0
+  DESCRIPTION "A C++ Template project with GTKmm3 and Glade for you!"
+  HOMEPAGE_URL "http://www.kytok.org.ua/"
+  LANGUAGES CXX C
+)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(cmake/template-project-bootstrap.cmake)
+
+add_subdirectory(src)
+add_subdirectory(doc)
+
+include(template-project-feature-enabler-post)

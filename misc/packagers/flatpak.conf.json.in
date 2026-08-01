@@ -1,0 +1,35 @@
+{
+  "id": "${FLATPAK_PROJECT_URL}",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "${PROJECT_BINARY_NAME}",
+  "modules": [
+    {
+      "name": "sdbus-c++",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DSDBUSCPP_BUILD_DOCS=OFF"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/Kistler-Group/sdbus-cpp.git",
+          "tag": "v2.1.0"
+        }
+      ]
+    },
+    {
+      "name": "${CMAKE_PROJECT_NAME}",
+      "buildsystem": "cmake",
+      "config-opts": ["-DCMAKE_BUILD_TYPE=Release"],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "${CMAKE_SOURCE_DIR}"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ In order to enable the [libwebp](https://developers.google.com/speed/webp) libra
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_LIBWEBP=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_LIBWEBP=ON
 ```
 
-See the `cmake/enablers/images/template-project-libwebp-enabler.cmake` module for the targets (`WebP::webp` for a system install, `webp`/`webpdecoder` for the FetchContent build) to link to your targets of interest.
+The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-libwebp-enabler.cmake](/cmake/enablers/images/template-project-libwebp-enabler.cmake) module for the targets (`WebP::webp` for a system install, `webp`/`webpdecoder` for the FetchContent build) to link to your targets of interest.

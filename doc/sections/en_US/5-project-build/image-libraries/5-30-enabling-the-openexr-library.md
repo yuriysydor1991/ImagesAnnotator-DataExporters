@@ -5,7 +5,7 @@ In order to enable the [OpenEXR](https://openexr.com/) library (the EXR high dyn
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_OPENEXR=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_OPENEXR=ON
 ```
 
-The FetchContent build additionally pulls the Imath dependency automatically. See the `cmake/enablers/images/template-project-openexr-enabler.cmake` module for the target (`OpenEXR::OpenEXR`) to link to your targets of interest.
+The FetchContent build additionally pulls the Imath dependency automatically. The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-openexr-enabler.cmake](/cmake/enablers/images/template-project-openexr-enabler.cmake) module for the target (`OpenEXR::OpenEXR`) to link to your targets of interest.

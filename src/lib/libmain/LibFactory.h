@@ -1,8 +1,38 @@
-#ifndef YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
-#define YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
+/**
+ * The "Simplified BSD License"
+ *
+ * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBFACTORY_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBFACTORY_CLASS_H
 
 #include <memory>
 
+#include "ExportContext.h"
+#include "ExportFormat.h"
+#include "IExporter.h"
 #include "ILib.h"
 #include "LibraryContext.h"
 
@@ -18,9 +48,13 @@ class LibFactory
 {
  public:
   using LibFactoryPtr = std::shared_ptr<LibFactory>;
-  using ILibPtr = templatelib0::ILibPtr;
-  using LibraryContextPtr = templatelib0::LibraryContextPtr;
-  using LibraryContext = templatelib0::LibraryContext;
+  using ILibPtr = ImagesAnnotatorDataExporters011::ILibPtr;
+  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
+  using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
+  using ExportContext = ImagesAnnotatorDataExporters011::ExportContext;
+  using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
+  using ExportFormat = ImagesAnnotatorDataExporters011::ExportFormat;
+  using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
 
   virtual ~LibFactory() = default;
   LibFactory() = default;
@@ -52,6 +86,22 @@ class LibFactory
    */
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx);
 
+  /**
+   * @brief Creates an empty export context instance.
+   *
+   * @return Returns empty export context instance.
+   */
+  virtual ExportContextPtr create_export_context();
+
+  /**
+   * @brief Creates the exporter implementing the given dataset layout.
+   *
+   * @param format The wanted export format.
+   *
+   * @return Returns a new exporter or a nullptr for an unknown format.
+   */
+  virtual IExporterPtr create_exporter(const ExportFormat& format);
+
   static LibFactoryPtr create_factory();
 };
 
@@ -59,4 +109,4 @@ using LibFactoryPtr = LibFactory::LibFactoryPtr;
 
 }  // namespace lib0impl
 
-#endif  // YOUR_CPP_APP_TEMPLATE_PROJECT_LIBFACTORY_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBFACTORY_CLASS_H

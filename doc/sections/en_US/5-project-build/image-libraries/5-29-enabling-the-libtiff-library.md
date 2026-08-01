@@ -5,7 +5,7 @@ In order to enable the [libtiff](http://www.libtiff.org/) library (the TIFF imag
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_LIBTIFF=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_LIBTIFF=ON
 ```
 
-See the `cmake/enablers/images/template-project-libtiff-enabler.cmake` module for the targets (`TIFF::TIFF` for a system install, `tiff` for the FetchContent build) to link to your targets of interest.
+The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-libtiff-enabler.cmake](/cmake/enablers/images/template-project-libtiff-enabler.cmake) module for the targets (`TIFF::TIFF` for a system install, `tiff` for the FetchContent build) to link to your targets of interest.

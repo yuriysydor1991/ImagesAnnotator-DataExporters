@@ -19,9 +19,14 @@ set(
   "FreeBSD pkg license tag (e.g. BSD2CLAUSE, BSD3CLAUSE, GPLv3, MIT)"
 )
 
+# PROJECT_LIBRARY_NAME_lower is computed here on purpose: the docker enabler
+# that also declares it returns early when ENABLE_DOCKER is off, so relying on
+# it would leave the origin without its name part.
+string(TOLOWER ${PROJECT_LIBRARY_NAME} PROJECT_LIBRARY_NAME_lower)
+
 set(
   TEMPLATE_PROJECT_FREEBSD_PKG_ORIGIN
-  "misc/${PROJECT_BINARY_NAME_lower}"
+  "misc/${PROJECT_LIBRARY_NAME_lower}"
   CACHE STRING
   "FreeBSD pkg origin in <category>/<name> form"
 )

@@ -5,7 +5,7 @@ In order to enable the [lunasvg](https://github.com/sammycage/lunasvg) library (
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_LUNASVG=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_LUNASVG=ON
 ```
 
-See the `cmake/enablers/images/template-project-lunasvg-enabler.cmake` module for the targets (`lunasvg::lunasvg` for a system install, `lunasvg` for the FetchContent build) to link to your targets of interest.
+The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-lunasvg-enabler.cmake](/cmake/enablers/images/template-project-lunasvg-enabler.cmake) module for the targets (`lunasvg::lunasvg` for a system install, `lunasvg` for the FetchContent build) to link to your targets of interest.

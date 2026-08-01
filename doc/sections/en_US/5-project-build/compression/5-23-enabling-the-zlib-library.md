@@ -5,14 +5,14 @@ In order to enable the [zlib](https://www.zlib.net/) compression library (deflat
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_ZLIB=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_ZLIB=ON
 ```
 
-See the `cmake/enablers/compression/template-project-zlib-enabler.cmake` module for the targets (`ZLIB::ZLIB` for a system install, `zlibstatic`/`zlib` for the FetchContent build) to link to your targets of interest.
+The exporters library itself does not use zlib - the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/compression/template-project-zlib-enabler.cmake](/cmake/enablers/compression/template-project-zlib-enabler.cmake) module for the targets (`ZLIB::ZLIB` for a system install, `zlibstatic`/`zlib` for the FetchContent build) to link to your targets of interest.
 
 ### Compressing data of interest (copy-paste examples)
 
-After `ENABLE_ZLIB=ON` and linking a zlib target (e.g. `target_link_libraries(${PROJECT_BINARY_NAME} ZLIB::ZLIB)`), include `<zlib.h>` and copy-paste any of the snippets below.
+After `ENABLE_ZLIB=ON` and linking a zlib target (e.g. `target_link_libraries(${PROJECT_LIBRARY_NAME} PRIVATE ZLIB::ZLIB)`, where `PROJECT_LIBRARY_NAME` is this project's shared library target), include `<zlib.h>` and copy-paste any of the snippets below.
 
 The quickest way to compress a buffer of interest — one-shot, in-memory, using the zlib/deflate wrapper (RFC 1950):
 

@@ -2,10 +2,16 @@ cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# ON by default: the public API namespace carries the major and the minor
+# version (ImagesAnnotatorDataExporters011), so the installable names track the
+# same pair. Two minor versions then install completely side by side - their
+# binaries, their header directories and their CMake packages all differ. This
+# is also what the ImagesAnnotatorDataDrivers library this project reads its
+# records through does, so both halves of the pair are named alike.
 option(
   LIB_INCLUDE_MINOR_IN_NAME
   "Append .<minor> to the installable library name (binary, headers subdir, CMake package dir)"
-  OFF
+  ON
 )
 
 option(

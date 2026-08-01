@@ -5,6 +5,136 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-08-01
+
+The first release of `ImagesAnnotatorDataExporters` as a project of its own. The
+repository started life as the `lib` branch of the
+[cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) project
+and has now been filled with the dataset exporters extracted from the
+[ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator) application,
+so that the application and any other tool can turn an annotations project into
+a training dataset without duplicating the code.
+
+### Added
+
+- The three dataset exporters, moved out of the ImagesAnnotator
+  `src/annotator-business/exporters` component: `PlainTxt2FolderExporter`,
+  `Yolo42FolderExporter` and `PyTorchVisionFolderExporter`, together with the
+  dependency closure they need - `ImageLoader`, `ImageRecordUrlAndPathHelper`,
+  `TypeHelper` and `CURLController`.
+- The installable public interface under
+  [src/lib/facade/public](/src/lib/facade/public), in the version stamped
+  `ImagesAnnotatorDataExporters011` namespace: `IExporter`, `ExportContext`,
+  `ExportFormat`, `IImageCropperFacility` and the extended `LibraryFacade`,
+  `LibraryContext` and `ILib`.
+- `LibraryFacade::create_exporter()`, `create_export_context()` and
+  `library_version()` as the entry point of the library, plus the one shot
+  `ILib::libcall()` driven by `LibraryContext`.
+- `IImageCropperFacility`, implemented by the consuming project: the library
+  decodes no image format of its own, so the PyTorch Vision export asks its
+  consumer to cut the rectangles out.
+- Unit tests for every moved exporter and a `CTEST_Exporters` component test
+  that links the real shared library and drives it through the public headers
+  only, over a database built with the data drivers library.
+- Unit tests for the rest of the moved code, which came over without any:
+  `UTEST_ImageRecordUrlAndPathHelper`, `UTEST_ImageLoader`, `UTEST_TypeHelper`
+  and `UTEST_CURLController`. The suite counts 61 cases now. The image loader
+  cases stay offline: they drive the local, the already cached and the null
+  record paths, none of which reaches a download.
+- A `Dependencies` stage in the Jenkins pipeline that builds and installs
+  ImagesAnnotatorDataDrivers, with the `DATA_DRIVERS_PREFIX` and
+  `DATA_DRIVERS_REF` parameters.
+
+### Changed
+
+- CMake project renamed from `CppAppTemplate` to `ImagesAnnotatorDataExporters`;
+  the produced library is `libImagesAnnotatorDataExporters-0.11.so` and its
+  headers install under `include/ImagesAnnotatorDataExporters-0.11/`.
+- `LIB_INCLUDE_MINOR_IN_NAME` now defaults to `ON`, so the installable names
+  carry the same major and minor pair the `ImagesAnnotatorDataExporters011`
+  public namespace does, exactly as the data drivers library names itself.
+- The records the exporters read are no longer defined here: the library depends
+  on [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers)
+  and takes `IImagesPathsDBProvider`, `ImageRecord` and `ImageRecordRect` from
+  it. It is resolved with `find_package` by the new
+  `template-project-data-drivers-enabler` module and linked **PUBLIC** by its
+  `-linker` companion, because the installable headers name those types.
+- `ENABLE_LIBCURL` now defaults to `ON` and is mandatory, and its enabler was
+  split into an `-enabler` module, which makes libcurl available before `src/`
+  is added so the tests may link it, and a `-linker` module, which links it
+  `PRIVATE` against the library target afterwards.
+- The library is built with `CXX_VISIBILITY_PRESET hidden` and only the new
+  `IADE_API` marked interface of `ExportersAPI.h` is exported. This is a
+  correctness fix, not an optimisation - see below.
+- The moved `helpers` and `curli` implementation namespaces are nested under
+  `iannotator::exporters` instead of staying at the top level, for the same
+  reason.
+- `LibMain::libcall()` is a real implementation now: it builds the exporter for
+  the context format, runs it and publishes it as `LibraryContext::exporter`.
+- All the documentation, both `en_US` and `uk_UA`, was rewritten to describe
+  this library, with new sections on the exporters API, the produced dataset
+  layouts, the data drivers dependency and the downstream integration, a redrawn
+  class diagram and the matching Simplified BSD LICENSE.
+- Both `README.md` and its `doc/README.uk_UA.md` translation were rewritten from
+  the template text: what the library is, its features, a compiled and run usage
+  example, the dependencies, the build and test commands, where the code came
+  from, and a documentation contents list that reaches the new sections.
+
+### Fixed
+
+- **The project did not configure against a stock data drivers install.** The
+  data drivers library ships with `LIB_INCLUDE_MINOR_IN_NAME=ON`, so it installs
+  as `ImagesAnnotatorDataDrivers-0.11`, while the enabler here asked for
+  `ImagesAnnotatorDataDrivers-0` and the sources included
+  `<ImagesAnnotatorDataDrivers-0/...>`. Every build against a default dependency
+  install stopped at `find_package`, the Jenkins `Dependencies` stage included,
+  since that stage builds the dependency with its defaults.
+- The exporter unit tests were declared with no `ENABLE_UNIT_TESTS` guard, so a
+  plain configure without the testing options reached
+  `target_link_libraries(... GTest::gtest_main)` for a target the GTest enabler
+  had never defined and failed to generate.
+- **Symbol clash with the data drivers library.** Both libraries are built from
+  the same project template and each defined `lib0impl::LibFactory`,
+  `lib0impl::LibMain`, `simple_logger::SimpleLogger` and the `project_decls`
+  constants - 75 exported symbols in common. A program linking both had one
+  library's calls bound to the other library's definitions, and since the two
+  `lib0impl::LibFactory` classes do not share a vtable layout, the data drivers
+  library crashed on a null slot. Hidden visibility plus the `IADE_API` marked
+  public interface removes every project owned collision.
+- The simple logger object library was never linked into the shared library,
+  which shipped unresolved `simple_logger::SimpleLogger` symbols.
+- The installable CMake package was broken: the generator overwrote the
+  configured `Config.cmake` with the raw exported targets file and wrote the
+  version file under a name `find_package()` never looks for, so no versioned
+  `find_package()` could ever succeed and no public dependency was pulled in.
+  It now installs a real `Config.cmake` that `find_dependency()`s the data
+  drivers, plus a correctly named `ConfigVersion.cmake`. The template was
+  renamed `TemplateLibraryConfig.cmake.in` -> `ExportersLibraryConfig.cmake.in`.
+- The FreeBSD packager built its `pkg` origin from the undefined
+  `PROJECT_BINARY_NAME_lower` variable, leaving the origin without its name
+  part.
+- The Doxyfile `INPUT` no longer points at a hardcoded `build/` path.
+- `CPACK_DEBIAN_PACKAGE_SHLIBDEPS` is now `ON`, so the libcurl and data drivers
+  dependencies are read out of the produced binary instead of being left empty.
+
+### Removed
+
+- The template's placeholder `LibMain` demonstration body and the "template
+  project flavors" branch catalogue in the READMEs.
+- `misc/packagers/flatpak.conf.json.in`, an orphan left by the template: no
+  CMake module in this branch ever referenced it.
+- The Jenkins pipeline snap packager stage and its `RUN_SNAP_PACKAGER`
+  parameter: this branch ships no snap enabler for them to drive.
+- The `src/tests/mocks/LibraryContext` gmock stand-in, no longer needed now that
+  `LibraryContext` is header only.
+
+# Inherited cpp-app-template history
+
+Everything below happened in the
+[cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `lib`
+branch, from which this repository was forked. It is kept for the record
+because the git history of this repository still contains those commits.
+
 ## [lib0.10.0] - 2025-09-08
 
 - ea177d5 Including the main Config.cmake file into installation candidates

@@ -5,6 +5,10 @@ target_sources(
   PRIVATE LibraryFacade.cpp
 )
 
-install(DIRECTORY public/ DESTINATION include/${PROJECT_LIBRARY_NAME})
+install(
+  DIRECTORY public/
+  DESTINATION include/${PROJECT_LIBRARY_NAME}
+  COMPONENT Development
+)
 
 add_subdirectory(tests)

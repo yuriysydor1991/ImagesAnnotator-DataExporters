@@ -5,7 +5,7 @@ In order to enable the [OpenJPEG](https://www.openjpeg.org/) library (the JPEG 2
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_OPENJPEG=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_OPENJPEG=ON
 ```
 
-See the `cmake/enablers/images/template-project-openjpeg-enabler.cmake` module for the target (`openjp2`) to link to your targets of interest.
+The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-openjpeg-enabler.cmake](/cmake/enablers/images/template-project-openjpeg-enabler.cmake) module for the target (`openjp2`) to link to your targets of interest.

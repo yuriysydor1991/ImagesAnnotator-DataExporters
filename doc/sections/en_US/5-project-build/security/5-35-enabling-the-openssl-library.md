@@ -5,7 +5,7 @@ In order to enable [OpenSSL](https://www.openssl.org/) (TLS/SSL connections, cry
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_OPENSSL=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_OPENSSL=ON
 ```
 
 OpenSSL uses the Perl-based `Configure` build system and is **not** compatible with CMake FetchContent, so a system package is required before configuring:
@@ -17,11 +17,11 @@ OpenSSL uses the Perl-based `Configure` build system and is **not** compatible w
 | Arch Linux | `sudo pacman -S openssl` |
 | macOS (Homebrew) | `brew install openssl` |
 
-See the `cmake/enablers/template-project-openssl-enabler.cmake` module for the CMake imported targets:
+See the [cmake/enablers/template-project-openssl-enabler.cmake](/cmake/enablers/template-project-openssl-enabler.cmake) module for the CMake imported targets:
 - `OpenSSL::SSL` — TLS/SSL/DTLS sockets and handshake support
 - `OpenSSL::Crypto` — standalone cryptographic primitives (SHA, AES, RSA, HMAC, EVP API, etc.)
 
-Both targets are linked to `${PROJECT_BINARY_NAME}` when `ENABLE_OPENSSL=ON`.
+The exporters library itself does not use OpenSSL - the enabler is kept available for the code built on top of this source tree. Its `target_link_libraries()` call still names a `${PROJECT_BINARY_NAME}` target which this project does not declare, so point it at the library target (`${PROJECT_LIBRARY_NAME}`) or at a target of your own before turning the option on.
 
 ### Computing a SHA-256 hash (copy-paste example)
 

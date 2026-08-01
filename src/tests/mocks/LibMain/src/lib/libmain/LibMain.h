@@ -1,5 +1,5 @@
-#ifndef YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
-#define YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYMAIN_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYMAIN_CLASS_H
 
 #include <gmock/gmock.h>
 
@@ -11,11 +11,11 @@
 namespace lib0impl
 {
 
-class LibMain : public templatelib0::ILib
+class LibMain : public ImagesAnnotatorDataExporters011::ILib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = templatelib0::LibraryContextPtr;
+  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
 
   virtual ~LibMain() = default;
   LibMain() = default;
@@ -29,4 +29,4 @@ using LibMainPtr = LibMain::LibMainPtr;
 
 }  // namespace lib0impl
 
-#endif  // YOUR_CPP_APP_TEMPLATE_PROJECT_LIBRARYMAIN_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYMAIN_CLASS_H

@@ -1,51 +1,130 @@
 @startuml
 
-package Library-Facade {
+package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
+  abstract class "IImagesPathsDBProvider" as IProvider {
+    +{abstract} ImageRecordsSet& get_images_db()
+    +{abstract} AnnotationsList get_available_annotations()
+  }
+
+  class ImageRecord {
+    +ImageRecordRectSet rects
+    +int iwidth
+    +int iheight
+    +std::string get_full_path() const
+  }
+}
+
+package "ImagesAnnotatorDataExporters011 (installed interface)" {
+  enum ExportFormat {
+    PlainTxt2Folder
+    Yolo42Folder
+    PyTorchVisionFolder
+  }
+
+  class ExportContext {
+    +std::string export_path
+    +IImagesPathsDBProviderPtr dbProvider
+    +IImageCropperFacilityPtr cropper
+  }
+
+  abstract class IExporter {
+    +{abstract} bool export_db(ExportContextPtr ectx)
+  }
+
+  abstract class IImageCropperFacility {
+    +{abstract} bool crop_out_2_fs(ImageRecordPtr ir, ImageRecordRectPtr irr, std::string& tofpath)
+    +{abstract} IImageCropperFacilityPtr clone()
+  }
+
+  class LibraryContext {
+    +ExportFormat format
+    +std::string export_path
+    +IImagesPathsDBProviderPtr dbProvider
+    +IImageCropperFacilityPtr cropper
+    +IExporterPtr exporter
+  }
+
   abstract class ILib {
     +{abstract} bool libcall(LibraryContextPtr ctx)
   }
 
-  class LibraryContext {
-  }
-
   class LibraryFacade {
-    +{static} LibraryContextPtr create_library_context();
-    +{static} ILibPtr create_default_lib();
-    +{static} ILibPtr create_library(LibraryContextPtr ctx);
+    +{static} LibraryContextPtr create_library_context()
+    +{static} ILibPtr create_default_lib()
+    +{static} ILibPtr create_library(LibraryContextPtr ctx)
+    +{static} ExportContextPtr create_export_context()
+    +{static} IExporterPtr create_exporter(const ExportFormat& format)
+    +{static} std::string library_version()
   }
 }
 
-package Library-Implementation {
+package "Implementation (hidden symbols)" #F8F8F8 {
   class LibMain {
-    +{abstract} bool libcall(LibraryContextPtr ctx)
+    +bool libcall(LibraryContextPtr ctx)
     +{static} LibMainPtr create()
   }
 
   class LibFactory {
-    +{abstract} ILibPtr create_default_lib()
-    +{abstract} LibraryContextPtr create_default_context()
-    +{abstract} ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
+    +ILibPtr create_default_lib()
+    +LibraryContextPtr create_default_context()
+    +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
+    +ExportContextPtr create_export_context()
+    +IExporterPtr create_exporter(const ExportFormat& format)
     +{static} LibFactoryPtr create_factory()
   }
+
+  class PlainTxt2FolderExporter
+  class Yolo42FolderExporter
+  class PyTorchVisionFolderExporter
+
+  class ImageLoader {
+    +bool load(ImageRecordPtr ir)
+  }
+
+  class CURLController
 }
 
-note Left of LibraryFacade : The facade for\nthe library implementation.\nCreates instances\nof LibMain through the LibFactory
+note right of IImageCropperFacility
+  Implemented by the consuming project.
+  The library decodes no image format
+  of its own.
+end note
 
-note Left of LibraryContext : Possible required\ndata placeholder\nto execute some libcalls
-note Bottom of ILib: The particular library\nimplementation interface declearer
+note bottom of LibraryFacade
+  The only entry point a consuming
+  project needs. Everything else stays
+  behind these abstract interfaces.
+end note
 
-note Right of LibMain : The particular library implementation.\nIs created by LibFactory to return\nby LibraryFacade to the end user.
-note Bottom of LibFactory: The factory to create library implementations objects.
+note bottom of ImageLoader
+  Preloads the web hosted image
+  records into a local cache before
+  they are copied or cropped.
+end note
 
-ILib <|-- LibMain : Particular implementation
+ILib <|-- LibMain
+IExporter <|-- PlainTxt2FolderExporter
+IExporter <|-- Yolo42FolderExporter
+IExporter <|-- PyTorchVisionFolderExporter
 
-LibraryContext <-- ILib
-LibraryContext <-- LibMain
+LibraryFacade --> LibFactory : creates
+LibMain --> LibFactory : creates
+LibFactory ..> LibMain : creates
+LibFactory ..> PlainTxt2FolderExporter : creates
+LibFactory ..> Yolo42FolderExporter : creates
+LibFactory ..> PyTorchVisionFolderExporter : creates
 
-LibraryFacade ..> LibraryContext : implicitly creates with LibraryFacade
-LibraryFacade ..> LibMain : Implicitly creates with LibraryFacade
-LibraryFacade --> LibFactory : Creates
+LibraryContext --> ExportFormat
+LibraryContext --> ExportContext : libcall builds
+ExportContext --> IProvider : reads
+ExportContext --> IImageCropperFacility : uses
+IExporter --> ExportContext
 
-LibMain --> LibFactory
+IProvider --> ImageRecord
+
+PlainTxt2FolderExporter --> ImageLoader
+Yolo42FolderExporter --> ImageLoader
+PyTorchVisionFolderExporter --> ImageLoader
+ImageLoader --> CURLController
 
 @enduml

@@ -5,7 +5,7 @@ In order to enable the [libpng](http://www.libpng.org/pub/png/libpng.html) libra
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_LIBPNG=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_LIBPNG=ON
 ```
 
-libpng depends on zlib, so keep `ENABLE_ZLIB=ON` (or a system zlib available) so the dependency resolves. See the `cmake/enablers/images/template-project-libpng-enabler.cmake` module for the targets (`PNG::PNG` for a system install, `png_static`/`png` for the FetchContent build) to link to your targets of interest.
+libpng depends on zlib, so keep `ENABLE_ZLIB=ON` (or a system zlib available) so the dependency resolves. The exporters library decodes no images itself, so the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/images/template-project-libpng-enabler.cmake](/cmake/enablers/images/template-project-libpng-enabler.cmake) module for the targets (`PNG::PNG` for a system install, `png_static`/`png` for the FetchContent build) to link to your targets of interest.

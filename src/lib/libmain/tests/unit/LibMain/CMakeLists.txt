@@ -8,16 +8,15 @@ add_executable(
 
 target_include_directories(
   UTEST_LibMain
-  PRIVATE ${GENERAL_MOCKS_ROOT}/LibraryContext
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
+  PRIVATE ${LIBMAIN_MOCK_DIR}/LibFactory
   PRIVATE ${CMAKE_SOURCE_DIR}
-  PRIVATE ${CMAKE_BINARY_DIR}
-  PRIVATE ${CMAKE_SOURCE_DIR}/src/lib/facade/public
+  PRIVATE ${IADE_PUBLIC_INCLUDE_DIR}
 )
 
 target_link_libraries(
   UTEST_LibMain
-  GTest::gtest_main GTest::gmock
+  GTest::gtest_main GTest::gmock ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET}
 )
 
 include(GoogleTest)

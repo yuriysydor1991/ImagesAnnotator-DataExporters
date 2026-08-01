@@ -12,6 +12,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/enablers/images")
 include(template-project-enabler-function)
 include(template-project-git-enabler)
 
+# Mandatory library dependencies. They are made available here, before src/ is
+# added, so that both the library target and the test executables declared
+# inside it can be linked against them.
+include(template-project-data-drivers-enabler)
+include(template-project-libcurl-enabler)
+
 include(template-project-GTest-enabler)
 include(template-project-clang-format-target)
 

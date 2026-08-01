@@ -5,14 +5,14 @@ In order to enable the [liblzma](https://tukaani.org/xz/) (XZ Utils) compression
 ```
 # Inside the source root directory
 
-cmake -S . -B build -DENABLE_LIBLZMA=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DENABLE_LIBLZMA=ON
 ```
 
-See the `cmake/enablers/compression/template-project-liblzma-enabler.cmake` module for the targets (`LibLZMA::LibLZMA` for a system install, `liblzma` for the FetchContent build) to link to your targets of interest.
+The exporters library itself does not use liblzma - the enabler is kept available for the code built on top of this source tree. See the [cmake/enablers/compression/template-project-liblzma-enabler.cmake](/cmake/enablers/compression/template-project-liblzma-enabler.cmake) module for the targets (`LibLZMA::LibLZMA` for a system install, `liblzma` for the FetchContent build) to link to your targets of interest.
 
 ### Compressing data of interest (copy-paste examples)
 
-After `ENABLE_LIBLZMA=ON` and linking a liblzma target (e.g. `target_link_libraries(${PROJECT_BINARY_NAME} LibLZMA::LibLZMA)`), include `<lzma.h>` and copy-paste any of the snippets below.
+After `ENABLE_LIBLZMA=ON` and linking a liblzma target (e.g. `target_link_libraries(${PROJECT_LIBRARY_NAME} PRIVATE LibLZMA::LibLZMA)`, where `PROJECT_LIBRARY_NAME` is this project's shared library target), include `<lzma.h>` and copy-paste any of the snippets below.
 
 The quickest way to compress a buffer of interest — one-shot, in-memory, into the `.xz` (LZMA2) container:
 

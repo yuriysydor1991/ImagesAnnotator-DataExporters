@@ -5,23 +5,30 @@
 імен імпортованої цілі що експортується через `install(EXPORT ...)`) виводиться
 з трьох опціональних CMake-опцій. Вони дозволяють паралельним встановленням
 різних версій бібліотеки співіснувати у системі - наприклад
-`include/CppAppTemplate-0.11.0-dev/` поруч з `include/CppAppTemplate-0/`.
+`include/ImagesAnnotatorDataExporters-0.11.0-dev/` поруч з
+`include/ImagesAnnotatorDataExporters-0.11/`.
 
 | Опція | За замовчуванням | Ефект |
 |---|---|---|
-| `-DLIB_INCLUDE_MINOR_IN_NAME=ON` | `OFF` | Додає `.<minor>` до імені бібліотеки |
+| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ON` | Додає `.<minor>` до імені бібліотеки |
 | `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `OFF` | Додає `.<micro>` (вмикає прапорець minor неявно) |
 | `-DLIB_NAME_SUFFIX=-dev` | `""` | Додає довільний завершальний суфікс |
 
+Складова minor включена за замовчуванням, оскільки простір імен публічного API
+несе у собі пару "мажорна і мінорна версія" (`ImagesAnnotatorDataExporters011`),
+а також тому, що [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md)
+іменує себе точно так само. Тому два мінорні випуски встановлюються цілком
+паралельно - їхні бінарники, директорії заголовків і CMake-пакунки відрізняються.
+
 Приклади імен бібліотеки для проекту `0.11.0`:
 
-| Прапорці конфігурації | Імʼя бібліотеки |
-|---|---|
-| (немає) | `CppAppTemplate-0` |
-| `-DLIB_INCLUDE_MINOR_IN_NAME=ON` | `CppAppTemplate-0.11` |
-| `-DLIB_INCLUDE_MINOR_IN_NAME=ON -DLIB_INCLUDE_MICRO_IN_NAME=ON` | `CppAppTemplate-0.11.0` |
-| `-DLIB_NAME_SUFFIX=-dev` | `CppAppTemplate-0-dev` |
-| `-DLIB_INCLUDE_MINOR_IN_NAME=ON -DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `CppAppTemplate-0.11.0-dev` |
+| Прапорці конфігурації | Імʼя бібліотеки | Згенерований бінарник |
+|---|---|---|
+| (немає) | `ImagesAnnotatorDataExporters-0.11` | `libImagesAnnotatorDataExporters-0.11.so` |
+| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
+| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.11.0` | `libImagesAnnotatorDataExporters-0.11.0.so` |
+| `-DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.11-dev` | `libImagesAnnotatorDataExporters-0.11-dev.so` |
+| `-DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.11.0-dev` | `libImagesAnnotatorDataExporters-0.11.0-dev.so` |
 
 Приклад поєднаної конфігурації:
 
@@ -29,17 +36,39 @@
 # всередині кореневої директорії проекту
 
 cmake -S . -B build \
-  -DLIB_INCLUDE_MINOR_IN_NAME=ON \
+  -DCMAKE_PREFIX_PATH=/шлях/до/префіксу/встановлення/драйверів/даних \
   -DLIB_INCLUDE_MICRO_IN_NAME=ON \
   -DLIB_NAME_SUFFIX=-dev
-cmake --build build
+cmake --build build -j$(nproc)
 cmake --install build --prefix /usr/local
 ```
 
-Однакове імʼя послідовно використовується для кожного встановлюваного артефакту:
+Однакове імʼя послідовно використовується для кожного встановлюваного артефакту.
+За замовчуванням це дає:
 
-- `<libdir>/lib<NAME>.so.<version>` (бінарник спільної бібліотеки),
-- `<prefix>/include/<NAME>/*.h` (субдиректорія публічних заголовків, оголошена через `INSTALL_INTERFACE` цілі бібліотеки),
-- `<libdir>/cmake/<NAME>/` + імпортована ціль `<NAME>::<NAME>` згенерована через `install(EXPORT ...)` - проекти-споживачі на CMake використовують `find_package(<NAME> CONFIG)`.
+- `<prefix>/lib/libImagesAnnotatorDataExporters-0.11.so.0.11.0` разом із
+  символьним посиланням soname `libImagesAnnotatorDataExporters-0.11.so.0`
+  (`SOVERSION` залишається мажорною версією) і `.so`-посиланням для розробки,
+- `<prefix>/include/ImagesAnnotatorDataExporters-0.11/*.h` - публічні заголовки з
+  [src/lib/facade/public](/src/lib/facade/public), оголошені через
+  `INSTALL_INTERFACE` цілі бібліотеки,
+- `<libdir>/cmake/ImagesAnnotatorDataExporters-0.11/` зі згенерованими файлами
+  `Config.cmake`, `ConfigVersion.cmake` і `Targets.cmake`, а також імпортовану
+  ціль `ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorDataExporters-0.11`.
 
-Виведення імʼя реалізоване у [cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake) і доступне як CMake cache-змінна `PROJECT_LIBRARY_NAME`, яку використовує решта системи побудови. Вмикання `LIB_INCLUDE_MICRO_IN_NAME` без `LIB_INCLUDE_MINOR_IN_NAME` спричиняє попередження на стадії конфігурування, а прапорець minor вмикається неявно щоб згенероване імʼя залишалось синтаксично коректним.
+Тому проект-споживач пише `find_package(ImagesAnnotatorDataExporters-0.11 0.11
+REQUIRED)` для типового встановлення і має вживати змінене імʼя дослівно, якщо
+складові були налаштовані інакше. Простір імен C++ у сирцевих файлах,
+`ImagesAnnotatorDataExporters011`, цими опціями не змінюється.
+
+Виведення імʼя реалізоване у
+[cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake)
+і доступне як CMake cache-змінна `PROJECT_LIBRARY_NAME`, яку використовує решта
+системи побудови, включно з іменем директорії HTML-виводу Doxygen. Вмикання
+`LIB_INCLUDE_MICRO_IN_NAME` без `LIB_INCLUDE_MINOR_IN_NAME` спричиняє
+попередження на стадії конфігурування, а прапорець minor вмикається неявно щоб
+згенероване імʼя залишалось синтаксично коректним.
+
+Імʼя [залежності від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md)
+не залежить від цих опцій: воно обирається окремою cache-змінною
+`IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE`.

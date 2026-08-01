@@ -20,7 +20,7 @@ The top level layout:
 | [doc](/doc) | this documentation and the project diagrams |
 | [misc](/misc) | the Jenkins pipeline and the Docker files |
 
-The implementation lives in the `lib0impl`, `iannotator::exporters`, `iannotator::exporters::helpers` and `iannotator::exporters::curli` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataExporters011` (an `iade` alias is recommended).
+The implementation lives in the `iade0impl`, `iannotator::exporters`, `iannotator::exporters::helpers` and `iannotator::exporters::curli` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataExporters011` (an `iade` alias is recommended).
 
 1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
 1. [Where the exporters implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)

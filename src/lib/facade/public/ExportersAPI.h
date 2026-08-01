@@ -32,14 +32,19 @@
  * @brief Marks the entities that make up the installable library interface.
  *
  * The library is compiled with the hidden symbol visibility, so that its
- * implementation classes - lib0impl::LibFactory, simple_logger::SimpleLogger,
+ * implementation classes - iade0impl::LibFactory, simple_logger::SimpleLogger,
  * the project_decls constants and the iannotator::exporters exporters - stay
  * private to the shared object. That is not a size optimisation: the
  * ImagesAnnotatorDataDrivers library this one links against is built from the
- * very same project template and carries its own definitions of those exact
- * names. Were both sets exported, the dynamic linker would bind one library's
- * calls to the other library's definitions, and the two lib0impl::LibFactory
- * classes do not even share a vtable layout.
+ * very same project template and carries its own simple_logger and
+ * project_decls definitions. Were both sets exported, the dynamic linker would
+ * bind one library's calls to the other library's definitions.
+ *
+ * Hiding alone does not cover the factory: the std::make_shared instantiations
+ * name their class in the mangled name and stay weak and exported whatever the
+ * visibility. That is why this implementation namespace is iade0impl and not
+ * the lib0impl the project template - and the data drivers library with it -
+ * uses.
  *
  * Current file is a target for the library header installation.
  */

@@ -10,7 +10,7 @@
 #include "src/lib/libmain/LibMain.h"
 
 using namespace ImagesAnnotatorDataExporters011;
-using namespace lib0impl;
+using namespace iade0impl;
 using namespace testing;
 
 namespace

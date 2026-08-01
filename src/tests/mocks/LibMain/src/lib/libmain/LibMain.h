@@ -8,7 +8,7 @@
 #include "ILib.h"
 #include "LibraryContext.h"
 
-namespace lib0impl
+namespace iade0impl
 {
 
 class LibMain : public ImagesAnnotatorDataExporters011::ILib
@@ -27,6 +27,6 @@ class LibMain : public ImagesAnnotatorDataExporters011::ILib
 
 using LibMainPtr = LibMain::LibMainPtr;
 
-}  // namespace lib0impl
+}  // namespace iade0impl
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYMAIN_CLASS_H

@@ -7,7 +7,7 @@
 #include "src/lib/libmain/LibFactory.h"
 
 using namespace ImagesAnnotatorDataExporters011;
-using namespace lib0impl;
+using namespace iade0impl;
 using namespace testing;
 
 class UTEST_LibFactory : public Test

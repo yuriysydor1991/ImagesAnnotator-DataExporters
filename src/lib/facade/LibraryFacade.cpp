@@ -39,7 +39,7 @@ namespace ImagesAnnotatorDataExporters011
 
 LibraryContextPtr LibraryFacade::create_library_context()
 {
-  auto libFactory = lib0impl::LibFactory::create_factory();
+  auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
@@ -48,7 +48,7 @@ LibraryContextPtr LibraryFacade::create_library_context()
 
 ILibPtr LibraryFacade::create_default_lib()
 {
-  auto libFactory = lib0impl::LibFactory::create_factory();
+  auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
@@ -57,7 +57,7 @@ ILibPtr LibraryFacade::create_default_lib()
 
 ILibPtr LibraryFacade::create_library(LibraryContextPtr ctx)
 {
-  auto libFactory = lib0impl::LibFactory::create_factory();
+  auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
@@ -66,7 +66,7 @@ ILibPtr LibraryFacade::create_library(LibraryContextPtr ctx)
 
 ExportContextPtr LibraryFacade::create_export_context()
 {
-  auto libFactory = lib0impl::LibFactory::create_factory();
+  auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
@@ -75,7 +75,7 @@ ExportContextPtr LibraryFacade::create_export_context()
 
 IExporterPtr LibraryFacade::create_exporter(const ExportFormat& format)
 {
-  auto libFactory = lib0impl::LibFactory::create_factory();
+  auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 

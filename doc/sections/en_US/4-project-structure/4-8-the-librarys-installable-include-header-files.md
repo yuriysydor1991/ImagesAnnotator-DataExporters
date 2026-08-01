@@ -24,7 +24,9 @@ The prefixed form is the safe one - names such as `IExporter.h` are generic enou
 
 ### Why only these headers are visible
 
-The library is built with `CXX_VISIBILITY_PRESET hidden`, so only the entities marked with `IADE_API` leave the shared object. That is a correctness requirement rather than a size optimisation. The ImagesAnnotatorDataDrivers library this one links against comes from the same project template and exports its own `lib0impl::LibFactory`, `simple_logger::SimpleLogger` and `project_decls` symbols. Were both sets exported, the dynamic linker would bind one library's calls to the other library's definitions - and the two `lib0impl::LibFactory` classes do not even share a vtable layout.
+The library is built with `CXX_VISIBILITY_PRESET hidden`, so only the entities marked with `IADE_API` leave the shared object. That is a correctness requirement rather than a size optimisation. The ImagesAnnotatorDataDrivers library this one links against comes from the same project template and exports its own `simple_logger::SimpleLogger` and `project_decls` symbols. Were both sets exported, the dynamic linker would bind one library's calls to the other library's definitions.
+
+Visibility alone leaves one hole. A `std::make_shared` instantiation names its class in its own mangled name and stays weak and exported whatever the visibility is, so the implementation namespace here is `iade0impl` and not the `lib0impl` the project template - and the data drivers library with it - uses. The two `LibFactory` classes do not even share a vtable layout, and before the rename the linker did bind one library's `std::make_shared<lib0impl::LibFactory>()` to the other's definition.
 
 So a new public class belongs in [src/lib/facade/public](/src/lib/facade/public) and has to be marked with `IADE_API`; anything under [src/lib/libmain](/src/lib/libmain) stays private to the shared object and is reached through the abstract interfaces above.
 

@@ -100,7 +100,11 @@ a training dataset without duplicating the code.
   library's calls bound to the other library's definitions, and since the two
   `lib0impl::LibFactory` classes do not share a vtable layout, the data drivers
   library crashed on a null slot. Hidden visibility plus the `IADE_API` marked
-  public interface removes every project owned collision.
+  public interface removes every non template collision. It does not reach the
+  factory: a `std::make_shared` instantiation names its class in its own
+  mangled name and stays weak and exported whatever the visibility is, so the
+  implementation namespace of this library is `iade0impl` instead of the
+  template's `lib0impl`.
 - The simple logger object library was never linked into the shared library,
   which shipped unresolved `simple_logger::SimpleLogger` symbols.
 - The installable CMake package was broken: the generator overwrote the

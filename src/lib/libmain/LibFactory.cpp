@@ -36,7 +36,7 @@
 #include "src/lib/libmain/exporters/Yolo42FolderExporter.h"
 #include "src/log/log.h"
 
-namespace lib0impl
+namespace iade0impl
 {
 
 LibFactory::ILibPtr LibFactory::create_default_lib()
@@ -84,4 +84,4 @@ LibFactoryPtr LibFactory::create_factory()
   return std::make_shared<LibFactory>();
 }
 
-}  // namespace lib0impl
+}  // namespace iade0impl

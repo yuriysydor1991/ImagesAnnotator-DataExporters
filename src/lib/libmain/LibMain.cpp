@@ -33,7 +33,7 @@
 #include "src/lib/libmain/LibFactory.h"
 #include "src/log/log.h"
 
-namespace lib0impl
+namespace iade0impl
 {
 
 LibMain::LibMain()
@@ -88,4 +88,4 @@ bool LibMain::libcall(LibraryContextPtr ctx)
 
 LibMainPtr LibMain::create() { return std::make_shared<LibMain>(); }
 
-}  // namespace lib0impl
+}  // namespace iade0impl

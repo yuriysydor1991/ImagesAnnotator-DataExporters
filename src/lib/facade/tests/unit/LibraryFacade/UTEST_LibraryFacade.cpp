@@ -7,13 +7,13 @@
 #include "src/lib/libmain/LibMain.h"
 
 using namespace ImagesAnnotatorDataExporters011;
-using namespace lib0impl;
+using namespace iade0impl;
 using namespace testing;
 
 class UTEST_LibraryFacade : public Test
 {
  public:
-  using LibFactory = lib0impl::LibFactory;
+  using LibFactory = iade0impl::LibFactory;
 
   UTEST_LibraryFacade() = default;
   ~UTEST_LibraryFacade() = default;

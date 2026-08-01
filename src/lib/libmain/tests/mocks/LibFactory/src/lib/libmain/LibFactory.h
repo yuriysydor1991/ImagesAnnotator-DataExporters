@@ -13,7 +13,7 @@
 #include "ILib.h"
 #include "LibraryContext.h"
 
-namespace lib0impl
+namespace iade0impl
 {
 
 /**
@@ -71,6 +71,6 @@ class LibFactory : public LibFactorySynthParent
 
 using LibFactoryPtr = LibFactory::LibFactoryPtr;
 
-}  // namespace lib0impl
+}  // namespace iade0impl
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBFACTORY_CLASS_H

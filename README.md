@@ -1,14 +1,14 @@
-**Your neat C++ application template project**
+**Your neat C++ library template project**
 
 # Goal of the template project
 
-Project is designed to increase the speed of the application creation process at the project startup by providing templated application structure. So developer may just jump straight into implementing a particular application with no or minimum project start structure set up.
+Project is designed to increase the speed of the library creation process at the project startup by providing templated library structure. So developer may just jump straight into implementing a particular library with no or minimum project start structure set up.
 
 Helps you go beyond raw code — build a complete, ready-to-ship **software product** fast!
 
 Enables rapid creation of a complete **software product** — not just raw code or a simple program.
 
-**Just fork it and implement application straight away!**
+**Just fork it and implement your library straight away!**
 
 The template project **is not a framework** in traditional means so infrastructure implementation items may be altered to fit needs or even erased in case of redundancy.
 
@@ -22,10 +22,10 @@ Examine available branches to find your most applicable variant of the template 
 
 ## Basic application infrastructure
 
-- `main` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template)] (**current**) just the clear `main` function and all available CMake integrations with no additional app infrastructure classes.
+- `main` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template)] just the clear `main` function and all available CMake integrations with no additional app infrastructure classes.
 - `app` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/app), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/app)] with just general application related classes to generate a single binary executable.
 - `applib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/applib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/applib)] for the application binary with additional separate library binary and header files (available for the installation) in order to provide library's code reusability across multiple applications.
-- `lib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/lib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/lib)] for the library with the headers include files (and documentation) without target binary.
+- `lib` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/lib), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/lib)] (**current**) for the library with the headers include files (and documentation) without target binary.
 - `appMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appMeson)] with just general application related classes to generate a single binary executable with the [Meson](https://mesonbuild.com/) build system.
 - `applibMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/applibMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/applibMeson)] for the application binary with additional separate library binary and header files (available for the installation) in order to provide library's code reusability across multiple applications, built with the [Meson](https://mesonbuild.com/) build system and detectable by downstream Meson projects via `dependency()` (pkg-config) with optional CMake `find_package()` support.
 - `libMeson` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/libMeson), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/libMeson)] for the library with the headers include files (and documentation) without target binary, built with the [Meson](https://mesonbuild.com/) build system and detectable by downstream Meson projects via `dependency()` (pkg-config) with optional CMake `find_package()` support.
@@ -45,7 +45,6 @@ Examine available branches to find your most applicable variant of the template 
 
 ## 3D / OpenGL / Vulkan
 
-- `appSDL3` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSDL3), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSDL3)] with just general application related classes to generate a single binary executable with a [SDL3](https://wiki.libsdl.org/SDL3/FrontPage) library for the [OpenGL](https://www.opengl.org/) 3D development and more!
 - `appSDL2` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appSDL2), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appSDL2)] with just general application related classes to generate a single binary executable with a [SDL2](https://en.wikipedia.org/wiki/Simple_DirectMedia_Layer) library for the [OpenGL](https://www.opengl.org/) 3D development and more!
 - `appGtkmm4GLArea` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GLArea), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appGtkmm4GLArea)] with general application related classes to generate a single binary executable that embeds raw [OpenGL](https://www.opengl.org/) rendering inside a [Gtkmm-4](https://gtkmm.gnome.org/en/index.html) window with the native [Gtk::GLArea](https://docs.gtk.org/gtk4/class.GLArea.html) widget.
 - `appQt6GLArea` branch at [[GitHub](https://github.com/yuriysydor1991/cpp-app-template/tree/appQt6GLArea), [GitLab](https://gitlab.com/yuriysydor1991/cpp-app-template/tree/appQt6GLArea)] with general application related classes to generate a single binary executable that embeds raw [OpenGL](https://www.opengl.org/) rendering inside a [Qt6](https://www.qt.io/development/qt-framework/qt6) [QML](https://doc.qt.io/qt-6/qtqml-index.html) window with a [QQuickFramebufferObject](https://doc.qt.io/qt-6/qquickframebufferobject.html) scene-graph item.
@@ -115,12 +114,10 @@ Alter current `README.md` and a `CHANGELOG.md` files to match your implementatio
     1. [Optional for the code formatting](/doc/sections/en_US/3-requirements/3-5-optional-for-the-code-formatting.md)
     1. [Optional for the code analyzer (cppcheck)](/doc/sections/en_US/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
     1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
-    1. [Optional for the memory check with Valgrind](/doc/sections/en_US/3-requirements/3-8-optional-for-the-memory-checkwith-Valgrind.md)
-    1. [Optional for the flatpak packager](/doc/sections/en_US/3-requirements/3-9-optional-for-the-flatpak-packager.md)
-    1. [Optional for the Docker container runs](/doc/sections/en_US/3-requirements/3-10-optional-for-docker-container-runs.md)
-    1. [Optional for the snap packager](/doc/sections/en_US/3-requirements/3-11-optional-for-snap-packager.md)
 1. [Project structure](/doc/sections/en_US/4-project-structure/4-project-structure.md)
+    1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
     1. [Implement code straight away!](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)
+    1. [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md)
     1. [Changing the project and executable name](/doc/sections/en_US/4-project-structure/4-2-changing-the-project-and-executable-name.md)
     1. [Version tracking and other project parameters](/doc/sections/en_US/4-project-structure/4-3-version-tracking-and-other-project-parameters.md)
     1. [Minimal possible versions](/doc/sections/en_US/4-project-structure/4-6-minimal-possible-versions.md)
@@ -135,22 +132,13 @@ Alter current `README.md` and a `CHANGELOG.md` files to match your implementatio
         1. [Disabling system GTest probe](/doc/sections/en_US/5-project-build/testing/5-3-2-disabling-system-GTest-probe.md)
     1. [Documentation build](/doc/sections/en_US/5-project-build/documentation/5-4-documentation-build.md)
     1. [Configuring the documentation install support](/doc/sections/en_US/5-project-build/documentation/5-5-configuring-the-documentation-install-support.md)
+    1. [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/compression/5-23-customizing-library-name-segments.md)
     1. Code quality & sanitizers
         1. [Enabling and performing code formatting target](/doc/sections/en_US/5-project-build/code-quality/5-6-enabling-and-performing-code-formatting-target.md)
         1. [Enabling the static code analyzer target with cppcheck](/doc/sections/en_US/5-project-build/code-quality/5-7-enabling-the-static-code-analyzer-target-with-cppcheck.md)
         1. [Enabling the static code analyzer with clang-tidy](/doc/sections/en_US/5-project-build/code-quality/5-8-enabling-static-code-analyzer-with-clang-tidy.md)
-        1. [Enabling the dynamic memory check target with valgrind](/doc/sections/en_US/5-project-build/code-quality/5-9-enabling-the-dynamic-memory-check-target-with-valgrind.md)
-        1. [Enabling sanitizers](/doc/sections/en_US/5-project-build/code-quality/5-13-enabling-sanitizers.md)
-    1. Profilers
-        1. [Enabling gprof profiler analysis](/doc/sections/en_US/5-project-build/profilers/5-15-enabling-gprof-profiler-analysis.md)
-        1. [Enabling vagrind's callgrind profiler analysis](/doc/sections/en_US/5-project-build/profilers/5-16-enabling-valgrinds-callgrind-profiler-analysis.md)
-    1. Containers & CI
-        1. [Enabling the Docker container build and run](/doc/sections/en_US/5-project-build/containers-ci/5-12-enabling-the-docker-container-build-and-run.md)
-        1. [Enabling Jenkins pipeline inside Docker container](/doc/sections/en_US/5-project-build/containers-ci/5-17-enabling-Jenkins-pipeline-inside-Docker-container.md)
     1. Packagers
         1. [Enabling DEB package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-10-enabling-DEB-package-generation-with-cpack.md)
-        1. [Enabling the flatpak package generation support](/doc/sections/en_US/5-project-build/packagers/5-11-enabling-the-flatpak-package-generation-support.md)
-        1. [Enabling the snap packager](/doc/sections/en_US/5-project-build/packagers/5-19-enabling-the-snap-package-manager.md)
         1. [Enabling FreeBSD pkg package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-20-enabling-FreeBSD-pkg-package-generation-with-cpack.md)
         1. [Enabling WIX MSI package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-21-enabling-WIX-MSI-package-generation-with-cpack.md)
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
@@ -173,11 +161,8 @@ Alter current `README.md` and a `CHANGELOG.md` files to match your implementatio
         1. [Enabling the OpenJPEG library (JPEG 2000)](/doc/sections/en_US/5-project-build/image-libraries/5-31-enabling-the-openjpeg-library.md)
         1. [Enabling the libavif library (AVIF)](/doc/sections/en_US/5-project-build/image-libraries/5-32-enabling-the-libavif-library.md)
         1. [Enabling the libheif library (HEIF/HEIC)](/doc/sections/en_US/5-project-build/image-libraries/5-33-enabling-the-libheif-library.md)
-1. [Run the executable](/doc/sections/en_US/6-run-the-executable/6-run-the-executable.md)
-    1. [IDE run](/doc/sections/en_US/6-run-the-executable/6-1-IDE-run.md)
-    1. Command line run
-        1. [Searching for the generated executable](/doc/sections/en_US/6-run-the-executable/6-2-1-searching-for-the-generated-executable.md)
-        1. [Starting the generated executable](/doc/sections/en_US/6-run-the-executable/6-2-2-starting-the-generated-executable.md)
+1. [Run available executables](/doc/sections/en_US/6-run-the-executable/6-run-avaialble-executables.md)
     1. Tests run
         1. [Run tests by the ctest](/doc/sections/en_US/6-run-the-executable/6-3-1-run-tests-by-the-ctest.md)
+        1. [Manual tests run](/doc/sections/en_US/6-run-the-executable/6-3-2-manual-tests-run.md)
 1. [Installing](/doc/sections/en_US/7-installing/7-installing.md)

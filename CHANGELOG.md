@@ -5,182 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [lib0.10.0] - 2025-09-08
 
-## [main0.12.0] - 2026-05-22
+- ea177d5 Including the main Config.cmake file into installation candidates
+- 2c3ba48 Library infrastructure reorg. Introducing basic installable CMake module.
+- 3d8dc47 Adding money emoji to donation notice in the READMEs
+- d4cff25 Introducing the appCURL branch info into the READMEs
+- 3b7532b Introducing the enabling libcurl section into the READMEs
+- ff3563b Introducing the libcurl cmake enabler script
+- 28c0524 Moving the DEFAULT_LOG_FILE_PATH macro declaration into severity-macro-consts.h
+- f71398f Applied clang-format
+- 1e8e770 Introducing the DEFAULT_LOG_FILE_PATH cmake var and cpp macro to specify default dst log file location
+- 49ddb64 Introducing some marketing sentences in the README's goal section
+- bf79464 Introducing the cmake/enablers subdirectory to locate the 3rd-party dependencies
+- 3190db6 Renaming emplate-project-make-GTest-available - template-project-GTest-enabler
+- c18581a Introducing the NLohmann JSON library enabler cmake module
+- 29f0505 Avoiding unnecessary badly portable localtime_r usage
+- 6ec8b3c Introducing the thread id into simple logger
+- 4043abe Avoiding backward time in the simple logs
+- b72fc91 Avoiding final log multiple str fetches
+- ba132bb Refining the log current timestamp method, increasing thread safety
+- 171ea6d Introducing the CMake configurable log severity messages compilation switch
+- 4d3757f Hiding the compile options cmake files under separate directory
+- ada1be2 Incrementing version to 0.10.0
 
-- 15cc922 Adding .claude dir to .gitignore
-- 4377d2d Introducing project structure section subsection
-- 022d75c Introducing the libMeson branch info into the READMEs
-- 89c0619 Introducing info about newly created branch appOpenCV into READMEs with it's cmake enabler.
-- 061b257 Introducing the CPack's RPM package generator integration
-- b1b87bb Introducing the MS Windows WIX package generation through CPack integration
-- 0df039a Introducing the project's FreeBSD pkg package generation support through CPack. Works only on FreeBSD.
-- de79c7a Deleting REQUIRED marking from the snapcraft's find_program
-- 84840c6 By default disabling the snap package manager
-- a0019f4 Refining the READMEs issues
-- 5aab638 Introducing the snap documentation in the READMEs
-- 82a4d4c Introducing the snap packager integration
-- 4d648de Introducing and migrating to the template_project_default_3rdparty_enabler cmake function. Making enablers git sources variables modifiable.
-- 299ce6d Moving all CMake variables declarations into their respectful enablers.
-- 77ae259 Moving Doxygen related CMake variables into doc/CMakeLists.txt file
-- aa8c5d5 Introducing the libxml2 enabler cmake module
-- ae3fa3a Enhancing the cmake files fs structure
-- ad9948f Making docker base image configurable through CMake variables
-- 6aa34a7 Introducing the appPLplot branch info into the READMEs
-- 065491f Introducing the MatPlot++ appMatPlotxx branch into the READMEs
-- d63ca6c Making the cppcheck stage optional due to unstable results
-- 2cda7cf Fixing clang-tidy conf misspell
-- 286cd82 Switching off the clang-tydy's unrecognizable AnalyzeTemporaryDtors config param
-- bfdb643 Supressing the cppcheck's missingIncludeSystem and unusedStructMember warnings.
-- 5c318cd Fixing the main Jenkinsfile pipeline script.
-- 9eb25b9 Loggging README's misspell refine
-- 399a644 Missing newlines in the READMEs
-- ae6b6b9 Grouping and categorising available template flavors links in the READMEs
-- 79920a1 Renaming properly Nlohmann JSON library CMake enabler file
-- 57ab382 Introducing the forgottent Nlohmann JSON library enabler info into the READMEs
-- 898f8cb Fixing 'command line build' links
-- cd7d51b Additional READMEs split refinements. Adding new sub sections for the "project structure".
-- b78814f Splitting main READMEs files into separate sub sections files under the /doc/sections/[locale] Since people are afraid of the large documents.
-- 47f4d94 Introducing the ENABLE_LOGS_MICROSECONDS_TIME CMake option in order to be able to disable microseconds in the log messages.
-- 70aeb0b Introducing explicit template altering notice in the READMEs headers
-- 289605e Optimizing some CMake commands in the README.md
-- 9bede14 Introducing the appGtkmm4 branch info into the READMEs
-- 2ce3c54 Enabling GTest during for CTs
-- f6b0242 Pointing Jenkins configurable port into standart in-container 8080
-- 6b76c98 Making the Jenkins pipeline container and image names configurable
-- 0590f02 Introducing basic SimpleLogger CTs with CMake and Jenkins integration
-- 2a3e69a Adding CTs CMake flag to a Jenkins pipeline debug build
-- d171624 Introducing basic SimpleLogger CTs with CMake and Jenkins integration
-- a12f160 Introducing the SimpleLogger CTs samples
-- 0c25987 Refining the branches link in the READMEs, introducing gitlab links also
-- 94cf40b Fixing another link type in the README.md
-- 1d90533 Fixing link typo inside READMEs
-- 7f7f230 Specifying the Jenkins container run target in the READMEs
-- ba50a1d Erasing UTs Jenkins stage due to absens of UTs
-- 9995775 Introducing basic Jenkins pipeline CMake target and Jenkinsfile conf
-- ac33438 Incrementing version to 0.12.0
+## [lib0.9.0] - 2025-06-06
 
-## [main0.11.0] - 2025-09-08
+- 6e185e4 Incrementing version to 0.9.0
+- 45f0e36 Release lib0.9.0 2025-06-06
+- cf3b980 Adding project neatness to the READMEs
+- f1ed4bb Introducing the appLog4Cpp5 branch info into the READMEs
+- 16de7ad Implementing the logging macros and a simple logger to perform log messaging
+- 141ad3e Introducing the appMongoDBCpp4 branch info into the READMEs
+- 29bbeb5 Refining the deb cmake info for cpack
+- d5cf23c Introducing the appSQLiteCpp3 branch info into the READMEs
+- 3396ed4 Introducing the gitlab mirror into the READMEs
+- 3da8265 Introducing the appMySQLCppConn branch info into the READMEs
+- 968858a Introducing the appBoostBeast branch info into the READMEs
+- 5fa9629 Explicitly specifying the combining of the template branches
+- 46c5190 introducing the appPgSQLxx branch into the READMEs
+- 57311dc Introducing a new appWt4 branch info into the READMEs
+- dd85971 Introducing the error exit code for a cppcheck target
+- 0b7856e Refining the cppcheck target
+- a564f86 Introducing the donation notice into the READMEs
+- 90b206a Introducing the appMeson branch info into the READMEs
+- 9af4522 Refining branches info
+- c75b2a2 Introducing the app branch and refine the master branch
+- 7ce5298 Revert "Introducing the flatpak package creation from the template source."
+- d029b40 Revert "Introducing the flatpak sections into the READMEs"
+- 6b76d82 Introducing the flatpak sections into the READMEs
+- 763969f Introducing the flatpak package creation from the template source.
+- 847fe28 Erasing the /analyze from the default MSVC compile options
+- 875bc01 Introducing MSVC extra compile options for warnings
+- 689fcd7 Introducing the DEB package gen info in the READMEs
+- 21a6522 Introducing the cpack configuration for the deb package generation
+- 14dbc41 Introducing the LICENSE file with free of use license and notice
+- b0de6da Introducing the appSDL2 branch into the READMEs
+- 233c0b2 Introducing clang-tidy
+- 52f1336 Erasing redundant libraries installation info
+- 70f8f1e Introducing the FreeGlut/OpenGL appFreeGlut branch info into READMEs
+- 5d3aae8 Introducing MS Windows tools install description into READMEs
+- 69e59f7 Adding the out directory for MSVC into .gitignore
+- e069e8e Specifying the appGtkmm3Glade branch in the READMEs
+- 038f0e5 Introducing the appGtkmm3 branch info into the READMEs
 
-- 06edab4 Release main0.11.0 at 2025-09-08
-- ff7a28a Fixing typo in the README.md
-- 5851c08 Introducing the valgrind callgrind profiler target for the project
-- 0a57308 Introducing the gprof profiling target
-- 37e942c Adding money emoji to donation notice in the READMEs
-- 1bbabb5 Introducing the appCURL branch info into the READMEs
-- f0adc15 Erasing redundant iostream include in the main.cpp
-- ea880b0 Introducing the DEFAULT_LOG_FILE_PATH cmake var and cpp macro to specify default dst log file location
-- fa33d33 Introducing the enabling libcurl section into the READMEs
-- 898b248 Introducing the libcurl cmake enabler script
-- cb582a7 Moving the DEFAULT_LOG_FILE_PATH macro declaration into severity-macro-consts.h
-- a4a984f Introducing some marketing sentences in the README's goal section
-- 3913f28 Introducing the cmake/enablers subdirectory to locate the 3rd-party dependencies
-- b44ec67 Renaming emplate-project-make-GTest-available - template-project-GTest-enabler
-- ca466f6 Introducing the NLohmann JSON library enabler cmake module
-- a0590d6 Fixing the sanitizers cmake file in the READMEs
-- 2631a54 Avoiding unnecessary badly portable localtime_r usage
-- 626884a Introducing the thread id into simple logger
-- fb5d64e Avoiding backward time in the simple logs
-- 42933e1 Avoiding final log multiple str fetches
-- 1f456f4 Refining the log current timestamp method, increasing thread safety
-- 5da6342 Introducing the CMake configurable log severity messages compilation switch
-- 36e0d25 Introducing the appBoostLog branch info into the READMEs
-- 7d504d9 Hiding the compile options cmake files under separate directory
-- c5341ac Enhancing sanitizers combinations and new cmake dir for ones
-- 3ae7d93 Introducing the sanitizers enabling info into the READMEs
-- cb841dc Removing redundant cmake traces messages
-- 866d012 Introducing the GCC compiler sanitizers
-- 045cc31 Inserting release main0.10.0 to releases lists in CHANGELOG.md
-- 2296397 Incrementing version to 0.10.0
+## [lib0.8.0] - 2025-03-16
 
-## [main0.10.0] - 2025-06-06
+- b6dd57f Release lib0.8.0 2025-03-16
+- 7081e52 Erasing merging symbols.
+- db6d05c Erasing app infrastructure classes mention in the LibraryContext
+- 98d8785 Introducing the lib branch info into the READMEs
+- 6207e8f Refining the READMEs to represent library only template project
+- dad1ed9 Erasing all the application binary infrastructure.
+- 7e8d539 Introducing the appQt6 branch in READMEs
+- a6d72dc Introducing Doxygen doc with translated README as main page facility
+- 73e5d0d Introducing COMPILE_WARNINGS_AS_ERRORS and ENABLE_COMPILER_CODE_ANALYZER CMake vars.
+- d4c6dc1 Incrementing version to 0.8.0
+- ead330e Inserting forgotten release link in the CHANGELOG
 
-- 976e79f Release 0.10.0 2025-06-06
-- 27ebb79 Refined issues in the Docker READMEs doc
-- 9b01974 Separating the Docker single container build and run targets
-- cc85abf Erasing UTs build and ctest call inside the Dockerfile
-- 7f78451 Introducing the Docker single run container target.
-- 4466527 Adding project neatness to the READMEs
-- 061869f Introducing the appLog4Cpp5 branch info into the READMEs
-- bcc9e4f Implementing the logging macros and a simple logger to perform log messaging
-- be5178c Introducing the appMongoDBCpp4 branch info into the READMEs
-- 024453c Code formatting applied
-- 9d19ef2 Making the flatpak source json conf file configurable during cmake conf stage
-- 2e50a87 Refining the deb cmake info for cpack
-- e25158c Including and reusing the project-global-decls.h for demonstration
-- 3992ba3 Erasing redundant suppression that causes cppcheck to fail
-- 2055c45 Replacing the inviting comment with printable message on main.
-- d61425b Introducing the appSQLiteCpp3 branch info into the READMEs
-- e07d63b Introducing the gitlab mirror into the READMEs
-- bb779b1 Introducing misc/.cppcheck-suppress file to list cppcheck suppressions of the false positives
-- c182171 Introducing the appMySQLCppConn branch info into the READMEs
-- ce81652 Introducing the appBoostBeast branch info into the READMEs
-- 09bf4c6 Explicitly specifying the combining of the template branches
-- 85ef7c7 introducing the appPgSQLxx branch into the READMEs
-- 4c8cacd Introducing a new appWt4 branch info into the READMEs
+## [applib0.7.0] - 2025-03-14
 
-## [main0.9.0] - 2025-03-31
+- f5b1d13 Release applib0.7.0 2025-03-17
+- 473bb31 Refining typos in uk_UA README
+- ab45738 Refining all the READMEs
+- cfa03d8 Introducing the sample LibMain UTs
+- c019bd3 Refining lib UTs
+- 2230643 refining LibraryFacade tests
+- 5b23447 Introducing LibFactory UTs
+- f67a3ca Specifying the library targets and formatting the code.
+- 11f5b6d Introducing LibraryFacade UTs.
+- 95092ff Moving ILib to the facade folder.
+- d02674e Incrementing version to 0.7.0 and changing description
 
-- bb3bf64 Release 0.9.0 2025-03-31
-- 3d7f096 Introducing the error exit code for a cppcheck target
-- b3441c5 Refining the cppcheck target
-- f0be94a Decomposing ALLSORUCES variable into template-project-misc-variables-declare.cmake
-- f732fb3 Introducing the donation notice into the READMEs
-- 0520380 the main branch info refine
-- 7c505e3 Refining the READMEs to represent single main.cpp file
-- a7d1c9b Introducing the appMeson branch info into the READMEs
-- 7880f6f Fixing applib on the app branch on the READMEs
-- a3cf6c2 Erasing the app branch code
-- b1e99d8 Introducing the app branch and refine the master branch
-- c8de777 Introducing the flatpak sections into the READMEs
-- 69ffe40 Introducing the flatpak package creation from the template source.
-- 4b00b9f Inserting the release tag link
-- 8bd91be Incrementing version to 0.9.0
+## [applib0.6.0] - 2025-03-13
 
-## [app0.8.0] - 2025-03-20
-
-- dfff631 Release app0.8.0 2025-03-20
-- c2d08e9 Replacing int flag with a bool for the CommandLineParser
-- 5adff97 Erasing the /analyze from the default MSVC compile options
-- 3a70693 Introducing the DEB package gen info in the READMEs
-- a408273 Introducing the cpack configuration for the deb package generation
-- e9d052e Introducing the LICENSE file with free of use license and notice
-- f42d640 Fixing typo in the README
-- 3f3d38e Introducing the clang-tidy info into the READMEs
-- dfc52ec Introducing clang-tidy
-- 3bb98fb Introducing the appSDL2 branch into the READMEs
-- 29532bc Erasing redundant libraries installation info
-- 41450f5 Introducing the FreeGlut/OpenGL appFreeGlut branch info into READMEs
-- 6cdefed Incrementing version to 0.8.0
-
-## [app0.7.0] - 2025-03-17
-
-- b2ae262 Release app0.7.0 2025-03-17
-- 4f45e8d Introducing MS Windows tools install description into READMEs
-- 7d7defd Avoiding the compilation warnings at the UTEST_CommandLineParser
-- 39d9486 Adding MSVC settings file to the .gitignore
-- b04d376 Introducing MSVC extra compile options for warnings
-- 5f18f5a Adding the out directory for MSVC into .gitignore
-- b7e960b Specifying the appGtkmm3Glade branch in the READMEs
-- ef33819 Introducing the appGtkmm3 branch info into the READMEs
-- 68a1efa Revert "Introducing the GTKmm-3.0 window infrastructure."
-- 6adae7b Revert "Adding gtkmm-3.0 to required packages in READMEs"
-- e19f268 Adding gtkmm-3.0 to required packages in READMEs
-- eedd7ac Introducing the GTKmm-3.0 window infrastructure.
-- 1da93db Replacing the /usr/bin prefix parameter with right /usr in installation section
-- adc02d6 Introducing the lib branch info into the READMEs
-- 6230596 Introducing the appQt6 branch in READMEs
-- d044fe4 Incrementing version to 0.7.0
-
-## [app0.6.0] - 2025-03-14
-
-- 9bd89d8 Release app0.6.0 2025-03-14
-- 1192ec5 Introducing branch info and README translations into uk_UA README
-- 14da387 Introducing Doxygen doc with translated README as main page facility
-- 074df94 Introducing COMPILE_WARNINGS_AS_ERRORS and ENABLE_COMPILER_CODE_ANALYZER CMake vars.
-- 88156b6 Specifying translation documents for the root README under the doc
-- 8b10176 Specifying the source file for the PROJECT_BINARY_NAME CMake variable
-- 3920a3a Introducing multibranch info into the root README.md
+- 3b43b68 Release applib0.6.0 2025-03-13 21:54
+- 8635ccb Release applib0.6.0 2025-03-13
+- d0a0eed Introducing explanatory comments for new LibraryContext class fields.
+- 34988bb Introducing ApplicationContext2LibraryContext UTs with moved general mocks
+- f83084b Removing forgotten debug #error
+- d978ec1 Specifying translation documents for the root README under the doc
+- c41e944 Specifying the source file for the PROJECT_BINARY_NAME CMake variable
+- 78e90c7 Some README.md refinements
+- 1f46f37 Refining SOLID comment for Implement code straight away
+- 89de1b3 Introducing the ApplicationContext2LibraryContext class with mocks and refined Application UTs
+- 492817a Introducing additional library related info into README.md
+- 6f48e44 Marking applib branch as current in the README.md
+- 522ccfc Introducing multibranch info into the root README.md
+- 3f11e47 Marking LibraryContext destructure as virtual to allow subclassing
+- 5a8b53b Renaming library facade namespace to templatelib0
+- 27bc62a Fixing wrong article.
+- 96e24aa Applying clang-format
+- 71c3c6d Refining UTEST_Application unit test to pass.
+- c223375 Introducing library mocks for the app component
+- 45cb5fb Refining library classes explanatory comments.
+- 2d2c974 Marking library facade cpp file as private.
+- 8cac51b Introducing library component facade and default implementation.
 - e19aef1 README.uk_UA.md links refinement
 - ec31437 The root README.md file translation to uk_UA workflow final
 - be2dd4d The root README.md file translation to uk_UA workflow (pre Installing executable)
@@ -307,13 +247,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [unreleased](https://github.com/yuriysydor1991/cpp-app-template)
 
-[main0.12.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/main0.12.0)
-[main0.11.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/main0.11.0)
-[main0.10.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/main0.10.0)
-[main0.9.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/main0.9.0)
-[app0.8.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.8.0)
-[app0.7.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.7.0)
-[app0.6.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.6.0)
+[lib0.10.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/lib0.10.0)
+[lib0.9.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/lib0.9.0)
+[lib0.8.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/lib0.8.0)
+[applib0.7.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/applib0.7.0)
+[applib0.6.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/applib0.6.0)
 [app0.5.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.5.0)
 [app0.4.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.4.0)
 [app0.3.0](https://github.com/yuriysydor1991/cpp-app-template/releases/tag/app0.3.0)

@@ -21,6 +21,6 @@ template_project_default_3rdparty_enabler(
 )
 
 target_link_libraries(
-  ${PROJECT_BINARY_NAME}
+  ${PROJECT_LIBRARY_NAME}
   LibXml2::LibXml2
 )

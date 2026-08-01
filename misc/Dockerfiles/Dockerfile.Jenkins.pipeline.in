@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts
+FROM ${DOCKERFILE_SINGLE_RUN_BASE_IMAGE_STRING}
 
 USER root 
 
@@ -13,4 +13,3 @@ RUN apt install -y libgtest-dev
 RUN apt install -y libgmock-dev
 
 CMD ["jenkins.sh"]
-

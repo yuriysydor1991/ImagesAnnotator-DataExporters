@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
+string(TOLOWER ${PROJECT_LIBRARY_NAME} PROJECT_LIBRARY_NAME_lower)
+
 set(
   DOCKER_HOST_ADDRESS
   "127.0.0.1"
@@ -19,20 +21,15 @@ set(
 )
 
 set(
-  DOCKER_SINGLE_RUN_NAME
-  "${PROJECT_BINARY_NAME_lower}-docker-single-run"
-)
-
-set(
   DOCKERFILE_SINGLE_RUN_BASE_IMAGE_NAME
-  "ubuntu"
+  "jenkins/jenkins"
   CACHE STRING 
   "The Dockerfile source environment name (FROM ubuntu, debian, jenkins etc.)"
 )
 
 set(
   DOCKERFILE_SINGLE_RUN_BASE_IMAGE_VERSION
-  "22.04"
+  "lts"
   CACHE STRING 
   "The Dockerfile source environment version"
 )
@@ -45,28 +42,13 @@ set(
 )
 
 set(
-  DOCKERFILE_SRC 
-  "${CMAKE_SOURCE_DIR}/misc/Dockerfiles/Dockerfile.in" 
-  CACHE STRING 
-  "The Dockerfile full path"
-)
-
-set(
-  DOCKERFILE_DST
-  "Dockerfile"
-  CACHE STRING 
-  "The Dockerfile destination name"
-)
-
-set(
   PROJECT_BINARY_PATH
-  ${CMAKE_BINARY_DIR}/src/${PROJECT_BINARY_NAME}
+  ${CMAKE_BINARY_DIR}/src/${PROJECT_LIBRARY_NAME}
 )
 
 message(STATUS "Docker executable: ${DOCKER_EXEC}")
 message(STATUS "Dockerfile configure source full path: ${DOCKERFILE_SRC}")
 message(STATUS "Dockerfile destination name: ${DOCKERFILE_DST}")
-message(STATUS "Docker single run instance name: ${DOCKER_SINGLE_RUN_NAME}")
 message(STATUS "Docker host address and port: ${DOCKER_HOST_STR}")
 message(STATUS "Project current branch name: ${PROJECT_CURRENT_BRANCH_NAME}")
 message(STATUS "Project binary filepath: ${PROJECT_BINARY_PATH}")

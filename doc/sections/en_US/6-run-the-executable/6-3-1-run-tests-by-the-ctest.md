@@ -13,3 +13,11 @@ Alternatively, run the `ctest` command from any location by specifying the test 
 ```
 ctest --tests-dir /path/to/the/project/build/directory
 ```
+
+In order to run particular test execute the `ctest` command with test's name after the `-R` command line flag. For example, for the `UTEST_LibraryFacade` test it'll look something like this:
+
+```
+# from the project build directory 
+
+ctest -R UTEST_LibraryFacade
+```

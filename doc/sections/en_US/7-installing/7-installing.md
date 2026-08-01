@@ -5,16 +5,16 @@ Execute available install commands from the project's build directory.
 
 ## Default installation
 
-In order to install generated executable (as shown previous) file into your's system binary default folder execute next command in the command line (GNU/Linux based):
+In order to install generated executable (as shown previous) file into yours system binary default folder, execute next command in the command line (GNU/Linux based):
 
 ```
-# installs generated binary under the /usr/local/bin/ for example
-# run from the project's build directory
+# installs generated library under the /usr/local/lib/ for example
+# and installs header include files under the /usr/local/include/libCppAppTemplateLib
 
 sudo cmake --install .
 ```
 
-Usually it's the `/usr/local/bin/` directory (on the Unix-like OS) which may be inaccessible from the `PATH` environment variable (e.g. can not be started as a regular command).
+Usually it's the `/usr/local/lib` directory for the library (on the Unix-like OS) which may be inaccessible from the `PATH` environment variable (e.g. can not be started as a regular command).
 
 ## Custom installation path
 

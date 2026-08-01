@@ -1,0 +1,44 @@
+{
+  "id": "${FLATPAK_PROJECT_URL}",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "${PROJECT_BINARY_NAME}",
+  "modules": [
+    {
+      "name": "SDL2",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DSDL_STATIC=OFF",
+        "-DSDL_SHARED=ON"
+      ],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/libsdl-org/SDL.git",
+          "tag": "release-2.30.10",
+          "commit": "9c821dc21ccbd69b2bda421fdb35cb4ae2da8f5e"
+        }
+      ]
+    },
+    {
+      "name": "${CMAKE_PROJECT_NAME}",
+      "buildsystem": "cmake",
+      "config-opts": ["-DCMAKE_BUILD_TYPE=Release"],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "${CMAKE_SOURCE_DIR}"
+        }
+      ]
+    }
+  ],
+  "finish-args": [
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri",
+    "--socket=pulseaudio"
+  ]
+}

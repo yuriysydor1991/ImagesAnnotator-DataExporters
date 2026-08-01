@@ -1,0 +1,85 @@
+{
+  "id": "${FLATPAK_PROJECT_URL}",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "48",
+  "sdk": "org.gnome.Sdk",
+  "command": "${PROJECT_BINARY_NAME}",
+  "modules": [
+    {
+      "name": "graphviz",
+      "buildsystem": "autotools",
+      "config-opts": [
+        "--enable-network", 
+        "--disable-documentation", 
+        "--disable-static",
+        "--enable-shared",
+        "--without-gmodule"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/10.0.1/graphviz-10.0.1.tar.gz",
+          "sha256": "72e1a575e9c382c4fd2267837962bc4582b3d9ad746e338cd8024bdeca124f32"
+        }
+      ] 
+    },
+    {
+      "name": "mm-common",
+      "buildsystem": "meson",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/GNOME/mm-common.git",
+          "tag": "1.0.6"
+        }
+      ],
+      "config-opts": [
+        "-Duse-network=true",
+        "--libdir=lib"
+      ],
+      "build-options": {
+        "build-args": [ "--share=network" ]
+      }
+    },
+    {
+      "name": "gtkmm",
+      "buildsystem": "meson",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/GNOME/gtkmm.git",
+          "tag": "4.20.0"
+        }
+      ],
+      "config-opts": [
+        "--libdir=lib"
+      ],
+      "build-options": {
+        "build-args": [ 
+          "--share=network"
+        ]
+      }
+    },
+    {
+      "name": "${CMAKE_PROJECT_NAME}",
+      "buildsystem": "cmake",
+      "config-opts": ["-DCMAKE_BUILD_TYPE=Release"],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "${CMAKE_SOURCE_DIR}"
+        }
+      ]
+    }
+  ],
+  "finish-args": [
+    "--filesystem=/run/host",
+    "--share=ipc", 
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri",
+    "--talk-name=org.freedesktop.DBus",
+    "--talk-name=org.freedesktop.Notifications",
+    "--own-name=${FLATPAK_PROJECT_URL}"
+  ]
+}

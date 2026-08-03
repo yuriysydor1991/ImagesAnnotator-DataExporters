@@ -6,7 +6,7 @@ In order to build the library install the GCC C++ compiler with CMake and Git, p
 sudo apt install -y git g++ cmake libcurl4-openssl-dev
 ```
 
-The project requires CMake `3.13` or newer and a compiler with the C++ `17` support, as described in the [Minimal possible versions](/doc/sections/en_US/4-project-structure/4-6-minimal-possible-versions.md) subsection.
+The project requires CMake `3.13` or newer and a compiler with the C++ `17` support.
 
 The libcurl development package is not strictly required if the machine has Internet access: when no system wide libcurl is found the build fetches and builds it by itself. Examine the [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) subsection.
 

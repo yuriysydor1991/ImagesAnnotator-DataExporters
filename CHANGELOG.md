@@ -130,6 +130,25 @@ a training dataset without duplicating the code.
 
 ### Removed
 
+- **The build system and documentation this library does not use.** The tree
+  came from the project template with the whole catalogue of optional third
+  party enablers, and the exporters include none of them: the only external
+  headers under `src/` are `curl/curl.h`, the
+  `<ImagesAnnotatorDataDrivers-0.11/...>` ones and GoogleTest. Gone are the
+  sixteen enabler modules for the ten image libraries, zlib, liblzma, nlohmann
+  json, libxml2, OpenCV and OpenSSL, their `include()` lines, their two
+  `CMAKE_MODULE_PATH` entries and their twenty eight documentation sections.
+- The documentation of an application this project does not build: it produces
+  a library and its test executables, and defines no `PROJECT_BINARY_NAME` at
+  all. The "searching for" and "starting the generated executable" sections and
+  the "changing the project and the executable name" one are gone, and
+  `6-run-the-executable` is now `6-running-the-tests`, holding the two test
+  running sections that were always its only applicable content.
+- The template workflow documentation - cloning the template, forking and
+  replacing the origin, the extensions catalogue and the minimal possible
+  versions - which describes the template rather than this library.
+- The installed binary, its public headers and its CMake package are unchanged
+  by all of the above: the exported symbol lists compare equal.
 - The template's placeholder `LibMain` demonstration body and the "template
   project flavors" branch catalogue in the READMEs.
 - `misc/packagers/flatpak.conf.json.in`, an orphan left by the template: no

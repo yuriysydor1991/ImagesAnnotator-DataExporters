@@ -17,4 +17,4 @@
 1. [Необов'язкові пакети для статичного аналізатора коду cppcheck](/doc/sections/uk_UA/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
 1. [Необов'язкові пакети для статичного аналізатора коду clang-tidy](/doc/sections/uk_UA/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 
-Бібліотеки nlohmann json, zlib, liblzma, OpenSSL, libxml2, OpenCV і бібліотеки роботи із зображеннями залишаються необов'язковими і самими експортерами не використовуються, тому жодну з них не потрібно встановлювати для побудови бібліотеки.
+Бібліотека ImagesAnnotatorDataDrivers і libcurl - єдині сторонні залежності цієї бібліотеки; усе інше з переліченого вище є необов'язковим інструментарієм.

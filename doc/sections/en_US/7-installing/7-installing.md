@@ -72,7 +72,7 @@ is `noconfig` when no `CMAKE_BUILD_TYPE` was set.
 The library name is composed from the project name and its major and minor
 version, so
 all four path segments above change together if the name is customised, see
-[Customizing library name segments](/doc/sections/en_US/5-project-build/compression/5-23-customizing-library-name-segments.md).
+[Customizing library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md).
 
 ## Install components
 

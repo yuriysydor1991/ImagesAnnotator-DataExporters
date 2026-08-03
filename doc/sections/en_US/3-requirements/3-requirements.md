@@ -17,4 +17,4 @@ Everything listed below is either a basic build tool or an optional addition nee
 1. [Optional for the code analyzer (cppcheck)](/doc/sections/en_US/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
 1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 
-The nlohmann json, zlib, liblzma, OpenSSL, libxml2, OpenCV and the image libraries stay optional and are not used by the exporters themselves, so none of them has to be installed to build the library.
+The ImagesAnnotatorDataDrivers library and libcurl are the only third party dependencies the library has; everything else listed above is optional tooling.

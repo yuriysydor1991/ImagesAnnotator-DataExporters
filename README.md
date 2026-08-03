@@ -136,8 +136,6 @@ Examine the `doc` directory for possible translations of a current md document:
 
 **Document is under the refinement**
 
-1. [Cloning the project](/doc/sections/en_US/1-cloning-the-project/1-cloning-the-project.md)
-1. [Forking and replacing the origin](/doc/sections/en_US/2-forking-and-replacing-the-origin/2-forking-and-replacing-the-origin.md)
 1. [Requirements](/doc/sections/en_US/3-requirements/3-requirements.md)
     1. [Required tools for the GNU/Linux based OS](/doc/sections/en_US/3-requirements/3-1-required-tools-for-the-GNU-Linux-based-OS.md)
     1. [Required tools for the MS Windows based OS](/doc/sections/en_US/3-requirements/3-2-required-tools-for-the-MS-Windows-based-OS.md)
@@ -152,12 +150,9 @@ Examine the `doc` directory for possible translations of a current md document:
     1. [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md)
     1. [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md)
     1. [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md)
-    1. [Changing the project and executable name](/doc/sections/en_US/4-project-structure/4-2-changing-the-project-and-executable-name.md)
     1. [Version tracking and other project parameters](/doc/sections/en_US/4-project-structure/4-3-version-tracking-and-other-project-parameters.md)
-    1. [Minimal possible versions](/doc/sections/en_US/4-project-structure/4-6-minimal-possible-versions.md)
     1. [Project tests](/doc/sections/en_US/4-project-structure/4-4-project-tests.md)
         1. [Google Test](/doc/sections/en_US/4-project-structure/4-4-1-google-test.md)
-    1. [Extensions](/doc/sections/en_US/4-project-structure/4-5-extensions.md)
 1. [Project build](/doc/sections/en_US/5-project-build/5-project-build.md)
     1. [IDE build](/doc/sections/en_US/5-project-build/5-1-IDE-build.md)
     1. [Command line build](/doc/sections/en_US/5-project-build/5-2-command-line-build.md)
@@ -167,7 +162,7 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Disabling system GTest probe](/doc/sections/en_US/5-project-build/testing/5-3-2-disabling-system-GTest-probe.md)
     1. [Documentation build](/doc/sections/en_US/5-project-build/documentation/5-4-documentation-build.md)
     1. [Configuring the documentation install support](/doc/sections/en_US/5-project-build/documentation/5-5-configuring-the-documentation-install-support.md)
-    1. [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/compression/5-23-customizing-library-name-segments.md)
+    1. [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md)
     1. Code quality & sanitizers
         1. [Enabling and performing code formatting target](/doc/sections/en_US/5-project-build/code-quality/5-6-enabling-and-performing-code-formatting-target.md)
         1. [Enabling the static code analyzer target with cppcheck](/doc/sections/en_US/5-project-build/code-quality/5-7-enabling-the-static-code-analyzer-target-with-cppcheck.md)
@@ -181,30 +176,8 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
         1. [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
-        1. [Enabling the nlohmann json library](/doc/sections/en_US/5-project-build/5-18-enabling-the-nlohmann-json-library.md)
-    1. Security / Cryptography
-        1. [Enabling the OpenSSL library](/doc/sections/en_US/5-project-build/security/5-35-enabling-the-openssl-library.md)
-    1. Compression
-        1. [Enabling the zlib library](/doc/sections/en_US/5-project-build/compression/5-23-enabling-the-zlib-library.md)
-        1. [Enabling the liblzma library](/doc/sections/en_US/5-project-build/compression/5-34-enabling-the-liblzma-library.md)
-    1. Images
-        1. [Enabling the libpng library](/doc/sections/en_US/5-project-build/image-libraries/5-24-enabling-the-libpng-library.md)
-        1. [Enabling the libjpeg library](/doc/sections/en_US/5-project-build/image-libraries/5-25-enabling-the-libjpeg-library.md)
-        1. [Enabling the libwebp library](/doc/sections/en_US/5-project-build/image-libraries/5-26-enabling-the-libwebp-library.md)
-        1. [Enabling the lunasvg library (SVG)](/doc/sections/en_US/5-project-build/image-libraries/5-27-enabling-the-lunasvg-library.md)
-        1. [Enabling the giflib library (GIF)](/doc/sections/en_US/5-project-build/image-libraries/5-28-enabling-the-giflib-library.md)
-        1. [Enabling the libtiff library (TIFF)](/doc/sections/en_US/5-project-build/image-libraries/5-29-enabling-the-libtiff-library.md)
-        1. [Enabling the OpenEXR library (EXR / HDR)](/doc/sections/en_US/5-project-build/image-libraries/5-30-enabling-the-openexr-library.md)
-        1. [Enabling the OpenJPEG library (JPEG 2000)](/doc/sections/en_US/5-project-build/image-libraries/5-31-enabling-the-openjpeg-library.md)
-        1. [Enabling the libavif library (AVIF)](/doc/sections/en_US/5-project-build/image-libraries/5-32-enabling-the-libavif-library.md)
-        1. [Enabling the libheif library (HEIF/HEIC)](/doc/sections/en_US/5-project-build/image-libraries/5-33-enabling-the-libheif-library.md)
-1. [Run available executables](/doc/sections/en_US/6-run-the-executable/6-run-avaialble-executables.md)
-    1. [Run the executable](/doc/sections/en_US/6-run-the-executable/6-run-the-executable.md)
-        1. Command line run
-            1. [Searching for the generated executable](/doc/sections/en_US/6-run-the-executable/6-2-1-searching-for-the-generated-executable.md)
-            1. [Starting the generated executable](/doc/sections/en_US/6-run-the-executable/6-2-2-starting-the-generated-executable.md)
-    1. Tests run
-        1. [Run tests by the ctest](/doc/sections/en_US/6-run-the-executable/6-3-1-run-tests-by-the-ctest.md)
-        1. [Manual tests run](/doc/sections/en_US/6-run-the-executable/6-3-2-manual-tests-run.md)
+1. Running the tests
+    1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
+    1. [Manual tests run](/doc/sections/en_US/6-running-the-tests/6-3-2-manual-tests-run.md)
 1. [Installing](/doc/sections/en_US/7-installing/7-installing.md)
 1. [Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md)

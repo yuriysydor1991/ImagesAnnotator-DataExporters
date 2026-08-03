@@ -35,7 +35,7 @@ The directory name is `<PROJECT_LIBRARY_NAME>-html`, so it follows the
 installable library name: a configure with
 `-DLIB_INCLUDE_MINOR_IN_NAME=ON` produces
 `doc/ImagesAnnotatorDataExporters-0.11-html` instead - see
-[Customizing the installable library name segments](/doc/sections/en_US/5-project-build/compression/5-23-customizing-library-name-segments.md).
+[Customizing the installable library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md).
 The name can also be set directly with the `DOXYGEN_OUT_HTML_NAME` cache
 variable, and the parent directory with `DOXYGEN_OUTPUT_DIR` (it defaults to
 the `doc` directory of the source tree).

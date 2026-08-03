@@ -40,4 +40,4 @@ cmake --build build -j$(nproc)
 ctest --test-dir build
 ```
 
-Every test is registered by `gtest_add_tests()` with a `.noArgs` suffix and a 600 second timeout. See [Enabling unit testing](/doc/sections/en_US/5-project-build/testing/5-3-1-enabling-unit-testing.md) for the build options and [Run tests by the ctest](/doc/sections/en_US/6-run-the-executable/6-3-1-run-tests-by-the-ctest.md) for running and filtering them.
+Every test is registered by `gtest_add_tests()` with a `.noArgs` suffix and a 600 second timeout. See [Enabling unit testing](/doc/sections/en_US/5-project-build/testing/5-3-1-enabling-unit-testing.md) for the build options and [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md) for running and filtering them.

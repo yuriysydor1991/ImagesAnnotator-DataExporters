@@ -17,6 +17,42 @@ a training dataset without duplicating the code.
 
 ### Added
 
+- **An image cropper of the library's own, built on OpenCV.** The library
+  decodes no image format of its own, which is why the PyTorch Vision export
+  asks its consumer for an `IImageCropperFacility`. A consumer with no imaging
+  stack to lend was stuck; now `iannotator::exporters::croppers::OpenCVImageCropper`
+  answers that need, reached through `LibraryFacade::create_image_cropper()`.
+  It clamps a rectangle reaching over an edge, writes PNG, rewrites the
+  destination extension and never overwrites an existing crop - the semantics
+  of the cutters the ImagesAnnotator application supplies.
+- The dependency is optional in both directions, through the new
+  `template-project-OpenCV-enabler` and its companion linker module, taken from
+  the appOpenCV branch of the project template and turned from a
+  `find_package(REQUIRED)` into a probe. A system without OpenCV, or a
+  `-DENABLE_OPENCV=OFF`, only means the library is built without that cropper:
+  the configure succeeds and says so, and the export keeps asking its consumer
+  for a cropper as it always did. The always compiled
+  `croppers::create_builtin_cropper()` is what turns that build time condition
+  into a run time `nullptr`, so no caller repeats the `#ifdef`.
+- The resolution order of the PyTorch Vision export, in one line: a cropper the
+  consumer supplied always wins. The library's own only fills an empty
+  `ExportContext::cropper` slot, so an existing consumer - the GUI cutters of
+  the annotator application among them - sees no change whatsoever, and a new
+  one may simply leave the field alone. Only when both are absent does the
+  export fail, exactly as before.
+- No OpenCV type reaches an installed header: the cropper is handed out as an
+  `IImageCropperFacility` like any consumer supplied one, so a project
+  consuming this library needs no OpenCV of its own even when the library was
+  built with it.
+- `UTEST_OpenCVImageCropper`, ten cases over the cropper itself, configured
+  only in a build that found OpenCV - every case drives OpenCV, and
+  `gtest_add_tests()` registers cases by scanning the source text rather than
+  the binary, so an `#ifdef` inside the file would have registered cases the
+  binary does not hold and ctest reports a filter matching nothing as a pass.
+  The build without OpenCV is covered instead by
+  `UTEST_LibFactory.create_image_cropper_matches_what_the_build_found` and by
+  `UTEST_PyTorchVisionFolderExporter.handles_a_missing_cropper_by_the_build`,
+  both of which are compiled in every configuration.
 - The three dataset exporters, moved out of the ImagesAnnotator
   `src/annotator-business/exporters` component: `PlainTxt2FolderExporter`,
   `Yolo42FolderExporter` and `PyTorchVisionFolderExporter`, together with the

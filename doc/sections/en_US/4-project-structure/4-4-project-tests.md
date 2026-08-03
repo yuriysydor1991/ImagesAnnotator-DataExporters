@@ -23,6 +23,7 @@ The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 
 | Binary | Scope |
 |---|---|
+| `UTEST_OpenCVImageCropper` | the library's own image cropper, configured only in a build that found OpenCV |
 | `CTEST_DefaultLogger` | the logger compiled into the library, driven through its own class |
 | `CTEST_Exporters` | compiles none of the library: it links the produced shared object and drives it through the installable public headers only, exactly the way a downstream project does |
 

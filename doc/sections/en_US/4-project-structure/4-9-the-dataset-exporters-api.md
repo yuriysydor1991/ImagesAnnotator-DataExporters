@@ -59,7 +59,7 @@ The single method of an exporter. It writes the database named by the context ou
 
 ### IImageCropperFacility
 
-This is the one interface the consuming project implements itself:
+This is the one interface a consuming project may have to implement itself:
 
 ```cpp
 virtual bool crop_out_2_fs(ImageRecordPtr ir, ImageRecordRectPtr irr,
@@ -68,6 +68,8 @@ virtual IImageCropperFacilityPtr clone() = 0;
 ```
 
 The library decodes no image format of its own, so the one export that has to cut a rectangle out of a picture asks its consumer to do it over whatever imaging stack that project already links.
+
+A library built with OpenCV ships an implementation of its own, so this interface only has to be implemented by a project that wants its own cropping - or by one consuming a library built without OpenCV. See [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md).
 
 - `ir` is the record naming the image to read, through its `ImageRecord::get_full_path()`.
 - `irr` is the rectangle to cut out, in the image own pixel coordinates (`name`, `x`, `y`, `width`, `height`).
@@ -103,6 +105,7 @@ A class of static factory methods only, and the only entry point a consuming pro
 | `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
 | `create_export_context()` | a new empty `ExportContextPtr` |
 | `create_exporter(const ExportFormat& format)` | a new `IExporterPtr` for the format, or a `nullptr` for an unknown one |
+| `create_image_cropper()` | the cropper the library ships itself, or a `nullptr` in a build without OpenCV |
 | `library_version()` | the version string of the library binary in use |
 
 ### A complete example

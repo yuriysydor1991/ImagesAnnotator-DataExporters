@@ -31,6 +31,7 @@
 #include <memory>
 
 #include "src/lib/libmain/LibMain.h"
+#include "src/lib/libmain/croppers/ImageCropperFactory.h"
 #include "src/lib/libmain/exporters/PlainTxt2FolderExporter.h"
 #include "src/lib/libmain/exporters/PyTorchVisionFolderExporter.h"
 #include "src/lib/libmain/exporters/Yolo42FolderExporter.h"
@@ -77,6 +78,11 @@ LibFactory::IExporterPtr LibFactory::create_exporter(const ExportFormat& format)
   LOGE("Unknown export format requested");
 
   return nullptr;
+}
+
+LibFactory::IImageCropperFacilityPtr LibFactory::create_image_cropper()
+{
+  return iannotator::exporters::croppers::create_builtin_cropper();
 }
 
 LibFactoryPtr LibFactory::create_factory()

@@ -33,6 +33,7 @@
 #include "ExportContext.h"
 #include "ExportFormat.h"
 #include "IExporter.h"
+#include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
 
@@ -55,6 +56,8 @@ class LibFactory
   using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
   using ExportFormat = ImagesAnnotatorDataExporters011::ExportFormat;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
+  using IImageCropperFacilityPtr =
+      ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
 
   virtual ~LibFactory() = default;
   LibFactory() = default;
@@ -101,6 +104,15 @@ class LibFactory
    * @return Returns a new exporter or a nullptr for an unknown format.
    */
   virtual IExporterPtr create_exporter(const ExportFormat& format);
+
+  /**
+   * @brief Creates the image cropper the library ships itself.
+   *
+   * @return Returns a new cropper when this build found OpenCV, and a nullptr
+   * when it did not. A nullptr only means the consumer has to supply one of
+   * its own through ExportContext::cropper.
+   */
+  virtual IImageCropperFacilityPtr create_image_cropper();
 
   static LibFactoryPtr create_factory();
 };

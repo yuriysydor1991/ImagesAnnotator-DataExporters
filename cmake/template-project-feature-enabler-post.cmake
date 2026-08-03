@@ -6,4 +6,5 @@ include(template-project-dockerers)
 # here they only get linked against the now existing library target.
 include(template-project-data-drivers-linker)
 include(template-project-libcurl-linker)
+include(template-project-OpenCV-linker)
 

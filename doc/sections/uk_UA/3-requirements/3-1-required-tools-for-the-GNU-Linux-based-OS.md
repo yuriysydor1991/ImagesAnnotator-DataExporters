@@ -10,6 +10,14 @@ sudo apt install -y git g++ cmake libcurl4-openssl-dev
 
 Пакунок розробки libcurl не є строго обов'язковим, якщо машина має доступ до мережі Інтернет: коли системної libcurl не знайдено, побудова завантажує і будує її самостійно. Переглянь підсекцію [Вмикання підтримки libcurl](/doc/sections/uk_UA/5-project-build/5-14-enabling-libcurl.md).
 
+OpenCV є необов'язковим. Встановлення його пакунка розробки
+
+```
+sudo apt install -y libopencv-dev
+```
+
+дає бібліотеці власний обрізач зображень, тож проекту-споживачу не потрібен жоден набір засобів роботи із зображеннями для запуску експорту PyTorch Vision. Без нього все інше збирається так само, а експорт і надалі просить обрізача у свого споживача. Переглянь підсекцію [Вмикання обрізача зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md).
+
 Друга обов'язкова залежність, бібліотека ImagesAnnotatorDataDrivers, є спорідненим проектом даного і будується зі своїх власних джерельних кодів за адресою [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git). Спершу побудуй і встанови її, а тоді передай даному проекту її префікс встановлення:
 
 ```

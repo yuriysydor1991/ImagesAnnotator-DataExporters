@@ -17,4 +17,4 @@
 1. [Необов'язкові пакети для статичного аналізатора коду cppcheck](/doc/sections/uk_UA/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
 1. [Необов'язкові пакети для статичного аналізатора коду clang-tidy](/doc/sections/uk_UA/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 
-Бібліотека ImagesAnnotatorDataDrivers і libcurl - єдині сторонні залежності цієї бібліотеки; усе інше з переліченого вище є необов'язковим інструментарієм.
+Бібліотека ImagesAnnotatorDataDrivers і libcurl - єдині обов'язкові сторонні залежності цієї бібліотеки. OpenCV є єдиною необов'язковою: з ним бібліотека несе і власний обрізач зображень, а без нього конфігурація лише повідомляє про це - див. [Вмикання обрізача зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md). Усе інше з переліченого вище є необов'язковим інструментарієм.

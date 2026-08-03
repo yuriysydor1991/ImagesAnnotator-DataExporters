@@ -16,6 +16,11 @@ include(template-project-git-enabler)
 include(template-project-data-drivers-enabler)
 include(template-project-libcurl-enabler)
 
+# Optional: when OpenCV is there the library also ships an image cropper of its
+# own, so a consumer with no imaging stack of its own still gets the PyTorch
+# Vision export. A missing OpenCV only drops that cropper.
+include(template-project-OpenCV-enabler)
+
 include(template-project-GTest-enabler)
 include(template-project-clang-format-target)
 

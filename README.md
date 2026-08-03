@@ -176,6 +176,7 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
         1. [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
+        1. [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 1. Running the tests
     1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
     1. [Manual tests run](/doc/sections/en_US/6-running-the-tests/6-3-2-manual-tests-run.md)

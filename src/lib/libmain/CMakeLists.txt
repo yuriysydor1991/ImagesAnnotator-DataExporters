@@ -8,6 +8,7 @@ target_sources(
 )
 
 add_subdirectory(helpers)
+add_subdirectory(croppers)
 add_subdirectory(CURL)
 add_subdirectory(exporters)
 

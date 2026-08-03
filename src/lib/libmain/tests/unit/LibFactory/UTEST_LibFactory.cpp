@@ -45,3 +45,18 @@ TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_format)
   EXPECT_NE(factory->create_exporter(ExportFormat::PyTorchVisionFolder),
             nullptr);
 }
+
+// The one cropper case that runs in every configuration: with OpenCV the
+// factory hands out the library's own cropper, without it a nullptr, which is
+// what makes ExportContext::cropper mandatory again. The cropper itself is
+// covered by UTEST_OpenCVImageCropper, configured only in an OpenCV build.
+TEST_F(UTEST_LibFactory, create_image_cropper_matches_what_the_build_found)
+{
+  const auto cropper = factory->create_image_cropper();
+
+#ifdef IADE_WITH_OPENCV
+  EXPECT_NE(cropper, nullptr);
+#else
+  EXPECT_EQ(cropper, nullptr);
+#endif  // IADE_WITH_OPENCV
+}

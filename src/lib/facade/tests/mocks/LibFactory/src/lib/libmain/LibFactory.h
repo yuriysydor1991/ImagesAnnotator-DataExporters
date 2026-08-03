@@ -10,6 +10,7 @@
 #include "ExportContext.h"
 #include "ExportFormat.h"
 #include "IExporter.h"
+#include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
 
@@ -29,6 +30,8 @@ class LibFactorySynthParent
   using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
   using ExportFormat = ImagesAnnotatorDataExporters011::ExportFormat;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
+  using IImageCropperFacilityPtr =
+      ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
 
   virtual ~LibFactorySynthParent() = default;
   LibFactorySynthParent() = default;
@@ -38,6 +41,7 @@ class LibFactorySynthParent
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual ExportContextPtr create_export_context() = 0;
   virtual IExporterPtr create_exporter(const ExportFormat& format) = 0;
+  virtual IImageCropperFacilityPtr create_image_cropper() = 0;
 };
 
 class LibFactory : public LibFactorySynthParent
@@ -62,6 +66,7 @@ class LibFactory : public LibFactorySynthParent
   MOCK_METHOD(ExportContextPtr, create_export_context, (), (override));
   MOCK_METHOD(IExporterPtr, create_exporter, (const ExportFormat& format),
               (override));
+  MOCK_METHOD(IImageCropperFacilityPtr, create_image_cropper, (), (override));
 
   inline static LibFactoryPtr create_factory()
   {

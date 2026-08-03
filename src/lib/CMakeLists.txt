@@ -64,6 +64,30 @@ set(IADE_CURL_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/libmain/CURL/CURLController.cpp
 )
 
+# The cropper factory is compiled into every build; the OpenCV implementation
+# behind it only into the ones that found OpenCV. Any test executable that
+# compiles the PyTorch Vision exporter needs this list, because that exporter
+# asks the factory for a cropper when the context carries none.
+set(IADE_CROPPERS_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/libmain/croppers/ImageCropperFactory.cpp
+)
+
+# What such a test executable additionally needs to compile and link. All three
+# are empty in a build without OpenCV, so the test declarations stay free of
+# the build time condition.
+set(IADE_OPENCV_TEST_INCLUDES "")
+set(IADE_OPENCV_TEST_LIBS "")
+set(IADE_OPENCV_TEST_DEFS "")
+
+if (IADE_WITH_OPENCV)
+  list(APPEND IADE_CROPPERS_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/libmain/croppers/OpenCVImageCropper.cpp)
+
+  set(IADE_OPENCV_TEST_INCLUDES ${OpenCV_INCLUDE_DIRS})
+  set(IADE_OPENCV_TEST_LIBS ${OpenCV_LIBS})
+  set(IADE_OPENCV_TEST_DEFS IADE_WITH_OPENCV=1)
+endif()
+
 set(IADE_PUBLIC_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/facade/public
 )

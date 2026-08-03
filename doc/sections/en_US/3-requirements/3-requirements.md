@@ -17,4 +17,4 @@ Everything listed below is either a basic build tool or an optional addition nee
 1. [Optional for the code analyzer (cppcheck)](/doc/sections/en_US/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
 1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 
-The ImagesAnnotatorDataDrivers library and libcurl are the only third party dependencies the library has; everything else listed above is optional tooling.
+The ImagesAnnotatorDataDrivers library and libcurl are the only mandatory third party dependencies the library has. OpenCV is the one optional dependency: with it the library also ships an image cropper of its own, and without it the configure only says so - see [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md). Everything else listed above is optional tooling.

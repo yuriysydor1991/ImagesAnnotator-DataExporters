@@ -6,6 +6,7 @@ add_executable(
   ${CMAKE_SOURCE_DIR}/src/lib/libmain/exporters/PyTorchVisionFolderExporter.cpp
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}
+  ${IADE_CROPPERS_SRC}
 )
 
 target_include_directories(
@@ -14,12 +15,18 @@ target_include_directories(
   PRIVATE ${GENERAL_MOCKS_ROOT}/project-global-decls
   PRIVATE ${CMAKE_SOURCE_DIR}
   PRIVATE ${IADE_PUBLIC_INCLUDE_DIR}
+  PRIVATE ${IADE_OPENCV_TEST_INCLUDES}
 )
 
 target_link_libraries(
   UTEST_PyTorchVisionFolderExporter
   GTest::gtest_main GTest::gmock
-  ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET} CURL::libcurl
+  ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET} CURL::libcurl ${IADE_OPENCV_TEST_LIBS}
+)
+
+target_compile_definitions(
+  UTEST_PyTorchVisionFolderExporter
+  PRIVATE ${IADE_OPENCV_TEST_DEFS}
 )
 
 include(GoogleTest)

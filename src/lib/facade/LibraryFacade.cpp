@@ -82,6 +82,15 @@ IExporterPtr LibraryFacade::create_exporter(const ExportFormat& format)
   return libFactory->create_exporter(format);
 }
 
+IImageCropperFacilityPtr LibraryFacade::create_image_cropper()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_image_cropper();
+}
+
 std::string LibraryFacade::library_version()
 {
   return project_decls::PROJECT_BUILD_VERSION;

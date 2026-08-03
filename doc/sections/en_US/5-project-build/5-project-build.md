@@ -32,6 +32,7 @@ a `-DCMAKE_PREFIX_PATH` pointing at its install prefix.
     1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
 1. Libraries
     1. [Enabling the libcurl (mandatory)](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
+    1. [Enabling the OpenCV image cropper (optional)](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 
 The ImagesAnnotatorDataDrivers library and libcurl are the only third party
 dependencies this library has, and both are required to build.

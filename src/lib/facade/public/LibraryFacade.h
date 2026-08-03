@@ -34,6 +34,7 @@
 #include "ExportFormat.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
+#include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
 
@@ -110,6 +111,25 @@ class IADE_API LibraryFacade
    * format.
    */
   static IExporterPtr create_exporter(const ExportFormat& format);
+
+  /**
+   * @brief Factory method to create the image cropper the library ships
+   * itself.
+   *
+   * The library decodes no image format of its own, which is why
+   * ExportContext::cropper exists: the PyTorch Vision export asks its consumer
+   * to cut the rectangles out. When this build of the library found OpenCV it
+   * is able to do that itself, and this method hands out such a cropper.
+   *
+   * Assigning it to ExportContext::cropper is optional. An export left with an
+   * empty cropper slot falls back to this very cropper on its own, so a
+   * consumer with nothing better to offer may simply leave the field alone. A
+   * cropper the consumer does assign always wins over this one.
+   *
+   * @return Returns a new cropper, or a nullptr when the library was built
+   * without OpenCV. A nullptr means the export needs a cropper of your own.
+   */
+  static IImageCropperFacilityPtr create_image_cropper();
 
   /**
    * @brief Reports the version of the library binary being used.

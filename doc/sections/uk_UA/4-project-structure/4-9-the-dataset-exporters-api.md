@@ -59,7 +59,7 @@ virtual bool export_db(ExportContextPtr ectx) = 0;
 
 ### IImageCropperFacility
 
-Це єдиний інтерфейс, який проект-споживач реалізує самотужки:
+Це єдиний інтерфейс, який проекту-споживачу може знадобитись реалізувати самотужки:
 
 ```cpp
 virtual bool crop_out_2_fs(ImageRecordPtr ir, ImageRecordRectPtr irr,
@@ -68,6 +68,8 @@ virtual IImageCropperFacilityPtr clone() = 0;
 ```
 
 Бібліотека не декодує жодного власного формату зображень, тож єдиний експорт, який має вирізати прямокутник із зображення, просить свого споживача зробити це за допомогою того набору засобів роботи із зображеннями, який той проект уже лінкує.
+
+Бібліотека, зібрана з OpenCV, несе власну реалізацію, тож цей інтерфейс потрібно реалізовувати лише проекту, який бажає власного обрізання, - або тому, що споживає бібліотеку, зібрану без OpenCV. Див. [Вмикання обрізача зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md).
 
 - `ir` - запис, що називає зображення для читання, через свій `ImageRecord::get_full_path()`.
 - `irr` - прямокутник для вирізання, у власних піксельних координатах зображення (`name`, `x`, `y`, `width`, `height`).
@@ -103,6 +105,7 @@ virtual IImageCropperFacilityPtr clone() = 0;
 | `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну для заданого контексту |
 | `create_export_context()` | новий порожній `ExportContextPtr` |
 | `create_exporter(const ExportFormat& format)` | новий `IExporterPtr` для формату, або `nullptr` для невідомого |
+| `create_image_cropper()` | обрізач, який бібліотека несе сама, або `nullptr` у збірці без OpenCV |
 | `library_version()` | рядок версії використовуваного бінарника бібліотеки |
 
 ### Повний приклад

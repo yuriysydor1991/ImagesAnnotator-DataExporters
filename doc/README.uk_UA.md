@@ -176,6 +176,7 @@ cd build && ctest --output-on-failure
         1. [Вмикання підтримки генерування RPM-пакунків з cpack](/doc/sections/uk_UA/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Бібліотеки
         1. [Вмикання інтеграції libcurl](/doc/sections/uk_UA/5-project-build/5-14-enabling-libcurl.md)
+        1. [Вмикання обрізача зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 1. Запуск тестів
     1. [Запуск тестів за допомогою ctest](/doc/sections/uk_UA/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)
     1. [Ручний запуск тестів](/doc/sections/uk_UA/6-running-the-tests/6-3-2-manual-tests-run.md)

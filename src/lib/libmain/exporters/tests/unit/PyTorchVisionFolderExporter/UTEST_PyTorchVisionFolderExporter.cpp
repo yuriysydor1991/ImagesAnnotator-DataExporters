@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 
+#include "src/lib/libmain/croppers/ImageCropperFactory.h"
 #include "src/lib/libmain/exporters/PyTorchVisionFolderExporter.h"
 
 using namespace testing;
@@ -51,16 +52,29 @@ class FakeCropper : public iannotator::exporters::IImageCropperFacility
 
 }  // namespace
 
-TEST(UTEST_PyTorchVisionFolderExporter, fails_when_cropper_is_missing)
+// An export left without a cropper is only an error when this build has no
+// cropper of its own to fall back on. Branching at the run time rather than on
+// the preprocessor keeps the case registered - and real - in both builds.
+TEST(UTEST_PyTorchVisionFolderExporter, handles_a_missing_cropper_by_the_build)
 {
+  const std::filesystem::path dir =
+      std::filesystem::path{testing::TempDir()} / "utest_pytorch_no_cropper";
+  std::filesystem::remove_all(dir);
+  std::filesystem::create_directories(dir);
+
   auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = "/some/dir";
+  ctx->export_path = dir.string();
   ctx->dbProvider = std::make_shared<FakeProvider>();
   ctx->cropper = nullptr;
 
+  const bool hasBuiltin =
+      iannotator::exporters::croppers::create_builtin_cropper() != nullptr;
+
   PyTorchVisionFolderExporter exporter;
 
-  EXPECT_FALSE(exporter.export_db(ctx));
+  EXPECT_EQ(exporter.export_db(ctx), hasBuiltin);
+
+  std::filesystem::remove_all(dir);
 }
 
 TEST(UTEST_PyTorchVisionFolderExporter, fails_when_export_path_is_empty)

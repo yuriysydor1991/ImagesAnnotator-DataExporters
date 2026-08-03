@@ -1,18 +1,16 @@
 cmake_minimum_required(VERSION 3.13)
 
+# Declared in every configuration. The suite tests the cropper itself only when
+# the build found OpenCV; without it there is still the one case asserting that
+# the factory hands out no cropper - see UTEST_OpenCVImageCropper.cpp.
 add_executable(
-  UTEST_LibFactory
-  UTEST_LibFactory.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibFactory.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
-  ${IADE_EXPORTERS_SRC}
-  ${IADE_HELPERS_SRC}
-  ${IADE_CURL_SRC}
+  UTEST_OpenCVImageCropper
+  UTEST_OpenCVImageCropper.cpp
   ${IADE_CROPPERS_SRC}
 )
 
 target_include_directories(
-  UTEST_LibFactory
+  UTEST_OpenCVImageCropper
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
   PRIVATE ${GENERAL_MOCKS_ROOT}/project-global-decls
   PRIVATE ${CMAKE_SOURCE_DIR}
@@ -21,20 +19,20 @@ target_include_directories(
 )
 
 target_link_libraries(
-  UTEST_LibFactory
+  UTEST_OpenCVImageCropper
   GTest::gtest_main GTest::gmock
-  ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET} CURL::libcurl ${IADE_OPENCV_TEST_LIBS}
+  ${IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET} ${IADE_OPENCV_TEST_LIBS}
 )
 
 target_compile_definitions(
-  UTEST_LibFactory
+  UTEST_OpenCVImageCropper
   PRIVATE ${IADE_OPENCV_TEST_DEFS}
 )
 
 include(GoogleTest)
 
 gtest_add_tests(
-  TARGET UTEST_LibFactory
+  TARGET UTEST_OpenCVImageCropper
   TEST_SUFFIX .noArgs
   TEST_LIST noArgsTests
 )

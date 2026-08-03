@@ -32,6 +32,7 @@
 #include <fstream>
 #include <memory>
 
+#include "src/lib/libmain/croppers/ImageCropperFactory.h"
 #include "src/lib/libmain/helpers/ImageLoader.h"
 #include "src/log/log.h"
 
@@ -46,7 +47,6 @@ namespace fs = std::filesystem;
 bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
 {
   assert(ectx != nullptr);
-  assert(ectx->cropper != nullptr);
   assert(!ectx->export_path.empty());
 
   if (ectx == nullptr) {
@@ -59,8 +59,21 @@ bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
     return false;
   }
 
-  if (ectx->cropper == nullptr) {
-    LOGE("No image cropper provided");
+  // A cropper the consumer supplied always wins: a project that already
+  // decodes images its own way - the GUI cutters of the ImagesAnnotator
+  // application, say - keeps doing exactly that. The library's own cropper
+  // only fills an empty slot, and is a nullptr itself when this build found no
+  // OpenCV, which leaves the requirement where it has always been.
+  auto cropper = ectx->cropper;
+
+  if (cropper == nullptr) {
+    cropper = croppers::create_builtin_cropper();
+  }
+
+  if (cropper == nullptr) {
+    LOGE(
+        "No image cropper provided and this build of the library ships none of "
+        "its own");
     return false;
   }
 
@@ -95,7 +108,7 @@ bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
       continue;
     }
 
-    if (!export_rects(ir, ectx->cropper, ectx->export_path, origfs)) {
+    if (!export_rects(ir, cropper, ectx->export_path, origfs)) {
       LOGE("Fail to crop out rects for image: " << origfs.string());
       continue;
     }

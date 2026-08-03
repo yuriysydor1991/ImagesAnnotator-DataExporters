@@ -30,7 +30,7 @@ components straight from the source tree against the gmock stand-ins kept under
 `src/tests/mocks` and the per-component `src/lib/*/tests/mocks` directories, so
 every component is examined in isolation.
 
-The component tests are enabled separately and build `CTEST_SimpleLogger` and
+The component tests are enabled separately and build `CTEST_DefaultLogger` and
 `CTEST_Exporters`. The latter compiles nothing of the library: it links the real
 shared object and drives it through the installable public headers only,
 exactly the way a downstream project does.

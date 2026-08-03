@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.13)
 
 add_library(
-  TemplateProjectSimpleLoggerObj OBJECT
-  SimpleLogger.cpp
+  TemplateProjectDefaultLoggerObj OBJECT
+  DefaultLogger.cpp
 )
 
 target_include_directories(
-  TemplateProjectSimpleLoggerObj
+  TemplateProjectDefaultLoggerObj
   PRIVATE
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}
@@ -17,7 +17,7 @@ target_include_directories(
 # detail and its symbols would otherwise clash with the identically named ones
 # of any other library built from this template.
 set_target_properties(
-  TemplateProjectSimpleLoggerObj
+  TemplateProjectDefaultLoggerObj
   PROPERTIES
   POSITION_INDEPENDENT_CODE ON
   CXX_VISIBILITY_PRESET hidden
@@ -25,12 +25,12 @@ set_target_properties(
 
 # The library code logs through the src/log macros, which resolve to this
 # logger. Without this link the produced shared object would ship unresolved
-# simple_logger::SimpleLogger symbols and every consumer would fail to link
+# default_logger::DefaultLogger symbols and every consumer would fail to link
 # against it. PRIVATE because the logger is an implementation detail: no
 # installable public header mentions it.
 target_link_libraries(
   ${PROJECT_LIBRARY_NAME}
-  PRIVATE TemplateProjectSimpleLoggerObj
+  PRIVATE TemplateProjectDefaultLoggerObj
 )
 
 add_subdirectory(tests)

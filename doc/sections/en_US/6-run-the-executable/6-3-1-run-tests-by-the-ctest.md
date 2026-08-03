@@ -31,7 +31,7 @@ The cases are distributed over eight binaries: six unit test ones
 (`UTEST_LibraryFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter`,
 `UTEST_PyTorchVisionFolderExporter`) and two component test ones
-(`CTEST_Exporters`, `CTEST_SimpleLogger`). List them without running anything:
+(`CTEST_Exporters`, `CTEST_DefaultLogger`). List them without running anything:
 
 ```
 # from the project build directory

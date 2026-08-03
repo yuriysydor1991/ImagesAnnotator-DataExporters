@@ -31,7 +31,7 @@ set_target_properties(
   SOVERSION ${PROJECT_VERSION_MAJOR}
   # Only the IADE_API marked interface of facade/public leaves the shared
   # object. The ImagesAnnotatorDataDrivers library linked below is built from
-  # the very same project template and exports its own simple_logger and
+  # the very same project template and exports its own default_logger and
   # project_decls symbols: exporting ours too would let the dynamic linker bind
   # one library's calls to the other library's definitions. It does not cover
   # the factory - the std::make_shared instantiations stay weak and exported

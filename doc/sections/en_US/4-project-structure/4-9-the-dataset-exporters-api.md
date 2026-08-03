@@ -216,7 +216,7 @@ Every rectangle carrying the same annotation name inside one image is offered th
 
 ### The IADE_API marker
 
-Every installable class is marked with the `IADE_API` macro of [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h), and the library is compiled with the hidden symbol visibility, so that only the marked interface leaves the shared object. That is a correctness requirement rather than a size optimisation: the data drivers library this one links against is built from the very same project template and carries its own `simple_logger::SimpleLogger` and `project_decls` definitions. Were both sets exported, the dynamic linker would be free to bind one library's calls into the other library's differently laid out classes.
+Every installable class is marked with the `IADE_API` macro of [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h), and the library is compiled with the hidden symbol visibility, so that only the marked interface leaves the shared object. That is a correctness requirement rather than a size optimisation: the data drivers library this one links against is built from the very same project template and carries its own `default_logger::DefaultLogger` and `project_decls` definitions. Were both sets exported, the dynamic linker would be free to bind one library's calls into the other library's differently laid out classes.
 
 The hiding does not reach the factory. A `std::make_shared` instantiation names its class in its own mangled name and stays weak and exported whatever the visibility is, so the implementation namespace here is `iade0impl` and not the `lib0impl` the project template - and the data drivers library with it - uses.
 

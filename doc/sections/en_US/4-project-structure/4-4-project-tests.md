@@ -23,7 +23,7 @@ The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 
 | Binary | Scope |
 |---|---|
-| `CTEST_SimpleLogger` | the logger compiled into the library, driven through its own class |
+| `CTEST_DefaultLogger` | the logger compiled into the library, driven through its own class |
 | `CTEST_Exporters` | compiles none of the library: it links the produced shared object and drives it through the installable public headers only, exactly the way a downstream project does |
 
 `CTEST_Exporters` is the test that would notice a broken install interface - a header left out of the install set, or a symbol that never left the shared object because it lost its `IADE_API` mark.

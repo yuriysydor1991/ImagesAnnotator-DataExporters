@@ -79,6 +79,13 @@ a training dataset without duplicating the code.
   the template text: what the library is, its features, a compiled and run usage
   example, the dependencies, the build and test commands, where the code came
   from, and a documentation contents list that reaches the new sections.
+- The logging component is the `default-logger` one of the cpp-app-template
+  `lib` branch, and the `simple-logger` implementation is gone. `src/log/log.h`
+  resolves to `default_logger::DefaultLogger` and `CTEST_SimpleLogger` gives way
+  to the `CTEST_DefaultLogger` of the same eleven cases. The object library
+  keeps the `POSITION_INDEPENDENT_CODE` and the `CXX_VISIBILITY_PRESET hidden`
+  the logger needs inside this shared object, so its symbols stay private here
+  exactly as before, and it keeps being linked `PRIVATE` into the library.
 
 ### Fixed
 

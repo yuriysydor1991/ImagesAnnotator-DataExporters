@@ -64,7 +64,7 @@ After the checkout and the dependency stage the pipeline runs:
 - a `Debug` configure and build with `ENABLE_UNIT_TESTS=ON`, `ENABLE_COMPONENT_TESTS=ON`, `ENABLE_SANITIZERS=ON`, `ENABLE_CPPCHECK=ON` and `MAX_LOG_LEVEL=5`;
 - the `cppcheck` target, which is opt-in through the `RUN_CPPCHECK` boolean parameter;
 - the unit tests in parallel, one stage per target: `UTEST_LibraryFacade`, `UTEST_LibFactory`, `UTEST_LibMain`, `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter` and `UTEST_PyTorchVisionFolderExporter`;
-- the component tests in parallel: `CTEST_SimpleLogger` and `CTEST_Exporters` (the latter links the produced shared library and drives it through the installed public headers only);
+- the component tests in parallel: `CTEST_DefaultLogger` and `CTEST_Exporters` (the latter links the produced shared library and drives it through the installed public headers only);
 - a `clang-tidy` configure and build;
 - a `Release` configure, build and an install into a temporary prefix.
 

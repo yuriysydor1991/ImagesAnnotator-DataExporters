@@ -43,7 +43,7 @@ build/src/lib/libmain/exporters/tests/unit/PlainTxt2FolderExporter/UTEST_PlainTx
 build/src/lib/libmain/exporters/tests/unit/Yolo42FolderExporter/UTEST_Yolo42FolderExporter
 build/src/lib/libmain/exporters/tests/unit/PyTorchVisionFolderExporter/UTEST_PyTorchVisionFolderExporter
 build/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters
-build/src/log/simple-logger/tests/component/SimpleLogger/CTEST_SimpleLogger
+build/src/log/default-logger/tests/component/DefaultLogger/CTEST_DefaultLogger
 ```
 
 None of these files is an application: the `UTEST_`/`CTEST_` binaries are test

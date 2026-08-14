@@ -148,6 +148,11 @@ pipeline {
             sh 'cd $BUILDDIR && ctest -R "UTEST_Yolo42FolderExporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Yolo42FolderExporter.junit.xml'
           }
         }
+        stage('UTEST_Yolov4CfgWriter') {
+          steps {
+            sh 'cd $BUILDDIR && ctest -R "UTEST_Yolov4CfgWriter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_Yolov4CfgWriter.junit.xml'
+          }
+        }
         stage('UTEST_PyTorchVisionFolderExporter') {
           steps {
             sh 'cd $BUILDDIR && ctest -R "UTEST_PyTorchVisionFolderExporter\\." --output-on-failure --output-junit $BDJUNITOUT/UTEST_PyTorchVisionFolderExporter.junit.xml'

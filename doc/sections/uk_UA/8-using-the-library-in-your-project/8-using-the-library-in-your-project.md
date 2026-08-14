@@ -140,4 +140,4 @@ LD_LIBRARY_PATH=/opt/iade/lib:/opt/iadd/lib ./my-exporting-tool
 
 ## Опрацьований приклад усередині цього проекту
 
-Компонентний тест `CTEST_Exporters`, [src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp), лінкує згенеровану спільну бібліотеку і керує нею винятково через встановлювані заголовки, точно як це робить проект нижче за течією - включно з невеликою реалізацією `IImageCropperFacility`. Увімкни його CMake-опцією `ENABLE_COMPONENT_TESTS`, описаною у секції [Побудова проекту](/doc/sections/uk_UA/5-project-build/5-project-build.md).
+Компонентний тест `CTEST_Exporters`, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp), лінкує згенеровану спільну бібліотеку і керує нею винятково через встановлювані заголовки, точно як це робить проект нижче за течією - включно з невеликою реалізацією `IImageCropperFacility`. Увімкни його CMake-опцією `ENABLE_COMPONENT_TESTS`, описаною у секції [Побудова проекту](/doc/sections/uk_UA/5-project-build/5-project-build.md).

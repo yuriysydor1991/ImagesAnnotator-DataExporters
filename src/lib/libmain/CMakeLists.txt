@@ -7,9 +7,4 @@ target_sources(
     LibFactory.cpp
 )
 
-add_subdirectory(helpers)
-add_subdirectory(croppers)
-add_subdirectory(CURL)
-add_subdirectory(exporters)
-
 add_subdirectory(tests)

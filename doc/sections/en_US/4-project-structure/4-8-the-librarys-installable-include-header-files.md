@@ -28,7 +28,7 @@ The library is built with `CXX_VISIBILITY_PRESET hidden`, so only the entities m
 
 Visibility alone leaves one hole. A `std::make_shared` instantiation names its class in its own mangled name and stays weak and exported whatever the visibility is, so the implementation namespace here is `iade0impl` and not the `lib0impl` the project template - and the data drivers library with it - uses. The two `LibFactory` classes do not even share a vtable layout, and before the rename the linker did bind one library's `std::make_shared<lib0impl::LibFactory>()` to the other's definition.
 
-So a new public class belongs in [src/lib/facade/public](/src/lib/facade/public) and has to be marked with `IADE_API`; anything under [src/lib/libmain](/src/lib/libmain) stays private to the shared object and is reached through the abstract interfaces above.
+So a new public class belongs in [src/lib/facade/public](/src/lib/facade/public) and has to be marked with `IADE_API`; every other component under [src](/src) stays private to the shared object and is reached through the abstract interfaces above.
 
 ### The installed CMake package
 

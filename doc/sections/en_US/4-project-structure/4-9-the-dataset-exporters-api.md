@@ -223,4 +223,4 @@ Every installable class is marked with the `IADE_API` macro of [ExportersAPI.h](
 
 The hiding does not reach the factory. A `std::make_shared` instantiation names its class in its own mangled name and stays weak and exported whatever the visibility is, so the implementation namespace here is `iade0impl` and not the `lib0impl` the project template - and the data drivers library with it - uses.
 
-A working consumer of the whole interface is kept in the tree as the `CTEST_Exporters` component test, [src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp): it links the real shared library and drives it through the public headers only, exactly the way a downstream project does.
+A working consumer of the whole interface is kept in the tree as the `CTEST_Exporters` component test, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp): it links the real shared library and drives it through the public headers only, exactly the way a downstream project does.

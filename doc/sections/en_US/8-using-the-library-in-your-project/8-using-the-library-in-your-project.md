@@ -140,4 +140,4 @@ LD_LIBRARY_PATH=/opt/iade/lib:/opt/iadd/lib ./my-exporting-tool
 
 ## A worked example inside this project
 
-The `CTEST_Exporters` component test, [src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp), links the produced shared library and drives it through the installable headers only, exactly the way a downstream project does - including a small `IImageCropperFacility` implementation. Enable it with the `ENABLE_COMPONENT_TESTS` CMake option described in the [Project build](/doc/sections/en_US/5-project-build/5-project-build.md) section.
+The `CTEST_Exporters` component test, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp), links the produced shared library and drives it through the installable headers only, exactly the way a downstream project does - including a small `IImageCropperFacility` implementation. Enable it with the `ENABLE_COMPONENT_TESTS` CMake option described in the [Project build](/doc/sections/en_US/5-project-build/5-project-build.md) section.

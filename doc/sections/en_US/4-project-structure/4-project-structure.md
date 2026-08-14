@@ -11,11 +11,11 @@ The top level layout:
 | [src/lib/facade/public](/src/lib/facade/public) | the installable public headers - the whole `ImagesAnnotatorDataExporters011` interface |
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
-| [src/lib/libmain/exporters](/src/lib/libmain/exporters) | the three `IExporter` implementations and `ExportersAliases.h` |
-| [src/lib/libmain/croppers](/src/lib/libmain/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
-| [src/lib/libmain/helpers](/src/lib/libmain/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
-| [src/lib/libmain/CURL](/src/lib/libmain/CURL) | `CURLController` - the libcurl wrapper used to preload web hosted images |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
+| [src/exporters](/src/exporters) | the three `IExporter` implementations and `ExportersAliases.h` |
+| [src/croppers](/src/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
+| [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
+| [src/CURL](/src/CURL) | `CURLController` - the libcurl wrapper used to preload web hosted images |
 | [src/log](/src/log) | the logging macros and the simple logger compiled into the library |
 | [cmake](/cmake) | the build system: compile options and the dependency enablers |
 | [doc](/doc) | this documentation and the project diagrams |

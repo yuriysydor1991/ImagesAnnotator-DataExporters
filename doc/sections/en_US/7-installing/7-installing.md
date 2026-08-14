@@ -16,6 +16,26 @@ Without an explicit prefix CMake uses the platform default, usually
 sudo cmake --install .
 ```
 
+## Installation by the quick build scripts
+
+The scripts of the [Quick build scripts](/doc/sections/en_US/5-project-build/5-38-quick-build-scripts.md) section perform the install step themselves when the `--install` parameter is given, so the whole configure, build and install cycle takes the single command:
+
+```
+# inside the project root directory
+
+scripts/build/release.sh --install
+```
+
+The install step alone, against the already built `build/release` directory, is performed by its stage script:
+
+```
+# inside the project root directory
+
+scripts/build/release-install.sh --install
+```
+
+Both of them install into the `/usr` prefix by the `sudo cmake --install` call, so the `sudo` password is asked for. Without the `--install` parameter the install step is skipped entirely and no password is ever asked.
+
 ## Custom installation path
 
 Add the `--prefix` parameter to install elsewhere. Any writable path will do,

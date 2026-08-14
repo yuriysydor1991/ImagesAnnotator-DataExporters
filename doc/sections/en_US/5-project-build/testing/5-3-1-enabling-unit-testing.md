@@ -23,6 +23,7 @@ That produces the following executables:
 - `UTEST_LibMain`
 - `UTEST_PlainTxt2FolderExporter`
 - `UTEST_Yolo42FolderExporter`
+- `UTEST_Yolov4CfgWriter`
 - `UTEST_PyTorchVisionFolderExporter`
 
 The unit tests do not link the produced shared library. They compile the

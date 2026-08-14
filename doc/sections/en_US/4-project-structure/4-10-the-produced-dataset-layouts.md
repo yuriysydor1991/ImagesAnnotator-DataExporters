@@ -1,6 +1,6 @@
 ## The produced dataset layouts
 
-Each value of the `ExportFormat` enumeration is implemented by one exporter class under [src/lib/libmain/exporters](/src/lib/libmain/exporters). This subsection describes what every one of them writes into the `ExportContext::export_path` directory. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Each value of the `ExportFormat` enumeration is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the `ExportContext::export_path` directory. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ### What all the three have in common
 
@@ -86,12 +86,61 @@ names = data/obj.names
 backup = backup/
 ```
 
-`cfg/yolov4-obj.cfg` carries the two values that depend on the class count, the filter count being `(classes + 5) * 3`:
+`cfg/yolov4-obj.cfg` is the whole neural network descriptor of the YOLO v4 detector - the CSPDarknet53 backbone, the SPP and PANet neck and the three detection heads, the 162 layers of the `cfg/yolov4-custom.cfg` network of the [darknet](https://github.com/yuriysydor1991/darknetxx) project itself. Nothing in it has to be edited by hand before a training run, since every value that depends on the exported project is already filled in:
+
+| Value | What the export writes |
+| --- | --- |
+| `classes` of each of the three `[yolo]` layers | the annotation names count of the database |
+| `filters` of the convolution in front of each `[yolo]` layer | `(classes + 5) * 3` - the four box coordinates, the objectness and the classes, per anchor |
+| `max_batches` | 2000 iterations per class, never fewer than 6000 and never fewer than the images the export has copied |
+| `steps` | the 80% and the 90% of `max_batches` |
+| `width` and `height` | 832 by 832 - a large input, so that the small objects of a big photo still reach the detectors |
+| `subdivisions` | 32, the batch of 64 images taken two at a time |
+
+The head of the file, for the two classes of this example:
 
 ```
-classes = 2
-filters = 21
+[net]
+# Testing
+#batch=1
+#subdivisions=1
+# Training
+batch=64
+subdivisions=32
+width=832
+height=832
+channels=3
+...
+max_batches=6000
+policy=steps
+steps=4800,5400
 ```
+
+and the tail of every one of its three detectors:
+
+```
+[convolutional]
+filters=21
+size=1
+stride=1
+pad=1
+activation=linear
+
+[yolo]
+mask=0,1,2
+anchors=12,16, 19,36, 40,28, 36,75, 76,55, 72,146, 142,110, 192,243, 459,401
+classes=2
+num=9
+...
+```
+
+The training run takes the exported directory as it is, plus the pre-trained backbone weights [yolov4.conv.137](https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.conv.137):
+
+```
+darknet detector train data/obj.data cfg/yolov4-obj.cfg yolov4.conv.137 -map
+```
+
+Raise `subdivisions`, or lower `width` and `height` to another multiple of 32, when a training run goes out of the video memory. The anchors are the ones the YOLO v4 authors have got on the COCO dataset; `darknet detector calc_anchors` fits them to the dataset at hand.
 
 Every annotated image file is copied into `data/`. When a file of that name is already there, the copy receives a `-1`, `-2`, ... suffix before its extension, so `street.png` of a second source directory lands as `street-1.png`.
 

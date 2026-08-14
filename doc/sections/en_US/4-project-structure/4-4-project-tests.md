@@ -9,13 +9,14 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 | `UTEST_LibraryFacade` | the installed facade | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) |
 | `UTEST_LibFactory` | the object factory | [src/lib/libmain/LibFactory.cpp](/src/lib/libmain/LibFactory.cpp) |
 | `UTEST_LibMain` | the `ILib` implementation | [src/lib/libmain/LibMain.cpp](/src/lib/libmain/LibMain.cpp) |
-| `UTEST_PlainTxt2FolderExporter` | the plain text exporter | [src/lib/libmain/exporters/PlainTxt2FolderExporter.cpp](/src/lib/libmain/exporters/PlainTxt2FolderExporter.cpp) |
-| `UTEST_Yolo42FolderExporter` | the darknet YOLOv4 exporter | [src/lib/libmain/exporters/Yolo42FolderExporter.cpp](/src/lib/libmain/exporters/Yolo42FolderExporter.cpp) |
-| `UTEST_PyTorchVisionFolderExporter` | the PyTorch vision exporter | [src/lib/libmain/exporters/PyTorchVisionFolderExporter.cpp](/src/lib/libmain/exporters/PyTorchVisionFolderExporter.cpp) |
-| `UTEST_ImageRecordUrlAndPathHelper` | the record path and URL resolution | [src/lib/libmain/helpers/ImageRecordUrlAndPathHelper.cpp](/src/lib/libmain/helpers/ImageRecordUrlAndPathHelper.cpp) |
-| `UTEST_ImageLoader` | the web hosted image preloader | [src/lib/libmain/helpers/ImageLoader.cpp](/src/lib/libmain/helpers/ImageLoader.cpp) |
-| `UTEST_TypeHelper` | the numeric cast helper | [src/lib/libmain/helpers/TypeHelper.h](/src/lib/libmain/helpers/TypeHelper.h) |
-| `UTEST_CURLController` | the libcurl adaptor | [src/lib/libmain/CURL/CURLController.cpp](/src/lib/libmain/CURL/CURLController.cpp) |
+| `UTEST_PlainTxt2FolderExporter` | the plain text exporter | [src/exporters/PlainTxt2FolderExporter.cpp](/src/exporters/PlainTxt2FolderExporter.cpp) |
+| `UTEST_Yolo42FolderExporter` | the darknet YOLOv4 exporter | [src/exporters/Yolo42FolderExporter.cpp](/src/exporters/Yolo42FolderExporter.cpp) |
+| `UTEST_Yolov4CfgWriter` | the darknet network descriptor writer | [src/exporters/Yolov4CfgWriter.cpp](/src/exporters/Yolov4CfgWriter.cpp) |
+| `UTEST_PyTorchVisionFolderExporter` | the PyTorch vision exporter | [src/exporters/PyTorchVisionFolderExporter.cpp](/src/exporters/PyTorchVisionFolderExporter.cpp) |
+| `UTEST_ImageRecordUrlAndPathHelper` | the record path and URL resolution | [src/helpers/ImageRecordUrlAndPathHelper.cpp](/src/helpers/ImageRecordUrlAndPathHelper.cpp) |
+| `UTEST_ImageLoader` | the web hosted image preloader | [src/helpers/ImageLoader.cpp](/src/helpers/ImageLoader.cpp) |
+| `UTEST_TypeHelper` | the numeric cast helper | [src/helpers/TypeHelper.h](/src/helpers/TypeHelper.h) |
+| `UTEST_CURLController` | the libcurl adaptor | [src/CURL/CURLController.cpp](/src/CURL/CURLController.cpp) |
 
 The `UTEST_ImageLoader` cases stay offline on purpose: they drive the local record, the already cached record and the null record paths, none of which reaches `CURLController::download()`.
 

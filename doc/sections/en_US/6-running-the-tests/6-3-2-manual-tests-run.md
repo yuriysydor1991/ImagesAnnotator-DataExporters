@@ -28,9 +28,10 @@ The exporter tests live next to the sources they cover:
 ```
 # from the project root
 
-./build/src/lib/libmain/exporters/tests/unit/PlainTxt2FolderExporter/UTEST_PlainTxt2FolderExporter
-./build/src/lib/libmain/exporters/tests/unit/Yolo42FolderExporter/UTEST_Yolo42FolderExporter
-./build/src/lib/libmain/exporters/tests/unit/PyTorchVisionFolderExporter/UTEST_PyTorchVisionFolderExporter
+./build/src/exporters/tests/unit/PlainTxt2FolderExporter/UTEST_PlainTxt2FolderExporter
+./build/src/exporters/tests/unit/Yolo42FolderExporter/UTEST_Yolo42FolderExporter
+./build/src/exporters/tests/unit/Yolov4CfgWriter/UTEST_Yolov4CfgWriter
+./build/src/exporters/tests/unit/PyTorchVisionFolderExporter/UTEST_PyTorchVisionFolderExporter
 ```
 
 The `CTEST_Exporters` component test is started the same way. Unlike the unit
@@ -41,7 +42,7 @@ real exporters end to end:
 ```
 # from the project root
 
-./build/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters
+./build/src/exporters/tests/component/Exporters/CTEST_Exporters
 ```
 
 The usual Google Test command line flags apply, for instance to run a single

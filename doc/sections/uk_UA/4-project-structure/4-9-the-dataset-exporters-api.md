@@ -223,4 +223,4 @@ ectx->cropper = std::make_shared<MyCropper>();
 
 Приховування не сягає фабрики. Інстанціація `std::make_shared` несе імʼя свого класу у власному спотвореному імені й лишається слабкою та експортованою за будь-якої видимості, тому простором імен реалізації тут є `iade0impl`, а не `lib0impl`, який використовує проект-шаблон, а разом із ним і бібліотека драйверів даних.
 
-Робочий споживач усього інтерфейсу зберігається у дереві як компонентний тест `CTEST_Exporters`, [src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/lib/libmain/exporters/tests/component/Exporters/CTEST_Exporters.cpp): він лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки, точно як це робить проект нижче за течією.
+Робочий споживач усього інтерфейсу зберігається у дереві як компонентний тест `CTEST_Exporters`, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp): він лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки, точно як це робить проект нижче за течією.

@@ -16,7 +16,7 @@
 
 - **Три розкладки наборів даних з однієї бази даних** - обираються переліком `ExportFormat` і реалізовані окремим класом-експортером кожна:
   - `PlainTxt2Folder` - по одному файлу `<імʼя-анотації>.txt` на кожне імʼя анотації, де кожен рядок називає зображення і його прямокутники;
-  - `Yolo42Folder` - ціла тренувальна директорія darknet для детектора YOLO v4: `data/obj.names`, `data/obj.data`, `cfg/yolov4-obj.cfg`, скопійовані зображення з їхніми нормалізованими файлами міток `.txt`, переліки `train.txt` і `val.txt` та порожня `backup/`;
+  - `Yolo42Folder` - ціла тренувальна директорія darknet для детектора YOLO v4: `data/obj.names`, `data/obj.data`, опис `cfg/yolov4-obj.cfg` цілої 162-шарової мережі YOLO v4, записаний під класи проекту, скопійовані зображення з їхніми нормалізованими файлами міток `.txt`, переліки `train.txt` і `val.txt` та порожня `backup/`;
   - `PyTorchVisionFolder` - класифікаційна розкладка, яку читає набір даних `ImageFolder` з PyTorch Vision: одна директорія на імʼя анотації, що містить зображення, обрізані до прямокутників із тим іменем.
 - **Одноразова точка входу** - заповни `LibraryContext` форматом, директорією призначення і базою даних, і `ILib::libcall()` побудує потрібний експортер та запустить його. `LibraryFacade::create_exporter()` дає той самий результат із дрібнішим контролем.
 - **Вебзображення попередньо звантажуються** - запис, який вказує на вебсторінку, звантажується за допомогою [libcurl](https://curl.se/libcurl/) у тимчасовий кеш попереднього завантаження ще до того як експорт його торкнеться, тож проект, що змішує локальні й віддалені зображення, експортується як одне ціле.
@@ -156,6 +156,7 @@ cd build && ctest --output-on-failure
 1. [Побудова проекту](/doc/sections/uk_UA/5-project-build/5-project-build.md)
     1. [Побудова за допомогою IDE](/doc/sections/uk_UA/5-project-build/5-1-IDE-build.md)
     1. [Побудова проекту через командний рядок](/doc/sections/uk_UA/5-project-build/5-2-command-line-build.md)
+    1. [Швидкі скрипти побудови](/doc/sections/uk_UA/5-project-build/5-38-quick-build-scripts.md)
     1. [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md)
     1. Вмикання тестів
         1. [Вмикання юніт-тестів](/doc/sections/uk_UA/5-project-build/testing/5-3-1-enabling-unit-testing.md)

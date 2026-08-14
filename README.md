@@ -16,7 +16,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 - **Three dataset layouts out of one database** - selected by the `ExportFormat` enumeration and implemented by one exporter class each:
   - `PlainTxt2Folder` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
-  - `Yolo42Folder` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, `cfg/yolov4-obj.cfg`, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
+  - `Yolo42Folder` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
   - `PyTorchVisionFolder` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
 - **A one shot entry point** - fill a `LibraryContext` with the format, the destination directory and the database, and `ILib::libcall()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
@@ -156,6 +156,7 @@ Examine the `doc` directory for possible translations of a current md document:
 1. [Project build](/doc/sections/en_US/5-project-build/5-project-build.md)
     1. [IDE build](/doc/sections/en_US/5-project-build/5-1-IDE-build.md)
     1. [Command line build](/doc/sections/en_US/5-project-build/5-2-command-line-build.md)
+    1. [Quick build scripts](/doc/sections/en_US/5-project-build/5-38-quick-build-scripts.md)
     1. [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md)
     1. Enabling testing
         1. [Enabling unit testing](/doc/sections/en_US/5-project-build/testing/5-3-1-enabling-unit-testing.md)

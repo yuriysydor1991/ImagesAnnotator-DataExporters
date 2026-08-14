@@ -31,10 +31,10 @@
 #include <memory>
 
 #include "src/lib/libmain/LibMain.h"
-#include "src/lib/libmain/croppers/ImageCropperFactory.h"
-#include "src/lib/libmain/exporters/PlainTxt2FolderExporter.h"
-#include "src/lib/libmain/exporters/PyTorchVisionFolderExporter.h"
-#include "src/lib/libmain/exporters/Yolo42FolderExporter.h"
+#include "src/croppers/ImageCropperFactory.h"
+#include "src/exporters/PlainTxt2FolderExporter.h"
+#include "src/exporters/PyTorchVisionFolderExporter.h"
+#include "src/exporters/Yolo42FolderExporter.h"
 #include "src/log/log.h"
 
 namespace iade0impl

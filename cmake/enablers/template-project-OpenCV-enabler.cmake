@@ -24,7 +24,7 @@ option(
   ON
 )
 
-# The one variable the rest of the build asks: src/lib/libmain/croppers adds the
+# The one variable the rest of the build asks: src/croppers adds the
 # cropper source only when it is ON, and the linker module below links OpenCV
 # and defines IADE_WITH_OPENCV for the compilation.
 set(IADE_WITH_OPENCV OFF)

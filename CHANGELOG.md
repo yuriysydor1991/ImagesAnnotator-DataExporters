@@ -80,6 +80,29 @@ a training dataset without duplicating the code.
 - A `Dependencies` stage in the Jenkins pipeline that builds and installs
   ImagesAnnotatorDataDrivers, with the `DATA_DRIVERS_PREFIX` and
   `DATA_DRIVERS_REF` parameters.
+- The quick build scripts of the
+  [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `lib`
+  branch in the new `scripts` directory, so a whole `Release` or `Debug` cycle
+  is a single command instead of the separate CMake calls. `scripts/build`
+  holds the three stage scripts of each build type (`*-configure.sh` /
+  `*-build.sh` / `*-install.sh`, keeping their trees at `build/release` and
+  `build/debug`), the two entry points chaining them (`release.sh`, `debug.sh` -
+  the latter configuring with the tests, the documentation, `MAX_LOG_LEVEL=5`
+  and `cppcheck` on) and the five analysis entry points (`debug-cppcheck.sh`,
+  `debug-clang-tidy.sh`, `debug-sanitizers.sh`,
+  `debug-sanitizers-threads.sh`, `debug-compiler-analyzer.sh`);
+  `scripts/docker` holds the two starter scripts of the
+  `jenkins-pipeline-docker-{build,run}` targets, which are the only container
+  targets this project kept. They consume two parameters of their own -
+  `--no-reconfigure`, which keeps the existing build directory instead of
+  erasing it, and `--install`, without which the `sudo cmake --install` step
+  never runs and no password is ever asked - and forward every
+  `-D<variable>=<value>` to the configure step, which is also how a data
+  drivers installation outside the default CMake prefixes is named
+  (`-DCMAKE_PREFIX_PATH=<prefix>`). Documented in the new `5-38` sections in
+  both languages, which name the data drivers library the configure step
+  requires and cannot fetch, with the starter scripts in `5-17` and the
+  `--install` shortcut in `7-installing`.
 
 ### Changed
 
@@ -122,9 +145,41 @@ a training dataset without duplicating the code.
   keeps the `POSITION_INDEPENDENT_CODE` and the `CXX_VISIBILITY_PRESET hidden`
   the logger needs inside this shared object, so its symbols stay private here
   exactly as before, and it keeps being linked `PRIVATE` into the library.
+- The implementation components moved out of `libmain` and up to the `src`
+  level, so that `libmain` carries only the `LibMain` / `LibFactory` entry
+  pair: `src/exporters`, `src/croppers`, `src/helpers` and `src/CURL`. The
+  per-component source lists the test executables compile from moved along
+  with them, from `src/lib/CMakeLists.txt` up to `src/CMakeLists.txt`, the
+  directory every component is now a child of. The data drivers library is
+  laid out the same way.
 
 ### Fixed
 
+- **The darknet export wrote no network to train.** `cfg/yolov4-obj.cfg`, the
+  descriptor `obj.data` sends darknet to, held two lines - `classes` and
+  `filters` - and not a single section, so darknet had neither the network
+  geometry nor one layer to build: `darknet detector train` died on it with a
+  segmentation fault, the parser reaching for a first section that was not
+  there. The export now writes the whole YOLO v4 network of the darknet
+  `cfg/yolov4-custom.cfg` - the CSPDarknet53 backbone, the SPP and PANet neck
+  and the three detection heads, 162 layers - and darknet trains out of an
+  exported directory as it stands, given the `yolov4.conv.137` backbone
+  weights. Everything the project decides is filled in: the class count into
+  the three `[yolo]` layers and the `(classes + 5) * 3` filters of the
+  convolution in front of each of them, the iterations count as the 2000 per
+  class of the darknet manual, never fewer than 6000 and never fewer than the
+  images the export has copied, with `steps` at its 80% and 90%. The input is
+  832 by 832, so that the small objects of a big photo still reach the
+  detectors, and `subdivisions=32` keeps that input within a common video
+  memory. The network is emitted by the new `Yolov4CfgWriter` out of the blocks
+  it repeats - one residual block 23 times, one five convolutions block four
+  times - rather than kept as a thousand line copy of the darknet file, and the
+  two layer indices the neck routes back into are counted while writing instead
+  of being written down. The descriptor is now written last of the export, since
+  the images it counts are copied by then. `UTEST_Yolov4CfgWriter` covers the
+  writer with four cases, and `UTEST_Yolo42FolderExporter` now asserts the
+  written descriptor really holds the three detectors of the project class
+  count.
 - **The project did not configure against a stock data drivers install.** The
   data drivers library ships with `LIB_INCLUDE_MINOR_IN_NAME=ON`, so it installs
   as `ImagesAnnotatorDataDrivers-0.11`, while the enabler here asked for

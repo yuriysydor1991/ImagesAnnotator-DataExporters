@@ -47,5 +47,6 @@ target_compile_definitions(
 
 add_subdirectory(facade)
 add_subdirectory(libmain)
+add_subdirectory(tests)
 
 include(lib-cmake-module-gen)

@@ -33,6 +33,7 @@
 
 #include "project-global-decls.h"
 #include "src/lib/libmain/LibFactory.h"
+#include "src/log/log.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
@@ -94,6 +95,12 @@ IImageCropperFacilityPtr LibraryFacade::create_image_cropper()
 std::string LibraryFacade::library_version()
 {
   return project_decls::PROJECT_BUILD_VERSION;
+}
+
+void LibraryFacade::accept_real_logger(
+    const std::shared_ptr<logger::ILogger>& realLogger)
+{
+  LOG_INIT_REAL_LOGGER(realLogger);
 }
 
 }  // namespace ImagesAnnotatorDataExporters011

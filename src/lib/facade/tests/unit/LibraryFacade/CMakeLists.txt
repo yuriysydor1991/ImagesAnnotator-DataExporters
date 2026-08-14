@@ -4,6 +4,8 @@ add_executable(
   UTEST_LibraryFacade
   UTEST_LibraryFacade.cpp
   ${CMAKE_SOURCE_DIR}/src/lib/facade/LibraryFacade.cpp
+  ${CMAKE_SOURCE_DIR}/src/log/default-logger/DefaultLogger.cpp
+  ${CMAKE_SOURCE_DIR}/src/log/default-logger/real-default-logger/RealDefaultLogger.cpp
 )
 
 target_include_directories(

@@ -38,12 +38,11 @@ namespace iade0impl
 
 LibMain::LibMain()
 {
-  static bool inited{false};
-
-  if (!inited) {
-    LOG_INIT_DEFAULTS();
-    inited = true;
-  }
+  // No logging initialization on purpose. The logging destination belongs to
+  // the application which uses the library, not to the library itself: an
+  // application which depends on many derived libraries would otherwise
+  // collect a log file per every one of them. Accept the application logger
+  // instance through the LibraryFacade::accept_real_logger method instead.
 }
 
 bool LibMain::libcall(LibraryContextPtr ctx)

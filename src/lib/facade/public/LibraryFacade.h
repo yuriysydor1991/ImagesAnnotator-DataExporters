@@ -28,6 +28,7 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
 
+#include <memory>
 #include <string>
 
 #include "ExportContext.h"
@@ -37,6 +38,18 @@
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+
+/**
+ * @brief The logging subsystem interface every project built from the
+ * cpp-app-template shares. The definition compiled into this library is token
+ * identical to the one of the project which uses it, so this installed header
+ * only forward declares it and never collides with the consumer own
+ * logger::ILogger definition.
+ */
+namespace logger
+{
+class ILogger;
+}  // namespace logger
 
 namespace ImagesAnnotatorDataExporters011
 {
@@ -137,6 +150,22 @@ class IADE_API LibraryFacade
    * @return Returns the library build version string.
    */
   static std::string library_version();
+
+  /**
+   * @brief Hands the logger instance of the project which uses this library
+   * over to the library logging subsystem, so the whole binary logs into the
+   * very same logger instead of the library keeping a silent own one.
+   *
+   * Call it before the first use of the library, usually right after the own
+   * logging initialization. Any logger::ILogger implementation is accepted: a
+   * project built from the cpp-app-template shares its default logger by
+   * passing the LOG_REAL_LOGGER() value.
+   *
+   * @param realLogger The logger instance to adopt. A nullptr is ignored and
+   * the previously adopted or the library own instance stays.
+   */
+  static void accept_real_logger(
+      const std::shared_ptr<logger::ILogger>& realLogger);
 };
 
 }  // namespace ImagesAnnotatorDataExporters011

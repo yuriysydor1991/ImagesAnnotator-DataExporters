@@ -61,8 +61,15 @@ a training dataset without duplicating the code.
 - The installable public interface under
   [src/lib/facade/public](/src/lib/facade/public), in the version stamped
   `ImagesAnnotatorDataExporters011` namespace: `IExporter`, `ExportContext`,
-  `ExportFormat`, `IImageCropperFacility` and the extended `LibraryFacade`,
-  `LibraryContext` and `ILib`.
+  `IImageCropperFacility` and the extended `LibraryFacade`, `LibraryContext`
+  and `ILib`.
+- The wanted dataset layout is named by the `LibraryContext` descendant the
+  consumer instantiates - `PlainTxtExportLibraryContext`,
+  `Yolo4ExportLibraryContext` or `PyTorchExportLibraryContext` - each of which
+  builds its own exporter through the single `LibraryContext::create_exporter()`
+  method. That replaces the `ExportFormat` enumeration and the `switch` over it
+  the factory used to carry, so a new layout adds a class instead of touching
+  the existing dispatch, and no unknown format value can be constructed at all.
 - `LibraryFacade::create_exporter()`, `create_export_context()` and
   `library_version()` as the entry point of the library, plus the one shot
   `ILib::libcall()` driven by `LibraryContext`.

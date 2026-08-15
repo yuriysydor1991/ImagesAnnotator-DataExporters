@@ -83,7 +83,7 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 ## Мінімальний споживач
 
-Наведений нижче `main.cpp` відкриває файл проекту і записує його назовні через одноразову точку входу `ILib::libcall`:
+Наведений нижче `main.cpp` відкриває файл проекту і записує його назовні через одноразову точку входу `ILib::perform_export`:
 
 ```cpp
 #include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
@@ -114,7 +114,7 @@ int main()
 
   auto lib = iade::LibraryFacade::create_library(ctx);
 
-  if (lib == nullptr || !lib->libcall(ctx)) {
+  if (lib == nullptr || !lib->perform_export(ctx)) {
     std::cerr << "the export has failed\n";
     return 1;
   }

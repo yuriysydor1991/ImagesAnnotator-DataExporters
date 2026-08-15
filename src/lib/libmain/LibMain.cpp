@@ -45,7 +45,7 @@ LibMain::LibMain()
   // instance through the LibraryFacade::accept_real_logger method instead.
 }
 
-bool LibMain::libcall(LibraryContextPtr ctx)
+bool LibMain::perform_export(LibraryContextPtr ctx)
 {
   assert(ctx != nullptr);
 

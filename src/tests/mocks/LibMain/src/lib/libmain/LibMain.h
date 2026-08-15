@@ -20,7 +20,7 @@ class LibMain : public ImagesAnnotatorDataExporters011::ILib
   virtual ~LibMain() = default;
   LibMain() = default;
 
-  MOCK_METHOD(bool, libcall, (LibraryContextPtr ctx), (override));
+  MOCK_METHOD(bool, perform_export, (LibraryContextPtr ctx), (override));
 
   inline static LibMainPtr create() { return std::make_shared<LibMain>(); }
 };

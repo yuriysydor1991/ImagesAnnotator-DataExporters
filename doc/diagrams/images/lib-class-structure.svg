@@ -16,21 +16,16 @@
 <path d="M568,470 L545,470 L545,232 L260,232 L260,178" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <rect x="525.0" y="343.0" width="40.0" height="16" fill="#FFFFFF" opacity="0.92"/>
 <text x="545.0" y="355.0" font-size="11.5" fill="#000000" text-anchor="middle">reads</text>
-<path d="M735,436 L735,458" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="686.2" y="433.0" width="97.6" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="735.0" y="445.0" font-size="11.5" fill="#000000" text-anchor="middle">libcall builds</text>
+<path d="M735,418 L735,458" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="665.0" y="427.0" width="140.0" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="735.0" y="439.0" font-size="11.5" fill="#000000" text-anchor="middle">perform_export builds</text>
 <path d="M735,578 L735,560" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <path d="M902,555 L920,555 L920,586 L938,586" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="903.2" y="543.0" width="33.6" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="920.0" y="555.0" font-size="11.5" fill="#000000" text-anchor="middle">uses</text>
-<path d="M940,331 L920,331 L920,400 L902,400" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M940,413 L920,413 L920,400" fill="none" stroke="#181818" stroke-width="1.2"/>
-<path d="M940,495 L920,495 L920,400" fill="none" stroke="#181818" stroke-width="1.2"/>
-<path d="M1240,331 L1248,331 L1248,742 L968,742 L968,821 L952,821" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<path d="M1240,413 L1252,413 L1252,752 L976,752 L976,891 L952,891" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<path d="M1240,495 L1256,495 L1256,762 L984,762 L984,961 L952,961" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<rect x="1023.6" y="734.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="1050.0" y="746.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
+<rect x="903.2" y="562.0" width="33.6" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="920.0" y="574.0" font-size="11.5" fill="#000000" text-anchor="middle">uses</text>
+<path d="M940,317 L920,317 L920,380 L902,380" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
+<path d="M940,372 L920,372 L920,380" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M940,427 L920,427 L920,380" fill="none" stroke="#181818" stroke-width="1.2"/>
 <path d="M60,430 L48,430 L48,1010 L58,1010" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <rect x="21.6" y="712.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
 <text x="48.0" y="724.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
@@ -38,12 +33,17 @@
 <rect x="213.6" y="902.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
 <text x="240.0" y="914.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
 <path d="M532,970 L560,970 L560,395 L568,395" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<rect x="494.0" y="668.0" width="132.0" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="560.0" y="680.0" font-size="11.5" fill="#000000" text-anchor="middle">asks for the exporter</text>
+<rect x="478.0" y="668.0" width="164.0" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="560.0" y="680.0" font-size="11.5" fill="#000000" text-anchor="middle">casts to pick the layout</text>
+<path d="M532,1000 L562,1000 L562,812 L618,812" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<path d="M532,1020 L572,1020 L572,882 L618,882" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<path d="M532,1040 L582,1040 L582,952 L618,952" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<rect x="545.6" y="1004.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="572.0" y="1016.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
 <path d="M340,802 L340,790 L460,790 L460,558 L400,558 L400,544" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M618,821 L600,821 L600,646" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M618,891 L600,891 L600,821" fill="none" stroke="#181818" stroke-width="1.2"/>
-<path d="M618,961 L600,961 L600,891" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M952,812 L968,812 L968,690 L860,690 L860,644" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
+<path d="M952,882 L968,882 L968,812" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M952,952 L968,952 L968,882" fill="none" stroke="#181818" stroke-width="1.2"/>
 <path d="M785,981 L785,1012" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <path d="M785,1078 L785,1114" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <rect x="60" y="96" width="400" height="80" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
@@ -66,26 +66,19 @@
 <text x="70" y="402" font-size="12.5" fill="#000000">+ static ExportContextPtr create_export_context()</text>
 <text x="70" y="420" font-size="12.5" fill="#000000">+ static IExporterPtr create_exporter(const LibraryContextPtr&amp;)</text>
 <text x="70" y="438" font-size="12.5" fill="#000000">+ static std::string library_version()</text>
-<rect x="570" y="300" width="330" height="134" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
-<text x="735.0" y="318" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«abstract» LibraryContext</text>
+<rect x="570" y="300" width="330" height="116" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="735.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibraryContext</text>
 <line x1="570" y1="326" x2="900" y2="326" stroke="#181818" stroke-width="1"/>
-<text x="580" y="348" font-size="12.5" font-style="italic" fill="#000000">+ IExporterPtr create_exporter() const</text>
-<text x="580" y="366" font-size="12.5" fill="#000000">+ std::string export_path</text>
-<text x="580" y="384" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
-<text x="580" y="402" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
-<text x="580" y="420" font-size="12.5" fill="#000000">+ IExporterPtr exporter   // out</text>
-<rect x="940" y="300" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxtExportLibraryContext</text>
-<line x1="940" y1="326" x2="1240" y2="326" stroke="#181818" stroke-width="1"/>
-<text x="950" y="348" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
-<rect x="940" y="382" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="400" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo4ExportLibraryContext</text>
-<line x1="940" y1="408" x2="1240" y2="408" stroke="#181818" stroke-width="1"/>
-<text x="950" y="430" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
-<rect x="940" y="464" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="482" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchExportLibraryContext</text>
-<line x1="940" y1="490" x2="1240" y2="490" stroke="#181818" stroke-width="1"/>
-<text x="950" y="512" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
+<text x="580" y="348" font-size="12.5" fill="#000000">+ std::string export_path</text>
+<text x="580" y="366" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
+<text x="580" y="384" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
+<text x="580" y="402" font-size="12.5" fill="#000000">+ IExporterPtr exporter   // out</text>
+<rect x="940" y="300" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="322" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxtExportLibraryContext</text>
+<rect x="940" y="355" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="377" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo4ExportLibraryContext</text>
+<rect x="940" y="410" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="432" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchExportLibraryContext</text>
 <rect x="570" y="460" width="330" height="98" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="735.0" y="478" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ExportContext</text>
 <line x1="570" y1="486" x2="900" y2="486" stroke="#181818" stroke-width="1"/>
@@ -95,7 +88,7 @@
 <rect x="60" y="480" width="470" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
 <text x="295.0" y="498" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» ILib</text>
 <line x1="60" y1="506" x2="530" y2="506" stroke="#181818" stroke-width="1"/>
-<text x="70" y="528" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
+<text x="70" y="528" font-size="12.5" fill="#000000">+ bool perform_export(LibraryContextPtr ctx)</text>
 <rect x="570" y="580" width="330" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
 <text x="735.0" y="598" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IExporter</text>
 <line x1="570" y1="606" x2="900" y2="606" stroke="#181818" stroke-width="1"/>
@@ -111,10 +104,10 @@
 <text x="68" y="604" font-size="11.5" fill="#000000">implemented by the consuming</text>
 <text x="68" y="622" font-size="11.5" fill="#000000">project: the library decodes no</text>
 <text x="68" y="640" font-size="11.5" fill="#000000">image format of its own.</text>
-<rect x="60" y="804" width="300" height="80" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="210.0" y="822" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibMain</text>
-<line x1="60" y1="830" x2="360" y2="830" stroke="#181818" stroke-width="1"/>
-<text x="70" y="852" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
+<rect x="60" y="804" width="340" height="80" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="230.0" y="822" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibMain</text>
+<line x1="60" y1="830" x2="400" y2="830" stroke="#181818" stroke-width="1"/>
+<text x="70" y="852" font-size="12.5" fill="#000000">+ bool perform_export(LibraryContextPtr ctx)</text>
 <text x="70" y="870" font-size="12.5" fill="#000000">+ static LibMainPtr create()</text>
 <rect x="60" y="934" width="470" height="152" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="295.0" y="952" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibFactory</text>

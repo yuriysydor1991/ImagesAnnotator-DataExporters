@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "LibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
@@ -42,9 +43,9 @@ TEST_F(UTEST_LibFactory, create_export_context_success)
 
 TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
 {
-  EXPECT_NE(
-      factory->create_exporter(std::make_shared<PlainTxtExportLibraryContext>()),
-      nullptr);
+  EXPECT_NE(factory->create_exporter(
+                std::make_shared<PlainTxtExportLibraryContext>()),
+            nullptr);
   EXPECT_NE(
       factory->create_exporter(std::make_shared<Yolo4ExportLibraryContext>()),
       nullptr);
@@ -53,9 +54,11 @@ TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
       nullptr);
 }
 
-TEST_F(UTEST_LibFactory, create_exporter_without_a_context_failure)
+TEST_F(UTEST_LibFactory, create_exporter_without_a_layout_context_failure)
 {
   EXPECT_EQ(factory->create_exporter({}), nullptr);
+  EXPECT_EQ(factory->create_exporter(std::make_shared<LibraryContext>()),
+            nullptr);
 }
 
 // The one cropper case that runs in every configuration: with OpenCV the

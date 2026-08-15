@@ -152,20 +152,21 @@ TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
   EXPECT_EQ(read_file(dir / "dog" / "a.png"), "cropped");
 }
 
-TEST_F(CTEST_Exporters, libcall_runs_the_export_named_by_the_library_context)
+TEST_F(CTEST_Exporters,
+       perform_export_runs_the_export_named_by_the_library_context)
 {
   auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ctx->export_path = (root / "libcall").string();
+  ctx->export_path = (root / "perform_export").string();
   ctx->dbProvider = db;
 
   auto lib = iade::LibraryFacade::create_library(ctx);
 
   ASSERT_NE(lib, nullptr);
-  ASSERT_TRUE(lib->libcall(ctx));
+  ASSERT_TRUE(lib->perform_export(ctx));
 
   EXPECT_NE(ctx->exporter, nullptr);
-  EXPECT_EQ(read_file(root / "libcall" / "data" / "obj.names"), "dog");
+  EXPECT_EQ(read_file(root / "perform_export" / "data" / "obj.names"), "dog");
 }
 
 TEST_F(CTEST_Exporters, library_version_matches_the_data_drivers_one_it_reads)

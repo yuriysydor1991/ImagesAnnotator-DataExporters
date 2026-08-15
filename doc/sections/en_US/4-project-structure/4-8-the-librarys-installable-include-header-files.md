@@ -5,8 +5,8 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | Header | Declares |
 |---|---|
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` static methods, the entry point of the library |
-| [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::libcall()` - runs an export described by a `LibraryContext` |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the abstract in-fields of a `libcall()` and the `exporter` out-field it fills in |
+| [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_export()` - runs an export described by a `LibraryContext` |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the in-fields of a `perform_export()` and the `exporter` out-field it fills in |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` of the plain text dataset layout |
 | [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` of the YOLO v4 dataset layout |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout |

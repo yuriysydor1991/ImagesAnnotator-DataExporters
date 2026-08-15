@@ -65,14 +65,15 @@ a training dataset without duplicating the code.
   and `ILib`.
 - The wanted dataset layout is named by the `LibraryContext` descendant the
   consumer instantiates - `PlainTxtExportLibraryContext`,
-  `Yolo4ExportLibraryContext` or `PyTorchExportLibraryContext` - each of which
-  builds its own exporter through the single `LibraryContext::create_exporter()`
-  method. That replaces the `ExportFormat` enumeration and the `switch` over it
-  the factory used to carry, so a new layout adds a class instead of touching
-  the existing dispatch, and no unknown format value can be constructed at all.
+  `Yolo4ExportLibraryContext` or `PyTorchExportLibraryContext`. Every one of
+  them is an empty class which inherits the whole of `LibraryContext` and adds
+  nothing, so the type itself is the layout, and `LibFactory::create_exporter()`
+  maps it onto the concrete exporter. That replaces the `ExportFormat`
+  enumeration the context used to carry, so no unknown format value can be
+  constructed at all.
 - `LibraryFacade::create_exporter()`, `create_export_context()` and
   `library_version()` as the entry point of the library, plus the one shot
-  `ILib::libcall()` driven by `LibraryContext`.
+  `ILib::perform_export()` driven by `LibraryContext`.
 - `IImageCropperFacility`, implemented by the consuming project: the library
   decodes no image format of its own, so the PyTorch Vision export asks its
   consumer to cut the rectangles out.
@@ -135,7 +136,7 @@ a training dataset without duplicating the code.
 - The moved `helpers` and `curli` implementation namespaces are nested under
   `iannotator::exporters` instead of staying at the top level, for the same
   reason.
-- `LibMain::libcall()` is a real implementation now: it builds the exporter for
+- `LibMain::perform_export()` is a real implementation now: it builds the exporter for
   the context format, runs it and publishes it as `LibraryContext::exporter`.
 - All the documentation, both `en_US` and `uk_UA`, was rewritten to describe
   this library, with new sections on the exporters API, the produced dataset

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 target_sources(
   ${PROJECT_LIBRARY_NAME}
-  PRIVATE LibraryFacade.cpp ${IADE_CONTEXTS_SRC}
+  PRIVATE LibraryFacade.cpp
 )
 
 install(

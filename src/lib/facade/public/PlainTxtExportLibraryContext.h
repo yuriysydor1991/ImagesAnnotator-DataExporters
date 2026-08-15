@@ -29,7 +29,6 @@
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include "ExportersAPI.h"
-#include "IExporter.h"
 #include "LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
@@ -39,12 +38,13 @@ namespace ImagesAnnotatorDataExporters011
  * @brief The library context which writes one `<annotation-name>.txt` file per
  * annotation name.
  *
+ * The class carries no data of its own: instantiating it is what names the
+ * wanted dataset layout, everything else is inherited from LibraryContext.
+ *
  * Current file is a target for the library header installation.
  */
 class IADE_API PlainTxtExportLibraryContext : public LibraryContext
 {
- public:
-  IExporterPtr create_exporter() const override;
 };
 
 }  // namespace ImagesAnnotatorDataExporters011

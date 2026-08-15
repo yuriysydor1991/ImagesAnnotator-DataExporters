@@ -30,28 +30,19 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
     +{abstract} IImageCropperFacilityPtr clone()
   }
 
-  abstract class LibraryContext {
-    +{abstract} IExporterPtr create_exporter() const
+  class LibraryContext {
     +std::string export_path
     +IImagesPathsDBProviderPtr dbProvider
     +IImageCropperFacilityPtr cropper
     +IExporterPtr exporter
   }
 
-  class PlainTxtExportLibraryContext {
-    +IExporterPtr create_exporter() const
-  }
-
-  class Yolo4ExportLibraryContext {
-    +IExporterPtr create_exporter() const
-  }
-
-  class PyTorchExportLibraryContext {
-    +IExporterPtr create_exporter() const
-  }
+  class PlainTxtExportLibraryContext
+  class Yolo4ExportLibraryContext
+  class PyTorchExportLibraryContext
 
   abstract class ILib {
-    +{abstract} bool libcall(LibraryContextPtr ctx)
+    +{abstract} bool perform_export(LibraryContextPtr ctx)
   }
 
   class LibraryFacade {
@@ -66,7 +57,7 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
 
 package "Implementation (hidden symbols)" #F8F8F8 {
   class LibMain {
-    +bool libcall(LibraryContextPtr ctx)
+    +bool perform_export(LibraryContextPtr ctx)
     +{static} LibMainPtr create()
   }
 
@@ -116,17 +107,19 @@ IExporter <|-- PyTorchVisionFolderExporter
 LibraryFacade --> LibFactory : creates
 LibMain --> LibFactory : creates
 LibFactory ..> LibMain : creates
-LibFactory ..> LibraryContext : asks for the exporter
+LibFactory ..> PlainTxt2FolderExporter : creates
+LibFactory ..> Yolo42FolderExporter : creates
+LibFactory ..> PyTorchVisionFolderExporter : creates
 
 LibraryContext <|-- PlainTxtExportLibraryContext
 LibraryContext <|-- Yolo4ExportLibraryContext
 LibraryContext <|-- PyTorchExportLibraryContext
 
-PlainTxtExportLibraryContext ..> PlainTxt2FolderExporter : creates
-Yolo4ExportLibraryContext ..> Yolo42FolderExporter : creates
-PyTorchExportLibraryContext ..> PyTorchVisionFolderExporter : creates
+LibFactory ..> PlainTxtExportLibraryContext : casts to pick
+LibFactory ..> Yolo4ExportLibraryContext : casts to pick
+LibFactory ..> PyTorchExportLibraryContext : casts to pick
 
-LibraryContext --> ExportContext : libcall builds
+LibraryContext --> ExportContext : perform_export builds
 ExportContext --> IProvider : reads
 ExportContext --> IImageCropperFacility : uses
 IExporter --> ExportContext

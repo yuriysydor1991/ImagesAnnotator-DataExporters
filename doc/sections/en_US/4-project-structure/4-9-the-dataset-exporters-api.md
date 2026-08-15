@@ -18,11 +18,11 @@ The records the exporters read are not defined here. They come from the [ImagesA
 | [ExportContext.h](/src/lib/facade/public/ExportContext.h) | the `ExportContext` data class an exporter is driven with |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | the `IExporter` abstract exporter interface |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the `IImageCropperFacility` interface the consuming project implements |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the abstract `LibraryContext` in and out data class of the single shot entry point |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class of the single shot entry point |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
 | [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 dataset layout |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout |
-| [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `libcall` method |
+| [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_export` method |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
 
 Including `LibraryFacade.h` pulls in every other header of the list.
@@ -35,7 +35,7 @@ class Yolo4ExportLibraryContext : public LibraryContext;
 class PyTorchExportLibraryContext : public LibraryContext;
 ```
 
-The three `LibraryContext` descendants name the three dataset layouts the library is able to write: instantiating one is what picks the layout, and its `create_exporter()` builds the exporter which writes it. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
+The three `LibraryContext` descendants name the three dataset layouts the library is able to write. Every one of them is an empty class inheriting the whole of `LibraryContext` and adding nothing: instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
 
 ### ExportContext
 
@@ -89,15 +89,11 @@ A library built with OpenCV ships an implementation of its own, so this interfac
 | `std::string export_path` | in | the destination directory of the export |
 | `IImagesPathsDBProviderPtr dbProvider` | in | the annotations database to read |
 | `IImageCropperFacilityPtr cropper` | in | the image cropper, when the layout needs one |
-| `IExporterPtr exporter` | out | the exporter instance the last `libcall` ran |
+| `IExporterPtr exporter` | out | the exporter instance the last `perform_export` ran |
 
-The class is abstract: the wanted layout is named by instantiating one of its three descendants, every one of which implements the single
+The wanted layout is named by instantiating one of its three descendants, each of which adds nothing to the fields above. This class itself names no layout, so an export driven by it finds no exporter.
 
-```cpp
-virtual IExporterPtr create_exporter() const = 0;
-```
-
-`ILib::libcall(LibraryContextPtr ctx)` builds that exporter, stores it in `ctx->exporter`, copies the in-fields into a fresh export context and runs the export. It returns `false` when the context is empty or the export itself failed. Projects that want a finer grained control should rather build the exporter directly with `LibraryFacade::create_exporter()`.
+`ILib::perform_export(LibraryContextPtr ctx)` builds the exporter of the context layout, stores it in `ctx->exporter`, copies the in-fields into a fresh export context and runs the export. It returns `false` when the context names no known layout or the export itself failed. Projects that want a finer grained control should rather build the exporter directly with `LibraryFacade::create_exporter()`.
 
 ### LibraryFacade
 
@@ -109,7 +105,7 @@ A class of static factory methods only, and the only entry point a consuming pro
 | `create_default_lib()` | the default `ILibPtr` implementation |
 | `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
 | `create_export_context()` | a new empty `ExportContextPtr` |
-| `create_exporter(const LibraryContextPtr& ctx)` | a new `IExporterPtr` for the layout of the context, or a `nullptr` for an empty one |
+| `create_exporter(const LibraryContextPtr& ctx)` | a new `IExporterPtr` for the layout of the context, or a `nullptr` for a context naming no known layout |
 | `create_image_cropper()` | the cropper the library ships itself, or a `nullptr` in a build without OpenCV |
 | `library_version()` | the version string of the library binary in use |
 

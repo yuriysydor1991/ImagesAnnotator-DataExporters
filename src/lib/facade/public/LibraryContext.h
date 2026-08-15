@@ -43,10 +43,11 @@ namespace ImagesAnnotatorDataExporters011
  * @brief The library context class designed to pass data in and out of
  * the library underlying implementation.
  *
- * The class is abstract: the dataset layout to write is named by the
- * descendant instantiated, and every one of them builds the exporter of that
- * layout. See PlainTxtExportLibraryContext, Yolo4ExportLibraryContext and
- * PyTorchExportLibraryContext.
+ * The dataset layout to write is named by the descendant instantiated, every
+ * one of which inherits the whole of this class and adds nothing to it. See
+ * PlainTxtExportLibraryContext, Yolo4ExportLibraryContext and
+ * PyTorchExportLibraryContext. This class itself names no layout, so an export
+ * driven by it finds no exporter.
  *
  * Current file is a target for the library header installation.
  */
@@ -59,14 +60,6 @@ class IADE_API LibraryContext
   virtual ~LibraryContext() = default;
   LibraryContext() = default;
 
-  /**
-   * @brief Creates the exporter writing the dataset layout this context
-   * stands for.
-   *
-   * @return Returns a new IExporter descendant.
-   */
-  virtual IExporterPtr create_exporter() const = 0;
-
   /// @brief In: the destination directory of the export
   std::string export_path;
 
@@ -76,7 +69,7 @@ class IADE_API LibraryContext
   /// @brief In: the image cropper instance if needed
   IImageCropperFacilityPtr cropper;
 
-  /// @brief Out: the exporter instance the last ILib::libcall ran
+  /// @brief Out: the exporter instance the last ILib::perform_export ran
   IExporterPtr exporter;
 };
 

@@ -31,12 +31,19 @@
 #include <memory>
 
 #include "PlainTxtExportLibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
+#include "Yolo4ExportLibraryContext.h"
 #include "src/croppers/ImageCropperFactory.h"
+#include "src/exporters/PlainTxt2FolderExporter.h"
+#include "src/exporters/PyTorchVisionFolderExporter.h"
+#include "src/exporters/Yolo42FolderExporter.h"
 #include "src/lib/libmain/LibMain.h"
 #include "src/log/log.h"
 
 namespace iade0impl
 {
+
+using namespace ImagesAnnotatorDataExporters011;
 
 LibFactory::ILibPtr LibFactory::create_default_lib()
 {
@@ -45,8 +52,7 @@ LibFactory::ILibPtr LibFactory::create_default_lib()
 
 LibFactory::LibraryContextPtr LibFactory::create_default_context()
 {
-  return std::make_shared<
-      ImagesAnnotatorDataExporters011::PlainTxtExportLibraryContext>();
+  return std::make_shared<PlainTxtExportLibraryContext>();
 }
 
 LibFactory::ILibPtr LibFactory::create_appropriate_lib(
@@ -62,15 +68,29 @@ LibFactory::ExportContextPtr LibFactory::create_export_context()
   return std::make_shared<ExportContext>();
 }
 
+// The context descendants carry no data of their own, so the wanted layout is
+// their very type. A cast per layout keeps that knowledge here, where the
+// concrete exporter classes are already known, instead of in the installed
+// headers.
 LibFactory::IExporterPtr LibFactory::create_exporter(
     const LibraryContextPtr& ctx)
 {
-  if (ctx == nullptr) {
-    LOGE("No library context to create an exporter for");
-    return nullptr;
+  if (std::dynamic_pointer_cast<PlainTxtExportLibraryContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::PlainTxt2FolderExporter>();
   }
 
-  return ctx->create_exporter();
+  if (std::dynamic_pointer_cast<Yolo4ExportLibraryContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::Yolo42FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ctx) != nullptr) {
+    return std::make_shared<
+        iannotator::exporters::PyTorchVisionFolderExporter>();
+  }
+
+  LOGE("No library context of a known dataset layout given");
+
+  return nullptr;
 }
 
 LibFactory::IImageCropperFacilityPtr LibFactory::create_image_cropper()

@@ -18,11 +18,11 @@ namespace iade = ImagesAnnotatorDataExporters011;
 | [ExportContext.h](/src/lib/facade/public/ExportContext.h) | клас даних `ExportContext`, яким керується експортер |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | абстрактний інтерфейс експортера `IExporter` |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | інтерфейс `IImageCropperFacility`, який реалізує проект-споживач |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | абстрактний клас вхідних і вихідних даних `LibraryContext` одноразової точки входу |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | клас вхідних і вихідних даних `LibraryContext` одноразової точки входу |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | нащадка `LibraryContext` розкладки простого тексту |
 | [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | нащадка `LibraryContext` розкладки YOLO v4 |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | нащадка `LibraryContext` розкладки PyTorch Vision |
-| [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із його методом `libcall` |
+| [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із його методом `perform_export` |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | клас-фабрику `LibraryFacade`, точку входу бібліотеки |
 
 Підключення `LibraryFacade.h` затягує кожен інший заголовок переліку.
@@ -35,7 +35,7 @@ class Yolo4ExportLibraryContext : public LibraryContext;
 class PyTorchExportLibraryContext : public LibraryContext;
 ```
 
-Ці три нащадки `LibraryContext` називають три розкладки наборів даних, які бібліотека здатна записати: створення одного з них і є вибором розкладки, а його `create_exporter()` будує експортер, який її записує. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
+Ці три нащадки `LibraryContext` називають три розкладки наборів даних, які бібліотека здатна записати. Кожен з них є порожнім класом, який успадковує весь `LibraryContext` і не додає нічого: створення одного з них і є вибором розкладки, а бібліотека відображає той тип на експортер, який її записує. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
 
 ### ExportContext
 
@@ -89,15 +89,11 @@ virtual IImageCropperFacilityPtr clone() = 0;
 | `std::string export_path` | вх. | директорія призначення експорту |
 | `IImagesPathsDBProviderPtr dbProvider` | вх. | база даних анотацій для читання |
 | `IImageCropperFacilityPtr cropper` | вх. | обрізач зображень, коли розкладка його потребує |
-| `IExporterPtr exporter` | вих. | примірник експортера, яким виконався останній `libcall` |
+| `IExporterPtr exporter` | вих. | примірник експортера, яким виконався останній `perform_export` |
 
-Клас є абстрактним: бажана розкладка називається створенням одного з трьох його нащадків, кожен з яких реалізує єдиний
+Бажана розкладка називається створенням одного з трьох його нащадків, жоден з яких не додає нічого до наведених вище полів. Сам цей клас не називає жодної розкладки, тож експорт, яким він керує, не знаходить експортера.
 
-```cpp
-virtual IExporterPtr create_exporter() const = 0;
-```
-
-`ILib::libcall(LibraryContextPtr ctx)` будує той експортер, зберігає його у `ctx->exporter`, копіює вхідні поля у свіжий контекст експорту і запускає експорт. Він повертає `false`, коли контекст порожній або сам експорт зазнав невдачі. Проектам, які бажають дрібнішого контролю, варто радше будувати експортер напряму за допомогою `LibraryFacade::create_exporter()`.
+`ILib::perform_export(LibraryContextPtr ctx)` будує експортер розкладки контексту, зберігає його у `ctx->exporter`, копіює вхідні поля у свіжий контекст експорту і запускає експорт. Він повертає `false`, коли контекст не називає жодної відомої розкладки або сам експорт зазнав невдачі. Проектам, які бажають дрібнішого контролю, варто радше будувати експортер напряму за допомогою `LibraryFacade::create_exporter()`.
 
 ### LibraryFacade
 
@@ -109,7 +105,7 @@ virtual IExporterPtr create_exporter() const = 0;
 | `create_default_lib()` | типову реалізацію `ILibPtr` |
 | `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну для заданого контексту |
 | `create_export_context()` | новий порожній `ExportContextPtr` |
-| `create_exporter(const LibraryContextPtr& ctx)` | новий `IExporterPtr` для розкладки контексту, або `nullptr` для порожнього |
+| `create_exporter(const LibraryContextPtr& ctx)` | новий `IExporterPtr` для розкладки контексту, або `nullptr` для контексту без відомої розкладки |
 | `create_image_cropper()` | обрізач, який бібліотека несе сама, або `nullptr` у збірці без OpenCV |
 | `library_version()` | рядок версії використовуваного бінарника бібліотеки |
 

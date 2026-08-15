@@ -5,7 +5,6 @@ add_executable(
   UTEST_LibFactory.cpp
   ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibFactory.cpp
   ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
-  ${IADE_CONTEXTS_SRC}
   ${IADE_EXPORTERS_SRC}
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}

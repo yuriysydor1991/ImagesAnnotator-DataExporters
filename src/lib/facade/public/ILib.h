@@ -44,11 +44,11 @@ namespace ImagesAnnotatorDataExporters011
  * @brief An abstract class to define an interface for the library
  * implementation variants.
  *
- * The libcall method is the single shot entry point of the library: it takes
- * a filled context, builds the exporter of the layout that context stands for
- * and runs that exporter over the database it points at. Projects that need a
- * finer grained control should rather build the exporter directly through the
- * LibraryFacade factory methods.
+ * The perform_export method is the single shot entry point of the library: it
+ * takes a filled context, builds the exporter of the layout that context
+ * stands for and runs that exporter over the database it points at. Projects
+ * that need a finer grained control should rather build the exporter directly
+ * through the LibraryFacade factory methods.
  *
  * Current file is a target for the library header installation.
  */
@@ -64,13 +64,14 @@ class IADE_API ILib
    * @brief The library interface method which every ILib descendant
    * must implement in order to provide it's functionality.
    *
-   * @param ctx A filled LibraryContext instance. On success the ctx->exporter
-   * field receives the exporter instance the export was performed with.
+   * @param ctx A filled LibraryContext descendant of the wanted dataset
+   * layout. On success the ctx->exporter field receives the exporter instance
+   * the export was performed with.
    *
    * @return Should return a true value on the success and false
    * in case of any error.
    */
-  virtual bool libcall(LibraryContextPtr ctx) = 0;
+  virtual bool perform_export(LibraryContextPtr ctx) = 0;
 };
 
 using ILibPtr = ILib::ILibPtr;

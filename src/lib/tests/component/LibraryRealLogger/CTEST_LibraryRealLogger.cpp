@@ -101,7 +101,7 @@ class CTEST_LibraryRealLogger : public Test
       CTEST_LibraryRealLogger_DATA_DIR "/CTEST_LibraryRealLogger.log";
 
   inline static const std::string no_context_msg =
-      "No library context to create an exporter for";
+      "No library context of a known dataset layout given";
 
   CTEST_LibraryRealLogger() { clear_log_file(); }
 

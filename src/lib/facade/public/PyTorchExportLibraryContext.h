@@ -29,7 +29,6 @@
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include "ExportersAPI.h"
-#include "IExporter.h"
 #include "LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
@@ -40,12 +39,13 @@ namespace ImagesAnnotatorDataExporters011
  * layout of cropped out rectangles. Requires an IImageCropperFacility in the
  * context unless the library was built with its own.
  *
+ * The class carries no data of its own: instantiating it is what names the
+ * wanted dataset layout, everything else is inherited from LibraryContext.
+ *
  * Current file is a target for the library header installation.
  */
 class IADE_API PyTorchExportLibraryContext : public LibraryContext
 {
- public:
-  IExporterPtr create_exporter() const override;
 };
 
 }  // namespace ImagesAnnotatorDataExporters011

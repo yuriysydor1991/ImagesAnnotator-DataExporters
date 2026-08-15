@@ -11,22 +11,6 @@ using namespace ImagesAnnotatorDataExporters011;
 using namespace iade0impl;
 using namespace testing;
 
-namespace
-{
-
-/**
- * @brief The concrete context the facade is asked to forward. Building a real
- * one would drag its exporter into this unit test, which only checks the
- * forwarding itself.
- */
-class ContextStub : public LibraryContext
-{
- public:
-  IExporterPtr create_exporter() const override { return {}; }
-};
-
-}  // namespace
-
 class UTEST_LibraryFacade : public Test
 {
  public:
@@ -99,7 +83,7 @@ TEST_F(UTEST_LibraryFacade, create_export_context_success)
 TEST_F(UTEST_LibraryFacade, create_exporter_forwards_the_given_context)
 {
   MockFunction<void(LibFactory&)> mockEnsurer;
-  const LibraryContextPtr ctx = std::make_shared<ContextStub>();
+  const LibraryContextPtr ctx = std::make_shared<LibraryContext>();
 
   EXPECT_CALL(mockEnsurer, Call)
       .Times(1)

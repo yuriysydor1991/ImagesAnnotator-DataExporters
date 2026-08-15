@@ -39,8 +39,8 @@ namespace iade0impl
 /**
  * @brief The default library implementation class.
  * Class is designed to hold the main library implementation code, which is
- * the one shot export run: the libcall method builds the exporter for the
- * format named by the given context and drives it over the database that
+ * the one shot export run: the perform_export method builds the exporter of
+ * the layout named by the given context and drives it over the database that
  * very same context points at.
  */
 class LibMain : public ImagesAnnotatorDataExporters011::ILib
@@ -56,17 +56,17 @@ class LibMain : public ImagesAnnotatorDataExporters011::ILib
    * @brief The implemented library interface method derived from an ILib
    * abstract class. Designed to contain the main library code implementation.
    *
-   * Builds the exporter for the context format and runs it over the export
+   * Builds the exporter of the context layout and runs it over the export
    * context assembled out of the context data. The exporter that was used is
    * provided back through the context exporter field.
    *
-   * @param ctx A filled LibraryContext instance with appropriate data
+   * @param ctx A filled LibraryContext descendant with appropriate data
    * to perform it's actions.
    *
    * @return Returns a true value on the success and false in case of any
    * error.
    */
-  virtual bool libcall(LibraryContextPtr ctx) override;
+  virtual bool perform_export(LibraryContextPtr ctx) override;
 
   static LibMainPtr create();
 };

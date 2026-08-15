@@ -79,7 +79,7 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 - **The database.** `ExportContext::dbProvider` is an `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::LibraryFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
 - **The destination directory.** Only the YOLO v4 export creates its own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
-- **An image cropper, for one format only.** `ExportFormat::PyTorchVisionFolder` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `ExportContext::cropper` or `LibraryContext::cropper`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The two other formats need no cropper at all.
+- **An image cropper, for one layout only.** `PyTorchExportLibraryContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `ExportContext::cropper` or `LibraryContext::cropper`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The two other layouts need no cropper at all.
 
 ## A minimal consumer
 
@@ -91,6 +91,7 @@ The `main.cpp` below opens a project file and writes it out through the single s
 
 #include <filesystem>
 #include <iostream>
+#include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
 namespace iade = ImagesAnnotatorDataExporters011;
@@ -104,9 +105,8 @@ int main()
     return 1;
   }
 
-  auto ctx = iade::LibraryFacade::create_library_context();
+  auto ctx = std::make_shared<iade::PlainTxtExportLibraryContext>();
 
-  ctx->format = iade::ExportFormat::PlainTxt2Folder;
   ctx->export_path = "plain-dataset";
   ctx->dbProvider = db;
 
@@ -126,7 +126,7 @@ int main()
 }
 ```
 
-Set `ctx->format` to `iade::ExportFormat::Yolo42Folder` or `iade::ExportFormat::PyTorchVisionFolder` to get one of the two other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::LibraryFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Instantiate `iade::Yolo4ExportLibraryContext` or `iade::PyTorchExportLibraryContext` instead to get one of the two other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::LibraryFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ## Running the result
 

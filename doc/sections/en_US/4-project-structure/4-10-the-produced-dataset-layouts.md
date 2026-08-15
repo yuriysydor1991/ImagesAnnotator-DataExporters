@@ -1,6 +1,6 @@
 ## The produced dataset layouts
 
-Each value of the `ExportFormat` enumeration is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the `ExportContext::export_path` directory. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Each `LibraryContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the `ExportContext::export_path` directory. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ### What all the three have in common
 
@@ -18,7 +18,7 @@ The examples below all describe the very same two record database:
 | `/home/user/images/street.png` | 640 x 400 | `dog` (50, 20, 100, 40), `dog` (300, 25, 90, 45) |
 | `/home/user/images/park.jpg` | 640 x 480 | `cat` (200, 130, 48, 52), `dog` (12, 8, 64, 64) |
 
-### ExportFormat::PlainTxt2Folder
+### PlainTxtExportLibraryContext
 
 The simplest layout: one plain text file per annotation name, written straight into the export directory and named `<annotation-name>.txt`.
 
@@ -49,7 +49,7 @@ and `cat.txt` reads:
 
 The lines follow the order of the records in the database. No image file is copied or rewritten - the first field is the `ImageRecord::get_full_path()` value, which for a preloaded web hosted record is the path of its temporary cached copy. A text file of an already existing name is truncated as soon as the export run opens it.
 
-### ExportFormat::Yolo42Folder
+### Yolo4ExportLibraryContext
 
 The darknet training directory of the YOLO v4 detector. The exporter creates the export directory itself when it is not there yet, together with the `data`, `cfg` and `backup` sub-directories:
 
@@ -173,7 +173,7 @@ and `data/park.txt` reads:
 
 Besides the records without rectangles, this exporter also skips the records whose `iwidth` or `iheight` is zero (the normalisation would divide by zero), and the ones whose image file is not a readable regular file or could not be copied. The `backup/` directory is created empty, darknet writes its weight snapshots there during the training.
 
-### ExportFormat::PyTorchVisionFolder
+### PyTorchExportLibraryContext
 
 The classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name, holding the images cropped down to the rectangles carrying that name.
 

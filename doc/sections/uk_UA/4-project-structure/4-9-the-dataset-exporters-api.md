@@ -15,27 +15,27 @@ namespace iade = ImagesAnnotatorDataExporters011;
 | Заголовок | Оголошує |
 | --- | --- |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | макрос видимості `IADE_API`, яким позначено кожне встановлюване оголошення |
-| [ExportFormat.h](/src/lib/facade/public/ExportFormat.h) | перелік `ExportFormat` підтримуваних розкладок наборів даних |
 | [ExportContext.h](/src/lib/facade/public/ExportContext.h) | клас даних `ExportContext`, яким керується експортер |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | абстрактний інтерфейс експортера `IExporter` |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | інтерфейс `IImageCropperFacility`, який реалізує проект-споживач |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | клас вхідних і вихідних даних `LibraryContext` одноразової точки входу |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | абстрактний клас вхідних і вихідних даних `LibraryContext` одноразової точки входу |
+| [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | нащадка `LibraryContext` розкладки простого тексту |
+| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | нащадка `LibraryContext` розкладки YOLO v4 |
+| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | нащадка `LibraryContext` розкладки PyTorch Vision |
 | [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із його методом `libcall` |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | клас-фабрику `LibraryFacade`, точку входу бібліотеки |
 
 Підключення `LibraryFacade.h` затягує кожен інший заголовок переліку.
 
-### ExportFormat
+### Розкладки наборів даних
 
 ```cpp
-enum class ExportFormat {
-  PlainTxt2Folder,
-  Yolo42Folder,
-  PyTorchVisionFolder
-};
+class PlainTxtExportLibraryContext : public LibraryContext;
+class Yolo4ExportLibraryContext : public LibraryContext;
+class PyTorchExportLibraryContext : public LibraryContext;
 ```
 
-Ці три значення називають три розкладки наборів даних, які бібліотека здатна записати. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
+Ці три нащадки `LibraryContext` називають три розкладки наборів даних, які бібліотека здатна записати: створення одного з них і є вибором розкладки, а його `create_exporter()` будує експортер, який її записує. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
 
 ### ExportContext
 
@@ -45,7 +45,7 @@ enum class ExportFormat {
 | --- | --- |
 | `std::string export_path` | директорія призначення експорту, обовʼязкове |
 | `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr dbProvider` | база даних анотацій, з якої читаються записи, обовʼязкове |
-| `IImageCropperFacilityPtr cropper` | служба обрізання зображень, потрібна лише для `ExportFormat::PyTorchVisionFolder` |
+| `IImageCropperFacilityPtr cropper` | служба обрізання зображень, потрібна лише для `PyTorchExportLibraryContext` |
 
 `ExportContextPtr` є скороченням для `std::shared_ptr<ExportContext>`. `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr` можна присвоїти полю `dbProvider` напряму, оскільки `IAnnotationsDB` походить від `IImagesPathsDBProvider`.
 
@@ -82,17 +82,22 @@ virtual IImageCropperFacilityPtr clone() = 0;
 
 ### LibraryContext та ILib
 
-`LibraryContext` керує одноразовою точкою входу бібліотеки. Він несе ті самі вхідні поля що й `ExportContext` плюс бажаний формат, і отримує назад одне вихідне поле:
+`LibraryContext` керує одноразовою точкою входу бібліотеки. Він несе ті самі вхідні поля що й `ExportContext`, і отримує назад одне вихідне поле:
 
 | Поле | Напрямок | Значення |
 | --- | --- | --- |
-| `ExportFormat format` | вх. | розкладка для запису, за замовчуванням `ExportFormat::PlainTxt2Folder` |
 | `std::string export_path` | вх. | директорія призначення експорту |
 | `IImagesPathsDBProviderPtr dbProvider` | вх. | база даних анотацій для читання |
-| `IImageCropperFacilityPtr cropper` | вх. | обрізач зображень, коли формат його потребує |
+| `IImageCropperFacilityPtr cropper` | вх. | обрізач зображень, коли розкладка його потребує |
 | `IExporterPtr exporter` | вих. | примірник експортера, яким виконався останній `libcall` |
 
-`ILib::libcall(LibraryContextPtr ctx)` будує експортер для `ctx->format`, зберігає його у `ctx->exporter`, копіює вхідні поля у свіжий контекст експорту і запускає експорт. Він повертає `false`, коли формат невідомий або сам експорт зазнав невдачі. Проектам, які бажають дрібнішого контролю, варто радше будувати експортер напряму за допомогою `LibraryFacade::create_exporter()`.
+Клас є абстрактним: бажана розкладка називається створенням одного з трьох його нащадків, кожен з яких реалізує єдиний
+
+```cpp
+virtual IExporterPtr create_exporter() const = 0;
+```
+
+`ILib::libcall(LibraryContextPtr ctx)` будує той експортер, зберігає його у `ctx->exporter`, копіює вхідні поля у свіжий контекст експорту і запускає експорт. Він повертає `false`, коли контекст порожній або сам експорт зазнав невдачі. Проектам, які бажають дрібнішого контролю, варто радше будувати експортер напряму за допомогою `LibraryFacade::create_exporter()`.
 
 ### LibraryFacade
 
@@ -100,11 +105,11 @@ virtual IImageCropperFacilityPtr clone() = 0;
 
 | Метод | Повертає |
 | --- | --- |
-| `create_library_context()` | новий порожній `LibraryContextPtr` |
+| `create_library_context()` | новий порожній `PlainTxtExportLibraryContext`, типову розкладку |
 | `create_default_lib()` | типову реалізацію `ILibPtr` |
 | `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну для заданого контексту |
 | `create_export_context()` | новий порожній `ExportContextPtr` |
-| `create_exporter(const ExportFormat& format)` | новий `IExporterPtr` для формату, або `nullptr` для невідомого |
+| `create_exporter(const LibraryContextPtr& ctx)` | новий `IExporterPtr` для розкладки контексту, або `nullptr` для порожнього |
 | `create_image_cropper()` | обрізач, який бібліотека несе сама, або `nullptr` у збірці без OpenCV |
 | `library_version()` | рядок версії використовуваного бінарника бібліотеки |
 
@@ -118,6 +123,7 @@ virtual IImageCropperFacilityPtr clone() = 0;
 
 #include <filesystem>
 #include <iostream>
+#include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
 namespace iade = ImagesAnnotatorDataExporters011;
@@ -143,11 +149,11 @@ int main(int argc, char** argv)
   ectx->dbProvider = db;
   ectx->export_path = argv[2];
 
-  auto exporter =
-      iade::LibraryFacade::create_exporter(iade::ExportFormat::Yolo42Folder);
+  auto exporter = iade::LibraryFacade::create_exporter(
+      std::make_shared<iade::Yolo4ExportLibraryContext>());
 
   if (exporter == nullptr) {
-    std::cerr << "no exporter available for the requested format\n";
+    std::cerr << "no exporter available for the requested layout\n";
     return 1;
   }
 
@@ -167,7 +173,7 @@ int main(int argc, char** argv)
 
 ### Реалізація обрізача зображень
 
-`ExportFormat::PyTorchVisionFolder` є єдиним форматом, якому потрібен обрізач. Наведений нижче начерк підключає його до тих засобів роботи із зображеннями, які проект-споживач уже має - заміни виклики `my_imaging` власними викликами декодування та кодування:
+`PyTorchExportLibraryContext` є єдиною розкладкою, якій потрібен обрізач. Наведений нижче начерк підключає його до тих засобів роботи із зображеннями, які проект-споживач уже має - заміни виклики `my_imaging` власними викликами декодування та кодування:
 
 ```cpp
 #include <ImagesAnnotatorDataExporters-0.11/IImageCropperFacility.h>

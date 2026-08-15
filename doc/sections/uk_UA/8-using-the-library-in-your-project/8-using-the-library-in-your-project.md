@@ -79,7 +79,7 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 - **Базу даних.** `ExportContext::dbProvider` - це `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::LibraryFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
 - **Директорію призначення.** Лише експорт YOLO v4 створює її сам. Для розкладок простого тексту і PyTorch Vision директорія `export_path` має існувати до початку експорту.
-- **Обрізач зображень, лише для одного формату.** `ExportFormat::PyTorchVisionFolder` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `ExportContext::cropper` або `LibraryContext::cropper`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Двом іншим форматам обрізач не потрібен зовсім.
+- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportLibraryContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `ExportContext::cropper` або `LibraryContext::cropper`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Двом іншим розкладкам обрізач не потрібен зовсім.
 
 ## Мінімальний споживач
 
@@ -91,6 +91,7 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 #include <filesystem>
 #include <iostream>
+#include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
 namespace iade = ImagesAnnotatorDataExporters011;
@@ -104,9 +105,8 @@ int main()
     return 1;
   }
 
-  auto ctx = iade::LibraryFacade::create_library_context();
+  auto ctx = std::make_shared<iade::PlainTxtExportLibraryContext>();
 
-  ctx->format = iade::ExportFormat::PlainTxt2Folder;
   ctx->export_path = "plain-dataset";
   ctx->dbProvider = db;
 
@@ -126,7 +126,7 @@ int main()
 }
 ```
 
-Встанови `ctx->format` у `iade::ExportFormat::Yolo42Folder` чи `iade::ExportFormat::PyTorchVisionFolder` щоб отримати одну з двох інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::LibraryFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
+Створи натомість `iade::Yolo4ExportLibraryContext` чи `iade::PyTorchExportLibraryContext` щоб отримати одну з двох інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::LibraryFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
 
 ## Запуск результату
 

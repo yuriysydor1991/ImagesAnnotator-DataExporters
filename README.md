@@ -14,11 +14,11 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Three dataset layouts out of one database** - selected by the `ExportFormat` enumeration and implemented by one exporter class each:
-  - `PlainTxt2Folder` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
-  - `Yolo42Folder` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
-  - `PyTorchVisionFolder` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
-- **A one shot entry point** - fill a `LibraryContext` with the format, the destination directory and the database, and `ILib::libcall()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
+- **Three dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
+  - `PlainTxtExportLibraryContext` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
+  - `Yolo4ExportLibraryContext` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
+  - `PyTorchExportLibraryContext` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
+- **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the destination directory and the database, and `ILib::libcall()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
 - **Robust over a partial database** - a record without rectangles, with a zero size or with an unreadable image file is logged and skipped, the export run itself carries on.
 - **No image codec of its own** - the library copies image files as they are. The one format that has to cut rectangles out asks the consuming project to do it through the `IImageCropperFacility` interface, over whatever imaging stack that project already links.
@@ -47,6 +47,7 @@ target_link_libraries(mytool ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorD
 
 #include <filesystem>
 #include <iostream>
+#include <memory>
 
 namespace iadd = ImagesAnnotatorDataDrivers011;
 namespace iade = ImagesAnnotatorDataExporters011;
@@ -59,9 +60,8 @@ int main(int argc, char** argv)
 
   if (db == nullptr) { return 1; }
 
-  auto ctx = iade::LibraryFacade::create_library_context();
+  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ctx->format = iade::ExportFormat::Yolo42Folder;
   ctx->export_path = argv[2];
   ctx->dbProvider = db;
 

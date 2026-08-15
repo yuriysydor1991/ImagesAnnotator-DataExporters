@@ -61,12 +61,14 @@ exactly the following files:
 
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ExportersAPI.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/ExportFormat.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/IExporter.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/IImageCropperFacility.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ILib.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryFacade.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/PlainTxtExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/PyTorchExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/Yolo4ExportLibraryContext.h
 
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/ImagesAnnotatorDataExporters-0.11Config.cmake
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/ImagesAnnotatorDataExporters-0.11ConfigVersion.cmake

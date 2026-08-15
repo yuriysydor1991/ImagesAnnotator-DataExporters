@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1270" height="1120" viewBox="0 0 1270 1120" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1260" viewBox="0 0 1300 1260" version="1.1">
 <defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#181818"/></marker><marker id="hollow" markerWidth="14" markerHeight="12" refX="13" refY="6" orient="auto"><path d="M0,0 L13,6 L0,12 z" fill="#FFFFFF" stroke="#181818" stroke-width="1"/></marker></defs>
-<rect width="1270" height="1120" fill="#FFFFFF"/>
+<rect width="1300" height="1260" fill="#FFFFFF"/>
 <g font-family="sans-serif">
-<rect x="40" y="60" width="800" height="130" rx="4" fill="#EFEFEF" stroke="#000000" stroke-width="1.4"/>
+<rect x="40" y="60" width="830" height="144" rx="4" fill="#EFEFEF" stroke="#000000" stroke-width="1.4"/>
 <rect x="40" y="38" width="484" height="22" rx="3" fill="#EFEFEF" stroke="#000000" stroke-width="1.4"/>
 <text x="50" y="54" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataDrivers011  (dependency, linked PUBLIC)</text>
-<rect x="40" y="246" width="1200" height="400" rx="4" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
-<rect x="40" y="224" width="508" height="22" rx="3" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
-<text x="50" y="240" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataExporters011  (installed public interface)</text>
-<rect x="40" y="702" width="1200" height="370" rx="4" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
-<rect x="40" y="680" width="396" height="22" rx="3" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
-<text x="50" y="696" font-size="13.5" font-weight="bold" fill="#000000">Implementation  (hidden symbols, not installed)</text>
-<path d="M229.5,729.0 L279.8,623.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M620.0,747.0 L575.0,747.0 L575.0,601.0 L568.0,601.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M620.0,817.0 L585.0,817.0 L585.0,611.0 L568.0,611.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M620.0,887.0 L600.0,887.0 L600.0,621.0 L568.0,621.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
-<path d="M530.0,400.0 L552.0,400.0 L552.0,940.0 L532.0,940.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="525.6" y="659.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="552.0" y="671.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
-<path d="M255.6,859.0 L231.0,811.0" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<rect x="216.9" y="824.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="243.3" y="836.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
-<path d="M532.0,880.0 L562.0,880.0 L562.0,757.0 L618.0,757.0" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<path d="M532.0,900.0 L572.0,900.0 L572.0,827.0 L618.0,827.0" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<rect x="545.6" y="852.5" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="572.0" y="864.5" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
-<path d="M532.0,920.0 L582.0,920.0 L582.0,897.0 L618.0,897.0" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
-<path d="M901.0,357.9 L939.0,355.9" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<path d="M735.0,435.0 L735.0,451.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="686.2" y="432.0" width="97.6" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="735.0" y="444.0" font-size="11.5" fill="#000000" text-anchor="middle">libcall builds</text>
-<path d="M568.0,470.0 L545.0,470.0 L545.0,215.0 L260.0,215.0 L260.0,178.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="525.0" y="331.5" width="40.0" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="545.0" y="343.5" font-size="11.5" fill="#000000" text-anchor="middle">reads</text>
-<path d="M901.0,490.4 L939.0,488.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<rect x="903.2" y="478.2" width="33.6" height="16" fill="#FFFFFF" opacity="0.92"/>
-<text x="920.0" y="490.2" font-size="11.5" fill="#000000" text-anchor="middle">uses</text>
-<path d="M735.0,569.0 L735.0,551.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<path d="M461.0,140.5 L499.0,141.4" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<path d="M893.1,799.0 L989.0,782.6" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
-<path d="M1115.0,793.0 L1115.0,859.0" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="40" y="260" width="1220" height="460" rx="4" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
+<rect x="40" y="238" width="498" height="22" rx="3" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
+<text x="50" y="254" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataExporters011  (installed public interface)</text>
+<rect x="40" y="776" width="1220" height="444" rx="4" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
+<rect x="40" y="754" width="396" height="22" rx="3" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
+<text x="50" y="770" font-size="13.5" font-weight="bold" fill="#000000">Implementation  (hidden symbols, not installed)</text>
+<path d="M462,140 L498,140" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M568,470 L545,470 L545,232 L260,232 L260,178" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="525.0" y="343.0" width="40.0" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="545.0" y="355.0" font-size="11.5" fill="#000000" text-anchor="middle">reads</text>
+<path d="M735,436 L735,458" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="686.2" y="433.0" width="97.6" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="735.0" y="445.0" font-size="11.5" fill="#000000" text-anchor="middle">libcall builds</text>
+<path d="M735,578 L735,560" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M902,555 L920,555 L920,586 L938,586" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="903.2" y="543.0" width="33.6" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="920.0" y="555.0" font-size="11.5" fill="#000000" text-anchor="middle">uses</text>
+<path d="M940,331 L920,331 L920,400 L902,400" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
+<path d="M940,413 L920,413 L920,400" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M940,495 L920,495 L920,400" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M1240,331 L1248,331 L1248,742 L968,742 L968,821 L952,821" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<path d="M1240,413 L1252,413 L1252,752 L976,752 L976,891 L952,891" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<path d="M1240,495 L1256,495 L1256,762 L984,762 L984,961 L952,961" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<rect x="1023.6" y="734.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="1050.0" y="746.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
+<path d="M60,430 L48,430 L48,1010 L58,1010" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<rect x="21.6" y="712.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="48.0" y="724.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
+<path d="M240,932 L240,888" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<rect x="213.6" y="902.0" width="52.8" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="240.0" y="914.0" font-size="11.5" fill="#000000" text-anchor="middle">creates</text>
+<path d="M532,970 L560,970 L560,395 L568,395" fill="none" stroke="#181818" stroke-width="1.2" stroke-dasharray="7,6" marker-end="url(#arrow)"/>
+<rect x="494.0" y="668.0" width="132.0" height="16" fill="#FFFFFF" opacity="0.92"/>
+<text x="560.0" y="680.0" font-size="11.5" fill="#000000" text-anchor="middle">asks for the exporter</text>
+<path d="M340,802 L340,790 L460,790 L460,558 L400,558 L400,544" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
+<path d="M618,821 L600,821 L600,646" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#hollow)"/>
+<path d="M618,891 L600,891 L600,821" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M618,961 L600,961 L600,891" fill="none" stroke="#181818" stroke-width="1.2"/>
+<path d="M785,981 L785,1012" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M785,1078 L785,1114" fill="none" stroke="#181818" stroke-width="1.2" marker-end="url(#arrow)"/>
 <rect x="60" y="96" width="400" height="80" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
 <text x="260.0" y="114" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IImagesPathsDBProvider</text>
 <line x1="60" y1="122" x2="460" y2="122" stroke="#181818" stroke-width="1"/>
@@ -59,78 +64,84 @@
 <text x="70" y="366" font-size="12.5" fill="#000000">+ static ILibPtr create_default_lib()</text>
 <text x="70" y="384" font-size="12.5" fill="#000000">+ static ILibPtr create_library(LibraryContextPtr)</text>
 <text x="70" y="402" font-size="12.5" fill="#000000">+ static ExportContextPtr create_export_context()</text>
-<text x="70" y="420" font-size="12.5" fill="#000000">+ static IExporterPtr create_exporter(const ExportFormat&amp;)</text>
+<text x="70" y="420" font-size="12.5" fill="#000000">+ static IExporterPtr create_exporter(const LibraryContextPtr&amp;)</text>
 <text x="70" y="438" font-size="12.5" fill="#000000">+ static std::string library_version()</text>
-<rect x="570" y="300" width="330" height="134" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="735.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibraryContext</text>
+<rect x="570" y="300" width="330" height="134" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
+<text x="735.0" y="318" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«abstract» LibraryContext</text>
 <line x1="570" y1="326" x2="900" y2="326" stroke="#181818" stroke-width="1"/>
-<text x="580" y="348" font-size="12.5" fill="#000000">+ ExportFormat format</text>
+<text x="580" y="348" font-size="12.5" font-style="italic" fill="#000000">+ IExporterPtr create_exporter() const</text>
 <text x="580" y="366" font-size="12.5" fill="#000000">+ std::string export_path</text>
 <text x="580" y="384" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
 <text x="580" y="402" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
 <text x="580" y="420" font-size="12.5" fill="#000000">+ IExporterPtr exporter   // out</text>
-<rect x="940" y="300" width="250" height="98" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1065.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">«enum» ExportFormat</text>
-<line x1="940" y1="326" x2="1190" y2="326" stroke="#181818" stroke-width="1"/>
-<text x="950" y="348" font-size="12.5" fill="#000000">PlainTxt2Folder</text>
-<text x="950" y="366" font-size="12.5" fill="#000000">Yolo42Folder</text>
-<text x="950" y="384" font-size="12.5" fill="#000000">PyTorchVisionFolder</text>
-<rect x="60" y="560" width="470" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
-<text x="295.0" y="578" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» ILib</text>
-<line x1="60" y1="586" x2="530" y2="586" stroke="#181818" stroke-width="1"/>
-<text x="70" y="608" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
-<rect x="570" y="452" width="330" height="98" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="735.0" y="470" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ExportContext</text>
-<line x1="570" y1="478" x2="900" y2="478" stroke="#181818" stroke-width="1"/>
-<text x="580" y="500" font-size="12.5" fill="#000000">+ std::string export_path</text>
-<text x="580" y="518" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
-<text x="580" y="536" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
-<rect x="570" y="570" width="330" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
-<text x="735.0" y="588" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IExporter</text>
-<line x1="570" y1="596" x2="900" y2="596" stroke="#181818" stroke-width="1"/>
-<text x="580" y="618" font-size="12.5" fill="#000000">+ bool export_db(ExportContextPtr ectx)</text>
-<rect x="940" y="440" width="250" height="80" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
-<text x="1065.0" y="458" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IImageCropperFacility</text>
-<line x1="940" y1="466" x2="1190" y2="466" stroke="#181818" stroke-width="1"/>
-<text x="950" y="488" font-size="12.5" fill="#000000">+ bool crop_out_2_fs(ir, irr, tofpath)</text>
-<text x="950" y="506" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr clone()</text>
-<rect x="60" y="730" width="300" height="80" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="210.0" y="748" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibMain</text>
-<line x1="60" y1="756" x2="360" y2="756" stroke="#181818" stroke-width="1"/>
-<text x="70" y="778" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
-<text x="70" y="796" font-size="12.5" fill="#000000">+ static LibMainPtr create()</text>
-<rect x="60" y="860" width="470" height="152" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="295.0" y="878" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibFactory</text>
-<line x1="60" y1="886" x2="530" y2="886" stroke="#181818" stroke-width="1"/>
-<text x="70" y="908" font-size="12.5" fill="#000000">+ ILibPtr create_default_lib()</text>
-<text x="70" y="926" font-size="12.5" fill="#000000">+ LibraryContextPtr create_default_context()</text>
-<text x="70" y="944" font-size="12.5" fill="#000000">+ ILibPtr create_appropriate_lib(LibraryContextPtr)</text>
-<text x="70" y="962" font-size="12.5" fill="#000000">+ ExportContextPtr create_export_context()</text>
-<text x="70" y="980" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter(const ExportFormat&amp;)</text>
-<text x="70" y="998" font-size="12.5" fill="#000000">+ static LibFactoryPtr create_factory()</text>
-<rect x="620" y="730" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="785.0" y="748" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxt2FolderExporter</text>
-<rect x="620" y="800" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="785.0" y="818" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo42FolderExporter</text>
-<rect x="620" y="870" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="785.0" y="888" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchVisionFolderExporter</text>
-<rect x="990" y="730" width="250" height="62" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="1115.0" y="748" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ImageLoader</text>
-<line x1="990" y1="756" x2="1240" y2="756" stroke="#181818" stroke-width="1"/>
-<text x="1000" y="778" font-size="12.5" fill="#000000">+ bool load(ImageRecordPtr ir)</text>
-<rect x="990" y="860" width="250" height="62" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="1115.0" y="878" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">CURLController</text>
-<line x1="990" y1="886" x2="1240" y2="886" stroke="#181818" stroke-width="1"/>
-<text x="1000" y="908" font-size="12.5" fill="#000000">+ download_buffer&amp; download(url)</text>
-<path d="M960,545 h238 l12,12 v70 h-250 v-82 z" fill="#FEFFDD" stroke="#181818" stroke-width="1"/>
-<path d="M1198,545 l12,12 h-12 z" fill="#F2F3C8" stroke="#181818" stroke-width="1"/>
-<text x="968" y="561" font-size="11.5" fill="#000000">IImageCropperFacility is</text>
-<text x="968" y="579" font-size="11.5" fill="#000000">implemented by the consuming</text>
-<text x="968" y="597" font-size="11.5" fill="#000000">project: the library decodes no</text>
-<text x="968" y="615" font-size="11.5" fill="#000000">image format of its own.</text>
-<path d="M960,950 h238 l12,12 v52 h-250 v-64 z" fill="#FEFFDD" stroke="#181818" stroke-width="1"/>
-<path d="M1198,950 l12,12 h-12 z" fill="#F2F3C8" stroke="#181818" stroke-width="1"/>
-<text x="968" y="966" font-size="11.5" fill="#000000">ImageLoader preloads web hosted</text>
-<text x="968" y="984" font-size="11.5" fill="#000000">records into a local cache before</text>
-<text x="968" y="1002" font-size="11.5" fill="#000000">they are copied or cropped.</text>
+<rect x="940" y="300" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxtExportLibraryContext</text>
+<line x1="940" y1="326" x2="1240" y2="326" stroke="#181818" stroke-width="1"/>
+<text x="950" y="348" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
+<rect x="940" y="382" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="400" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo4ExportLibraryContext</text>
+<line x1="940" y1="408" x2="1240" y2="408" stroke="#181818" stroke-width="1"/>
+<text x="950" y="430" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
+<rect x="940" y="464" width="300" height="62" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="482" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchExportLibraryContext</text>
+<line x1="940" y1="490" x2="1240" y2="490" stroke="#181818" stroke-width="1"/>
+<text x="950" y="512" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter() const</text>
+<rect x="570" y="460" width="330" height="98" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="735.0" y="478" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ExportContext</text>
+<line x1="570" y1="486" x2="900" y2="486" stroke="#181818" stroke-width="1"/>
+<text x="580" y="508" font-size="12.5" fill="#000000">+ std::string export_path</text>
+<text x="580" y="526" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
+<text x="580" y="544" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
+<rect x="60" y="480" width="470" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
+<text x="295.0" y="498" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» ILib</text>
+<line x1="60" y1="506" x2="530" y2="506" stroke="#181818" stroke-width="1"/>
+<text x="70" y="528" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
+<rect x="570" y="580" width="330" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
+<text x="735.0" y="598" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IExporter</text>
+<line x1="570" y1="606" x2="900" y2="606" stroke="#181818" stroke-width="1"/>
+<text x="580" y="628" font-size="12.5" fill="#000000">+ bool export_db(ExportContextPtr ectx)</text>
+<rect x="940" y="546" width="300" height="80" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
+<text x="1090.0" y="564" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IImageCropperFacility</text>
+<line x1="940" y1="572" x2="1240" y2="572" stroke="#181818" stroke-width="1"/>
+<text x="950" y="594" font-size="12.5" fill="#000000">+ bool crop_out_2_fs(ir, irr, tofpath)</text>
+<text x="950" y="612" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr clone()</text>
+<path d="M60,570 h228 l12,12 v70 h-240 v-82 z" fill="#FEFFDD" stroke="#181818" stroke-width="1"/>
+<path d="M288,570 l12,12 h-12 z" fill="#F2F3C8" stroke="#181818" stroke-width="1"/>
+<text x="68" y="586" font-size="11.5" fill="#000000">IImageCropperFacility is</text>
+<text x="68" y="604" font-size="11.5" fill="#000000">implemented by the consuming</text>
+<text x="68" y="622" font-size="11.5" fill="#000000">project: the library decodes no</text>
+<text x="68" y="640" font-size="11.5" fill="#000000">image format of its own.</text>
+<rect x="60" y="804" width="300" height="80" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="210.0" y="822" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibMain</text>
+<line x1="60" y1="830" x2="360" y2="830" stroke="#181818" stroke-width="1"/>
+<text x="70" y="852" font-size="12.5" fill="#000000">+ bool libcall(LibraryContextPtr ctx)</text>
+<text x="70" y="870" font-size="12.5" fill="#000000">+ static LibMainPtr create()</text>
+<rect x="60" y="934" width="470" height="152" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="295.0" y="952" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibFactory</text>
+<line x1="60" y1="960" x2="530" y2="960" stroke="#181818" stroke-width="1"/>
+<text x="70" y="982" font-size="12.5" fill="#000000">+ ILibPtr create_default_lib()</text>
+<text x="70" y="1000" font-size="12.5" fill="#000000">+ LibraryContextPtr create_default_context()</text>
+<text x="70" y="1018" font-size="12.5" fill="#000000">+ ILibPtr create_appropriate_lib(LibraryContextPtr)</text>
+<text x="70" y="1036" font-size="12.5" fill="#000000">+ ExportContextPtr create_export_context()</text>
+<text x="70" y="1054" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter(const LibraryContextPtr&amp;)</text>
+<text x="70" y="1072" font-size="12.5" fill="#000000">+ static LibFactoryPtr create_factory()</text>
+<rect x="620" y="804" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="785.0" y="826" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxt2FolderExporter</text>
+<rect x="620" y="874" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="785.0" y="896" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo42FolderExporter</text>
+<rect x="620" y="944" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="785.0" y="966" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchVisionFolderExporter</text>
+<rect x="620" y="1014" width="330" height="62" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="785.0" y="1032" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ImageLoader</text>
+<line x1="620" y1="1040" x2="950" y2="1040" stroke="#181818" stroke-width="1"/>
+<text x="630" y="1062" font-size="12.5" fill="#000000">+ bool load(ImageRecordPtr ir)</text>
+<rect x="620" y="1116" width="330" height="62" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
+<text x="785.0" y="1134" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">CURLController</text>
+<line x1="620" y1="1142" x2="950" y2="1142" stroke="#181818" stroke-width="1"/>
+<text x="630" y="1164" font-size="12.5" fill="#000000">+ download_buffer&amp; download(url)</text>
+<path d="M1000,1014 h238 l12,12 v52 h-250 v-64 z" fill="#FEFFDD" stroke="#181818" stroke-width="1"/>
+<path d="M1238,1014 l12,12 h-12 z" fill="#F2F3C8" stroke="#181818" stroke-width="1"/>
+<text x="1008" y="1030" font-size="11.5" fill="#000000">ImageLoader preloads web hosted</text>
+<text x="1008" y="1048" font-size="11.5" fill="#000000">records into a local cache before</text>
+<text x="1008" y="1066" font-size="11.5" fill="#000000">they are copied or cropped.</text>
 </g></svg>

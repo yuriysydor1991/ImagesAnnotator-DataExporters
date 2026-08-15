@@ -74,13 +74,13 @@ ExportContextPtr LibraryFacade::create_export_context()
   return libFactory->create_export_context();
 }
 
-IExporterPtr LibraryFacade::create_exporter(const ExportFormat& format)
+IExporterPtr LibraryFacade::create_exporter(const LibraryContextPtr& ctx)
 {
   auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
-  return libFactory->create_exporter(format);
+  return libFactory->create_exporter(ctx);
 }
 
 IImageCropperFacilityPtr LibraryFacade::create_image_cropper()

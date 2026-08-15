@@ -1,7 +1,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "ExportFormat.h"
+#include <memory>
+
 #include "LibraryFacade.h"
 #include "src/lib/libmain/LibFactory.h"
 #include "src/lib/libmain/LibMain.h"
@@ -9,6 +10,22 @@
 using namespace ImagesAnnotatorDataExporters011;
 using namespace iade0impl;
 using namespace testing;
+
+namespace
+{
+
+/**
+ * @brief The concrete context the facade is asked to forward. Building a real
+ * one would drag its exporter into this unit test, which only checks the
+ * forwarding itself.
+ */
+class ContextStub : public LibraryContext
+{
+ public:
+  IExporterPtr create_exporter() const override { return {}; }
+};
+
+}  // namespace
 
 class UTEST_LibraryFacade : public Test
 {
@@ -79,21 +96,20 @@ TEST_F(UTEST_LibraryFacade, create_export_context_success)
   auto res = LibraryFacade::create_export_context();
 }
 
-TEST_F(UTEST_LibraryFacade, create_exporter_forwards_the_requested_format)
+TEST_F(UTEST_LibraryFacade, create_exporter_forwards_the_given_context)
 {
   MockFunction<void(LibFactory&)> mockEnsurer;
+  const LibraryContextPtr ctx = std::make_shared<ContextStub>();
 
   EXPECT_CALL(mockEnsurer, Call)
       .Times(1)
-      .WillOnce(Invoke([](LibFactory& instance) {
-        EXPECT_CALL(instance,
-                    create_exporter(ExportFormat::PyTorchVisionFolder))
-            .Times(1);
+      .WillOnce(Invoke([ctx](LibFactory& instance) {
+        EXPECT_CALL(instance, create_exporter(ctx)).Times(1);
       }));
 
   LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
 
-  auto res = LibraryFacade::create_exporter(ExportFormat::PyTorchVisionFolder);
+  auto res = LibraryFacade::create_exporter(ctx);
 }
 
 TEST_F(UTEST_LibraryFacade, library_version_is_not_empty)

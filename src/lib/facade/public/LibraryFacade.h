@@ -32,12 +32,14 @@
 #include <string>
 
 #include "ExportContext.h"
-#include "ExportFormat.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+#include "PlainTxtExportLibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
+#include "Yolo4ExportLibraryContext.h"
 
 /**
  * @brief The logging subsystem interface every project built from the
@@ -69,8 +71,8 @@ namespace ImagesAnnotatorDataExporters011
  * ectx->dbProvider = iadd::LibraryFacade::open_annotations_db("project.json");
  * ectx->export_path = "/tmp/yolo-dataset";
  *
- * auto exporter =
- *     iade::LibraryFacade::create_exporter(iade::ExportFormat::Yolo42Folder);
+ * auto exporter = iade::LibraryFacade::create_exporter(
+ *     std::make_shared<iade::Yolo4ExportLibraryContext>());
  *
  * return exporter != nullptr && exporter->export_db(ectx);
  * @endcode
@@ -84,9 +86,12 @@ class IADE_API LibraryFacade
   LibraryFacade() = default;
 
   /**
-   * @brief Factory method to create an empty library context.
+   * @brief Factory method to create an empty library context of the default
+   * dataset layout.
    *
-   * @return Returns a new LibraryContext class instance.
+   * @return Returns a new PlainTxtExportLibraryContext class instance. Any
+   * other layout is asked for by instantiating its own LibraryContext
+   * descendant.
    */
   static LibraryContextPtr create_library_context();
 
@@ -116,14 +121,15 @@ class IADE_API LibraryFacade
   static ExportContextPtr create_export_context();
 
   /**
-   * @brief Creates the exporter implementing the given dataset layout.
+   * @brief Creates the exporter implementing the dataset layout of the given
+   * context.
    *
-   * @param format The wanted export format.
+   * @param ctx The LibraryContext descendant naming the wanted layout.
    *
-   * @return Returns a new IExporter descendant, or a nullptr for an unknown
-   * format.
+   * @return Returns a new IExporter descendant, or a nullptr for an empty
+   * context.
    */
-  static IExporterPtr create_exporter(const ExportFormat& format);
+  static IExporterPtr create_exporter(const LibraryContextPtr& ctx);
 
   /**
    * @brief Factory method to create the image cropper the library ships

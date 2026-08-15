@@ -3,7 +3,9 @@
 
 #include <memory>
 
-#include "ExportFormat.h"
+#include "PlainTxtExportLibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
+#include "Yolo4ExportLibraryContext.h"
 #include "src/lib/libmain/LibFactory.h"
 
 using namespace ImagesAnnotatorDataExporters011;
@@ -38,12 +40,22 @@ TEST_F(UTEST_LibFactory, create_export_context_success)
   EXPECT_NE(factory->create_export_context(), nullptr);
 }
 
-TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_format)
+TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
 {
-  EXPECT_NE(factory->create_exporter(ExportFormat::PlainTxt2Folder), nullptr);
-  EXPECT_NE(factory->create_exporter(ExportFormat::Yolo42Folder), nullptr);
-  EXPECT_NE(factory->create_exporter(ExportFormat::PyTorchVisionFolder),
-            nullptr);
+  EXPECT_NE(
+      factory->create_exporter(std::make_shared<PlainTxtExportLibraryContext>()),
+      nullptr);
+  EXPECT_NE(
+      factory->create_exporter(std::make_shared<Yolo4ExportLibraryContext>()),
+      nullptr);
+  EXPECT_NE(
+      factory->create_exporter(std::make_shared<PyTorchExportLibraryContext>()),
+      nullptr);
+}
+
+TEST_F(UTEST_LibFactory, create_exporter_without_a_context_failure)
+{
+  EXPECT_EQ(factory->create_exporter({}), nullptr);
 }
 
 // The one cropper case that runs in every configuration: with OpenCV the

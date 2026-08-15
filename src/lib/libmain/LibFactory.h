@@ -31,7 +31,6 @@
 #include <memory>
 
 #include "ExportContext.h"
-#include "ExportFormat.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
@@ -54,7 +53,6 @@ class LibFactory
   using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
   using ExportContext = ImagesAnnotatorDataExporters011::ExportContext;
   using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
-  using ExportFormat = ImagesAnnotatorDataExporters011::ExportFormat;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -75,7 +73,7 @@ class LibFactory
    * @brief Creates the default context to use in libraries implementation
    * in order to provide all necessary data.
    *
-   * @return Returns empty library context instance.
+   * @return Returns an empty PlainTxtExportLibraryContext instance.
    */
   virtual LibraryContextPtr create_default_context();
 
@@ -97,13 +95,14 @@ class LibFactory
   virtual ExportContextPtr create_export_context();
 
   /**
-   * @brief Creates the exporter implementing the given dataset layout.
+   * @brief Creates the exporter implementing the dataset layout of the given
+   * context.
    *
-   * @param format The wanted export format.
+   * @param ctx The LibraryContext descendant naming the wanted layout.
    *
-   * @return Returns a new exporter or a nullptr for an unknown format.
+   * @return Returns a new exporter or a nullptr for an empty context.
    */
-  virtual IExporterPtr create_exporter(const ExportFormat& format);
+  virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx);
 
   /**
    * @brief Creates the image cropper the library ships itself.

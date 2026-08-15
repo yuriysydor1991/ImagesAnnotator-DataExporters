@@ -58,10 +58,10 @@ bool LibMain::libcall(LibraryContextPtr ctx)
 
   assert(libFactory != nullptr);
 
-  auto exporter = libFactory->create_exporter(ctx->format);
+  auto exporter = libFactory->create_exporter(ctx);
 
   if (exporter == nullptr) {
-    LOGE("No exporter available for the requested export format");
+    LOGE("No exporter available for the given library context");
     return false;
   }
 

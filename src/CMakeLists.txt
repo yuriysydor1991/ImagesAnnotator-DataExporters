@@ -22,6 +22,15 @@ set(IADE_EXPORTERS_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/exporters/PyTorchVisionFolderExporter.cpp
 )
 
+# The public library context classes. Every one of them builds the exporter of
+# the dataset layout it stands for, so a test executable which creates one
+# needs these translation units next to the exporters they name.
+set(IADE_CONTEXTS_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/PlainTxtExportLibraryContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/Yolo4ExportLibraryContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/PyTorchExportLibraryContext.cpp
+)
+
 set(IADE_HELPERS_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/helpers/ImageRecordUrlAndPathHelper.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/helpers/ImageLoader.cpp

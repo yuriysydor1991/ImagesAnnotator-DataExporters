@@ -106,8 +106,8 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
   const std::filesystem::path dir = root / "plain";
   std::filesystem::create_directories(dir);
 
-  auto exporter =
-      iade::LibraryFacade::create_exporter(iade::ExportFormat::PlainTxt2Folder);
+  auto exporter = iade::LibraryFacade::create_exporter(
+      std::make_shared<iade::PlainTxtExportLibraryContext>());
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(context("plain")));
@@ -119,8 +119,8 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
 
 TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
 {
-  auto exporter =
-      iade::LibraryFacade::create_exporter(iade::ExportFormat::Yolo42Folder);
+  auto exporter = iade::LibraryFacade::create_exporter(
+      std::make_shared<iade::Yolo4ExportLibraryContext>());
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(context("yolo")));
@@ -141,7 +141,7 @@ TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
   std::filesystem::create_directories(ectx->export_path);
 
   auto exporter = iade::LibraryFacade::create_exporter(
-      iade::ExportFormat::PyTorchVisionFolder);
+      std::make_shared<iade::PyTorchExportLibraryContext>());
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ectx));
@@ -154,11 +154,8 @@ TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 
 TEST_F(CTEST_Exporters, libcall_runs_the_export_named_by_the_library_context)
 {
-  auto ctx = iade::LibraryFacade::create_library_context();
+  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ASSERT_NE(ctx, nullptr);
-
-  ctx->format = iade::ExportFormat::Yolo42Folder;
   ctx->export_path = (root / "libcall").string();
   ctx->dbProvider = db;
 

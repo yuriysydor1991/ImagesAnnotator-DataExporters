@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "ExportFormat.h"
 #include "LibraryFacade.h"
 #include "src/log/ILogger.h"
 #include "src/log/default-logger/real-default-logger/RealDefaultLogger.h"
@@ -101,8 +100,8 @@ class CTEST_LibraryRealLogger : public Test
   inline static const std::string app_log_file =
       CTEST_LibraryRealLogger_DATA_DIR "/CTEST_LibraryRealLogger.log";
 
-  inline static const std::string unknown_format_msg =
-      "Unknown export format requested";
+  inline static const std::string no_context_msg =
+      "No library context to create an exporter for";
 
   CTEST_LibraryRealLogger() { clear_log_file(); }
 
@@ -116,16 +115,13 @@ class CTEST_LibraryRealLogger : public Test
   }
 
   /**
-   * @brief Asks the library for an exporter of an unknown format the very same
+   * @brief Asks the library for an exporter without a context the very same
    * way its user does: the library reports the
-   * CTEST_LibraryRealLogger::unknown_format_msg error and returns a nullptr.
+   * CTEST_LibraryRealLogger::no_context_msg error and returns a nullptr.
    */
-  IExporterPtr create_unknown_format_exporter()
+  IExporterPtr create_no_context_exporter()
   {
-    static constexpr const int unknownFormat = 9999;
-
-    return LibraryFacade::create_exporter(
-        static_cast<ExportFormat>(unknownFormat));
+    return LibraryFacade::create_exporter({});
   }
 
   std::string log_contents()
@@ -159,9 +155,9 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_real_logger)
 
   LibraryFacade::accept_real_logger(appLogger);
 
-  EXPECT_EQ(create_unknown_format_exporter(), nullptr);
+  EXPECT_EQ(create_no_context_exporter(), nullptr);
 
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(unknown_format_msg)));
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
   EXPECT_THAT(appLogger->lvls, Contains(logger::ILogger::LVL_ERROR));
 }
 
@@ -172,9 +168,9 @@ TEST_F(CTEST_LibraryRealLogger, null_real_logger_leaves_the_previous_one)
   LibraryFacade::accept_real_logger(appLogger);
   LibraryFacade::accept_real_logger(nullptr);
 
-  EXPECT_EQ(create_unknown_format_exporter(), nullptr);
+  EXPECT_EQ(create_no_context_exporter(), nullptr);
 
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(unknown_format_msg)));
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
 }
 
 TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_interface_logger)
@@ -183,9 +179,9 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_reach_the_given_interface_logger)
 
   LibraryFacade::accept_real_logger(appLogger);
 
-  EXPECT_EQ(create_unknown_format_exporter(), nullptr);
+  EXPECT_EQ(create_no_context_exporter(), nullptr);
 
-  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(unknown_format_msg)));
+  EXPECT_THAT(appLogger->msgs, Contains(EndsWith(no_context_msg)));
   EXPECT_THAT(appLogger->lvls, Contains(logger::ILogger::LVL_ERROR));
 }
 
@@ -197,7 +193,7 @@ TEST_F(CTEST_LibraryRealLogger, library_logs_land_in_the_application_log_file)
 
   LibraryFacade::accept_real_logger(appLogger);
 
-  EXPECT_EQ(create_unknown_format_exporter(), nullptr);
+  EXPECT_EQ(create_no_context_exporter(), nullptr);
 
-  EXPECT_THAT(log_contents(), HasSubstr(unknown_format_msg));
+  EXPECT_THAT(log_contents(), HasSubstr(no_context_msg));
 }

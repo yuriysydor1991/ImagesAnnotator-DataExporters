@@ -41,7 +41,7 @@ namespace ImagesAnnotatorDataExporters011
 
 /**
  * @brief The image cropping service the consuming project supplies for the
- * ExportFormat::PyTorchVisionFolder export.
+ * PyTorchExportLibraryContext export.
  *
  * The library decodes no image format of its own, so the one export that has
  * to cut a rectangle out of a picture asks its consumer to do it over

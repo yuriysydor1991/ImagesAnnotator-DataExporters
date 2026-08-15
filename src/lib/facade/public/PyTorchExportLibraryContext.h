@@ -25,63 +25,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
 
-#include <memory>
-#include <string>
-
-#include "ExportContext.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
-#include "IImageCropperFacility.h"
+#include "LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context class designed to pass data in and out of
- * the library underlying implementation.
- *
- * The class is abstract: the dataset layout to write is named by the
- * descendant instantiated, and every one of them builds the exporter of that
- * layout. See PlainTxtExportLibraryContext, Yolo4ExportLibraryContext and
- * PyTorchExportLibraryContext.
+ * @brief The library context which writes the PyTorch Vision ImageFolder
+ * layout of cropped out rectangles. Requires an IImageCropperFacility in the
+ * context unless the library was built with its own.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API LibraryContext
+class IADE_API PyTorchExportLibraryContext : public LibraryContext
 {
  public:
-  using LibraryContextPtr = std::shared_ptr<LibraryContext>;
-  using IImagesPathsDBProviderPtr = ExportContext::IImagesPathsDBProviderPtr;
-
-  virtual ~LibraryContext() = default;
-  LibraryContext() = default;
-
-  /**
-   * @brief Creates the exporter writing the dataset layout this context
-   * stands for.
-   *
-   * @return Returns a new IExporter descendant.
-   */
-  virtual IExporterPtr create_exporter() const = 0;
-
-  /// @brief In: the destination directory of the export
-  std::string export_path;
-
-  /// @brief In: the annotations database to read the records out of
-  IImagesPathsDBProviderPtr dbProvider;
-
-  /// @brief In: the image cropper instance if needed
-  IImageCropperFacilityPtr cropper;
-
-  /// @brief Out: the exporter instance the last ILib::libcall ran
-  IExporterPtr exporter;
+  IExporterPtr create_exporter() const override;
 };
-
-using LibraryContextPtr = LibraryContext::LibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H

@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "ExportContext.h"
-#include "ExportFormat.h"
 #include "IExporter.h"
 #include "ILib.h"
 #include "LibraryContext.h"
@@ -27,7 +26,6 @@ class LibFactorySynthParent
   using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
   using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
   using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
-  using ExportFormat = ImagesAnnotatorDataExporters011::ExportFormat;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
 
   virtual ~LibFactorySynthParent() = default;
@@ -37,7 +35,7 @@ class LibFactorySynthParent
   virtual LibraryContextPtr create_default_context() = 0;
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual ExportContextPtr create_export_context() = 0;
-  virtual IExporterPtr create_exporter(const ExportFormat& format) = 0;
+  virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx) = 0;
 };
 
 class LibFactory : public LibFactorySynthParent
@@ -60,7 +58,7 @@ class LibFactory : public LibFactorySynthParent
   MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),
               (override));
   MOCK_METHOD(ExportContextPtr, create_export_context, (), (override));
-  MOCK_METHOD(IExporterPtr, create_exporter, (const ExportFormat& format),
+  MOCK_METHOD(IExporterPtr, create_exporter, (const LibraryContextPtr& ctx),
               (override));
 
   inline static LibFactoryPtr create_factory()

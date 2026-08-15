@@ -25,62 +25,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "src/lib/libmain/LibFactory.h"
+#include "PlainTxtExportLibraryContext.h"
 
-#include <cassert>
 #include <memory>
 
-#include "PlainTxtExportLibraryContext.h"
-#include "src/croppers/ImageCropperFactory.h"
-#include "src/lib/libmain/LibMain.h"
-#include "src/log/log.h"
+#include "src/exporters/PlainTxt2FolderExporter.h"
 
-namespace iade0impl
+namespace ImagesAnnotatorDataExporters011
 {
 
-LibFactory::ILibPtr LibFactory::create_default_lib()
+IExporterPtr PlainTxtExportLibraryContext::create_exporter() const
 {
-  return LibMain::create();
+  return std::make_shared<iannotator::exporters::PlainTxt2FolderExporter>();
 }
 
-LibFactory::LibraryContextPtr LibFactory::create_default_context()
-{
-  return std::make_shared<
-      ImagesAnnotatorDataExporters011::PlainTxtExportLibraryContext>();
-}
-
-LibFactory::ILibPtr LibFactory::create_appropriate_lib(
-    [[maybe_unused]] LibraryContextPtr ctx)
-{
-  assert(ctx != nullptr);
-
-  return create_default_lib();
-}
-
-LibFactory::ExportContextPtr LibFactory::create_export_context()
-{
-  return std::make_shared<ExportContext>();
-}
-
-LibFactory::IExporterPtr LibFactory::create_exporter(
-    const LibraryContextPtr& ctx)
-{
-  if (ctx == nullptr) {
-    LOGE("No library context to create an exporter for");
-    return nullptr;
-  }
-
-  return ctx->create_exporter();
-}
-
-LibFactory::IImageCropperFacilityPtr LibFactory::create_image_cropper()
-{
-  return iannotator::exporters::croppers::create_builtin_cropper();
-}
-
-LibFactoryPtr LibFactory::create_factory()
-{
-  return std::make_shared<LibFactory>();
-}
-
-}  // namespace iade0impl
+}  // namespace ImagesAnnotatorDataExporters011

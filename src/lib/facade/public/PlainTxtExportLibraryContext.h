@@ -25,41 +25,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTFORMAT_ENUM_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTFORMAT_ENUM_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
 
-/**
- * @brief The public interface namespace of the ImagesAnnotator data exporters
- * library.
- *
- * The namespace name carries the library major and minor version numbers
- * (0.11 gives the 011 suffix) so that several library versions may coexist
- * inside a single translation unit. Alias it downstream, for example
- * `namespace iade = ImagesAnnotatorDataExporters011;`.
- *
- * Current file is a target for the library header installation.
- */
+#include "ExportersAPI.h"
+#include "IExporter.h"
+#include "LibraryContext.h"
+
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The dataset layouts an annotations database may be written out as.
+ * @brief The library context which writes one `<annotation-name>.txt` file per
+ * annotation name.
  *
  * Current file is a target for the library header installation.
  */
-enum class ExportFormat
+class IADE_API PlainTxtExportLibraryContext : public LibraryContext
 {
-  /// @brief One `<annotation-name>.txt` file per annotation name.
-  PlainTxt2Folder,
-
-  /// @brief The YOLO v4 (darknet) training directory.
-  Yolo42Folder,
-
-  /// @brief The PyTorch Vision ImageFolder layout of cropped out rectangles.
-  /// Requires an IImageCropperFacility in the export context.
-  PyTorchVisionFolder
+ public:
+  IExporterPtr create_exporter() const override;
 };
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTFORMAT_ENUM_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H

@@ -45,8 +45,8 @@ namespace ImagesAnnotatorDataExporters011
  * implementation variants.
  *
  * The libcall method is the single shot entry point of the library: it takes
- * a filled context, builds the exporter for the format named by it and runs
- * that exporter over the database the context points at. Projects that need a
+ * a filled context, builds the exporter of the layout that context stands for
+ * and runs that exporter over the database it points at. Projects that need a
  * finer grained control should rather build the exporter directly through the
  * LibraryFacade factory methods.
  *

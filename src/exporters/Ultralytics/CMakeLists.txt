@@ -8,6 +8,7 @@ target_sources(
   PRIVATE
     Ultralytics2FolderExporter.cpp
     UltralyticsDetect2FolderExporter.cpp
+    UltralyticsObb2FolderExporter.cpp
 )
 
 add_subdirectory(tests)

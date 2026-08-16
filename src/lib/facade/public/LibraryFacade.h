@@ -39,6 +39,7 @@
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
+#include "UltralyticsObbExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 
 /**
@@ -111,6 +112,15 @@ class IADE_API LibraryFacade
    */
   static UltralyticsDetectExportLibraryContextPtr
   create_ultralytics_detect_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO oriented bounding box dataset layout.
+   *
+   * @return Returns a new UltralyticsObbExportLibraryContext class instance.
+   */
+  static UltralyticsObbExportLibraryContextPtr
+  create_ultralytics_obb_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

@@ -45,6 +45,10 @@ std::string read_file(const std::filesystem::path& p)
   return s;
 }
 
+/// @brief The four corners of the one rectangle of the database below, the
+/// line both the oriented box and the polygon layouts write for it
+const std::string ultralyticsCorners = "0 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6";
+
 /**
  * @brief Builds a real data drivers database over a real image file, so the
  * exporters are driven with exactly the records a project file yields.
@@ -160,6 +164,19 @@ TEST_F(CTEST_Exporters, ultralytics_detect_export_writes_the_data_yaml_layout)
   EXPECT_NE(yaml.find("names:\n  0: 'dog'"), std::string::npos);
 
   EXPECT_EQ(read_file(dir / "labels" / "train" / "a.txt"), "0 0.5 0.4 0.5 0.4");
+}
+
+TEST_F(CTEST_Exporters, ultralytics_obb_export_writes_the_four_box_corners)
+{
+  auto ctx = context<iade::UltralyticsObbExportLibraryContext>("ul-obb");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  EXPECT_EQ(read_file(root / "ul-obb" / "labels" / "train" / "a.txt"),
+            ultralyticsCorners);
 }
 
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)

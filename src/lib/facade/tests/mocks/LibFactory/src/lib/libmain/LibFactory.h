@@ -14,6 +14,7 @@
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
+#include "UltralyticsObbExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 
 namespace iade0impl
@@ -37,6 +38,8 @@ class LibFactorySynthParent
       ImagesAnnotatorDataExporters011::PyTorchExportLibraryContextPtr;
   using UltralyticsDetectExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::UltralyticsDetectExportLibraryContextPtr;
+  using UltralyticsObbExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::UltralyticsObbExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -50,6 +53,8 @@ class LibFactorySynthParent
   virtual Yolo4ExportLibraryContextPtr create_yolo4_library_context() = 0;
   virtual UltralyticsDetectExportLibraryContextPtr
   create_ultralytics_detect_library_context() = 0;
+  virtual UltralyticsObbExportLibraryContextPtr
+  create_ultralytics_obb_library_context() = 0;
   virtual PyTorchExportLibraryContextPtr create_pytorch_library_context() = 0;
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx) = 0;
@@ -78,6 +83,8 @@ class LibFactory : public LibFactorySynthParent
               (override));
   MOCK_METHOD(UltralyticsDetectExportLibraryContextPtr,
               create_ultralytics_detect_library_context, (), (override));
+  MOCK_METHOD(UltralyticsObbExportLibraryContextPtr,
+              create_ultralytics_obb_library_context, (), (override));
   MOCK_METHOD(PyTorchExportLibraryContextPtr, create_pytorch_library_context,
               (), (override));
   MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),

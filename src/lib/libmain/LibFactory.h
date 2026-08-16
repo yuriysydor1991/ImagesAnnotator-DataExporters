@@ -37,6 +37,7 @@
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
+#include "UltralyticsObbExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 
 namespace iade0impl
@@ -62,6 +63,8 @@ class LibFactory
       ImagesAnnotatorDataExporters011::PyTorchExportLibraryContextPtr;
   using UltralyticsDetectExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::UltralyticsDetectExportLibraryContextPtr;
+  using UltralyticsObbExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::UltralyticsObbExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -100,6 +103,15 @@ class LibFactory
    */
   virtual UltralyticsDetectExportLibraryContextPtr
   create_ultralytics_detect_library_context();
+
+  /**
+   * @brief Creates an empty context of the Ultralytics YOLO oriented bounding
+   * box dataset layout.
+   *
+   * @return Returns an empty UltralyticsObbExportLibraryContext instance.
+   */
+  virtual UltralyticsObbExportLibraryContextPtr
+  create_ultralytics_obb_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.

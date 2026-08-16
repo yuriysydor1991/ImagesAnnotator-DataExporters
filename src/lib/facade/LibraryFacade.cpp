@@ -67,6 +67,16 @@ LibraryFacade::create_ultralytics_detect_library_context()
   return libFactory->create_ultralytics_detect_library_context();
 }
 
+UltralyticsObbExportLibraryContextPtr
+LibraryFacade::create_ultralytics_obb_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_ultralytics_obb_library_context();
+}
+
 PyTorchExportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
 {
   auto libFactory = iade0impl::LibFactory::create_factory();

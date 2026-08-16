@@ -350,6 +350,15 @@ bool Ultralytics2FolderExporter::normalize(const ImageRecordPtr& ir,
   return nrect.left < nrect.right && nrect.top < nrect.bottom;
 }
 
+void Ultralytics2FolderExporter::express_corners(std::fstream& ftxt,
+                                                 const IndexType& index,
+                                                 const NormalizedRect& nrect)
+{
+  ftxt << index << " " << nrect.left << " " << nrect.top << " " << nrect.right
+       << " " << nrect.top << " " << nrect.right << " " << nrect.bottom << " "
+       << nrect.left << " " << nrect.bottom << std::endl;
+}
+
 std::string Ultralytics2FolderExporter::yaml_quoted(const std::string& value)
 {
   std::string quoted{"'"};

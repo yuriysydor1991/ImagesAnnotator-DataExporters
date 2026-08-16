@@ -8,6 +8,7 @@
 #include <string>
 
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
+#include "src/exporters/Ultralytics/UltralyticsObb2FolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::ImageRecord;
@@ -15,6 +16,7 @@ using iannotator::exporters::ImageRecordRect;
 using iannotator::exporters::ImageRecordsSet;
 using iannotator::exporters::LibraryContext;
 using iannotator::exporters::UltralyticsDetect2FolderExporter;
+using iannotator::exporters::UltralyticsObb2FolderExporter;
 
 namespace
 {
@@ -144,6 +146,17 @@ TEST_F(UTEST_Ultralytics2FolderExporter, detect_writes_the_normalized_box)
   EXPECT_EQ(label_of(), "1 0.5 0.4 0.5 0.4");
 }
 
+TEST_F(UTEST_Ultralytics2FolderExporter, obb_writes_the_four_box_corners)
+{
+  with_rect("dog", 50, 20, 100, 40);
+
+  EXPECT_TRUE(UltralyticsObb2FolderExporter{}.export_db(ctx));
+
+  // the corners clockwise from the top left one: (50, 20) and (150, 60) in
+  // the pixel space of the 200 by 100 image
+  EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
+}
+
 // An Ultralytics release refuses the whole image over a coordinate outside of
 // the 0..1 range, so the part of the rectangle that hangs over the edge is cut
 // away instead of being handed over as it was drawn.
@@ -156,6 +169,16 @@ TEST_F(UTEST_Ultralytics2FolderExporter, clamps_a_rectangle_over_the_edge)
   // what is left of it is (0, 0) to (50, 20), so the centre sits at
   // 25 / 200 = 0.125 and 10 / 100 = 0.1 and the size is 0.25 by 0.2
   EXPECT_EQ(label_of(), "1 0.125 0.1 0.25 0.2");
+}
+
+// A rectangle drawn from the right or from the bottom carries a negative size
+TEST_F(UTEST_Ultralytics2FolderExporter, sorts_the_edges_of_a_negative_rect)
+{
+  with_rect("dog", 150, 60, -100, -40);
+
+  EXPECT_TRUE(UltralyticsObb2FolderExporter{}.export_db(ctx));
+
+  EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
 }
 
 TEST_F(UTEST_Ultralytics2FolderExporter, skips_a_rectangle_outside_the_image)

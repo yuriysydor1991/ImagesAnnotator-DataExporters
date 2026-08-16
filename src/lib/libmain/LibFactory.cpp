@@ -33,11 +33,13 @@
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
+#include "UltralyticsObbExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 #include "src/croppers/ImageCropperFactory.h"
 #include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 #include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
+#include "src/exporters/Ultralytics/UltralyticsObb2FolderExporter.h"
 #include "src/exporters/Yolo4/Yolo42FolderExporter.h"
 #include "src/lib/libmain/LibMain.h"
 #include "src/log/log.h"
@@ -68,6 +70,12 @@ LibFactory::UltralyticsDetectExportLibraryContextPtr
 LibFactory::create_ultralytics_detect_library_context()
 {
   return std::make_shared<UltralyticsDetectExportLibraryContext>();
+}
+
+LibFactory::UltralyticsObbExportLibraryContextPtr
+LibFactory::create_ultralytics_obb_library_context()
+{
+  return std::make_shared<UltralyticsObbExportLibraryContext>();
 }
 
 LibFactory::PyTorchExportLibraryContextPtr
@@ -103,6 +111,12 @@ LibFactory::IExporterPtr LibFactory::create_exporter(
       nullptr) {
     return std::make_shared<
         iannotator::exporters::UltralyticsDetect2FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<UltralyticsObbExportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<
+        iannotator::exporters::UltralyticsObb2FolderExporter>();
   }
 
   if (std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ctx) != nullptr) {

@@ -65,8 +65,12 @@ exactly the following files:
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ILib.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryFacade.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/CocoExportLibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/PlainTxtExportLibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/PyTorchExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsDetectExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsObbExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsSegmentExportLibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/Yolo4ExportLibraryContext.h
 
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/ImagesAnnotatorDataExporters-0.11Config.cmake
@@ -77,7 +81,7 @@ exactly the following files:
 
 The `.so.0.11.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
-compiler follows. The headers are the eight public ones of the
+compiler follows. The headers are the thirteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 

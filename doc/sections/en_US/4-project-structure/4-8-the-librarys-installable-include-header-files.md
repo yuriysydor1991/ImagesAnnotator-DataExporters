@@ -1,6 +1,6 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - nine headers, all in the `ImagesAnnotatorDataExporters011` namespace:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - thirteen headers, all in the `ImagesAnnotatorDataExporters011` namespace:
 
 | Header | Declares |
 |---|---|
@@ -8,7 +8,11 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_export()` - runs an export described by a `LibraryContext` |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the data accessors of a `perform_export()` and of an `export_db()`, plus the `get_exporter()` out-one |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` of the plain text dataset layout |
-| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` of the YOLO v4 dataset layout |
+| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` of the YOLO v4 (darknet) dataset layout |
+| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/UltralyticsDetectExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO detection dataset layout |
+| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/UltralyticsObbExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO oriented bounding box dataset layout |
+| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO segmentation dataset layout |
+| [CocoExportLibraryContext.h](/src/lib/facade/public/CocoExportLibraryContext.h) | the `LibraryContext` of the COCO object detection dataset layout |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout, plus its image cropper |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | `IExporter::export_db()` - a single exporter used on its own |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the interface the consuming project implements to crop images out |

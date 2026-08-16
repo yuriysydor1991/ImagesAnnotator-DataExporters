@@ -2,7 +2,7 @@
 
 The repository builds a single shared library - `libImagesAnnotatorDataExporters-0.11.so` - that turns an ImagesAnnotator annotations database into a training dataset on disk. There is no executable: apart from the library itself the build only produces test binaries.
 
-The three exporters were moved out of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application (its `src/annotator-business/exporters` component), so that the application and any other tool may produce the same datasets without duplicating the code. The annotation records themselves are not defined here: they are read through the [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which had earlier taken the annotations database out of that same application.
+The exporters were moved out of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application (its `src/annotator-business/exporters` component), so that the application and any other tool may produce the same datasets without duplicating the code. The annotation records themselves are not defined here: they are read through the [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which had earlier taken the annotations database out of that same application.
 
 The top level layout:
 
@@ -12,7 +12,7 @@ The top level layout:
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
-| [src/exporters](/src/exporters) | one sub-directory per dataset layout - `PlainTxt`, `Yolo4` and `PyTorch` - each carrying its own `IExporter` implementation, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` all three share |
+| [src/exporters](/src/exporters) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco` and `PyTorch` - each carrying its own `IExporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` they all share |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
 | [src/CURL](/src/CURL) | `CURLController` - the libcurl wrapper used to preload web hosted images |

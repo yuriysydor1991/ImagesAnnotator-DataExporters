@@ -9,6 +9,7 @@
 
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsObb2FolderExporter.h"
+#include "src/exporters/Ultralytics/UltralyticsSegment2FolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::ImageRecord;
@@ -17,6 +18,7 @@ using iannotator::exporters::ImageRecordsSet;
 using iannotator::exporters::LibraryContext;
 using iannotator::exporters::UltralyticsDetect2FolderExporter;
 using iannotator::exporters::UltralyticsObb2FolderExporter;
+using iannotator::exporters::UltralyticsSegment2FolderExporter;
 
 namespace
 {
@@ -154,6 +156,18 @@ TEST_F(UTEST_Ultralytics2FolderExporter, obb_writes_the_four_box_corners)
 
   // the corners clockwise from the top left one: (50, 20) and (150, 60) in
   // the pixel space of the 200 by 100 image
+  EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
+}
+
+// Both spell out the corners of one and the same rectangle: an annotations
+// database of axis aligned rectangles has nothing to tell the two apart. It is
+// the training task reading the file that differs.
+TEST_F(UTEST_Ultralytics2FolderExporter, segment_writes_the_polygon_of_the_box)
+{
+  with_rect("dog", 50, 20, 100, 40);
+
+  EXPECT_TRUE(UltralyticsSegment2FolderExporter{}.export_db(ctx));
+
   EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
 }
 

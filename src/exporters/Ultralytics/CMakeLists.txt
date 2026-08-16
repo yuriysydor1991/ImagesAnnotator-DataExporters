@@ -9,6 +9,7 @@ target_sources(
     Ultralytics2FolderExporter.cpp
     UltralyticsDetect2FolderExporter.cpp
     UltralyticsObb2FolderExporter.cpp
+    UltralyticsSegment2FolderExporter.cpp
 )
 
 add_subdirectory(tests)

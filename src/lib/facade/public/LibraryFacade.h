@@ -40,6 +40,7 @@
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
 #include "UltralyticsObbExportLibraryContext.h"
+#include "UltralyticsSegmentExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 
 /**
@@ -121,6 +122,16 @@ class IADE_API LibraryFacade
    */
   static UltralyticsObbExportLibraryContextPtr
   create_ultralytics_obb_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO segmentation dataset layout.
+   *
+   * @return Returns a new UltralyticsSegmentExportLibraryContext class
+   * instance.
+   */
+  static UltralyticsSegmentExportLibraryContextPtr
+  create_ultralytics_segment_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

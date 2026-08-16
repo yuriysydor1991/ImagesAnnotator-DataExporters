@@ -49,7 +49,8 @@ namespace iannotator::exporters
  * - v8, v11 and the ones after them - kept, whatever the trained task. What the
  * task does change is the single label file line of a rectangle, which is why
  * that line is the one thing this class leaves to its descendants. See
- * UltralyticsDetect2FolderExporter and UltralyticsObb2FolderExporter.
+ * UltralyticsDetect2FolderExporter, UltralyticsObb2FolderExporter and
+ * UltralyticsSegment2FolderExporter.
  *
  * The darknet directory of Yolo42FolderExporter is a different layout
  * altogether: it names its classes in data/obj.names instead of the descriptor,

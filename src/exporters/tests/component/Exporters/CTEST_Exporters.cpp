@@ -179,6 +179,22 @@ TEST_F(CTEST_Exporters, ultralytics_obb_export_writes_the_four_box_corners)
             ultralyticsCorners);
 }
 
+// The same corners of one and the same rectangle the oriented box case above
+// expects: what tells the two layouts apart is the training task that reads
+// the file, not the file itself.
+TEST_F(CTEST_Exporters, ultralytics_segment_export_writes_the_box_polygon)
+{
+  auto ctx = context<iade::UltralyticsSegmentExportLibraryContext>("ul-seg");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  EXPECT_EQ(read_file(root / "ul-seg" / "labels" / "train" / "a.txt"),
+            ultralyticsCorners);
+}
+
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
   auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");

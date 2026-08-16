@@ -31,6 +31,7 @@
 #include <memory>
 
 #include "CocoExportLibraryContext.h"
+#include "PascalVocExportLibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
@@ -39,6 +40,7 @@
 #include "Yolo4ExportLibraryContext.h"
 #include "src/croppers/ImageCropperFactory.h"
 #include "src/exporters/Coco/Coco2FolderExporter.h"
+#include "src/exporters/PascalVoc/PascalVoc2FolderExporter.h"
 #include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 #include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
@@ -94,6 +96,12 @@ LibFactory::create_coco_library_context()
   return std::make_shared<CocoExportLibraryContext>();
 }
 
+LibFactory::PascalVocExportLibraryContextPtr
+LibFactory::create_pascal_voc_library_context()
+{
+  return std::make_shared<PascalVocExportLibraryContext>();
+}
+
 LibFactory::PyTorchExportLibraryContextPtr
 LibFactory::create_pytorch_library_context()
 {
@@ -143,6 +151,11 @@ LibFactory::IExporterPtr LibFactory::create_exporter(
 
   if (std::dynamic_pointer_cast<CocoExportLibraryContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::Coco2FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<PascalVocExportLibraryContext>(ctx) !=
+      nullptr) {
+    return std::make_shared<iannotator::exporters::PascalVoc2FolderExporter>();
   }
 
   if (std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ctx) != nullptr) {

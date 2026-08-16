@@ -96,6 +96,16 @@ CocoExportLibraryContextPtr LibraryFacade::create_coco_library_context()
   return libFactory->create_coco_library_context();
 }
 
+PascalVocExportLibraryContextPtr
+LibraryFacade::create_pascal_voc_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_pascal_voc_library_context();
+}
+
 PyTorchExportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
 {
   auto libFactory = iade0impl::LibFactory::create_factory();

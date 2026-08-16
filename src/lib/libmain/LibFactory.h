@@ -35,6 +35,7 @@
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+#include "PascalVocExportLibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
@@ -72,6 +73,8 @@ class LibFactory
           UltralyticsSegmentExportLibraryContextPtr;
   using CocoExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
+  using PascalVocExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::PascalVocExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -136,6 +139,13 @@ class LibFactory
    * @return Returns an empty CocoExportLibraryContext instance.
    */
   virtual CocoExportLibraryContextPtr create_coco_library_context();
+
+  /**
+   * @brief Creates an empty context of the Pascal VOC dataset layout.
+   *
+   * @return Returns an empty PascalVocExportLibraryContext instance.
+   */
+  virtual PascalVocExportLibraryContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.

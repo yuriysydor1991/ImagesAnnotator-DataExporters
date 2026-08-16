@@ -246,6 +246,33 @@ TEST_F(CTEST_Exporters, pascal_voc_export_writes_the_corners_of_the_rectangle)
   EXPECT_NE(xml.find("<xmax>150</xmax>"), std::string::npos);
 }
 
+// The images sit in the export directory itself here, beside the one
+// descriptor naming them, and the rectangle reaches it as its own centre
+TEST_F(CTEST_Exporters,
+       createml_export_writes_the_pixel_centre_of_the_rectangle)
+{
+  auto ctx = context<iade::CreateMLExportLibraryContext>("createml");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "createml";
+
+  EXPECT_TRUE(std::filesystem::is_regular_file(dir / "a.png"));
+
+  const std::string json = read_file(dir / "annotations.json");
+
+  EXPECT_NE(json.find("{\"imagefilename\": \"a.png\", \"annotation\": ["),
+            std::string::npos);
+  // 50 + 100/2 across and 20 + 40/2 down: the centre of the very rectangle the
+  // COCO case above writes as its top left corner and size
+  EXPECT_NE(json.find("{\"label\": \"dog\", \"coordinates\": {\"x\": 100, "
+                      "\"y\": 40, \"width\": 100, \"height\": 40}}"),
+            std::string::npos);
+}
+
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
   auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");

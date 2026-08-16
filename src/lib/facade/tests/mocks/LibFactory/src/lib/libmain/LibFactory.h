@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "CocoExportLibraryContext.h"
+#include "CreateMLExportLibraryContext.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
@@ -50,6 +51,8 @@ class LibFactorySynthParent
       ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
   using PascalVocExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::PascalVocExportLibraryContextPtr;
+  using CreateMLExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::CreateMLExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -70,6 +73,7 @@ class LibFactorySynthParent
   virtual CocoExportLibraryContextPtr create_coco_library_context() = 0;
   virtual PascalVocExportLibraryContextPtr
   create_pascal_voc_library_context() = 0;
+  virtual CreateMLExportLibraryContextPtr create_createml_library_context() = 0;
   virtual PyTorchExportLibraryContextPtr create_pytorch_library_context() = 0;
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx) = 0;
@@ -106,6 +110,8 @@ class LibFactory : public LibFactorySynthParent
               (override));
   MOCK_METHOD(PascalVocExportLibraryContextPtr,
               create_pascal_voc_library_context, (), (override));
+  MOCK_METHOD(CreateMLExportLibraryContextPtr, create_createml_library_context,
+              (), (override));
   MOCK_METHOD(PyTorchExportLibraryContextPtr, create_pytorch_library_context,
               (), (override));
   MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),

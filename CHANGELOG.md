@@ -17,6 +17,63 @@ a training dataset without duplicating the code.
 
 ### Added
 
+- **The three Ultralytics YOLO dataset layouts**, the ones every YOLO release
+  since v5 reads: `UltralyticsDetectExportLibraryContext`,
+  `UltralyticsObbExportLibraryContext` and
+  `UltralyticsSegmentExportLibraryContext`, written by the
+  `UltralyticsDetect2FolderExporter`, `UltralyticsObb2FolderExporter` and
+  `UltralyticsSegment2FolderExporter` of the new
+  [src/exporters/Ultralytics](/src/exporters/Ultralytics) sub-directory. The
+  only YOLO this library could write until now was the darknet directory of
+  `Yolo4ExportLibraryContext`, which no Ultralytics release reads: it names its
+  classes in `data/obj.names`, lists its images in `data/train.txt` and carries
+  the whole network in `cfg/yolov4-obj.cfg`, where v5 and everything after it
+  - v8, v11 and the ones since - want a single `data.yaml` descriptor over the
+  `images/train` and `labels/train` directories.
+- The three of them share every byte of that layout and differ in one line
+  only, the label file line of a rectangle, which is what the trained task
+  changes: `class centre-x centre-y width height` for the detection, the four
+  box corners `class x1 y1 x2 y2 x3 y3 x4 y4` for the oriented boxes and the
+  polygon `class x1 y1 ... xn yn` for the segmentation. That one line is the
+  single abstract method of the shared `Ultralytics2FolderExporter` base, which
+  holds the directory, the descriptor, the image copying and the
+  normalisation. An annotations database of axis aligned rectangles has nothing
+  to tell the oriented box file and the polygon file apart, so those two
+  coincide today - what differs is the training task which reads them.
+- Two guards the darknet exporter does not have, because an Ultralytics release
+  refuses a whole image over a single label coordinate outside of the `0..1`
+  range: a rectangle reaching over an image edge is cut down to the image, and
+  the edges of a rectangle drawn from the right or from the bottom - one
+  carrying a negative width or height - are sorted before it is cut. A
+  rectangle left with no area inside the image at all is logged and dropped,
+  while the image and the rest of its rectangles are exported as usual.
+- The `data.yaml` descriptor carries the annotation names in the YAML single
+  quoted style, so a colon, a hash or a quote inside an annotation name stays a
+  part of the name instead of turning into syntax. Its `path` is the export
+  directory written out absolute, so that the descriptor resolves whatever the
+  working directory of the training run is; dropping that one line makes the
+  directory relocatable, since an Ultralytics release then falls back to the
+  directory holding the descriptor. `train` and `val` both name `images/train`,
+  so the whole set is offered for the validation as well, exactly as the
+  darknet layout writes one and the same list into `train.txt` and `val.txt`.
+- `LibraryFacade::create_ultralytics_detect_library_context()`,
+  `create_ultralytics_obb_library_context()` and
+  `create_ultralytics_segment_library_context()`, one per layout as every other
+  context factory of this library, each handing out the pointer type of its own
+  layout.
+- `UTEST_Ultralytics2FolderExporter` over the three of them, and the
+  `ultralytics_detect_export_writes_the_data_yaml_layout` and
+  `ultralytics_obb_export_writes_the_four_box_corners` and
+  `ultralytics_segment_export_writes_the_box_polygon` cases of
+  `CTEST_Exporters`, which drive the new contexts through the installed headers
+  the way a downstream project does. The suite counts 111 cases now.
+- The pose and the classification layouts of the YOLO family stay unwritten on
+  purpose, and the produced dataset layouts documentation section says so: a
+  pose label line carries the keypoints of the object, which the annotations
+  database does not hold at all, and the classification layout is the PyTorch
+  Vision `ImageFolder` one this library already writes with a train and
+  validation split directory added on top of it - and that split is the very
+  thing this library leaves to its consumer.
 - **An image cropper of the library's own, built on OpenCV.** The library
   decodes no image format of its own, which is why the PyTorch Vision export
   asks its consumer for an `IImageCropperFacility`. A consumer with no imaging

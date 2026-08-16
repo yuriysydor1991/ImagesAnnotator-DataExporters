@@ -43,6 +43,7 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
   class UltralyticsSegmentExportLibraryContext
   class CocoExportLibraryContext
   class PascalVocExportLibraryContext
+  class CreateMLExportLibraryContext
 
   class PyTorchExportLibraryContext {
     -IImageCropperFacilityPtr cropper
@@ -62,6 +63,7 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
     +{static} UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
     +{static} CocoExportLibraryContextPtr create_coco_library_context()
     +{static} PascalVocExportLibraryContextPtr create_pascal_voc_library_context()
+    +{static} CreateMLExportLibraryContextPtr create_createml_library_context()
     +{static} PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +{static} ILibPtr create_default_lib()
     +{static} ILibPtr create_library(LibraryContextPtr ctx)
@@ -85,6 +87,7 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
     +CocoExportLibraryContextPtr create_coco_library_context()
     +PascalVocExportLibraryContextPtr create_pascal_voc_library_context()
+    +CreateMLExportLibraryContextPtr create_createml_library_context()
     +PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
     +IExporterPtr create_exporter(const LibraryContextPtr& ctx)
@@ -109,6 +112,10 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   }
 
   class PascalVoc2FolderExporter {
+    +bool export_db(LibraryContextPtr ectx)
+  }
+
+  class CreateML2FolderExporter {
     +bool export_db(LibraryContextPtr ectx)
   }
 
@@ -150,8 +157,15 @@ end note
 note bottom of PascalVoc2FolderExporter
   One XML descriptor per image, the
   ones LabelImg writes and reads, and
-  the only layout naming a class
-  instead of numbering it.
+  one of the two layouts naming a
+  class instead of numbering it.
+end note
+
+note bottom of CreateML2FolderExporter
+  Images and one annotations.json in
+  one flat directory, the Create ML
+  data source. The only layout whose
+  x/y is the box centre in pixels.
 end note
 
 note bottom of ImageLoader
@@ -166,6 +180,7 @@ IExporter <|-- Yolo42FolderExporter
 IExporter <|-- Ultralytics2FolderExporter
 IExporter <|-- Coco2FolderExporter
 IExporter <|-- PascalVoc2FolderExporter
+IExporter <|-- CreateML2FolderExporter
 IExporter <|-- PyTorchVisionFolderExporter
 
 Ultralytics2FolderExporter <|-- UltralyticsDetect2FolderExporter
@@ -182,6 +197,7 @@ LibFactory ..> UltralyticsObb2FolderExporter : creates
 LibFactory ..> UltralyticsSegment2FolderExporter : creates
 LibFactory ..> Coco2FolderExporter : creates
 LibFactory ..> PascalVoc2FolderExporter : creates
+LibFactory ..> CreateML2FolderExporter : creates
 LibFactory ..> PyTorchVisionFolderExporter : creates
 
 LibraryContext <|-- PlainTxtExportLibraryContext
@@ -191,6 +207,7 @@ LibraryContext <|-- UltralyticsObbExportLibraryContext
 LibraryContext <|-- UltralyticsSegmentExportLibraryContext
 LibraryContext <|-- CocoExportLibraryContext
 LibraryContext <|-- PascalVocExportLibraryContext
+LibraryContext <|-- CreateMLExportLibraryContext
 LibraryContext <|-- PyTorchExportLibraryContext
 
 LibFactory ..> PlainTxtExportLibraryContext : creates and casts to pick
@@ -200,6 +217,7 @@ LibFactory ..> UltralyticsObbExportLibraryContext : creates and casts to pick
 LibFactory ..> UltralyticsSegmentExportLibraryContext : creates and casts to pick
 LibFactory ..> CocoExportLibraryContext : creates and casts to pick
 LibFactory ..> PascalVocExportLibraryContext : creates and casts to pick
+LibFactory ..> CreateMLExportLibraryContext : creates and casts to pick
 LibFactory ..> PyTorchExportLibraryContext : creates and casts to pick
 PyTorchVisionFolderExporter ..> PyTorchExportLibraryContext : casts for the cropper
 
@@ -214,6 +232,7 @@ Yolo42FolderExporter --> ImageLoader
 Ultralytics2FolderExporter --> ImageLoader
 Coco2FolderExporter --> ImageLoader
 PascalVoc2FolderExporter --> ImageLoader
+CreateML2FolderExporter --> ImageLoader
 PyTorchVisionFolderExporter --> ImageLoader
 ImageLoader --> CURLController
 

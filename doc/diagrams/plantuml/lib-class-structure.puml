@@ -41,6 +41,7 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
   class UltralyticsDetectExportLibraryContext
   class UltralyticsObbExportLibraryContext
   class UltralyticsSegmentExportLibraryContext
+  class CocoExportLibraryContext
 
   class PyTorchExportLibraryContext {
     -IImageCropperFacilityPtr cropper
@@ -58,6 +59,7 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
     +{static} UltralyticsDetectExportLibraryContextPtr create_ultralytics_detect_library_context()
     +{static} UltralyticsObbExportLibraryContextPtr create_ultralytics_obb_library_context()
     +{static} UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
+    +{static} CocoExportLibraryContextPtr create_coco_library_context()
     +{static} PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +{static} ILibPtr create_default_lib()
     +{static} ILibPtr create_library(LibraryContextPtr ctx)
@@ -79,6 +81,7 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +UltralyticsDetectExportLibraryContextPtr create_ultralytics_detect_library_context()
     +UltralyticsObbExportLibraryContextPtr create_ultralytics_obb_library_context()
     +UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
+    +CocoExportLibraryContextPtr create_coco_library_context()
     +PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
     +IExporterPtr create_exporter(const LibraryContextPtr& ctx)
@@ -97,6 +100,10 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   class UltralyticsDetect2FolderExporter
   class UltralyticsObb2FolderExporter
   class UltralyticsSegment2FolderExporter
+
+  class Coco2FolderExporter {
+    +bool export_db(LibraryContextPtr ectx)
+  }
 
   class PyTorchVisionFolderExporter
 
@@ -126,6 +133,13 @@ note bottom of Ultralytics2FolderExporter
   task changes.
 end note
 
+note bottom of Coco2FolderExporter
+  The one layout read by something
+  other than a YOLO run, and the one
+  carrying a rectangle in the image
+  own pixels.
+end note
+
 note bottom of ImageLoader
   Preloads the web hosted image
   records into a local cache before
@@ -136,6 +150,7 @@ ILib <|-- LibMain
 IExporter <|-- PlainTxt2FolderExporter
 IExporter <|-- Yolo42FolderExporter
 IExporter <|-- Ultralytics2FolderExporter
+IExporter <|-- Coco2FolderExporter
 IExporter <|-- PyTorchVisionFolderExporter
 
 Ultralytics2FolderExporter <|-- UltralyticsDetect2FolderExporter
@@ -150,6 +165,7 @@ LibFactory ..> Yolo42FolderExporter : creates
 LibFactory ..> UltralyticsDetect2FolderExporter : creates
 LibFactory ..> UltralyticsObb2FolderExporter : creates
 LibFactory ..> UltralyticsSegment2FolderExporter : creates
+LibFactory ..> Coco2FolderExporter : creates
 LibFactory ..> PyTorchVisionFolderExporter : creates
 
 LibraryContext <|-- PlainTxtExportLibraryContext
@@ -157,6 +173,7 @@ LibraryContext <|-- Yolo4ExportLibraryContext
 LibraryContext <|-- UltralyticsDetectExportLibraryContext
 LibraryContext <|-- UltralyticsObbExportLibraryContext
 LibraryContext <|-- UltralyticsSegmentExportLibraryContext
+LibraryContext <|-- CocoExportLibraryContext
 LibraryContext <|-- PyTorchExportLibraryContext
 
 LibFactory ..> PlainTxtExportLibraryContext : creates and casts to pick
@@ -164,6 +181,7 @@ LibFactory ..> Yolo4ExportLibraryContext : creates and casts to pick
 LibFactory ..> UltralyticsDetectExportLibraryContext : creates and casts to pick
 LibFactory ..> UltralyticsObbExportLibraryContext : creates and casts to pick
 LibFactory ..> UltralyticsSegmentExportLibraryContext : creates and casts to pick
+LibFactory ..> CocoExportLibraryContext : creates and casts to pick
 LibFactory ..> PyTorchExportLibraryContext : creates and casts to pick
 PyTorchVisionFolderExporter ..> PyTorchExportLibraryContext : casts for the cropper
 
@@ -176,6 +194,7 @@ IProvider --> ImageRecord
 PlainTxt2FolderExporter --> ImageLoader
 Yolo42FolderExporter --> ImageLoader
 Ultralytics2FolderExporter --> ImageLoader
+Coco2FolderExporter --> ImageLoader
 PyTorchVisionFolderExporter --> ImageLoader
 ImageLoader --> CURLController
 

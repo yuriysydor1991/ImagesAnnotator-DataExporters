@@ -38,6 +38,10 @@ set(IADE_ULTRALYTICS_SRC
   ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/UltralyticsSegment2FolderExporter.cpp
 )
 
+set(IADE_COCO_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/Coco/Coco2FolderExporter.cpp
+)
+
 set(IADE_PYTORCH_SRC
   ${IADE_EXPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolderExporter.cpp
 )
@@ -46,6 +50,7 @@ set(IADE_EXPORTERS_SRC
   ${IADE_PLAIN_TXT_SRC}
   ${IADE_YOLO4_SRC}
   ${IADE_ULTRALYTICS_SRC}
+  ${IADE_COCO_SRC}
   ${IADE_PYTORCH_SRC}
 )
 

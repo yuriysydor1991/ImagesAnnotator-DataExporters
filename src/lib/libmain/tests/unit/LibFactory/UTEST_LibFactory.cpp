@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "CocoExportLibraryContext.h"
 #include "LibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
@@ -36,6 +37,7 @@ TEST_F(UTEST_LibFactory, create_library_context_of_every_layout_success)
   EXPECT_NE(factory->create_ultralytics_detect_library_context(), nullptr);
   EXPECT_NE(factory->create_ultralytics_obb_library_context(), nullptr);
   EXPECT_NE(factory->create_ultralytics_segment_library_context(), nullptr);
+  EXPECT_NE(factory->create_coco_library_context(), nullptr);
   EXPECT_NE(factory->create_pytorch_library_context(), nullptr);
 }
 
@@ -56,6 +58,8 @@ TEST_F(UTEST_LibFactory, every_created_context_names_its_own_exporter)
             nullptr);
   EXPECT_NE(factory->create_exporter(
                 factory->create_ultralytics_segment_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_exporter(factory->create_coco_library_context()),
             nullptr);
   EXPECT_NE(factory->create_exporter(factory->create_pytorch_library_context()),
             nullptr);
@@ -83,6 +87,9 @@ TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
   EXPECT_NE(factory->create_exporter(
                 std::make_shared<UltralyticsSegmentExportLibraryContext>()),
             nullptr);
+  EXPECT_NE(
+      factory->create_exporter(std::make_shared<CocoExportLibraryContext>()),
+      nullptr);
   EXPECT_NE(
       factory->create_exporter(std::make_shared<PyTorchExportLibraryContext>()),
       nullptr);

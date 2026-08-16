@@ -30,6 +30,7 @@
 
 #include <memory>
 
+#include "CocoExportLibraryContext.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
@@ -69,6 +70,8 @@ class LibFactory
   using UltralyticsSegmentExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::
           UltralyticsSegmentExportLibraryContextPtr;
+  using CocoExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -125,6 +128,14 @@ class LibFactory
    */
   virtual UltralyticsSegmentExportLibraryContextPtr
   create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Creates an empty context of the COCO object detection dataset
+   * layout.
+   *
+   * @return Returns an empty CocoExportLibraryContext instance.
+   */
+  virtual CocoExportLibraryContextPtr create_coco_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.

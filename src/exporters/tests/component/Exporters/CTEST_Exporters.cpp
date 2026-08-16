@@ -195,6 +195,33 @@ TEST_F(CTEST_Exporters, ultralytics_segment_export_writes_the_box_polygon)
             ultralyticsCorners);
 }
 
+TEST_F(CTEST_Exporters, coco_export_writes_the_pixel_bbox_of_the_rectangle)
+{
+  auto ctx = context<iade::CocoExportLibraryContext>("coco");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "coco";
+
+  EXPECT_TRUE(std::filesystem::is_regular_file(dir / "images" / "a.png"));
+
+  const std::string json =
+      read_file(dir / "annotations" / "instances_default.json");
+
+  EXPECT_NE(json.find("{\"id\": 1, \"file_name\": \"a.png\", \"width\": 200, "
+                      "\"height\": 100}"),
+            std::string::npos);
+  // the very four numbers of the rectangle, in the image own pixels
+  EXPECT_NE(json.find("\"bbox\": [50, 20, 100, 40], \"area\": 4000"),
+            std::string::npos);
+  EXPECT_NE(
+      json.find("{\"id\": 1, \"name\": \"dog\", \"supercategory\": \"\"}"),
+      std::string::npos);
+}
+
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
   auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");

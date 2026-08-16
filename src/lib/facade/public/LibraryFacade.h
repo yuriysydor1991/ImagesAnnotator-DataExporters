@@ -31,6 +31,7 @@
 #include <memory>
 #include <string>
 
+#include "CocoExportLibraryContext.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
@@ -132,6 +133,14 @@ class IADE_API LibraryFacade
    */
   static UltralyticsSegmentExportLibraryContextPtr
   create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the COCO
+   * object detection dataset layout.
+   *
+   * @return Returns a new CocoExportLibraryContext class instance.
+   */
+  static CocoExportLibraryContextPtr create_coco_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

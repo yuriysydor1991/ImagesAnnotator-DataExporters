@@ -1,0 +1,67 @@
+/**
+ * The "Simplified BSD License"
+ *
+ * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   - Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H
+
+#include <memory>
+
+#include "ExportersAPI.h"
+#include "LibraryContext.h"
+
+namespace ImagesAnnotatorDataExporters011
+{
+
+/**
+ * @brief The library context which writes the COCO object detection dataset:
+ * the single annotations/instances_default.json descriptor over the images
+ * directory next to it.
+ *
+ * This is the one layout of this library read by something other than a YOLO
+ * training run: Detectron2, MMDetection, torchvision, the HuggingFace
+ * detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take
+ * it. Its `bbox` is the `[x, y, width, height]` of the top left corner in the
+ * image own pixels, which is what an ImageRecordRect already holds, so nothing
+ * of a rectangle is normalised away the way every YOLO layout normalises it.
+ *
+ * The class carries no data of its own: instantiating it is what names the
+ * wanted dataset layout, everything else is inherited from LibraryContext.
+ *
+ * Current file is a target for the library header installation.
+ */
+class IADE_API CocoExportLibraryContext : public LibraryContext
+{
+ public:
+  using CocoExportLibraryContextPtr = std::shared_ptr<CocoExportLibraryContext>;
+};
+
+using CocoExportLibraryContextPtr =
+    CocoExportLibraryContext::CocoExportLibraryContextPtr;
+
+}  // namespace ImagesAnnotatorDataExporters011
+
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H

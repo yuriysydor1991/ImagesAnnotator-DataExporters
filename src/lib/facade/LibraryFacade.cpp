@@ -57,6 +57,16 @@ Yolo4ExportLibraryContextPtr LibraryFacade::create_yolo4_library_context()
   return libFactory->create_yolo4_library_context();
 }
 
+UltralyticsDetectExportLibraryContextPtr
+LibraryFacade::create_ultralytics_detect_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_ultralytics_detect_library_context();
+}
+
 PyTorchExportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
 {
   auto libFactory = iade0impl::LibFactory::create_factory();

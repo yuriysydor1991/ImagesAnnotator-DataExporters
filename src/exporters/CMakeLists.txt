@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 
 add_subdirectory(PlainTxt)
 add_subdirectory(Yolo4)
+add_subdirectory(Ultralytics)
 add_subdirectory(PyTorch)
 
 add_subdirectory(tests)

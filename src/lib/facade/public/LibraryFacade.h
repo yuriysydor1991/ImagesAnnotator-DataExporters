@@ -38,6 +38,7 @@
 #include "LibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
+#include "UltralyticsDetectExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 
 /**
@@ -100,6 +101,16 @@ class IADE_API LibraryFacade
    * @return Returns a new Yolo4ExportLibraryContext class instance.
    */
   static Yolo4ExportLibraryContextPtr create_yolo4_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO detection dataset layout.
+   *
+   * @return Returns a new UltralyticsDetectExportLibraryContext class
+   * instance.
+   */
+  static UltralyticsDetectExportLibraryContextPtr
+  create_ultralytics_detect_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

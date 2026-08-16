@@ -140,6 +140,28 @@ TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
   EXPECT_EQ(read_file(dir / "data" / "a.txt"), "0 0.5 0.4 0.5 0.4");
 }
 
+TEST_F(CTEST_Exporters, ultralytics_detect_export_writes_the_data_yaml_layout)
+{
+  auto ctx = context<iade::UltralyticsDetectExportLibraryContext>("ul-detect");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "ul-detect";
+
+  EXPECT_TRUE(
+      std::filesystem::is_regular_file(dir / "images" / "train" / "a.png"));
+
+  const std::string yaml = read_file(dir / "data.yaml");
+
+  EXPECT_NE(yaml.find("\ntrain: images/train\n"), std::string::npos);
+  EXPECT_NE(yaml.find("names:\n  0: 'dog'"), std::string::npos);
+
+  EXPECT_EQ(read_file(dir / "labels" / "train" / "a.txt"), "0 0.5 0.4 0.5 0.4");
+}
+
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
   auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");

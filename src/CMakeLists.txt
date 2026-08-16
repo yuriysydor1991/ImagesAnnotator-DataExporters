@@ -31,6 +31,11 @@ set(IADE_YOLO4_SRC
   ${IADE_EXPORTERS_SRC_DIR}/Yolo4/Yolov4CfgWriter.cpp
 )
 
+set(IADE_ULTRALYTICS_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/Ultralytics2FolderExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/UltralyticsDetect2FolderExporter.cpp
+)
+
 set(IADE_PYTORCH_SRC
   ${IADE_EXPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolderExporter.cpp
 )
@@ -38,6 +43,7 @@ set(IADE_PYTORCH_SRC
 set(IADE_EXPORTERS_SRC
   ${IADE_PLAIN_TXT_SRC}
   ${IADE_YOLO4_SRC}
+  ${IADE_ULTRALYTICS_SRC}
   ${IADE_PYTORCH_SRC}
 )
 

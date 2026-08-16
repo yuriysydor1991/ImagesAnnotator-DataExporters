@@ -19,7 +19,10 @@ The records the exporters read are not defined here. They come from the [ImagesA
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the `IImageCropperFacility` interface the consuming project implements |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class both entry points are driven with |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
-| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 dataset layout |
+| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
+| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/UltralyticsDetectExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO detection dataset layout |
+| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/UltralyticsObbExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
+| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO segmentation dataset layout |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout, with the image cropper of that layout |
 | [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_export` method |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
@@ -31,14 +34,19 @@ Including `LibraryFacade.h` pulls in every other header of the list.
 ```cpp
 class PlainTxtExportLibraryContext : public LibraryContext;
 class Yolo4ExportLibraryContext : public LibraryContext;
+class UltralyticsDetectExportLibraryContext : public LibraryContext;
+class UltralyticsObbExportLibraryContext : public LibraryContext;
+class UltralyticsSegmentExportLibraryContext : public LibraryContext;
 class PyTorchExportLibraryContext : public LibraryContext;
 ```
 
-The three `LibraryContext` descendants name the three dataset layouts the library is able to write. Instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. The first two add nothing to `LibraryContext`; `PyTorchExportLibraryContext` adds the `get_cropper()` / `set_cropper()` pair, since cutting pixels out is what its layout alone does - it has a subsection of its own below. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
+The six `LibraryContext` descendants name the six dataset layouts the library is able to write. Instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. All but the last add nothing to `LibraryContext`; `PyTorchExportLibraryContext` adds the `get_cropper()` / `set_cropper()` pair, since cutting pixels out is what its layout alone does - it has a subsection of its own below. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
+
+Four of them are of the YOLO family, and they are not interchangeable. `Yolo4ExportLibraryContext` writes the darknet training directory, which names its classes, lists its images and carries its whole network in files of its own. The three `Ultralytics*` ones write the layout YOLO v5 introduced and every Ultralytics release since - v8, v11 and the ones after them - reads: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories. Those three share every byte of that layout and differ only in the label file line of a rectangle, which is what the trained task - detection, oriented boxes or segmentation - expects.
 
 ### LibraryContext
 
-The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_export()` and the `IExporter::export_db()` of an exporter built by hand. Create it with the `LibraryFacade` factory method of the wanted layout - `create_plain_txt_library_context()`, `create_yolo4_library_context()` or `create_pytorch_library_context()` - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
+The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_export()` and the `IExporter::export_db()` of an exporter built by hand. Create it with the `LibraryFacade` factory method of the wanted layout - `create_plain_txt_library_context()`, `create_yolo4_library_context()`, `create_ultralytics_detect_library_context()`, `create_ultralytics_obb_library_context()`, `create_ultralytics_segment_library_context()` or `create_pytorch_library_context()` - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
 
 The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
@@ -105,6 +113,9 @@ A class of static factory methods only, and the only entry point a consuming pro
 | --- | --- |
 | `create_plain_txt_library_context()` | a new empty `PlainTxtExportLibraryContextPtr` |
 | `create_yolo4_library_context()` | a new empty `Yolo4ExportLibraryContextPtr` |
+| `create_ultralytics_detect_library_context()` | a new empty `UltralyticsDetectExportLibraryContextPtr` |
+| `create_ultralytics_obb_library_context()` | a new empty `UltralyticsObbExportLibraryContextPtr` |
+| `create_ultralytics_segment_library_context()` | a new empty `UltralyticsSegmentExportLibraryContextPtr` |
 | `create_pytorch_library_context()` | a new empty `PyTorchExportLibraryContextPtr`, the one carrying the cropper |
 | `create_default_lib()` | the default `ILibPtr` implementation |
 | `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
@@ -167,7 +178,7 @@ int main(int argc, char** argv)
 }
 ```
 
-The `std::filesystem::create_directories` call is there because only the YOLO v4 exporter creates its destination directory on its own. The two other formats expect `export_path` to exist already.
+The `std::filesystem::create_directories` call is there because only the YOLO v4 and the three Ultralytics YOLO exporters create their destination directory on their own. The plain text and the PyTorch Vision formats expect `export_path` to exist already.
 
 ### Implementing an image cropper
 

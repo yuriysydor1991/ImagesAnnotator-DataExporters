@@ -2,14 +2,14 @@
 
 Each `LibraryContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the directory named by `LibraryContext::set_export_path()`. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
-### What all the three have in common
+### What they all have in common
 
 - The rectangle geometry is read from the `ImageRecordRect` fields `name`, `x`, `y`, `width` and `height`, always in the image own pixel coordinates. The image dimensions come from the `ImageRecord` `iwidth` and `iheight` fields.
 - An image record holding no rectangles is skipped by every format.
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- Only the YOLO v4 exporter creates its destination directory. For the two other formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4 and the three Ultralytics YOLO exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -161,7 +161,7 @@ The four numbers are normalised into the `0..1` range against the record `iwidth
 
 ```
 1 0.15625 0.1 0.15625 0.1
-1 0.539063 0.11875 0.140625 0.1125
+1 0.539062 0.11875 0.140625 0.1125
 ```
 
 and `data/park.txt` reads:
@@ -172,6 +172,128 @@ and `data/park.txt` reads:
 ```
 
 Besides the records without rectangles, this exporter also skips the records whose `iwidth` or `iheight` is zero (the normalisation would divide by zero), and the ones whose image file is not a readable regular file or could not be copied. The `backup/` directory is created empty, darknet writes its weight snapshots there during the training.
+
+### What the three Ultralytics YOLO layouts share
+
+Three of the contexts write the layout every Ultralytics release reads - the one YOLO v5 introduced and v8, v11 and the ones after them kept. The directory is the same for all three of them, and so is the `data.yaml` descriptor. What the trained task changes is the single label file line of a rectangle, which is the only thing the three sections below differ in.
+
+The exporter creates the export directory itself when it is not there yet, together with the two sub-directories:
+
+```
+export_path/
+|-- data.yaml
+|-- images/
+|   `-- train/
+|       |-- park.jpg
+|       `-- street.png
+`-- labels/
+    `-- train/
+        |-- park.txt
+        `-- street.txt
+```
+
+An image and its annotations are paired by the path: a training run takes the image path, swaps the `images` path element for `labels` and the extension for `.txt`, and reads the annotations of that image there. Every annotated image file is copied into `images/train`. When a file of that name is already there, the copy receives a `-1`, `-2`, ... suffix before its extension - so `street.png` of a second source directory lands as `street-1.png` - and its label file follows that new name.
+
+`data.yaml` is the whole descriptor of the dataset. The class names live in it, so this layout has no `obj.names` file of the darknet one:
+
+```yaml
+# The Ultralytics YOLO dataset descriptor, written by the ImagesAnnotator
+# annotations dataset exporters library.
+#
+# Drop the path line below to move this directory elsewhere: an Ultralytics
+# release then takes the directory holding this very file as the dataset root.
+path: '/home/user/dataset'
+train: images/train
+val: images/train
+
+names:
+  0: 'cat'
+  1: 'dog'
+```
+
+- `path` is the export directory, written out absolute, so that the descriptor resolves whatever the working directory of the training run is and wherever the framework keeps its own datasets directory. Dropping the line, as its comment says, makes the directory relocatable: an Ultralytics release then falls back to the directory holding the descriptor.
+- `names` maps a class index onto an annotation name. The indexes are the positions in the sorted set of names the database reports, exactly the ones the label files carry. Every name is written in the YAML single quoted style, so that a colon, a hash or a quote inside an annotation name stays a part of the name instead of turning into syntax.
+- `train` and `val` both name the one and only `images/train` directory. The whole set is offered for the validation as well, exactly as the darknet layout writes one and the same list into `train.txt` and `val.txt`: splitting it into a real training and a real validation part is left to the consumer.
+
+A training run reads the exported directory as it is:
+
+```
+yolo detect train data=/home/user/dataset/data.yaml model=yolo11n.pt
+```
+
+with `detect` replaced by `obb` or `segment` for the two other layouts, and the model by the pre-trained weights of that very task.
+
+All three normalise a rectangle into the `0..1` range against the record `iwidth` and `iheight`, and all three apply two guards the darknet exporter does not:
+
+- **A rectangle reaching over an image edge is cut down to the image.** An Ultralytics release refuses a whole image over a single label coordinate outside of the `0..1` range, so a rectangle drawn a little over the border would otherwise have cost that image its place in the dataset.
+- **A rectangle drawn from the right or from the bottom carries a negative width or height.** Its edges are sorted before it is cut, so it describes the same area as the one drawn the other way round.
+
+A rectangle left with no area inside the image at all - one drawn entirely outside of it - is logged and dropped, while the image and the rest of its rectangles are exported as usual. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
+
+### UltralyticsDetectExportLibraryContext
+
+The detection dataset. Every rectangle becomes one line of the class index and the box:
+
+```
+<class index> <centre x> <centre y> <width> <height>
+```
+
+These are the very four normalised numbers the darknet layout writes into its own label files. So `labels/train/street.txt` reads:
+
+```
+1 0.15625 0.1 0.15625 0.1
+1 0.539062 0.11875 0.140625 0.1125
+```
+
+and `labels/train/park.txt` reads:
+
+```
+0 0.35 0.325 0.075 0.108333
+1 0.06875 0.0833333 0.1 0.133333
+```
+
+### UltralyticsObbExportLibraryContext
+
+The oriented bounding box dataset. Every rectangle becomes one line of the class index and the four corners of the box, clockwise from the top left one:
+
+```
+<class index> <x1> <y1> <x2> <y2> <x3> <y3> <x4> <y4>
+```
+
+A training run turns those eight numbers into the centre, size and rotation angle form of its own. `labels/train/street.txt` reads:
+
+```
+1 0.078125 0.05 0.234375 0.05 0.234375 0.15 0.078125 0.15
+1 0.46875 0.0625 0.609375 0.0625 0.609375 0.175 0.46875 0.175
+```
+
+and `labels/train/park.txt` reads:
+
+```
+0 0.3125 0.270833 0.3875 0.270833 0.3875 0.379167 0.3125 0.379167
+1 0.01875 0.0166667 0.11875 0.0166667 0.11875 0.15 0.01875 0.15
+```
+
+The annotations database knows axis aligned rectangles only, so every box written here carries the rotation angle of zero. That is not a wasted export: an OBB model trained on it detects the rotated instances of the very same objects.
+
+### UltralyticsSegmentExportLibraryContext
+
+The instance segmentation dataset. Every rectangle becomes one line of the class index and the points of the polygon which outlines the object:
+
+```
+<class index> <x1> <y1> ... <xn> <yn>
+```
+
+The format takes a polygon of any three or more points. The mask of a rectangle annotation is the rectangle outline itself, so the polygon written is its four corners - which makes these label files identical to the oriented bounding box ones above, both spelling out the corners of one and the same rectangle. What tells the two layouts apart is the training task that reads them: a polygon of an arbitrary point count here against the four corners of a rotated box there.
+
+A mask is therefore only ever as tight as the drawn rectangle, and the trained segmentation model reproduces exactly that coarseness. Reach for this layout when a rectangle outline is mask enough, and annotate with real polygons in a tool that draws them when it is not.
+
+### The YOLO formats this library does not write
+
+Two more members of the YOLO format family are left out on purpose:
+
+- **The pose, or keypoint, layout.** Its label line carries the keypoints of the object after the box, and the descriptor names their count and their left-right mirror pairs in a `kpt_shape` and a `flip_idx` key. The annotations database holds named rectangles and no keypoints at all, so there is nothing to write those columns out of.
+- **The classification layout**, which is a `train/<annotation name>/` and a `val/<annotation name>/` directory of cropped images. That is the PyTorch Vision `ImageFolder` layout described below with one split directory added on top of it, and the split is the very thing this library leaves to its consumer.
 
 ### PyTorchExportLibraryContext
 

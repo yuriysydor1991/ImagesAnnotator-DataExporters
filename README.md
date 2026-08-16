@@ -14,9 +14,12 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Three dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
+- **Six dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
   - `PlainTxtExportLibraryContext` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
   - `Yolo4ExportLibraryContext` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
+  - `UltralyticsDetectExportLibraryContext` - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
+  - `UltralyticsObbExportLibraryContext` - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle;
+  - `UltralyticsSegmentExportLibraryContext` - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle;
   - `PyTorchExportLibraryContext` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
 - **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the destination directory and the database, and `ILib::perform_export()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
@@ -119,7 +122,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 61 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 111 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 

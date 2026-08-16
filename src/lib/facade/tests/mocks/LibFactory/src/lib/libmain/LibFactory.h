@@ -12,6 +12,7 @@
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+#include "PascalVocExportLibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
@@ -47,6 +48,8 @@ class LibFactorySynthParent
           UltralyticsSegmentExportLibraryContextPtr;
   using CocoExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
+  using PascalVocExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::PascalVocExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -65,6 +68,8 @@ class LibFactorySynthParent
   virtual UltralyticsSegmentExportLibraryContextPtr
   create_ultralytics_segment_library_context() = 0;
   virtual CocoExportLibraryContextPtr create_coco_library_context() = 0;
+  virtual PascalVocExportLibraryContextPtr
+  create_pascal_voc_library_context() = 0;
   virtual PyTorchExportLibraryContextPtr create_pytorch_library_context() = 0;
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
   virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx) = 0;
@@ -99,6 +104,8 @@ class LibFactory : public LibFactorySynthParent
               create_ultralytics_segment_library_context, (), (override));
   MOCK_METHOD(CocoExportLibraryContextPtr, create_coco_library_context, (),
               (override));
+  MOCK_METHOD(PascalVocExportLibraryContextPtr,
+              create_pascal_voc_library_context, (), (override));
   MOCK_METHOD(PyTorchExportLibraryContextPtr, create_pytorch_library_context,
               (), (override));
   MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),

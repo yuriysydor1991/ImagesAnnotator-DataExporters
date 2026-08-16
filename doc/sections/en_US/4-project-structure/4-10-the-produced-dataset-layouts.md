@@ -9,7 +9,7 @@ Each `LibraryContext` descendant is implemented by one exporter class under [src
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- The YOLO v4, the three Ultralytics YOLO and the COCO exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4, the three Ultralytics YOLO, the COCO and the Pascal VOC exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -366,6 +366,113 @@ The two guards of the Ultralytics exporters apply here as well, for a different 
 A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them - and, since the arrays are written after the images are copied, such a record takes no image id with it.
 
 The whole set is offered as one dataset. Splitting it into a real training and validation part is left to the consumer, exactly as it is in every other layout here.
+
+### PascalVocExportLibraryContext
+
+The Pascal VOC dataset, in the devkit directory shape: the copied images, one XML descriptor per image over them and the image lists naming those. The exporter creates the export directory itself when it is not there yet, together with the three sub-directories:
+
+```
+export_path/
+|-- Annotations/
+|   |-- park.xml
+|   `-- street.xml
+|-- ImageSets/
+|   `-- Main/
+|       |-- train.txt
+|       `-- val.txt
+`-- JPEGImages/
+    |-- park.jpg
+    `-- street.png
+```
+
+These are the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads, which makes this layout the one export of the library that leads back into an annotating session: point that tool at `JPEGImages` with `Annotations` as its save directory and every rectangle of the project is there to be corrected. Every reader of the format takes the same three directories - the MMDetection `XMLDataset` with its default `img_subdir` and `ann_subdir`, and the torchvision `VOCDetection`:
+
+```python
+# MMDetection
+dict(type='XMLDataset',
+     data_root='/home/user/dataset/',
+     ann_file='ImageSets/Main/train.txt',
+     data_prefix=dict(sub_data_root=''),
+     metainfo=dict(classes=('cat', 'dog')))
+
+# torchvision, which joins the VOCdevkit/VOC2012 path of its year onto the root
+# it is given, so the export directory has to be placed under that name
+from torchvision.datasets import VOCDetection
+
+data = VOCDetection(root="/home/user", year="2012", image_set="train")
+```
+
+Every annotated image file is copied into `JPEGImages/`. When a file of that name is already there, the copy receives a `-1`, `-2`, ... suffix before its extension, so `street.png` of a second source directory lands as `street-1.png`, and its descriptor follows that new name. The suffix is given for a taken file **stem** and not only for a taken file name, because this is the one layout that keys the descriptor to the stem: `park.jpg` and `park.png` would otherwise both ask for `Annotations/park.xml`.
+
+`Annotations/street.xml` holds the whole description of one image and its rectangles:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<annotation>
+  <folder>JPEGImages</folder>
+  <filename>street.png</filename>
+  <source>
+    <database>The ImagesAnnotator annotations dataset</database>
+  </source>
+  <size>
+    <width>640</width>
+    <height>400</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>dog</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>50</xmin>
+      <ymin>20</ymin>
+      <xmax>150</xmax>
+      <ymax>60</ymax>
+    </bndbox>
+  </object>
+  <object>
+    <name>dog</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>300</xmin>
+      <ymin>25</ymin>
+      <xmax>390</xmax>
+      <ymax>70</ymax>
+    </bndbox>
+  </object>
+</annotation>
+```
+
+- **`bndbox`** is the two corner points the rectangle was drawn between, in the image own pixels: `xmin`/`ymin` is its origin and `xmax`/`ymax` that origin plus its size. LabelImg turns that pair back into the very same rectangle, which is what makes the migration a two way one. The 1-based coordinates the original VOC devkit used are not written: a reader that expects them - the MMDetection `XMLDataset` subtracts one from all four by default - shifts the box by a single pixel and keeps its size, since both corners move together.
+- **`name`** is the annotation name, written out as it stands. This is the one layout of the library that numbers nothing, so the position of a name in the sorted set the database reports decides nothing here, and adding a name to a project renumbers no file that was already exported.
+- **`folder`** and **`filename`** are the directory holding the image and its file name, which a reader joins onto the dataset root it was handed. The `width` and `height` of `size` are the record `iwidth` and `iheight`.
+- **`depth`** is `3` for every image. An `ImageRecord` carries no channel count, and the format leaves no way to write the size without one.
+- **`truncated`** is `1` exactly when the image edge really did cut the rectangle down, which is what the flag means: the object continues past the picture. A rectangle drawn wholly inside the image gets a `0`.
+- **`difficult`** is `0` for every rectangle - the database has no such mark, and the standard VOC evaluation drops a `1` from its results altogether. **`pose`** is `Unspecified`, since no viewing angle is held either.
+- **`segmented`** is `0`: the flag promises a mask in the segmentation directories of the devkit, and a rectangle carries none. Reach for `UltralyticsSegmentExportLibraryContext` when a box shaped mask is mask enough.
+- An annotation name and a file name are both user text, so both are written out XML escaped - an `&`, a `<` or a `>` inside a name stays a part of the name instead of opening markup. The control characters XML 1.0 carries no way to write at all, not even as a numeric reference, are dropped from a name rather than written into a file no parser would accept.
+
+`ImageSets/Main/train.txt` and `ImageSets/Main/val.txt` both list the stems of the copied images, one per line:
+
+```
+street
+park
+```
+
+The two files are written with identical content, exactly as the darknet layout writes one and the same list into its own `train.txt` and `val.txt`: splitting the set into a real training and validation part is left to the consumer. Their names are not free, though - a reader of this format asks for a split by name, and `train`, `val` and `trainval` are the ones it accepts.
+
+The two guards of the Ultralytics exporters apply here as well:
+
+- **A rectangle reaching over an image edge is cut down to the image**, since a `bndbox` naming pixels the image does not have is a box no reader can crop to. What the cut leaves behind is marked with the `truncated` flag above.
+- **A rectangle drawn from the right or from the bottom carries a negative width or height.** Its edges are sorted before it is cut, so it describes the same area as the one drawn the other way round, and sorting alone never sets `truncated`.
+
+A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual - an image whose every rectangle was dropped still reaches the lists, with a descriptor carrying no `object` element. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
+
+One limitation belongs to a reader rather than to the export: the MMDetection `XMLDataset` builds an image path by appending `.jpg` to a name of the list, so a project of PNG images is read by it only after that class is told otherwise. The descriptors themselves name the real file with their `filename` element, and every other reader of the format uses it.
 
 ### PyTorchExportLibraryContext
 

@@ -37,6 +37,7 @@
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+#include "PascalVocExportLibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
 #include "PyTorchExportLibraryContext.h"
 #include "UltralyticsDetectExportLibraryContext.h"
@@ -141,6 +142,14 @@ class IADE_API LibraryFacade
    * @return Returns a new CocoExportLibraryContext class instance.
    */
   static CocoExportLibraryContextPtr create_coco_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the Pascal VOC
+   * dataset layout.
+   *
+   * @return Returns a new PascalVocExportLibraryContext class instance.
+   */
+  static PascalVocExportLibraryContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

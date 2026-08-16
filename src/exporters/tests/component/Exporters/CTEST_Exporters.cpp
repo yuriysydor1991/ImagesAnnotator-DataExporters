@@ -222,6 +222,30 @@ TEST_F(CTEST_Exporters, coco_export_writes_the_pixel_bbox_of_the_rectangle)
       std::string::npos);
 }
 
+TEST_F(CTEST_Exporters, pascal_voc_export_writes_the_corners_of_the_rectangle)
+{
+  auto ctx = context<iade::PascalVocExportLibraryContext>("voc");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "voc";
+
+  EXPECT_TRUE(std::filesystem::is_regular_file(dir / "JPEGImages" / "a.png"));
+  EXPECT_EQ(read_file(dir / "ImageSets" / "Main" / "train.txt"), "a");
+
+  const std::string xml = read_file(dir / "Annotations" / "a.xml");
+
+  EXPECT_NE(xml.find("<filename>a.png</filename>"), std::string::npos);
+  EXPECT_NE(xml.find("<width>200</width>"), std::string::npos);
+  EXPECT_NE(xml.find("<name>dog</name>"), std::string::npos);
+  // the far corner of the rectangle, not its size
+  EXPECT_NE(xml.find("<xmin>50</xmin>"), std::string::npos);
+  EXPECT_NE(xml.find("<xmax>150</xmax>"), std::string::npos);
+}
+
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
   auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");

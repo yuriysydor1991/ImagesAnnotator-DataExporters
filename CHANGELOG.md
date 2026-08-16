@@ -17,6 +17,53 @@ a training dataset without duplicating the code.
 
 ### Added
 
+- **The Pascal VOC dataset layout**, `PascalVocExportLibraryContext`, written by
+  the `PascalVoc2FolderExporter` of the new
+  [src/exporters/PascalVoc](/src/exporters/PascalVoc) sub-directory. The export
+  is the devkit directory shape: the copied images under `JPEGImages/`, one
+  `Annotations/<stem>.xml` descriptor per image over them and the
+  `ImageSets/Main` lists naming those. These are the very files
+  [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads, which
+  makes this the one export of the library that leads back into an annotating
+  session, and the torchvision `VOCDetection` and the MMDetection `XMLDataset`
+  take the same three directories.
+- A rectangle reaches the `bndbox` as the two corner points it was drawn
+  between, in the image own pixels: `xmin`/`ymin` is its origin and
+  `xmax`/`ymax` that origin plus its size, which is the pair LabelImg turns back
+  into the very same rectangle. The 1-based coordinates of the original devkit
+  are not written; a reader expecting them shifts the box by a single pixel and
+  keeps its size, since both corners move together.
+- This is also the one layout of the library that numbers nothing. The class
+  name is written into `name` as it stands, so the position of a name in the
+  sorted set the database reports decides nothing here and a name added to a
+  project renumbers no file exported before it. `depth` is `3` for every image,
+  since an `ImageRecord` carries no channel count and the format leaves no way
+  to write the size without one, while `pose`, `difficult` and `segmented`
+  carry the values of a database which holds no viewing angle, no hard-to-see
+  mark and no mask.
+- The two guards of the Ultralytics exporters apply here too - a rectangle
+  reaching over an image edge is cut down to the image and the edges of a
+  negative sized one are sorted before it is cut - and what the cut really did
+  remove is reported by the `truncated` flag the format keeps for an object
+  continuing past the picture. A rectangle left with no area inside the image is
+  logged and dropped, while the image and the rest of its rectangles are
+  exported as usual. An annotation name and a file name are both user text, so
+  both are written out XML escaped, with the control characters XML 1.0 has no
+  way to carry at all dropped rather than written into a file no parser would
+  accept.
+- The copied image is given its `-1`, `-2`, ... suffix for a taken file **stem**
+  and not only for a taken file name, because this is the one layout keying the
+  descriptor to the stem: `park.jpg` and `park.png` would otherwise both ask for
+  `Annotations/park.xml`. The two `ImageSets/Main` lists hold identical content,
+  exactly as the darknet layout writes one and the same list into its `train.txt`
+  and `val.txt`, but their names are not free - a reader of this format asks for
+  a split by name.
+- `LibraryFacade::create_pascal_voc_library_context()`, one per layout as every
+  other context factory of this library, and the
+  `UTEST_PascalVoc2FolderExporter` unit test with the
+  `pascal_voc_export_writes_the_corners_of_the_rectangle` case of
+  `CTEST_Exporters`, which drives the new context through the installed headers
+  the way a downstream project does.
 - **The COCO object detection dataset layout**, `CocoExportLibraryContext`,
   written by the `Coco2FolderExporter` of the new
   [src/exporters/Coco](/src/exporters/Coco) sub-directory. Every layout this

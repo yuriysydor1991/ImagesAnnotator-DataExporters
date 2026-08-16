@@ -38,6 +38,9 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
 
   class PlainTxtExportLibraryContext
   class Yolo4ExportLibraryContext
+  class UltralyticsDetectExportLibraryContext
+  class UltralyticsObbExportLibraryContext
+  class UltralyticsSegmentExportLibraryContext
 
   class PyTorchExportLibraryContext {
     -IImageCropperFacilityPtr cropper
@@ -52,6 +55,9 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
   class LibraryFacade {
     +{static} PlainTxtExportLibraryContextPtr create_plain_txt_library_context()
     +{static} Yolo4ExportLibraryContextPtr create_yolo4_library_context()
+    +{static} UltralyticsDetectExportLibraryContextPtr create_ultralytics_detect_library_context()
+    +{static} UltralyticsObbExportLibraryContextPtr create_ultralytics_obb_library_context()
+    +{static} UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
     +{static} PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +{static} ILibPtr create_default_lib()
     +{static} ILibPtr create_library(LibraryContextPtr ctx)
@@ -70,6 +76,9 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +ILibPtr create_default_lib()
     +PlainTxtExportLibraryContextPtr create_plain_txt_library_context()
     +Yolo4ExportLibraryContextPtr create_yolo4_library_context()
+    +UltralyticsDetectExportLibraryContextPtr create_ultralytics_detect_library_context()
+    +UltralyticsObbExportLibraryContextPtr create_ultralytics_obb_library_context()
+    +UltralyticsSegmentExportLibraryContextPtr create_ultralytics_segment_library_context()
     +PyTorchExportLibraryContextPtr create_pytorch_library_context()
     +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
     +IExporterPtr create_exporter(const LibraryContextPtr& ctx)
@@ -78,6 +87,17 @@ package "Implementation (hidden symbols)" #F8F8F8 {
 
   class PlainTxt2FolderExporter
   class Yolo42FolderExporter
+
+  abstract class Ultralytics2FolderExporter {
+    +bool export_db(LibraryContextPtr ectx)
+    #{abstract} void express_rectangle_data(std::fstream&, const IndexType&, const NormalizedRect&)
+    #{static} void express_corners(std::fstream&, const IndexType&, const NormalizedRect&)
+  }
+
+  class UltralyticsDetect2FolderExporter
+  class UltralyticsObb2FolderExporter
+  class UltralyticsSegment2FolderExporter
+
   class PyTorchVisionFolderExporter
 
   class ImageLoader {
@@ -99,6 +119,13 @@ note bottom of LibraryFacade
   behind these abstract interfaces.
 end note
 
+note bottom of Ultralytics2FolderExporter
+  One directory layout and one
+  data.yaml descriptor; the label
+  file line is what every YOLO
+  task changes.
+end note
+
 note bottom of ImageLoader
   Preloads the web hosted image
   records into a local cache before
@@ -108,21 +135,35 @@ end note
 ILib <|-- LibMain
 IExporter <|-- PlainTxt2FolderExporter
 IExporter <|-- Yolo42FolderExporter
+IExporter <|-- Ultralytics2FolderExporter
 IExporter <|-- PyTorchVisionFolderExporter
+
+Ultralytics2FolderExporter <|-- UltralyticsDetect2FolderExporter
+Ultralytics2FolderExporter <|-- UltralyticsObb2FolderExporter
+Ultralytics2FolderExporter <|-- UltralyticsSegment2FolderExporter
 
 LibraryFacade --> LibFactory : creates
 LibMain --> LibFactory : creates
 LibFactory ..> LibMain : creates
 LibFactory ..> PlainTxt2FolderExporter : creates
 LibFactory ..> Yolo42FolderExporter : creates
+LibFactory ..> UltralyticsDetect2FolderExporter : creates
+LibFactory ..> UltralyticsObb2FolderExporter : creates
+LibFactory ..> UltralyticsSegment2FolderExporter : creates
 LibFactory ..> PyTorchVisionFolderExporter : creates
 
 LibraryContext <|-- PlainTxtExportLibraryContext
 LibraryContext <|-- Yolo4ExportLibraryContext
+LibraryContext <|-- UltralyticsDetectExportLibraryContext
+LibraryContext <|-- UltralyticsObbExportLibraryContext
+LibraryContext <|-- UltralyticsSegmentExportLibraryContext
 LibraryContext <|-- PyTorchExportLibraryContext
 
 LibFactory ..> PlainTxtExportLibraryContext : creates and casts to pick
 LibFactory ..> Yolo4ExportLibraryContext : creates and casts to pick
+LibFactory ..> UltralyticsDetectExportLibraryContext : creates and casts to pick
+LibFactory ..> UltralyticsObbExportLibraryContext : creates and casts to pick
+LibFactory ..> UltralyticsSegmentExportLibraryContext : creates and casts to pick
 LibFactory ..> PyTorchExportLibraryContext : creates and casts to pick
 PyTorchVisionFolderExporter ..> PyTorchExportLibraryContext : casts for the cropper
 
@@ -134,6 +175,7 @@ IProvider --> ImageRecord
 
 PlainTxt2FolderExporter --> ImageLoader
 Yolo42FolderExporter --> ImageLoader
+Ultralytics2FolderExporter --> ImageLoader
 PyTorchVisionFolderExporter --> ImageLoader
 ImageLoader --> CURLController
 

@@ -9,7 +9,7 @@ Each `LibraryContext` descendant is implemented by one exporter class under [src
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- The YOLO v4, the three Ultralytics YOLO, the COCO and the Pascal VOC exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -308,7 +308,7 @@ export_path/
     `-- street.png
 ```
 
-This is the one layout of the library read by something other than a YOLO training run. Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take the format, and none of them needs more than the descriptor and the directory holding the images:
+This is the most widely read layout of the library outside a YOLO training run. Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take the format, and none of them needs more than the descriptor and the directory holding the images:
 
 ```python
 # Detectron2
@@ -350,7 +350,7 @@ Every annotated image file is copied into `images/`. When a file of that name is
 }
 ```
 
-- **`bbox`** is `[x, y, width, height]` of the top left corner, in the image own pixels. These are the very four numbers of the `ImageRecordRect`, which makes this the one layout of the library that normalises nothing away: a YOLO label file cannot be read back into pixels without the image size, this descriptor carries both.
+- **`bbox`** is `[x, y, width, height]` of the top left corner, in the image own pixels. These are the very four numbers of the `ImageRecordRect`, so nothing of a rectangle is normalised away here: a YOLO label file cannot be read back into pixels without the image size, this descriptor carries both.
 - **`file_name`** is the file name alone, since the `images` directory itself is what a reader is handed as the dataset root. The `width` and `height` next to it are the record `iwidth` and `iheight`.
 - **The identifiers** of all three arrays are running counters over what the export has really written out, and they start at `1`: a reader treats the category `0` as the background one. A category id is therefore the position of the name in the sorted set the database reports, plus one - which is the darknet and Ultralytics class index of that same name, plus one.
 - **`area`** is the `width` multiplied by the `height` of the box, the value the evaluation of a trained detector splits its results by the object size with.
@@ -448,7 +448,7 @@ Every annotated image file is copied into `JPEGImages/`. When a file of that nam
 ```
 
 - **`bndbox`** is the two corner points the rectangle was drawn between, in the image own pixels: `xmin`/`ymin` is its origin and `xmax`/`ymax` that origin plus its size. LabelImg turns that pair back into the very same rectangle, which is what makes the migration a two way one. The 1-based coordinates the original VOC devkit used are not written: a reader that expects them - the MMDetection `XMLDataset` subtracts one from all four by default - shifts the box by a single pixel and keeps its size, since both corners move together.
-- **`name`** is the annotation name, written out as it stands. This is the one layout of the library that numbers nothing, so the position of a name in the sorted set the database reports decides nothing here, and adding a name to a project renumbers no file that was already exported.
+- **`name`** is the annotation name, written out as it stands. This is one of the two layouts of the library that number nothing - the Create ML one is the other - so the position of a name in the sorted set the database reports decides nothing here, and adding a name to a project renumbers no file that was already exported.
 - **`folder`** and **`filename`** are the directory holding the image and its file name, which a reader joins onto the dataset root it was handed. The `width` and `height` of `size` are the record `iwidth` and `iheight`.
 - **`depth`** is `3` for every image. An `ImageRecord` carries no channel count, and the format leaves no way to write the size without one.
 - **`truncated`** is `1` exactly when the image edge really did cut the rectangle down, which is what the flag means: the object continues past the picture. A rectangle drawn wholly inside the image gets a `0`.
@@ -473,6 +473,64 @@ The two guards of the Ultralytics exporters apply here as well:
 A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual - an image whose every rectangle was dropped still reaches the lists, with a descriptor carrying no `object` element. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
 
 One limitation belongs to a reader rather than to the export: the MMDetection `XMLDataset` builds an image path by appending `.jpg` to a name of the list, so a project of PNG images is read by it only after that class is told otherwise. The descriptors themselves name the real file with their `filename` element, and every other reader of the format uses it.
+
+### CreateMLExportLibraryContext
+
+The Create ML object detection dataset: the copied images and the single JSON descriptor beside them, in one flat directory. The exporter creates the export directory itself when it is not there yet, and makes no sub-directory below it:
+
+```
+export_path/
+|-- annotations.json
+|-- park.jpg
+`-- street.png
+```
+
+The flatness is the format, not a simplification. This is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` - a directory of images holding **exactly one** JSON annotation file - and it is what the Create ML application itself consumes when a folder is dropped into its training well. Nothing else in this library arranges its images that way, and nothing else here leads to a model that runs on an iPhone: what a training run over this directory produces is a Core ML detector.
+
+```swift
+// the Create ML API, over the very directory the export wrote
+import CreateML
+
+let source = MLObjectDetector.DataSource.directoryWithImagesAndJsonAnnotation(
+    at: URL(fileURLWithPath: "/home/user/dataset"))
+
+let detector = try MLObjectDetector(trainingData: source)
+
+try detector.write(to: URL(fileURLWithPath: "Detector.mlmodel"))
+```
+
+Every annotated image file is copied into the export directory itself. When a file of that name is already there, the copy receives a `-1`, `-2`, ... suffix before its extension, so `street.png` of a second source directory lands as `street-1.png`, and the descriptor names it under that new name. The `annotations.json` name is reserved by the same mechanism: an image record actually named that way is written as `annotations-1.json`, because a second JSON file in the directory is what this data source refuses to read.
+
+`annotations.json` is the whole descriptor - one array, one element per image. For the two record database above it reads:
+
+```json
+[
+  {"imagefilename": "street.png", "annotation": [
+    {"label": "dog", "coordinates": {"x": 100, "y": 40, "width": 100, "height": 40}},
+    {"label": "dog", "coordinates": {"x": 345, "y": 47.5, "width": 90, "height": 45}}
+  ]},
+  {"imagefilename": "park.jpg", "annotation": [
+    {"label": "cat", "coordinates": {"x": 224, "y": 156, "width": 48, "height": 52}},
+    {"label": "dog", "coordinates": {"x": 44, "y": 40, "width": 64, "height": 64}}
+  ]}
+]
+```
+
+- **`x` and `y` are the centre of the box**, not its corner, counted in the image own pixels from the top left of the image. This is the one place in the library where a centre is written without being normalised afterwards: `MLObjectDetector.DataSource.boundingBox` is read with `units: .pixel`, `origin: .topLeft` and `anchor: .center`, and those defaults are what the Create ML application uses. The same halving reaches the three `Ultralytics*` label files, only divided by the image size there.
+- **A centre lands on a half pixel whenever the box size is odd**, as the second `dog` of `street.png` shows with its `47.5`. The field is a JSON number and the format takes a decimal there, so the half is written out rather than rounded into a box a pixel off.
+- **`width` and `height`** are the size of the box in those same pixels, the `ImageRecordRect` fields unchanged.
+- **`label`** is the annotation name written out as it stands. Nothing here is numbered, so - as in the Pascal VOC layout, and unlike every YOLO one - the position of a name in the sorted set the database reports decides nothing, and a name added to a project renumbers nothing exported before it.
+- **`imagefilename`** is the file name alone, since the directory holding both the images and this descriptor is what the data source is pointed at. Note the singular spelling of both this key and `annotation`: it is the one Apple documents, and the plural `image` / `annotations` pair that some converters emit is a different dialect of the format.
+- An annotation name and a file name are both user text, so every one of them is written out JSON escaped - a quote, a backslash or a control character inside a name stays a part of the name instead of ending the string.
+
+The two guards of the Ultralytics exporters apply here as well, and the centre is what makes them matter: it is taken after the cut, since a centre computed over an uncut box need not lie inside the box a reader is given.
+
+- **A rectangle reaching over an image edge is cut down to the image.**
+- **A rectangle drawn from the right or from the bottom carries a negative width or height.** Its edges are sorted before it is cut, so it describes the same area as the one drawn the other way round.
+
+A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual - an image whose every rectangle was dropped still reaches the descriptor, with an empty `annotation` array. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
+
+The whole set is offered as one dataset, the way every other layout here offers it. This is the one place where that costs the consumer nothing: the Create ML application defaults its validation data to `Automatic` and holds a small part of the given set back on its own, so a directory written by this exporter is complete as it stands.
 
 ### PyTorchExportLibraryContext
 

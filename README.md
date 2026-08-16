@@ -14,7 +14,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Eight dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
+- **Nine dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
   - `PlainTxtExportLibraryContext` - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
   - `Yolo4ExportLibraryContext` - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
   - `UltralyticsDetectExportLibraryContext` - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
@@ -22,6 +22,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
   - `UltralyticsSegmentExportLibraryContext` - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle;
   - `CocoExportLibraryContext` - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for;
   - `PascalVocExportLibraryContext` - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index;
+  - `CreateMLExportLibraryContext` - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away;
   - `PyTorchExportLibraryContext` - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
 - **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the destination directory and the database, and `ILib::perform_export()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
@@ -124,7 +125,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 134 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 148 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 

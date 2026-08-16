@@ -14,6 +14,7 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO segmentation dataset layout |
 | [CocoExportLibraryContext.h](/src/lib/facade/public/CocoExportLibraryContext.h) | the `LibraryContext` of the COCO object detection dataset layout |
 | [PascalVocExportLibraryContext.h](/src/lib/facade/public/PascalVocExportLibraryContext.h) | the `LibraryContext` of the Pascal VOC dataset layout |
+| [CreateMLExportLibraryContext.h](/src/lib/facade/public/CreateMLExportLibraryContext.h) | the `LibraryContext` of the Create ML object detection dataset layout |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout, plus its image cropper |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | `IExporter::export_db()` - a single exporter used on its own |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the interface the consuming project implements to crop images out |

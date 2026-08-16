@@ -27,11 +27,12 @@ directory (GNU/Linux based):
 ctest --tests-dir /path/to/the/project/build/directory
 ```
 
-The cases are distributed over eighteen binaries: fifteen unit test ones
+The cases are distributed over nineteen binaries: sixteen unit test ones
 (`UTEST_LibraryFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter`,
 `UTEST_Yolov4CfgWriter`, `UTEST_Ultralytics2FolderExporter`,
 `UTEST_Coco2FolderExporter`, `UTEST_PascalVoc2FolderExporter`,
+`UTEST_CreateML2FolderExporter`,
 `UTEST_PyTorchVisionFolderExporter`, `UTEST_OpenCVImageCropper`,
 `UTEST_ImageLoader`, `UTEST_ImageRecordUrlAndPathHelper`, `UTEST_TypeHelper`,
 `UTEST_CURLController`) and three component test ones (`CTEST_Exporters`,

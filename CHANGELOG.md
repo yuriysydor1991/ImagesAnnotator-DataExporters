@@ -23,10 +23,10 @@ a training dataset without duplicating the code.
   is the devkit directory shape: the copied images under `JPEGImages/`, one
   `Annotations/<stem>.xml` descriptor per image over them and the
   `ImageSets/Main` lists naming those. These are the very files
-  [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads, which
-  makes this the one export of the library that leads back into an annotating
-  session, and the torchvision `VOCDetection` and the MMDetection `XMLDataset`
-  take the same three directories.
+  [LabelImg](https://github.com/HumanSignal/labelImg) saves its own work in, so
+  an exported project opens for correction in that annotator directly, and the
+  torchvision `VOCDetection` and the MMDetection `XMLDataset` take the same
+  three directories.
 - A rectangle reaches the `bndbox` as the two corner points it was drawn
   between, in the image own pixels: `xmin`/`ymin` is its origin and
   `xmax`/`ymax` that origin plus its size, which is the pair LabelImg turns back

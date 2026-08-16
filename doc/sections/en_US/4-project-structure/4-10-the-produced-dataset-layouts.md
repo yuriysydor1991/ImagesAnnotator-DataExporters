@@ -385,7 +385,7 @@ export_path/
     `-- street.png
 ```
 
-These are the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads, which makes this layout the one export of the library that leads back into an annotating session: point that tool at `JPEGImages` with `Annotations` as its save directory and every rectangle of the project is there to be corrected. Every reader of the format takes the same three directories - the MMDetection `XMLDataset` with its default `img_subdir` and `ann_subdir`, and the torchvision `VOCDetection`:
+These are the very files [LabelImg](https://github.com/HumanSignal/labelImg) saves its own work in, so an exported project opens for correction in that annotator directly: point it at `JPEGImages` with `Annotations` as its save directory and every rectangle of the project is there to be edited and written back. Every reader of the format takes the same three directories - the MMDetection `XMLDataset` with its default `img_subdir` and `ann_subdir`, and the torchvision `VOCDetection`:
 
 ```python
 # MMDetection

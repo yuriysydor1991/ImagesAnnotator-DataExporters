@@ -41,12 +41,12 @@ namespace iannotator::exporters
 
 /**
  * @brief The Pascal VOC dataset exporter: the JPEGImages directory, one
- * Annotations XML descriptor per image over it and the ImageSets/Main list
+ * Annotations XML descriptor per image over it and the ImageSets/Main lists
  * naming them.
  *
  * This is the devkit layout torchvision VOCDetection and the MMDetection
- * XMLDataset are pointed at, and the very files LabelImg writes and reads, so
- * the export is also the way back into an annotating session.
+ * XMLDataset are pointed at, and the very files LabelImg saves its own work in,
+ * so an exported project opens for correction in that annotator directly.
  *
  * A rectangle reaches the XML as the two corner points it was drawn between,
  * in the image own pixels: `xmin`/`ymin` is the top left one and `xmax`/`ymax`

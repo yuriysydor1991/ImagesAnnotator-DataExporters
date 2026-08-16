@@ -77,9 +77,9 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 ## What your project has to supply
 
-- **The database.** `ExportContext::dbProvider` is an `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::LibraryFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
+- **The database.** `LibraryContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::LibraryFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
 - **The destination directory.** Only the YOLO v4 export creates its own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
-- **An image cropper, for one layout only.** `PyTorchExportLibraryContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `ExportContext::cropper` or `LibraryContext::cropper`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The two other layouts need no cropper at all.
+- **An image cropper, for one layout only.** `PyTorchExportLibraryContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportLibraryContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The two other layouts need no cropper at all.
 
 ## A minimal consumer
 
@@ -107,10 +107,10 @@ int main()
 
   auto ctx = std::make_shared<iade::PlainTxtExportLibraryContext>();
 
-  ctx->export_path = "plain-dataset";
-  ctx->dbProvider = db;
+  ctx->set_export_path("plain-dataset");
+  ctx->set_db_provider(db);
 
-  std::filesystem::create_directories(ctx->export_path);
+  std::filesystem::create_directories(ctx->get_export_path());
 
   auto lib = iade::LibraryFacade::create_library(ctx);
 

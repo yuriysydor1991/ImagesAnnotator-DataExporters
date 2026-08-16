@@ -63,15 +63,10 @@ LibFactory::ILibPtr LibFactory::create_appropriate_lib(
   return create_default_lib();
 }
 
-LibFactory::ExportContextPtr LibFactory::create_export_context()
-{
-  return std::make_shared<ExportContext>();
-}
-
-// The context descendants carry no data of their own, so the wanted layout is
-// their very type. A cast per layout keeps that knowledge here, where the
-// concrete exporter classes are already known, instead of in the installed
-// headers.
+// The wanted layout is the very type of the context descendant, whatever data
+// that descendant carries of its own. A cast per layout keeps that knowledge
+// here, where the concrete exporter classes are already known, instead of in
+// the installed headers.
 LibFactory::IExporterPtr LibFactory::create_exporter(
     const LibraryContextPtr& ctx)
 {

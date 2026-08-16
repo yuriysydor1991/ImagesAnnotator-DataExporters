@@ -59,7 +59,6 @@ exactly the following files:
 <prefix>/lib/libImagesAnnotatorDataExporters-0.11.so.0
 <prefix>/lib/libImagesAnnotatorDataExporters-0.11.so
 
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/ExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ExportersAPI.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/IExporter.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/IImageCropperFacility.h

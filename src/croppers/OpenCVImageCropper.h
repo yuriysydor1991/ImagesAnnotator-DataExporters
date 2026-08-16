@@ -46,9 +46,10 @@ namespace iannotator::exporters::croppers
  * that export. It is compiled only then - see create_builtin_cropper(), which
  * hands out a nullptr in a build without OpenCV.
  *
- * A cropper the consumer supplies through ExportContext::cropper always wins
- * over this one: a project that already decodes images its own way keeps doing
- * so, and this is only what fills an empty slot.
+ * A cropper the consumer sets through
+ * PyTorchExportLibraryContext::set_cropper() always wins over this one: a
+ * project that already decodes images its own way keeps doing so, and this is
+ * only what fills an empty slot.
  *
  * Nothing declared here is installed. The class is reached through the
  * abstract IImageCropperFacility exactly like a consumer supplied cropper, so

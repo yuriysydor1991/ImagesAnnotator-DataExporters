@@ -18,7 +18,7 @@ namespace
 class ExporterMock : public IExporter
 {
  public:
-  MOCK_METHOD(bool, export_db, (ExportContextPtr ectx), (override));
+  MOCK_METHOD(bool, export_db, (LibraryContextPtr ctx), (override));
 };
 
 }  // namespace
@@ -33,7 +33,7 @@ class UTEST_LibMain : public Test
   LibraryContextPtr filled_context()
   {
     auto ctx = std::make_shared<LibraryContext>();
-    ctx->export_path = "/tmp/some-export-dir";
+    ctx->set_export_path("/tmp/some-export-dir");
     return ctx;
   }
 
@@ -69,34 +69,31 @@ TEST_F(UTEST_LibMain, perform_export_reports_the_exporter_failure)
     EXPECT_CALL(instance, create_exporter(ctx))
         .Times(1)
         .WillOnce(Return(exporter));
-    EXPECT_CALL(instance, create_export_context())
-        .Times(1)
-        .WillOnce(Return(std::make_shared<ExportContext>()));
   };
 
   EXPECT_FALSE(libmain->perform_export(ctx));
 }
 
 TEST_F(UTEST_LibMain,
-       perform_export_success_publishes_the_exporter_and_the_context)
+       perform_export_success_publishes_the_exporter_and_passes_the_context)
 {
   auto exporter = std::make_shared<ExporterMock>();
-  auto ectx = std::make_shared<ExportContext>();
   auto ctx = filled_context();
 
-  EXPECT_CALL(*exporter, export_db(ectx)).Times(1).WillOnce(Return(true));
+  EXPECT_CALL(*exporter, export_db(ctx)).Times(1).WillOnce(Return(true));
 
-  LibFactory::onMockCreate = [exporter, ectx, ctx](LibFactory& instance) {
+  LibFactory::onMockCreate = [exporter, ctx](LibFactory& instance) {
     EXPECT_CALL(instance, create_exporter(ctx))
         .Times(1)
         .WillOnce(Return(exporter));
-    EXPECT_CALL(instance, create_export_context())
-        .Times(1)
-        .WillOnce(Return(ectx));
   };
 
   EXPECT_TRUE(libmain->perform_export(ctx));
 
-  EXPECT_EQ(ctx->exporter, exporter);
-  EXPECT_EQ(ectx->export_path, ctx->export_path);
+  EXPECT_EQ(ctx->get_exporter(), exporter);
+
+  // The published field holds the exporter and the expectation above holds
+  // the context, so that pointer cycle has to be broken for the mock to be
+  // freed and verified at all.
+  ctx->set_exporter({});
 }

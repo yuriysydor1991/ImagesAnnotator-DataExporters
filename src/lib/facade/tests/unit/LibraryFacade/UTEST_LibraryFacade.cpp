@@ -65,21 +65,6 @@ TEST_F(UTEST_LibraryFacade, create_library_context_success)
   auto res = LibraryFacade::create_library_context();
 }
 
-TEST_F(UTEST_LibraryFacade, create_export_context_success)
-{
-  MockFunction<void(LibFactory&)> mockEnsurer;
-
-  EXPECT_CALL(mockEnsurer, Call)
-      .Times(1)
-      .WillOnce(Invoke([](LibFactory& instance) {
-        EXPECT_CALL(instance, create_export_context()).Times(1);
-      }));
-
-  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
-
-  auto res = LibraryFacade::create_export_context();
-}
-
 TEST_F(UTEST_LibraryFacade, create_exporter_forwards_the_given_context)
 {
   MockFunction<void(LibFactory&)> mockEnsurer;

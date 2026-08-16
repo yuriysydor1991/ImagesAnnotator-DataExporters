@@ -36,7 +36,7 @@ a training dataset without duplicating the code.
   into a run time `nullptr`, so no caller repeats the `#ifdef`.
 - The resolution order of the PyTorch Vision export, in one line: a cropper the
   consumer supplied always wins. The library's own only fills an empty
-  `ExportContext::cropper` slot, so an existing consumer - the GUI cutters of
+  cropper slot, so an existing consumer - the GUI cutters of
   the annotator application among them - sees no change whatsoever, and a new
   one may simply leave the field alone. Only when both are absent does the
   export fail, exactly as before.
@@ -60,20 +60,30 @@ a training dataset without duplicating the code.
   `TypeHelper` and `CURLController`.
 - The installable public interface under
   [src/lib/facade/public](/src/lib/facade/public), in the version stamped
-  `ImagesAnnotatorDataExporters011` namespace: `IExporter`, `ExportContext`,
+  `ImagesAnnotatorDataExporters011` namespace: `IExporter`,
   `IImageCropperFacility` and the extended `LibraryFacade`, `LibraryContext`
   and `ILib`.
+- `LibraryContext` is the single data class of that interface. The very same
+  instance names the layout, carries the export in-data and receives the
+  exporter of the run, whether it drives the one shot `ILib::perform_export()`
+  or the `IExporter::export_db()` of an exporter built by hand, so nothing has
+  to be copied from one context class into another. Its data members are
+  private, reached through the `get_export_path()` / `set_export_path()` styled
+  accessor pairs, so the class may grow a check or a default without touching a
+  single call site. It holds only what every layout needs: the image cropper
+  sits on `PyTorchExportLibraryContext`, the one layout which cuts pixels out,
+  so no other export carries a slot it never reads.
 - The wanted dataset layout is named by the `LibraryContext` descendant the
   consumer instantiates - `PlainTxtExportLibraryContext`,
-  `Yolo4ExportLibraryContext` or `PyTorchExportLibraryContext`. Every one of
-  them is an empty class which inherits the whole of `LibraryContext` and adds
-  nothing, so the type itself is the layout, and `LibFactory::create_exporter()`
-  maps it onto the concrete exporter. That replaces the `ExportFormat`
+  `Yolo4ExportLibraryContext` or `PyTorchExportLibraryContext`. The type itself
+  is the layout, and `LibFactory::create_exporter()` maps it onto the concrete
+  exporter; a descendant carries data only when its layout asks for data no
+  other one needs. That replaces the `ExportFormat`
   enumeration the context used to carry, so no unknown format value can be
   constructed at all.
-- `LibraryFacade::create_exporter()`, `create_export_context()` and
-  `library_version()` as the entry point of the library, plus the one shot
-  `ILib::perform_export()` driven by `LibraryContext`.
+- `LibraryFacade::create_exporter()` and `library_version()` as the entry
+  point of the library, plus the one shot `ILib::perform_export()`, both driven
+  by a `LibraryContext`.
 - `IImageCropperFacility`, implemented by the consuming project: the library
   decodes no image format of its own, so the PyTorch Vision export asks its
   consumer to cut the rectangles out.
@@ -136,8 +146,9 @@ a training dataset without duplicating the code.
 - The moved `helpers` and `curli` implementation namespaces are nested under
   `iannotator::exporters` instead of staying at the top level, for the same
   reason.
-- `LibMain::perform_export()` is a real implementation now: it builds the exporter for
-  the context format, runs it and publishes it as `LibraryContext::exporter`.
+- `LibMain::perform_export()` is a real implementation now: it builds the
+  exporter of the context layout, runs it and publishes it through
+  `LibraryContext::set_exporter()`.
 - All the documentation, both `en_US` and `uk_UA`, was rewritten to describe
   this library, with new sections on the exporters API, the produced dataset
   layouts, the data drivers dependency and the downstream integration, a redrawn

@@ -15,13 +15,12 @@ The records the exporters read are not defined here. They come from the [ImagesA
 | Header | Declares |
 | --- | --- |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | the `IADE_API` visibility macro every installable declaration is marked with |
-| [ExportContext.h](/src/lib/facade/public/ExportContext.h) | the `ExportContext` data class an exporter is driven with |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | the `IExporter` abstract exporter interface |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the `IImageCropperFacility` interface the consuming project implements |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class of the single shot entry point |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class both entry points are driven with |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
 | [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 dataset layout |
-| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout |
+| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout, with the image cropper of that layout |
 | [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_export` method |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
 
@@ -35,27 +34,41 @@ class Yolo4ExportLibraryContext : public LibraryContext;
 class PyTorchExportLibraryContext : public LibraryContext;
 ```
 
-The three `LibraryContext` descendants name the three dataset layouts the library is able to write. Every one of them is an empty class inheriting the whole of `LibraryContext` and adding nothing: instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
+The three `LibraryContext` descendants name the three dataset layouts the library is able to write. Instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. The first two add nothing to `LibraryContext`; `PyTorchExportLibraryContext` adds the `get_cropper()` / `set_cropper()` pair, since cutting pixels out is what its layout alone does - it has a subsection of its own below. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
 
-### ExportContext
+### LibraryContext
 
-The data class a single export run is driven with. Create it with `LibraryFacade::create_export_context()`.
+The single data class of the library, the one both of its entry points are driven with: the one shot `ILib::perform_export()` and the `IExporter::export_db()` of an exporter built by hand. Create it by instantiating the descendant of the wanted layout, or take the default layout one from `LibraryFacade::create_library_context()`.
 
-| Field | Meaning |
-| --- | --- |
-| `std::string export_path` | the destination directory of the export, mandatory |
-| `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr dbProvider` | the annotations database to read the records out of, mandatory |
-| `IImageCropperFacilityPtr cropper` | the image cropping service, needed by `PyTorchExportLibraryContext` only |
+The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
-`ExportContextPtr` is the `std::shared_ptr<ExportContext>` alias. An `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr` may be assigned to `dbProvider` directly, since `IAnnotationsDB` derives from `IImagesPathsDBProvider`.
+| Accessors | Direction | Meaning |
+| --- | --- | --- |
+| `get_export_path()`, `set_export_path()` | in | the destination directory of the export, a `std::string`, mandatory |
+| `get_db_provider()`, `set_db_provider()` | in | the annotations database to read the records out of, an `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`, mandatory |
+| `get_exporter()`, `set_exporter()` | out | the exporter instance the last `perform_export` ran, an `IExporterPtr` |
+
+`LibraryContextPtr` is the `std::shared_ptr<LibraryContext>` alias. An `ImagesAnnotatorDataDrivers011::IAnnotationsDBPtr` may be handed to `set_db_provider()` directly, since `IAnnotationsDB` derives from `IImagesPathsDBProvider`.
+
+### PyTorchExportLibraryContext
+
+The one descendant which carries data of its own, because the PyTorch Vision layout is the one which cuts rectangles out of the pictures:
+
+| Accessors | Direction | Meaning |
+| --- | --- | --- |
+| `get_cropper()`, `set_cropper()` | in | the image cropping service, an `IImageCropperFacilityPtr`. Optional in a library built with OpenCV, mandatory in one built without it |
+
+No other layout carries a cropper slot it would never read. An `export_db()` of the PyTorch Vision exporter driven with any other context therefore finds no consumer cropper and falls back to the library's own, or fails when this build ships none.
 
 ### IExporter
 
 ```cpp
-virtual bool export_db(ExportContextPtr ectx) = 0;
+virtual bool export_db(LibraryContextPtr ectx) = 0;
 ```
 
-The single method of an exporter. It writes the database named by the context out in the layout that exporter implements and returns `true` when the run as a whole went through. Records it cannot process - a record without rectangles, an image file that is not there - are skipped and reported through the library log, they do not fail the run. `IExporterPtr` is the `std::shared_ptr<IExporter>` alias.
+The single method of an exporter. It writes the database named by the context out in the layout that exporter implements and returns `true` when the run as a whole went through. Records it cannot process - a record without rectangles, an image file that is not there - are skipped and reported through the library log, they do not fail the run.
+
+The layout the context type names is not looked at here: the layout written is the one of the exporter itself, so even the `LibraryContext` base class, which names no layout of its own, drives an `export_db()` just fine. An implementation must not keep the context beyond the call, since a context holding that exporter back would close a pointer cycle. `IExporterPtr` is the `std::shared_ptr<IExporter>` alias.
 
 ### IImageCropperFacility
 
@@ -80,20 +93,9 @@ A library built with OpenCV ships an implementation of its own, so this interfac
 
 `ImageRecordPtr` and `ImageRecordRectPtr` are the `ImagesAnnotatorDataDrivers011` record pointers.
 
-### LibraryContext and ILib
+### ILib
 
-`LibraryContext` drives the single shot entry point of the library. It carries the same in-fields as `ExportContext` and receives one out-field back:
-
-| Field | Direction | Meaning |
-| --- | --- | --- |
-| `std::string export_path` | in | the destination directory of the export |
-| `IImagesPathsDBProviderPtr dbProvider` | in | the annotations database to read |
-| `IImageCropperFacilityPtr cropper` | in | the image cropper, when the layout needs one |
-| `IExporterPtr exporter` | out | the exporter instance the last `perform_export` ran |
-
-The wanted layout is named by instantiating one of its three descendants, each of which adds nothing to the fields above. This class itself names no layout, so an export driven by it finds no exporter.
-
-`ILib::perform_export(LibraryContextPtr ctx)` builds the exporter of the context layout, stores it in `ctx->exporter`, copies the in-fields into a fresh export context and runs the export. It returns `false` when the context names no known layout or the export itself failed. Projects that want a finer grained control should rather build the exporter directly with `LibraryFacade::create_exporter()`.
+`ILib::perform_export(LibraryContextPtr ctx)` is the single shot entry point of the library. It builds the exporter of the layout the context names, publishes it through `ctx->set_exporter()` and runs the export over that very same context. It returns `false` when the context names no known layout or the export itself failed. Projects that want a finer grained control should rather build the exporter directly with `LibraryFacade::create_exporter()` and call `export_db()` on it - with the same context in both hands.
 
 ### LibraryFacade
 
@@ -104,7 +106,6 @@ A class of static factory methods only, and the only entry point a consuming pro
 | `create_library_context()` | a new empty `PlainTxtExportLibraryContext`, the default layout |
 | `create_default_lib()` | the default `ILibPtr` implementation |
 | `create_library(LibraryContextPtr ctx)` | the `ILibPtr` implementation appropriate for the given context |
-| `create_export_context()` | a new empty `ExportContextPtr` |
 | `create_exporter(const LibraryContextPtr& ctx)` | a new `IExporterPtr` for the layout of the context, or a `nullptr` for a context naming no known layout |
 | `create_image_cropper()` | the cropper the library ships itself, or a `nullptr` in a build without OpenCV |
 | `library_version()` | the version string of the library binary in use |
@@ -140,20 +141,19 @@ int main(int argc, char** argv)
 
   std::filesystem::create_directories(argv[2]);
 
-  auto ectx = iade::LibraryFacade::create_export_context();
+  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ectx->dbProvider = db;
-  ectx->export_path = argv[2];
+  ctx->set_db_provider(db);
+  ctx->set_export_path(argv[2]);
 
-  auto exporter = iade::LibraryFacade::create_exporter(
-      std::make_shared<iade::Yolo4ExportLibraryContext>());
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
 
   if (exporter == nullptr) {
     std::cerr << "no exporter available for the requested layout\n";
     return 1;
   }
 
-  if (!exporter->export_db(ectx)) {
+  if (!exporter->export_db(ctx)) {
     std::cerr << "the export has failed\n";
     return 1;
   }
@@ -211,10 +211,12 @@ class MyCropper : public iade::IImageCropperFacility
 };
 ```
 
-Hand the instance over through the export context and the exporter picks it up:
+Hand the instance over through the `PyTorchExportLibraryContext` and the exporter picks it up:
 
 ```cpp
-ectx->cropper = std::make_shared<MyCropper>();
+auto ctx = std::make_shared<iade::PyTorchExportLibraryContext>();
+
+ctx->set_cropper(std::make_shared<MyCropper>());
 ```
 
 Every rectangle carrying the same annotation name inside one image is offered the very same `tofpath`, so a cropper that has to keep them all apart has to make the path unique itself.

@@ -9,12 +9,12 @@
 #include "src/exporters/PyTorchVisionFolderExporter.h"
 
 using namespace testing;
-using iannotator::exporters::ExportContext;
 using iannotator::exporters::ImageRecord;
 using iannotator::exporters::ImageRecordPtr;
 using iannotator::exporters::ImageRecordRect;
 using iannotator::exporters::ImageRecordRectPtr;
 using iannotator::exporters::ImageRecordsSet;
+using iannotator::exporters::PyTorchExportLibraryContext;
 using iannotator::exporters::PyTorchVisionFolderExporter;
 
 namespace
@@ -62,10 +62,10 @@ TEST(UTEST_PyTorchVisionFolderExporter, handles_a_missing_cropper_by_the_build)
   std::filesystem::remove_all(dir);
   std::filesystem::create_directories(dir);
 
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = dir.string();
-  ctx->dbProvider = std::make_shared<FakeProvider>();
-  ctx->cropper = nullptr;
+  auto ctx = std::make_shared<PyTorchExportLibraryContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(std::make_shared<FakeProvider>());
+  ctx->set_cropper(nullptr);
 
   const bool hasBuiltin =
       iannotator::exporters::croppers::create_builtin_cropper() != nullptr;
@@ -79,10 +79,10 @@ TEST(UTEST_PyTorchVisionFolderExporter, handles_a_missing_cropper_by_the_build)
 
 TEST(UTEST_PyTorchVisionFolderExporter, fails_when_export_path_is_empty)
 {
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = "";
-  ctx->dbProvider = std::make_shared<FakeProvider>();
-  ctx->cropper = std::make_shared<FakeCropper>();
+  auto ctx = std::make_shared<PyTorchExportLibraryContext>();
+  ctx->set_export_path("");
+  ctx->set_db_provider(std::make_shared<FakeProvider>());
+  ctx->set_cropper(std::make_shared<FakeCropper>());
 
   PyTorchVisionFolderExporter exporter;
 
@@ -96,10 +96,10 @@ TEST(UTEST_PyTorchVisionFolderExporter, succeeds_for_a_db_without_records)
   std::filesystem::remove_all(dir);
   std::filesystem::create_directories(dir);
 
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = dir.string();
-  ctx->dbProvider = std::make_shared<FakeProvider>();
-  ctx->cropper = std::make_shared<FakeCropper>();
+  auto ctx = std::make_shared<PyTorchExportLibraryContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(std::make_shared<FakeProvider>());
+  ctx->set_cropper(std::make_shared<FakeCropper>());
 
   PyTorchVisionFolderExporter exporter;
 
@@ -124,10 +124,10 @@ TEST(UTEST_PyTorchVisionFolderExporter, crops_every_rect_into_its_tag_directory)
 
   auto cropper = std::make_shared<FakeCropper>();
 
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = dir.string();
-  ctx->dbProvider = provider;
-  ctx->cropper = cropper;
+  auto ctx = std::make_shared<PyTorchExportLibraryContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(provider);
+  ctx->set_cropper(cropper);
 
   PyTorchVisionFolderExporter exporter;
 

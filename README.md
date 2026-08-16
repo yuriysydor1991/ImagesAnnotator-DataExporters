@@ -62,10 +62,10 @@ int main(int argc, char** argv)
 
   auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ctx->export_path = argv[2];
-  ctx->dbProvider = db;
+  ctx->set_export_path(argv[2]);
+  ctx->set_db_provider(db);
 
-  std::filesystem::create_directories(ctx->export_path);
+  std::filesystem::create_directories(ctx->get_export_path());
 
   auto lib = iade::LibraryFacade::create_default_lib();
 

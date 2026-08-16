@@ -36,11 +36,6 @@ TEST_F(UTEST_LibFactory, create_appropriate_lib_success)
   EXPECT_NE(factory->create_appropriate_lib({}), nullptr);
 }
 
-TEST_F(UTEST_LibFactory, create_export_context_success)
-{
-  EXPECT_NE(factory->create_export_context(), nullptr);
-}
-
 TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
 {
   EXPECT_NE(factory->create_exporter(
@@ -63,8 +58,9 @@ TEST_F(UTEST_LibFactory, create_exporter_without_a_layout_context_failure)
 
 // The one cropper case that runs in every configuration: with OpenCV the
 // factory hands out the library's own cropper, without it a nullptr, which is
-// what makes ExportContext::cropper mandatory again. The cropper itself is
-// covered by UTEST_OpenCVImageCropper, configured only in an OpenCV build.
+// what makes PyTorchExportLibraryContext::set_cropper() mandatory again. The
+// cropper itself is covered by UTEST_OpenCVImageCropper, configured only in an
+// OpenCV build.
 TEST_F(UTEST_LibFactory, create_image_cropper_matches_what_the_build_found)
 {
   const auto cropper = factory->create_image_cropper();

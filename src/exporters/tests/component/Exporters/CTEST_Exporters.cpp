@@ -86,12 +86,17 @@ class CTEST_Exporters : public testing::Test
 
   void TearDown() override { std::filesystem::remove_all(root); }
 
-  iade::ExportContextPtr context(const std::string& subdir)
+  /**
+   * @brief Builds the context of the wanted dataset layout, the very same
+   * instance the exporter is asked for and then driven with.
+   */
+  template <class ContextT>
+  std::shared_ptr<ContextT> context(const std::string& subdir)
   {
-    auto ectx = iade::LibraryFacade::create_export_context();
-    ectx->export_path = (root / subdir).string();
-    ectx->dbProvider = db;
-    return ectx;
+    auto ctx = std::make_shared<ContextT>();
+    ctx->set_export_path((root / subdir).string());
+    ctx->set_db_provider(db);
+    return ctx;
   }
 
   std::filesystem::path root;
@@ -106,11 +111,12 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
   const std::filesystem::path dir = root / "plain";
   std::filesystem::create_directories(dir);
 
-  auto exporter = iade::LibraryFacade::create_exporter(
-      std::make_shared<iade::PlainTxtExportLibraryContext>());
+  auto ctx = context<iade::PlainTxtExportLibraryContext>("plain");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
-  ASSERT_TRUE(exporter->export_db(context("plain")));
+  ASSERT_TRUE(exporter->export_db(ctx));
 
   ASSERT_TRUE(std::filesystem::is_regular_file(dir / "dog.txt"));
   EXPECT_EQ(read_file(dir / "dog.txt"),
@@ -119,11 +125,12 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
 
 TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
 {
-  auto exporter = iade::LibraryFacade::create_exporter(
-      std::make_shared<iade::Yolo4ExportLibraryContext>());
+  auto ctx = context<iade::Yolo4ExportLibraryContext>("yolo");
+
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
-  ASSERT_TRUE(exporter->export_db(context("yolo")));
+  ASSERT_TRUE(exporter->export_db(ctx));
 
   const std::filesystem::path dir = root / "yolo";
 
@@ -135,16 +142,15 @@ TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
 
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
-  auto ectx = context("pytorch");
-  ectx->cropper = std::make_shared<FakeCropper>();
+  auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");
+  ctx->set_cropper(std::make_shared<FakeCropper>());
 
-  std::filesystem::create_directories(ectx->export_path);
+  std::filesystem::create_directories(ctx->get_export_path());
 
-  auto exporter = iade::LibraryFacade::create_exporter(
-      std::make_shared<iade::PyTorchExportLibraryContext>());
+  auto exporter = iade::LibraryFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
-  ASSERT_TRUE(exporter->export_db(ectx));
+  ASSERT_TRUE(exporter->export_db(ctx));
 
   const std::filesystem::path dir = root / "pytorch";
 
@@ -157,15 +163,15 @@ TEST_F(CTEST_Exporters,
 {
   auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
 
-  ctx->export_path = (root / "perform_export").string();
-  ctx->dbProvider = db;
+  ctx->set_export_path((root / "perform_export").string());
+  ctx->set_db_provider(db);
 
   auto lib = iade::LibraryFacade::create_library(ctx);
 
   ASSERT_NE(lib, nullptr);
   ASSERT_TRUE(lib->perform_export(ctx));
 
-  EXPECT_NE(ctx->exporter, nullptr);
+  EXPECT_NE(ctx->get_exporter(), nullptr);
   EXPECT_EQ(read_file(root / "perform_export" / "data" / "obj.names"), "dog");
 }
 

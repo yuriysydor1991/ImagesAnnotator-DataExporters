@@ -65,15 +65,6 @@ ILibPtr LibraryFacade::create_library(LibraryContextPtr ctx)
   return libFactory->create_appropriate_lib(ctx);
 }
 
-ExportContextPtr LibraryFacade::create_export_context()
-{
-  auto libFactory = iade0impl::LibFactory::create_factory();
-
-  assert(libFactory != nullptr);
-
-  return libFactory->create_export_context();
-}
-
 IExporterPtr LibraryFacade::create_exporter(const LibraryContextPtr& ctx)
 {
   auto libFactory = iade0impl::LibFactory::create_factory();

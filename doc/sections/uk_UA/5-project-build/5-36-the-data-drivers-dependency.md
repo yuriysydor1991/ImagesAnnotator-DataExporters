@@ -5,7 +5,7 @@
 бібліотеку
 [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git),
 типи якої живуть у просторі імен `ImagesAnnotatorDataDrivers011`.
-`ExportContext` тримає отриманий з неї `IImagesPathsDBProviderPtr`, а
+`LibraryContext` тримає отриманий з неї `IImagesPathsDBProviderPtr`, а
 `IImageCropperFacility` оголошено у термінах її `ImageRecordPtr` і
 `ImageRecordRectPtr`, тому залежність є обовʼязковою: без неї проект не
 конфігурується.
@@ -97,7 +97,7 @@ CMake Error: Could not find a package configuration file provided by
 На відміну від усіх інших залежностей цього проекту, бібліотека драйверів даних
 лінкується як `PUBLIC` модулем
 [cmake/enablers/template-project-data-drivers-linker.cmake](/cmake/enablers/template-project-data-drivers-linker.cmake).
-Встановлювані заголовки `ExportContext.h` і `IImageCropperFacility.h` з
+Встановлювані заголовки `LibraryContext.h` і `IImageCropperFacility.h` з
 [src/lib/facade/public](/src/lib/facade/public) згадують типи записів драйверів
 даних, тому споживачу цієї бібліотеки потрібні і її директорії заголовків, і її
 спільний обʼєкт - лінкування як `PRIVATE` приховало б їх і зламало б кожну

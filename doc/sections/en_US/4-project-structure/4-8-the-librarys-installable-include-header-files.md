@@ -1,17 +1,16 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - ten headers, all in the `ImagesAnnotatorDataExporters011` namespace:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - nine headers, all in the `ImagesAnnotatorDataExporters011` namespace:
 
 | Header | Declares |
 |---|---|
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` static methods, the entry point of the library |
 | [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_export()` - runs an export described by a `LibraryContext` |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the in-fields of a `perform_export()` and the `exporter` out-field it fills in |
+| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the data accessors of a `perform_export()` and of an `export_db()`, plus the `get_exporter()` out-one |
 | [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` of the plain text dataset layout |
 | [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` of the YOLO v4 dataset layout |
-| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout |
+| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout, plus its image cropper |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | `IExporter::export_db()` - a single exporter used on its own |
-| [ExportContext.h](/src/lib/facade/public/ExportContext.h) | the arguments of `export_db()`: the path, the database provider and the cropper |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the interface the consuming project implements to crop images out |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | the `IADE_API` visibility macro |
 

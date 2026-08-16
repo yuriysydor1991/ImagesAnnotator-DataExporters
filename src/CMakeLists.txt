@@ -22,6 +22,14 @@ set(IADE_EXPORTERS_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/exporters/PyTorchVisionFolderExporter.cpp
 )
 
+# The installed contexts carry the accessors of the export data, so every test
+# executable driving a context needs these translation units, exactly as the
+# library target itself does.
+set(IADE_FACADE_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/LibraryContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/PyTorchExportLibraryContext.cpp
+)
+
 set(IADE_HELPERS_SRC
   ${CMAKE_CURRENT_SOURCE_DIR}/helpers/ImageRecordUrlAndPathHelper.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/helpers/ImageLoader.cpp

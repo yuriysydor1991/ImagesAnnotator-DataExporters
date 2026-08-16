@@ -31,7 +31,6 @@
 #include <memory>
 #include <string>
 
-#include "ExportContext.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
@@ -67,14 +66,15 @@ namespace ImagesAnnotatorDataExporters011
  * namespace iadd = ImagesAnnotatorDataDrivers011;
  * namespace iade = ImagesAnnotatorDataExporters011;
  *
- * auto ectx = iade::LibraryFacade::create_export_context();
- * ectx->dbProvider = iadd::LibraryFacade::open_annotations_db("project.json");
- * ectx->export_path = "/tmp/yolo-dataset";
+ * auto db = iadd::LibraryFacade::open_annotations_db("project.json");
  *
- * auto exporter = iade::LibraryFacade::create_exporter(
- *     std::make_shared<iade::Yolo4ExportLibraryContext>());
+ * auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
+ * ctx->set_db_provider(db);
+ * ctx->set_export_path("/tmp/yolo-dataset");
  *
- * return exporter != nullptr && exporter->export_db(ectx);
+ * auto exporter = iade::LibraryFacade::create_exporter(ctx);
+ *
+ * return exporter != nullptr && exporter->export_db(ctx);
  * @endcode
  *
  * Current file is a target for the library header installation.
@@ -114,13 +114,6 @@ class IADE_API LibraryFacade
   static ILibPtr create_library(LibraryContextPtr ctx);
 
   /**
-   * @brief Factory method to create an empty export context.
-   *
-   * @return Returns a new ExportContext class instance.
-   */
-  static ExportContextPtr create_export_context();
-
-  /**
    * @brief Creates the exporter implementing the dataset layout of the given
    * context.
    *
@@ -136,14 +129,15 @@ class IADE_API LibraryFacade
    * itself.
    *
    * The library decodes no image format of its own, which is why
-   * ExportContext::cropper exists: the PyTorch Vision export asks its consumer
-   * to cut the rectangles out. When this build of the library found OpenCV it
-   * is able to do that itself, and this method hands out such a cropper.
+   * PyTorchExportLibraryContext::set_cropper() exists: the PyTorch Vision
+   * export asks its consumer to cut the rectangles out. When this build of the
+   * library found OpenCV it is able to do that itself, and this method hands
+   * out such a cropper.
    *
-   * Assigning it to ExportContext::cropper is optional. An export left with an
-   * empty cropper slot falls back to this very cropper on its own, so a
-   * consumer with nothing better to offer may simply leave the field alone. A
-   * cropper the consumer does assign always wins over this one.
+   * Handing it over to that setter is optional. An export left with an empty
+   * cropper slot falls back to this very cropper on its own, so a consumer
+   * with nothing better to offer may simply leave the slot alone. A cropper
+   * the consumer does set always wins over this one.
    *
    * @return Returns a new cropper, or a nullptr when the library was built
    * without OpenCV. A nullptr means the export needs a cropper of your own.

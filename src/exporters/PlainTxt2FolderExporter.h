@@ -52,7 +52,7 @@ class PlainTxt2FolderExporter
   virtual ~PlainTxt2FolderExporter();
   PlainTxt2FolderExporter() = default;
 
-  virtual bool export_db(ExportContextPtr) override;
+  virtual bool export_db(LibraryContextPtr) override;
 
  private:
   using FilePtr = std::shared_ptr<std::fstream>;

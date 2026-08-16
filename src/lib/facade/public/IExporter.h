@@ -30,11 +30,17 @@
 
 #include <memory>
 
-#include "ExportContext.h"
 #include "ExportersAPI.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
+
+/**
+ * @brief Only declared here, since the LibraryContext holds an IExporterPtr
+ * of its own and its header is the one which includes this file.
+ */
+class IADE_API LibraryContext;
+using LibraryContextPtr = std::shared_ptr<LibraryContext>;
 
 /**
  * @brief The abstract class to define the interface for the all available
@@ -54,12 +60,15 @@ class IADE_API IExporter
    * @brief Writes the database named by the context out in the layout this
    * exporter implements, skipping the records it cannot process.
    *
-   * @param ectx The filled export context. Both ExportContext::export_path
-   * and ExportContext::dbProvider are mandatory.
+   * @param ectx The filled library context. Both its export path and its
+   * database provider are mandatory. The layout the context type names is not
+   * looked at here: the layout written is the one of this very exporter. An
+   * implementation must not keep the context beyond the call, since a context
+   * holding this exporter back would close a pointer cycle.
    *
    * @return Returns true when the export as a whole ran through.
    */
-  virtual bool export_db(ExportContextPtr ectx) = 0;
+  virtual bool export_db(LibraryContextPtr ectx) = 0;
 };
 
 using IExporterPtr = IExporter::IExporterPtr;

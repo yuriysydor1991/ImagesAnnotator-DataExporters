@@ -1,6 +1,6 @@
 ## The produced dataset layouts
 
-Each `LibraryContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the `ExportContext::export_path` directory. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Each `LibraryContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the directory named by `LibraryContext::set_export_path()`. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ### What all the three have in common
 
@@ -188,7 +188,7 @@ export_path/
 
 The annotation name is used verbatim as the directory name, and the directory is created when it is not there yet. The export directory itself is not created, it has to exist beforehand.
 
-This is the only format that needs an `ExportContext::cropper`: without one `export_db()` logs the fact and returns `false` right away. For every rectangle the exporter calls
+This is the only format that needs a cropper from `PyTorchExportLibraryContext::set_cropper()`: without one `export_db()` logs the fact and returns `false` right away. For every rectangle the exporter calls
 
 ```cpp
 cropper->crop_out_2_fs(ir, irr, tofpath);

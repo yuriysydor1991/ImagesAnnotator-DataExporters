@@ -38,10 +38,10 @@ namespace iannotator::exporters
 
 PlainTxt2FolderExporter::~PlainTxt2FolderExporter() { clear(); }
 
-bool PlainTxt2FolderExporter::export_db(ExportContextPtr ectx)
+bool PlainTxt2FolderExporter::export_db(LibraryContextPtr ectx)
 {
   assert(ectx != nullptr);
-  assert(ectx->dbProvider != nullptr);
+  assert(ectx->get_db_provider() != nullptr);
 
   clear();
 
@@ -52,21 +52,21 @@ bool PlainTxt2FolderExporter::export_db(ExportContextPtr ectx)
     return false;
   }
 
-  if (ectx->dbProvider == nullptr) {
+  if (ectx->get_db_provider() == nullptr) {
     LOGE("Export context with no db provider");
     return false;
   }
 
-  if (ectx->export_path.empty()) {
+  if (ectx->get_export_path().empty()) {
     LOGE("Export context with no export path provider");
     return false;
   }
 
-  const auto& exportDir = ectx->export_path;
+  const auto& exportDir = ectx->get_export_path();
 
   LOGD("Will be trying to export some data to " << exportDir);
 
-  auto dbset = ectx->dbProvider->get_images_db();
+  auto dbset = ectx->get_db_provider()->get_images_db();
 
   for (const auto& ir : dbset) {
     assert(ir != nullptr);

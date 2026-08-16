@@ -32,9 +32,10 @@
 #include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
 #include <ImagesAnnotatorDataDrivers-0.11/ImageRecordRect.h>
 
-#include "ExportContext.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
+#include "LibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
 
 /**
  * @brief The images annotator exporter namespace that holds all annotator
@@ -53,12 +54,13 @@ namespace iannotator::exporters
  * names into the implementation namespace, so that the moved exporters code
  * keeps referring to them unqualified the way it did inside the application.
  */
-using ImagesAnnotatorDataExporters011::ExportContext;
-using ImagesAnnotatorDataExporters011::ExportContextPtr;
 using ImagesAnnotatorDataExporters011::IExporter;
 using ImagesAnnotatorDataExporters011::IExporterPtr;
 using ImagesAnnotatorDataExporters011::IImageCropperFacility;
 using ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
+using ImagesAnnotatorDataExporters011::LibraryContext;
+using ImagesAnnotatorDataExporters011::LibraryContextPtr;
+using ImagesAnnotatorDataExporters011::PyTorchExportLibraryContext;
 
 using ImagesAnnotatorDataDrivers011::IImagesPathsDBProvider;
 using ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr;

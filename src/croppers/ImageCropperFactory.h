@@ -45,8 +45,9 @@ namespace iannotator::exporters::croppers
  *
  * @return Returns a new OpenCVImageCropper when the build found OpenCV, and a
  * nullptr when it did not. A nullptr is not an error - it only means the
- * consumer has to supply a cropper of its own through ExportContext::cropper,
- * the way it always had to before this cropper existed.
+ * consumer has to supply a cropper of its own through
+ * PyTorchExportLibraryContext::set_cropper(), the way it always had to before
+ * this cropper existed.
  */
 IImageCropperFacilityPtr create_builtin_cropper();
 

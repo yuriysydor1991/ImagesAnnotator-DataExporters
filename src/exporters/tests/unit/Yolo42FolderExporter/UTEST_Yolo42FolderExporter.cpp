@@ -10,10 +10,10 @@
 #include "src/exporters/Yolo42FolderExporter.h"
 
 using namespace testing;
-using iannotator::exporters::ExportContext;
 using iannotator::exporters::ImageRecord;
 using iannotator::exporters::ImageRecordRect;
 using iannotator::exporters::ImageRecordsSet;
+using iannotator::exporters::LibraryContext;
 using iannotator::exporters::Yolo42FolderExporter;
 
 namespace
@@ -71,9 +71,9 @@ TEST(UTEST_Yolo42FolderExporter, exports_the_yolo_directory_layout)
   auto provider = std::make_shared<FakeProvider>();
   provider->annotations = {"cat", "dog"};
 
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = dir.string();
-  ctx->dbProvider = provider;
+  auto ctx = std::make_shared<LibraryContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(provider);
 
   Yolo42FolderExporter exporter;
 
@@ -126,9 +126,9 @@ TEST(UTEST_Yolo42FolderExporter, normalizes_the_rectangles_of_a_copied_image)
   provider->annotations = {"cat", "dog"};
   provider->records.emplace_back(ir);
 
-  auto ctx = std::make_shared<ExportContext>();
-  ctx->export_path = dir.string();
-  ctx->dbProvider = provider;
+  auto ctx = std::make_shared<LibraryContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(provider);
 
   Yolo42FolderExporter exporter;
 

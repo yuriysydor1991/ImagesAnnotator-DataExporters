@@ -5,6 +5,7 @@ add_executable(
   UTEST_Yolo42FolderExporter.cpp
   ${CMAKE_SOURCE_DIR}/src/exporters/Yolo42FolderExporter.cpp
   ${CMAKE_SOURCE_DIR}/src/exporters/Yolov4CfgWriter.cpp
+  ${IADE_FACADE_SRC}
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}
 )

@@ -56,9 +56,9 @@ class LibMain : public ImagesAnnotatorDataExporters011::ILib
    * @brief The implemented library interface method derived from an ILib
    * abstract class. Designed to contain the main library code implementation.
    *
-   * Builds the exporter of the context layout and runs it over the export
-   * context assembled out of the context data. The exporter that was used is
-   * provided back through the context exporter field.
+   * Builds the exporter of the context layout and runs it over that very same
+   * context. The exporter that was used is provided back through the context
+   * exporter field.
    *
    * @param ctx A filled LibraryContext descendant with appropriate data
    * to perform it's actions.

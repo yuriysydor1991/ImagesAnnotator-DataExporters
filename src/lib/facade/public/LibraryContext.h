@@ -28,13 +28,13 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
 
+#include <ImagesAnnotatorDataDrivers-0.11/IImagesPathsDBProvider.h>
+
 #include <memory>
 #include <string>
 
-#include "ExportContext.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
-#include "IImageCropperFacility.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
@@ -43,8 +43,13 @@ namespace ImagesAnnotatorDataExporters011
  * @brief The library context class designed to pass data in and out of
  * the library underlying implementation.
  *
- * The dataset layout to write is named by the descendant instantiated, every
- * one of which inherits the whole of this class and adds nothing to it. See
+ * The very same instance drives both entry points of the library: the one
+ * shot ILib::perform_export and the IExporter::export_db of an exporter built
+ * by hand through the LibraryFacade factory methods.
+ *
+ * The dataset layout to write is named by the descendant instantiated. What
+ * every layout needs is held here; a descendant adds only what its own layout
+ * asks for, the way PyTorchExportLibraryContext adds the image cropper. See
  * PlainTxtExportLibraryContext, Yolo4ExportLibraryContext and
  * PyTorchExportLibraryContext. This class itself names no layout, so an export
  * driven by it finds no exporter.
@@ -55,21 +60,27 @@ class IADE_API LibraryContext
 {
  public:
   using LibraryContextPtr = std::shared_ptr<LibraryContext>;
-  using IImagesPathsDBProviderPtr = ExportContext::IImagesPathsDBProviderPtr;
+  using IImagesPathsDBProviderPtr =
+      ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr;
 
   virtual ~LibraryContext() = default;
   LibraryContext() = default;
 
-  /// @brief In: the destination directory of the export
-  std::string export_path;
+  /// @brief In: the destination directory of the export, mandatory
+  const std::string& get_export_path() const;
+  void set_export_path(const std::string& newPath);
 
-  /// @brief In: the annotations database to read the records out of
-  IImagesPathsDBProviderPtr dbProvider;
-
-  /// @brief In: the image cropper instance if needed
-  IImageCropperFacilityPtr cropper;
+  /// @brief In: the annotations database to read the records out of, mandatory
+  const IImagesPathsDBProviderPtr& get_db_provider() const;
+  void set_db_provider(const IImagesPathsDBProviderPtr& newProvider);
 
   /// @brief Out: the exporter instance the last ILib::perform_export ran
+  const IExporterPtr& get_exporter() const;
+  void set_exporter(const IExporterPtr& newExporter);
+
+ private:
+  std::string export_path;
+  IImagesPathsDBProviderPtr dbProvider;
   IExporterPtr exporter;
 };
 

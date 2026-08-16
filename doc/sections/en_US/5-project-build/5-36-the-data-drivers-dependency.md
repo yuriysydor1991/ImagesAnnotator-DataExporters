@@ -5,7 +5,7 @@ database - the image records, their rectangles and the annotation names -
 through the sibling
 [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git)
 library, whose types live in the `ImagesAnnotatorDataDrivers011` namespace.
-`ExportContext` holds an `IImagesPathsDBProviderPtr` coming from it and
+`LibraryContext` holds an `IImagesPathsDBProviderPtr` coming from it and
 `IImageCropperFacility` is declared in terms of its `ImageRecordPtr` and
 `ImageRecordRectPtr`, so the dependency is mandatory: without it the project
 does not configure.
@@ -97,7 +97,7 @@ CMake Error: Could not find a package configuration file provided by
 Unlike every other dependency of this project, the data drivers library is
 linked `PUBLIC` by
 [cmake/enablers/template-project-data-drivers-linker.cmake](/cmake/enablers/template-project-data-drivers-linker.cmake).
-The installable headers `ExportContext.h` and `IImageCropperFacility.h` under
+The installable headers `LibraryContext.h` and `IImageCropperFacility.h` under
 [src/lib/facade/public](/src/lib/facade/public) name the data drivers record
 types, so a consumer of this library needs both its include directories and its
 shared object - a `PRIVATE` link would hide them and break every downstream

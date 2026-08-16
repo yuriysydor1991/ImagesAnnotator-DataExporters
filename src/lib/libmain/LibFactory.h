@@ -30,7 +30,6 @@
 
 #include <memory>
 
-#include "ExportContext.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
@@ -51,8 +50,6 @@ class LibFactory
   using ILibPtr = ImagesAnnotatorDataExporters011::ILibPtr;
   using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
   using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
-  using ExportContext = ImagesAnnotatorDataExporters011::ExportContext;
-  using ExportContextPtr = ImagesAnnotatorDataExporters011::ExportContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -88,13 +85,6 @@ class LibFactory
   virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx);
 
   /**
-   * @brief Creates an empty export context instance.
-   *
-   * @return Returns empty export context instance.
-   */
-  virtual ExportContextPtr create_export_context();
-
-  /**
    * @brief Creates the exporter implementing the dataset layout of the given
    * context.
    *
@@ -109,7 +99,7 @@ class LibFactory
    *
    * @return Returns a new cropper when this build found OpenCV, and a nullptr
    * when it did not. A nullptr only means the consumer has to supply one of
-   * its own through ExportContext::cropper.
+   * its own through PyTorchExportLibraryContext::set_cropper().
    */
   virtual IImageCropperFacilityPtr create_image_cropper();
 

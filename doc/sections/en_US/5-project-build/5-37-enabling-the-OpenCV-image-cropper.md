@@ -1,6 +1,6 @@
 ## Enabling the OpenCV image cropper
 
-The library decodes no image format of its own. That is why `ExportContext::cropper` exists: the [PyTorch Vision export](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) has to cut the annotated rectangles out of the pictures, and it asks its consumer to do it over whatever imaging stack that project already links - the GTKmm, the Qt or the wxWidgets cutter of the ImagesAnnotator application, for instance.
+The library decodes no image format of its own. That is why `PyTorchExportLibraryContext::set_cropper()` exists: the [PyTorch Vision export](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) has to cut the annotated rectangles out of the pictures, and it asks its consumer to do it over whatever imaging stack that project already links - the GTKmm, the Qt or the wxWidgets cutter of the ImagesAnnotator application, for instance.
 
 A consumer that has no imaging stack to lend was stuck. So, when the build finds OpenCV, the library also ships a cropper of its own, and that consumer needs to supply nothing.
 
@@ -26,9 +26,9 @@ Point the probe at a prefix of your own with `-DOpenCV_DIR=<dir>` when the insta
 
 The rule is one line: **a cropper you supply always wins.**
 
-1. `ExportContext::cropper` is set - that cropper is used. A project that already decodes images its own way keeps doing exactly that, whether the library has OpenCV or not.
-1. `ExportContext::cropper` is a `nullptr` and the library has the OpenCV cropper - the export uses it, and you had to configure nothing.
-1. `ExportContext::cropper` is a `nullptr` and the library has no cropper - the export fails with a log line saying so, which is the behaviour that predates this feature.
+1. A cropper was handed over through `PyTorchExportLibraryContext::set_cropper()` - that cropper is used. A project that already decodes images its own way keeps doing exactly that, whether the library has OpenCV or not.
+1. The cropper slot was left empty and the library has the OpenCV cropper - the export uses it, and you had to configure nothing.
+1. The cropper slot was left empty and the library has no cropper - the export fails with a log line saying so, which is the behaviour that predates this feature.
 
 So an existing consumer sees no change at all, and a new one may simply leave the field alone.
 
@@ -39,14 +39,14 @@ So an existing consumer sees no change at all, and a new one may simply leave th
 ```cpp
 namespace iade = ImagesAnnotatorDataExporters011;
 
-auto ectx = iade::LibraryFacade::create_export_context();
-ectx->export_path = "/tmp/pytorch-dataset";
-ectx->dbProvider = db;
+auto ctx = std::make_shared<iade::PyTorchExportLibraryContext>();
+ctx->set_export_path("/tmp/pytorch-dataset");
+ctx->set_db_provider(db);
 
 // Optional. Leaving the field alone gets the very same cropper.
-ectx->cropper = iade::LibraryFacade::create_image_cropper();
+ctx->set_cropper(iade::LibraryFacade::create_image_cropper());
 
-if (ectx->cropper == nullptr) {
+if (ctx->get_cropper() == nullptr) {
   // This build has no OpenCV - supply a cropper of your own, or pick an
   // export format that needs none.
 }

@@ -77,9 +77,9 @@ namespace iade = ImagesAnnotatorDataExporters011;
 
 ## Що має надати твій проект
 
-- **Базу даних.** `ExportContext::dbProvider` - це `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::LibraryFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
+- **Базу даних.** `LibraryContext::set_db_provider()` приймає `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::LibraryFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
 - **Директорію призначення.** Лише експорт YOLO v4 створює її сам. Для розкладок простого тексту і PyTorch Vision директорія `export_path` має існувати до початку експорту.
-- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportLibraryContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `ExportContext::cropper` або `LibraryContext::cropper`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Двом іншим розкладкам обрізач не потрібен зовсім.
+- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportLibraryContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `PyTorchExportLibraryContext::set_cropper()`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Двом іншим розкладкам обрізач не потрібен зовсім.
 
 ## Мінімальний споживач
 
@@ -107,10 +107,10 @@ int main()
 
   auto ctx = std::make_shared<iade::PlainTxtExportLibraryContext>();
 
-  ctx->export_path = "plain-dataset";
-  ctx->dbProvider = db;
+  ctx->set_export_path("plain-dataset");
+  ctx->set_db_provider(db);
 
-  std::filesystem::create_directories(ctx->export_path);
+  std::filesystem::create_directories(ctx->get_export_path());
 
   auto lib = iade::LibraryFacade::create_library(ctx);
 

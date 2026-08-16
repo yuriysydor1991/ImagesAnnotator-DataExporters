@@ -47,7 +47,7 @@ class PyTorchVisionFolderExporter : virtual public IExporter
   virtual ~PyTorchVisionFolderExporter() = default;
   PyTorchVisionFolderExporter() = default;
 
-  virtual bool export_db(ExportContextPtr ectx) override;
+  virtual bool export_db(LibraryContextPtr ectx) override;
 
  private:
   static bool check_directory(const std::filesystem::path dirPath);

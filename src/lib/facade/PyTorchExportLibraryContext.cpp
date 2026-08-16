@@ -25,40 +25,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
-
-#include "ExportersAPI.h"
-#include "IImageCropperFacility.h"
-#include "LibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
-/**
- * @brief The library context which writes the PyTorch Vision ImageFolder
- * layout of cropped out rectangles. Requires an IImageCropperFacility unless
- * the library was built with its own.
- *
- * Instantiating the class is what names the wanted dataset layout. The cropper
- * lives here rather than in LibraryContext because this is the one layout
- * which cuts pixels out, so no other export has to carry a slot it never
- * reads.
- *
- * Current file is a target for the library header installation.
- */
-class IADE_API PyTorchExportLibraryContext : public LibraryContext
+const IImageCropperFacilityPtr& PyTorchExportLibraryContext::get_cropper() const
 {
- public:
-  /// @brief In: the image cropper instance, optional in a build which found
-  /// OpenCV and mandatory in one which did not
-  const IImageCropperFacilityPtr& get_cropper() const;
-  void set_cropper(const IImageCropperFacilityPtr& newCropper);
+  return cropper;
+}
 
- private:
-  IImageCropperFacilityPtr cropper;
-};
+void PyTorchExportLibraryContext::set_cropper(
+    const IImageCropperFacilityPtr& newCropper)
+{
+  cropper = newCropper;
+}
 
 }  // namespace ImagesAnnotatorDataExporters011
-
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H

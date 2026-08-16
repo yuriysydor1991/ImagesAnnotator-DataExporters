@@ -65,20 +65,13 @@ bool LibMain::perform_export(LibraryContextPtr ctx)
     return false;
   }
 
-  ctx->exporter = exporter;
+  ctx->set_exporter(exporter);
 
-  auto ectx = libFactory->create_export_context();
+  LOGI("Exporting the annotations database to " << ctx->get_export_path());
 
-  assert(ectx != nullptr);
-
-  ectx->export_path = ctx->export_path;
-  ectx->dbProvider = ctx->dbProvider;
-  ectx->cropper = ctx->cropper;
-
-  LOGI("Exporting the annotations database to " << ctx->export_path);
-
-  if (!exporter->export_db(ectx)) {
-    LOGE("Fail to export the annotations database to " << ctx->export_path);
+  if (!exporter->export_db(ctx)) {
+    LOGE("Fail to export the annotations database to "
+         << ctx->get_export_path());
     return false;
   }
 

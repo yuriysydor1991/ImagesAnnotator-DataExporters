@@ -4,6 +4,7 @@ add_executable(
   UTEST_PyTorchVisionFolderExporter
   UTEST_PyTorchVisionFolderExporter.cpp
   ${CMAKE_SOURCE_DIR}/src/exporters/PyTorchVisionFolderExporter.cpp
+  ${IADE_FACADE_SRC}
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}
   ${IADE_CROPPERS_SRC}

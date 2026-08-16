@@ -65,8 +65,8 @@ class IADE_API ILib
    * must implement in order to provide it's functionality.
    *
    * @param ctx A filled LibraryContext descendant of the wanted dataset
-   * layout. On success the ctx->exporter field receives the exporter instance
-   * the export was performed with.
+   * layout. On success its LibraryContext::get_exporter() gives the exporter
+   * instance the export was performed with.
    *
    * @return Should return a true value on the success and false
    * in case of any error.

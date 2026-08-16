@@ -1,6 +1,6 @@
 ## Вмикання обрізача зображень на OpenCV
 
-Бібліотека не декодує жодного власного формату зображень. Саме тому існує `ExportContext::cropper`: [експорт PyTorch Vision](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md) має вирізати анотовані прямокутники із зображень і просить свого споживача зробити це тим набором засобів роботи із зображеннями, який той проект уже лінкує - обрізачем GTKmm, Qt чи wxWidgets застосунку ImagesAnnotator, наприклад.
+Бібліотека не декодує жодного власного формату зображень. Саме тому існує `PyTorchExportLibraryContext::set_cropper()`: [експорт PyTorch Vision](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md) має вирізати анотовані прямокутники із зображень і просить свого споживача зробити це тим набором засобів роботи із зображеннями, який той проект уже лінкує - обрізачем GTKmm, Qt чи wxWidgets застосунку ImagesAnnotator, наприклад.
 
 Споживач, якому нічого позичити, лишався ні з чим. Тому, коли збірка знаходить OpenCV, бібліотека несе і власний обрізач, і такому споживачеві не потрібно надавати нічого.
 
@@ -26,9 +26,9 @@ cmake -S . -B build -DENABLE_OPENCV=ON
 
 Правило в один рядок: **наданий тобою обрізач завжди перемагає.**
 
-1. `ExportContext::cropper` заповнено - використано саме той обрізач. Проект, який уже декодує зображення власним способом, продовжує робити рівно це, є в бібліотеки OpenCV чи немає.
-1. `ExportContext::cropper` є `nullptr`, а бібліотека має обрізач на OpenCV - експорт бере його, і налаштовувати не довелось нічого.
-1. `ExportContext::cropper` є `nullptr`, і бібліотека не має обрізача - експорт завершується невдачею із відповідним записом у журналі, і це та поведінка, яка передувала цій можливості.
+1. Обрізач передано через `PyTorchExportLibraryContext::set_cropper()` - використано саме той обрізач. Проект, який уже декодує зображення власним способом, продовжує робити рівно це, є в бібліотеки OpenCV чи немає.
+1. Місце обрізача лишили порожнім, а бібліотека має обрізач на OpenCV - експорт бере його, і налаштовувати не довелось нічого.
+1. Місце обрізача лишили порожнім, і бібліотека не має обрізача - експорт завершується невдачею із відповідним записом у журналі, і це та поведінка, яка передувала цій можливості.
 
 Тож наявний споживач не бачить жодної зміни, а новий може просто не чіпати це поле.
 
@@ -39,14 +39,14 @@ cmake -S . -B build -DENABLE_OPENCV=ON
 ```cpp
 namespace iade = ImagesAnnotatorDataExporters011;
 
-auto ectx = iade::LibraryFacade::create_export_context();
-ectx->export_path = "/tmp/pytorch-dataset";
-ectx->dbProvider = db;
+auto ctx = std::make_shared<iade::PyTorchExportLibraryContext>();
+ctx->set_export_path("/tmp/pytorch-dataset");
+ctx->set_db_provider(db);
 
 // Необов'язково. Якщо поле не чіпати, буде використано той самий обрізач.
-ectx->cropper = iade::LibraryFacade::create_image_cropper();
+ctx->set_cropper(iade::LibraryFacade::create_image_cropper());
 
-if (ectx->cropper == nullptr) {
+if (ctx->get_cropper() == nullptr) {
   // Ця збірка без OpenCV - надай власний обрізач або обери формат
   // експорту, якому обрізач не потрібен.
 }

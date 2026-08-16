@@ -4,6 +4,7 @@ add_executable(
   UTEST_PlainTxt2FolderExporter
   UTEST_PlainTxt2FolderExporter.cpp
   ${CMAKE_SOURCE_DIR}/src/exporters/PlainTxt2FolderExporter.cpp
+  ${IADE_FACADE_SRC}
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}
 )

@@ -15,14 +15,8 @@ package "ImagesAnnotatorDataDrivers011 (dependency)" #EEEEEE {
 }
 
 package "ImagesAnnotatorDataExporters011 (installed interface)" {
-  class ExportContext {
-    +std::string export_path
-    +IImagesPathsDBProviderPtr dbProvider
-    +IImageCropperFacilityPtr cropper
-  }
-
   abstract class IExporter {
-    +{abstract} bool export_db(ExportContextPtr ectx)
+    +{abstract} bool export_db(LibraryContextPtr ectx)
   }
 
   abstract class IImageCropperFacility {
@@ -31,15 +25,25 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
   }
 
   class LibraryContext {
-    +std::string export_path
-    +IImagesPathsDBProviderPtr dbProvider
-    +IImageCropperFacilityPtr cropper
-    +IExporterPtr exporter
+    -std::string export_path
+    -IImagesPathsDBProviderPtr dbProvider
+    -IExporterPtr exporter
+    +const std::string& get_export_path()
+    +void set_export_path(const std::string&)
+    +const IImagesPathsDBProviderPtr& get_db_provider()
+    +void set_db_provider(const IImagesPathsDBProviderPtr&)
+    +const IExporterPtr& get_exporter()
+    +void set_exporter(const IExporterPtr&)
   }
 
   class PlainTxtExportLibraryContext
   class Yolo4ExportLibraryContext
-  class PyTorchExportLibraryContext
+
+  class PyTorchExportLibraryContext {
+    -IImageCropperFacilityPtr cropper
+    +const IImageCropperFacilityPtr& get_cropper()
+    +void set_cropper(const IImageCropperFacilityPtr&)
+  }
 
   abstract class ILib {
     +{abstract} bool perform_export(LibraryContextPtr ctx)
@@ -49,7 +53,6 @@ package "ImagesAnnotatorDataExporters011 (installed interface)" {
     +{static} LibraryContextPtr create_library_context()
     +{static} ILibPtr create_default_lib()
     +{static} ILibPtr create_library(LibraryContextPtr ctx)
-    +{static} ExportContextPtr create_export_context()
     +{static} IExporterPtr create_exporter(const LibraryContextPtr& ctx)
     +{static} std::string library_version()
   }
@@ -65,7 +68,6 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +ILibPtr create_default_lib()
     +LibraryContextPtr create_default_context()
     +ILibPtr create_appropriate_lib(LibraryContextPtr ctx)
-    +ExportContextPtr create_export_context()
     +IExporterPtr create_exporter(const LibraryContextPtr& ctx)
     +{static} LibFactoryPtr create_factory()
   }
@@ -118,11 +120,11 @@ LibraryContext <|-- PyTorchExportLibraryContext
 LibFactory ..> PlainTxtExportLibraryContext : casts to pick
 LibFactory ..> Yolo4ExportLibraryContext : casts to pick
 LibFactory ..> PyTorchExportLibraryContext : casts to pick
+PyTorchVisionFolderExporter ..> PyTorchExportLibraryContext : casts for the cropper
 
-LibraryContext --> ExportContext : perform_export builds
-ExportContext --> IProvider : reads
-ExportContext --> IImageCropperFacility : uses
-IExporter --> ExportContext
+LibraryContext --> IProvider : reads
+PyTorchExportLibraryContext --> IImageCropperFacility : uses
+IExporter --> LibraryContext : driven with
 
 IProvider --> ImageRecord
 

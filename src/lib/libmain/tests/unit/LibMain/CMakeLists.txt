@@ -4,6 +4,7 @@ add_executable(
   UTEST_LibMain
   UTEST_LibMain.cpp
   ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
+  ${IADE_FACADE_SRC}
 )
 
 target_include_directories(

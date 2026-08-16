@@ -44,27 +44,32 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
+bool PyTorchVisionFolderExporter::export_db(LibraryContextPtr ectx)
 {
   assert(ectx != nullptr);
-  assert(!ectx->export_path.empty());
+  assert(!ectx->get_export_path().empty());
 
   if (ectx == nullptr) {
     LOGE("Invalid export context pointer provided");
     return false;
   }
 
-  if (ectx->export_path.empty()) {
+  if (ectx->get_export_path().empty()) {
     LOGE("No dst folder export path given");
     return false;
   }
+
+  // The cropper is carried by the context of this very layout, so an export
+  // driven by any other one reaches the library's own cropper below, or fails.
+  auto pctx = std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ectx);
 
   // A cropper the consumer supplied always wins: a project that already
   // decodes images its own way - the GUI cutters of the ImagesAnnotator
   // application, say - keeps doing exactly that. The library's own cropper
   // only fills an empty slot, and is a nullptr itself when this build found no
   // OpenCV, which leaves the requirement where it has always been.
-  auto cropper = ectx->cropper;
+  auto cropper =
+      pctx != nullptr ? pctx->get_cropper() : IImageCropperFacilityPtr{};
 
   if (cropper == nullptr) {
     cropper = croppers::create_builtin_cropper();
@@ -77,7 +82,7 @@ bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
     return false;
   }
 
-  auto irs = ectx->dbProvider->get_images_db();
+  auto irs = ectx->get_db_provider()->get_images_db();
 
   auto irloader = helpers::ImageLoader::create();
 
@@ -108,7 +113,7 @@ bool PyTorchVisionFolderExporter::export_db(ExportContextPtr ectx)
       continue;
     }
 
-    if (!export_rects(ir, cropper, ectx->export_path, origfs)) {
+    if (!export_rects(ir, cropper, ectx->get_export_path(), origfs)) {
       LOGE("Fail to crop out rects for image: " << origfs.string());
       continue;
     }

@@ -25,47 +25,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTCONTEXT_CLASS_H
-
-#include <ImagesAnnotatorDataDrivers-0.11/IImagesPathsDBProvider.h>
+#include "LibraryContext.h"
 
 #include <memory>
 #include <string>
 
-#include "ExportersAPI.h"
-#include "IImageCropperFacility.h"
-
 namespace ImagesAnnotatorDataExporters011
 {
 
-/**
- * @brief Class to hold the export configuration data.
- *
- * Current file is a target for the library header installation.
- */
-class IADE_API ExportContext
+const std::string& LibraryContext::get_export_path() const
 {
- public:
-  using ExportContextPtr = std::shared_ptr<ExportContext>;
-  using IImagesPathsDBProviderPtr =
-      ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr;
+  return export_path;
+}
 
-  virtual ~ExportContext() = default;
-  ExportContext() = default;
+void LibraryContext::set_export_path(const std::string& newPath)
+{
+  export_path = newPath;
+}
 
-  /// @brief The destination directory of the export
-  std::string export_path;
+const LibraryContext::IImagesPathsDBProviderPtr&
+LibraryContext::get_db_provider() const
+{
+  return dbProvider;
+}
 
-  /// @brief The annotations database to read the records out of
-  IImagesPathsDBProviderPtr dbProvider;
+void LibraryContext::set_db_provider(
+    const IImagesPathsDBProviderPtr& newProvider)
+{
+  dbProvider = newProvider;
+}
 
-  /// @brief The image cropper instance if needed
-  IImageCropperFacilityPtr cropper;
-};
+const IExporterPtr& LibraryContext::get_exporter() const { return exporter; }
 
-using ExportContextPtr = ExportContext::ExportContextPtr;
+void LibraryContext::set_exporter(const IExporterPtr& newExporter)
+{
+  exporter = newExporter;
+}
 
 }  // namespace ImagesAnnotatorDataExporters011
-
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTCONTEXT_CLASS_H

@@ -17,6 +17,48 @@ a training dataset without duplicating the code.
 
 ### Added
 
+- **The Create ML object detection dataset layout**,
+  `CreateMLExportLibraryContext`, written by the `CreateML2FolderExporter` of the
+  new [src/exporters/CreateML](/src/exporters/CreateML) sub-directory. The export
+  is one flat directory holding the copied images and the single
+  `annotations.json` descriptor beside them, which is the
+  [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source)
+  data source of Apple's `MLObjectDetector` and the very folder the Create ML
+  application takes when one is dropped into its training well. This is the one
+  export of the library that leads off the training frameworks altogether: what
+  a run over that directory produces is a Core ML detector running on an iPhone.
+- A rectangle reaches the descriptor as the **centre** of the box next to its
+  size, in the image own pixels counted from the top left corner, since
+  `MLObjectDetector.DataSource.boundingBox` is read with the `units: .pixel`,
+  `origin: .topLeft` and `anchor: .center` defaults the Create ML application
+  uses. That centre is the halving the three `Ultralytics*` layouts perform
+  before they divide by the image size, so this is the only layout here writing
+  it in pixels, and the only one whose coordinates are neither a corner nor
+  normalised. A centre lands on a half pixel whenever the box size is odd, and
+  the half is written out rather than rounded into a box a pixel off.
+- The layout numbers nothing: `label` carries the class name as it stands, which
+  it shares with the Pascal VOC export, so a name added to a project renumbers
+  no file exported before it. The `imagefilename` and `annotation` keys are
+  written in the singular Apple documents, not the plural `image` /
+  `annotations` pair some converters emit.
+- The two guards of the Ultralytics exporters apply here too - a rectangle
+  reaching over an image edge is cut down to the image and the edges of a
+  negative sized one are sorted before it is cut - and the centre is taken after
+  that cut, since a centre computed over an uncut box need not lie inside the
+  box a reader is given. A rectangle left with no area inside the image is
+  logged and dropped, while the image and the rest of its rectangles are
+  exported as usual. An annotation name and a file name are both user text, so
+  both are written out JSON escaped.
+- The copied image is given its `-1`, `-2`, ... suffix for a taken file name as
+  the COCO export gives it, and the `annotations.json` name is reserved by that
+  same mechanism, because the descriptor shares the directory with the images
+  and this data source refuses a second JSON file beside it.
+- `LibraryFacade::create_createml_library_context()`, one per layout as every
+  other context factory of this library, and the `UTEST_CreateML2FolderExporter`
+  unit test with the
+  `createml_export_writes_the_pixel_centre_of_the_rectangle` case of
+  `CTEST_Exporters`, which drives the new context through the installed headers
+  the way a downstream project does.
 - **The Pascal VOC dataset layout**, `PascalVocExportLibraryContext`, written by
   the `PascalVoc2FolderExporter` of the new
   [src/exporters/PascalVoc](/src/exporters/PascalVoc) sub-directory. The export
@@ -33,7 +75,7 @@ a training dataset without duplicating the code.
   into the very same rectangle. The 1-based coordinates of the original devkit
   are not written; a reader expecting them shifts the box by a single pixel and
   keeps its size, since both corners move together.
-- This is also the one layout of the library that numbers nothing. The class
+- This is also one of the two layouts of the library that number nothing. The class
   name is written into `name` as it stands, so the position of a name in the
   sorted set the database reports decides nothing here and a name added to a
   project renumbers no file exported before it. `depth` is `3` for every image,

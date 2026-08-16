@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "CocoExportLibraryContext.h"
+#include "CreateMLExportLibraryContext.h"
 #include "LibraryContext.h"
 #include "PascalVocExportLibraryContext.h"
 #include "PlainTxtExportLibraryContext.h"
@@ -40,6 +41,7 @@ TEST_F(UTEST_LibFactory, create_library_context_of_every_layout_success)
   EXPECT_NE(factory->create_ultralytics_segment_library_context(), nullptr);
   EXPECT_NE(factory->create_coco_library_context(), nullptr);
   EXPECT_NE(factory->create_pascal_voc_library_context(), nullptr);
+  EXPECT_NE(factory->create_createml_library_context(), nullptr);
   EXPECT_NE(factory->create_pytorch_library_context(), nullptr);
 }
 
@@ -65,6 +67,9 @@ TEST_F(UTEST_LibFactory, every_created_context_names_its_own_exporter)
             nullptr);
   EXPECT_NE(
       factory->create_exporter(factory->create_pascal_voc_library_context()),
+      nullptr);
+  EXPECT_NE(
+      factory->create_exporter(factory->create_createml_library_context()),
       nullptr);
   EXPECT_NE(factory->create_exporter(factory->create_pytorch_library_context()),
             nullptr);
@@ -97,6 +102,9 @@ TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
       nullptr);
   EXPECT_NE(factory->create_exporter(
                 std::make_shared<PascalVocExportLibraryContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_exporter(
+                std::make_shared<CreateMLExportLibraryContext>()),
             nullptr);
   EXPECT_NE(
       factory->create_exporter(std::make_shared<PyTorchExportLibraryContext>()),

@@ -46,6 +46,10 @@ set(IADE_PASCAL_VOC_SRC
   ${IADE_EXPORTERS_SRC_DIR}/PascalVoc/PascalVoc2FolderExporter.cpp
 )
 
+set(IADE_CREATEML_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/CreateML/CreateML2FolderExporter.cpp
+)
+
 set(IADE_PYTORCH_SRC
   ${IADE_EXPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolderExporter.cpp
 )
@@ -56,6 +60,7 @@ set(IADE_EXPORTERS_SRC
   ${IADE_ULTRALYTICS_SRC}
   ${IADE_COCO_SRC}
   ${IADE_PASCAL_VOC_SRC}
+  ${IADE_CREATEML_SRC}
   ${IADE_PYTORCH_SRC}
 )
 

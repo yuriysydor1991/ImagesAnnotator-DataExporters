@@ -8,6 +8,7 @@ add_subdirectory(Yolo4)
 add_subdirectory(Ultralytics)
 add_subdirectory(Coco)
 add_subdirectory(PascalVoc)
+add_subdirectory(CreateML)
 add_subdirectory(PyTorch)
 
 add_subdirectory(tests)

@@ -31,6 +31,7 @@
 #include <memory>
 
 #include "CocoExportLibraryContext.h"
+#include "CreateMLExportLibraryContext.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
@@ -75,6 +76,8 @@ class LibFactory
       ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
   using PascalVocExportLibraryContextPtr =
       ImagesAnnotatorDataExporters011::PascalVocExportLibraryContextPtr;
+  using CreateMLExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::CreateMLExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -146,6 +149,14 @@ class LibFactory
    * @return Returns an empty PascalVocExportLibraryContext instance.
    */
   virtual PascalVocExportLibraryContextPtr create_pascal_voc_library_context();
+
+  /**
+   * @brief Creates an empty context of the Create ML object detection dataset
+   * layout.
+   *
+   * @return Returns an empty CreateMLExportLibraryContext instance.
+   */
+  virtual CreateMLExportLibraryContextPtr create_createml_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.

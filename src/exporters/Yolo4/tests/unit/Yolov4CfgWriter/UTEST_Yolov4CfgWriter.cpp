@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "src/exporters/Yolov4CfgWriter.h"
+#include "src/exporters/Yolo4/Yolov4CfgWriter.h"
 
 using namespace testing;
 using iannotator::exporters::Yolov4CfgWriter;

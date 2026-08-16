@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "src/exporters/Yolov4CfgWriter.h"
+#include "src/exporters/Yolo4/Yolov4CfgWriter.h"
 
 #include <algorithm>
 #include <cstddef>

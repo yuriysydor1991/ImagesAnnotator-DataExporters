@@ -28,6 +28,8 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
 
+#include <memory>
+
 #include "ExportersAPI.h"
 #include "LibraryContext.h"
 
@@ -45,7 +47,13 @@ namespace ImagesAnnotatorDataExporters011
  */
 class IADE_API Yolo4ExportLibraryContext : public LibraryContext
 {
+ public:
+  using Yolo4ExportLibraryContextPtr =
+      std::shared_ptr<Yolo4ExportLibraryContext>;
 };
+
+using Yolo4ExportLibraryContextPtr =
+    Yolo4ExportLibraryContext::Yolo4ExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 

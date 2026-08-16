@@ -34,6 +34,9 @@
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
+#include "PlainTxtExportLibraryContext.h"
+#include "PyTorchExportLibraryContext.h"
+#include "Yolo4ExportLibraryContext.h"
 
 namespace iade0impl
 {
@@ -50,6 +53,12 @@ class LibFactory
   using ILibPtr = ImagesAnnotatorDataExporters011::ILibPtr;
   using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
   using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
+  using PlainTxtExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::PlainTxtExportLibraryContextPtr;
+  using Yolo4ExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::Yolo4ExportLibraryContextPtr;
+  using PyTorchExportLibraryContextPtr =
+      ImagesAnnotatorDataExporters011::PyTorchExportLibraryContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
@@ -67,12 +76,25 @@ class LibFactory
   virtual ILibPtr create_default_lib();
 
   /**
-   * @brief Creates the default context to use in libraries implementation
-   * in order to provide all necessary data.
+   * @brief Creates an empty context of the plain text dataset layout.
    *
    * @return Returns an empty PlainTxtExportLibraryContext instance.
    */
-  virtual LibraryContextPtr create_default_context();
+  virtual PlainTxtExportLibraryContextPtr create_plain_txt_library_context();
+
+  /**
+   * @brief Creates an empty context of the YOLO v4 dataset layout.
+   *
+   * @return Returns an empty Yolo4ExportLibraryContext instance.
+   */
+  virtual Yolo4ExportLibraryContextPtr create_yolo4_library_context();
+
+  /**
+   * @brief Creates an empty context of the PyTorch Vision dataset layout.
+   *
+   * @return Returns an empty PyTorchExportLibraryContext instance.
+   */
+  virtual PyTorchExportLibraryContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates appropriate library implementation instance

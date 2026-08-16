@@ -38,13 +38,32 @@
 namespace ImagesAnnotatorDataExporters011
 {
 
-LibraryContextPtr LibraryFacade::create_library_context()
+PlainTxtExportLibraryContextPtr
+LibraryFacade::create_plain_txt_library_context()
 {
   auto libFactory = iade0impl::LibFactory::create_factory();
 
   assert(libFactory != nullptr);
 
-  return libFactory->create_default_context();
+  return libFactory->create_plain_txt_library_context();
+}
+
+Yolo4ExportLibraryContextPtr LibraryFacade::create_yolo4_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_yolo4_library_context();
+}
+
+PyTorchExportLibraryContextPtr LibraryFacade::create_pytorch_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_pytorch_library_context();
 }
 
 ILibPtr LibraryFacade::create_default_lib()

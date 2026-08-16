@@ -39,7 +39,7 @@ cmake -S . -B build -DENABLE_OPENCV=ON
 ```cpp
 namespace iade = ImagesAnnotatorDataExporters011;
 
-auto ctx = std::make_shared<iade::PyTorchExportLibraryContext>();
+auto ctx = iade::LibraryFacade::create_pytorch_library_context();
 ctx->set_export_path("/tmp/pytorch-dataset");
 ctx->set_db_provider(db);
 

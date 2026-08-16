@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "src/exporters/Yolo42FolderExporter.h"
+#include "src/exporters/Yolo4/Yolo42FolderExporter.h"
 
 #include <cassert>
 #include <filesystem>
@@ -34,7 +34,7 @@
 #include <sstream>
 #include <utility>
 
-#include "src/exporters/Yolov4CfgWriter.h"
+#include "src/exporters/Yolo4/Yolov4CfgWriter.h"
 #include "src/log/log.h"
 
 namespace iannotator::exporters

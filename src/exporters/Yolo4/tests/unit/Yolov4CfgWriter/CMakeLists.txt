@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(
   UTEST_Yolov4CfgWriter
   UTEST_Yolov4CfgWriter.cpp
-  ${CMAKE_SOURCE_DIR}/src/exporters/Yolov4CfgWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Yolo4/Yolov4CfgWriter.cpp
 )
 
 target_include_directories(

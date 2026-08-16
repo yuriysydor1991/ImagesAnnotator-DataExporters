@@ -28,6 +28,8 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
 
+#include <memory>
+
 #include "ExportersAPI.h"
 #include "IImageCropperFacility.h"
 #include "LibraryContext.h"
@@ -50,6 +52,9 @@ namespace ImagesAnnotatorDataExporters011
 class IADE_API PyTorchExportLibraryContext : public LibraryContext
 {
  public:
+  using PyTorchExportLibraryContextPtr =
+      std::shared_ptr<PyTorchExportLibraryContext>;
+
   /// @brief In: the image cropper instance, optional in a build which found
   /// OpenCV and mandatory in one which did not
   const IImageCropperFacilityPtr& get_cropper() const;
@@ -58,6 +63,9 @@ class IADE_API PyTorchExportLibraryContext : public LibraryContext
  private:
   IImageCropperFacilityPtr cropper;
 };
+
+using PyTorchExportLibraryContextPtr =
+    PyTorchExportLibraryContext::PyTorchExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 

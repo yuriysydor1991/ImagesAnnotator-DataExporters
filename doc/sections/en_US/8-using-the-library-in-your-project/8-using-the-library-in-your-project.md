@@ -105,7 +105,7 @@ int main()
     return 1;
   }
 
-  auto ctx = std::make_shared<iade::PlainTxtExportLibraryContext>();
+  auto ctx = iade::LibraryFacade::create_plain_txt_library_context();
 
   ctx->set_export_path("plain-dataset");
   ctx->set_db_provider(db);

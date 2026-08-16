@@ -28,6 +28,8 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
 
+#include <memory>
+
 #include "ExportersAPI.h"
 #include "LibraryContext.h"
 
@@ -45,7 +47,13 @@ namespace ImagesAnnotatorDataExporters011
  */
 class IADE_API PlainTxtExportLibraryContext : public LibraryContext
 {
+ public:
+  using PlainTxtExportLibraryContextPtr =
+      std::shared_ptr<PlainTxtExportLibraryContext>;
 };
+
+using PlainTxtExportLibraryContextPtr =
+    PlainTxtExportLibraryContext::PlainTxtExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 

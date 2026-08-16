@@ -38,7 +38,7 @@ class PyTorchExportLibraryContext : public LibraryContext;
 
 ### LibraryContext
 
-Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `ILib::perform_export()` і `IExporter::export_db()` збудованого власноруч експортера. Створюй його, інстанціюючи нащадка бажаної розкладки, або бери нащадка типової розкладки з `LibraryFacade::create_library_context()`.
+Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `ILib::perform_export()` і `IExporter::export_db()` збудованого власноруч експортера. Створюй його методом-фабрикою `LibraryFacade` бажаної розкладки - `create_plain_txt_library_context()`, `create_yolo4_library_context()` чи `create_pytorch_library_context()` - або інстанціюй того нащадка самотужки, як це робить споживач, шаблонізований за типом розкладки.
 
 Дані, які він несе, є приватними і доступні лише через методи доступу. Кожен геттер видає `const`-посилання на те, що тримає контекст, кожен сеттер копіює до себе задане значення:
 
@@ -103,7 +103,9 @@ virtual IImageCropperFacilityPtr clone() = 0;
 
 | Метод | Повертає |
 | --- | --- |
-| `create_library_context()` | новий порожній `PlainTxtExportLibraryContext`, типову розкладку |
+| `create_plain_txt_library_context()` | новий порожній `PlainTxtExportLibraryContextPtr` |
+| `create_yolo4_library_context()` | новий порожній `Yolo4ExportLibraryContextPtr` |
+| `create_pytorch_library_context()` | новий порожній `PyTorchExportLibraryContextPtr` - той, що несе обрізач |
 | `create_default_lib()` | типову реалізацію `ILibPtr` |
 | `create_library(LibraryContextPtr ctx)` | реалізацію `ILibPtr`, відповідну для заданого контексту |
 | `create_exporter(const LibraryContextPtr& ctx)` | новий `IExporterPtr` для розкладки контексту, або `nullptr` для контексту без відомої розкладки |
@@ -141,7 +143,7 @@ int main(int argc, char** argv)
 
   std::filesystem::create_directories(argv[2]);
 
-  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
+  auto ctx = iade::LibraryFacade::create_yolo4_library_context();
 
   ctx->set_db_provider(db);
   ctx->set_export_path(argv[2]);
@@ -214,7 +216,7 @@ class MyCropper : public iade::IImageCropperFacility
 Передай примірник через `PyTorchExportLibraryContext`, і експортер його підхопить:
 
 ```cpp
-auto ctx = std::make_shared<iade::PyTorchExportLibraryContext>();
+auto ctx = iade::LibraryFacade::create_pytorch_library_context();
 
 ctx->set_cropper(std::make_shared<MyCropper>());
 ```

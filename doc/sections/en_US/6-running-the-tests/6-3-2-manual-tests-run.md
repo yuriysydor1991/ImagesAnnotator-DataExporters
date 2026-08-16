@@ -28,10 +28,10 @@ The exporter tests live next to the sources they cover:
 ```
 # from the project root
 
-./build/src/exporters/tests/unit/PlainTxt2FolderExporter/UTEST_PlainTxt2FolderExporter
-./build/src/exporters/tests/unit/Yolo42FolderExporter/UTEST_Yolo42FolderExporter
-./build/src/exporters/tests/unit/Yolov4CfgWriter/UTEST_Yolov4CfgWriter
-./build/src/exporters/tests/unit/PyTorchVisionFolderExporter/UTEST_PyTorchVisionFolderExporter
+./build/src/exporters/PlainTxt/tests/unit/PlainTxt2FolderExporter/UTEST_PlainTxt2FolderExporter
+./build/src/exporters/Yolo4/tests/unit/Yolo42FolderExporter/UTEST_Yolo42FolderExporter
+./build/src/exporters/Yolo4/tests/unit/Yolov4CfgWriter/UTEST_Yolov4CfgWriter
+./build/src/exporters/PyTorch/tests/unit/PyTorchVisionFolderExporter/UTEST_PyTorchVisionFolderExporter
 ```
 
 The `CTEST_Exporters` component test is started the same way. Unlike the unit

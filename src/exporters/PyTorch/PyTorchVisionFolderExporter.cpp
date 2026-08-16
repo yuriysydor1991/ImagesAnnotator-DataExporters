@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "src/exporters/PyTorchVisionFolderExporter.h"
+#include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
 
 #include <cassert>
 #include <filesystem>

@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "src/exporters/PlainTxt2FolderExporter.h"
+#include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::ImageRecord;

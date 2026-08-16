@@ -84,6 +84,12 @@ a training dataset without duplicating the code.
 - `LibraryFacade::create_exporter()` and `library_version()` as the entry
   point of the library, plus the one shot `ILib::perform_export()`, both driven
   by a `LibraryContext`.
+- One `LibraryFacade` context factory per dataset layout -
+  `create_plain_txt_library_context()`, `create_yolo4_library_context()` and
+  `create_pytorch_library_context()` - each handing out the pointer type of its
+  own layout, so the cropper setter of the PyTorch Vision one is reachable
+  without a cast. They replace the single `create_library_context()`, which
+  handed out the base pointer of a default layout.
 - `IImageCropperFacility`, implemented by the consuming project: the library
   decodes no image format of its own, so the PyTorch Vision export asks its
   consumer to cut the rectangles out.
@@ -167,6 +173,13 @@ a training dataset without duplicating the code.
 - The implementation components moved out of `libmain` and up to the `src`
   level, so that `libmain` carries only the `LibMain` / `LibFactory` entry
   pair: `src/exporters`, `src/croppers`, `src/helpers` and `src/CURL`. The
+  exporters component is split one sub-directory per dataset layout -
+  `PlainTxt`, `Yolo4` (the exporter and its `Yolov4CfgWriter`) and `PyTorch` -
+  each a sub-component with its own `CMakeLists.txt`, its own source list
+  (`IADE_PLAIN_TXT_SRC`, `IADE_YOLO4_SRC`, `IADE_PYTORCH_SRC`, united into
+  `IADE_EXPORTERS_SRC`) and its own `tests/unit` tree, while the shared
+  `ExportersAliases.h` and the `CTEST_Exporters` component test driving all
+  three layouts stay at the component root. The
   per-component source lists the test executables compile from moved along
   with them, from `src/lib/CMakeLists.txt` up to `src/CMakeLists.txt`, the
   directory every component is now a child of. The data drivers library is

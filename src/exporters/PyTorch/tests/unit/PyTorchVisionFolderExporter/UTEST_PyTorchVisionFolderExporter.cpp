@@ -6,7 +6,7 @@
 #include <string>
 
 #include "src/croppers/ImageCropperFactory.h"
-#include "src/exporters/PyTorchVisionFolderExporter.h"
+#include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::ImageRecord;

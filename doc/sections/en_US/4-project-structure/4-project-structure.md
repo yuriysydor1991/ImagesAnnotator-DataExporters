@@ -12,7 +12,7 @@ The top level layout:
 | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
-| [src/exporters](/src/exporters) | the three `IExporter` implementations and `ExportersAliases.h` |
+| [src/exporters](/src/exporters) | one sub-directory per dataset layout - `PlainTxt`, `Yolo4` and `PyTorch` - each carrying its own `IExporter` implementation, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` all three share |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
 | [src/CURL](/src/CURL) | `CURLController` - the libcurl wrapper used to preload web hosted images |

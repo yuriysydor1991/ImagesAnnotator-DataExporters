@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "src/exporters/Yolo42FolderExporter.h"
+#include "src/exporters/Yolo4/Yolo42FolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::ImageRecord;

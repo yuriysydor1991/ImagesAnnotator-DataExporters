@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
   if (db == nullptr) { return 1; }
 
-  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
+  auto ctx = iade::LibraryFacade::create_yolo4_library_context();
 
   ctx->set_export_path(argv[2]);
   ctx->set_db_provider(db);

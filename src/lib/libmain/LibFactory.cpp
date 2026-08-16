@@ -34,9 +34,9 @@
 #include "PyTorchExportLibraryContext.h"
 #include "Yolo4ExportLibraryContext.h"
 #include "src/croppers/ImageCropperFactory.h"
-#include "src/exporters/PlainTxt2FolderExporter.h"
-#include "src/exporters/PyTorchVisionFolderExporter.h"
-#include "src/exporters/Yolo42FolderExporter.h"
+#include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
+#include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
+#include "src/exporters/Yolo4/Yolo42FolderExporter.h"
 #include "src/lib/libmain/LibMain.h"
 #include "src/log/log.h"
 
@@ -50,9 +50,22 @@ LibFactory::ILibPtr LibFactory::create_default_lib()
   return LibMain::create();
 }
 
-LibFactory::LibraryContextPtr LibFactory::create_default_context()
+LibFactory::PlainTxtExportLibraryContextPtr
+LibFactory::create_plain_txt_library_context()
 {
   return std::make_shared<PlainTxtExportLibraryContext>();
+}
+
+LibFactory::Yolo4ExportLibraryContextPtr
+LibFactory::create_yolo4_library_context()
+{
+  return std::make_shared<Yolo4ExportLibraryContext>();
+}
+
+LibFactory::PyTorchExportLibraryContextPtr
+LibFactory::create_pytorch_library_context()
+{
+  return std::make_shared<PyTorchExportLibraryContext>();
 }
 
 LibFactory::ILibPtr LibFactory::create_appropriate_lib(

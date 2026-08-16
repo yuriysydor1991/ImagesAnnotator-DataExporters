@@ -50,19 +50,49 @@ TEST_F(UTEST_LibraryFacade, create_default_lib_direct_success)
   auto res = LibraryFacade::create_default_lib();
 }
 
-TEST_F(UTEST_LibraryFacade, create_library_context_success)
+TEST_F(UTEST_LibraryFacade, create_plain_txt_library_context_success)
 {
   MockFunction<void(LibFactory&)> mockEnsurer;
 
   EXPECT_CALL(mockEnsurer, Call)
       .Times(1)
       .WillOnce(Invoke([](LibFactory& instance) {
-        EXPECT_CALL(instance, create_default_context()).Times(1);
+        EXPECT_CALL(instance, create_plain_txt_library_context()).Times(1);
       }));
 
   LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
 
-  auto res = LibraryFacade::create_library_context();
+  auto res = LibraryFacade::create_plain_txt_library_context();
+}
+
+TEST_F(UTEST_LibraryFacade, create_yolo4_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_yolo4_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = LibraryFacade::create_yolo4_library_context();
+}
+
+TEST_F(UTEST_LibraryFacade, create_pytorch_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_pytorch_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = LibraryFacade::create_pytorch_library_context();
 }
 
 TEST_F(UTEST_LibraryFacade, create_exporter_forwards_the_given_context)

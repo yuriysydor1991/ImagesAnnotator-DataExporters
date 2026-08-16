@@ -68,7 +68,7 @@ namespace ImagesAnnotatorDataExporters011
  *
  * auto db = iadd::LibraryFacade::open_annotations_db("project.json");
  *
- * auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
+ * auto ctx = iade::LibraryFacade::create_yolo4_library_context();
  * ctx->set_db_provider(db);
  * ctx->set_export_path("/tmp/yolo-dataset");
  *
@@ -86,14 +86,28 @@ class IADE_API LibraryFacade
   LibraryFacade() = default;
 
   /**
-   * @brief Factory method to create an empty library context of the default
+   * @brief Factory method to create an empty library context of the plain
+   * text dataset layout.
+   *
+   * @return Returns a new PlainTxtExportLibraryContext class instance.
+   */
+  static PlainTxtExportLibraryContextPtr create_plain_txt_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the YOLO v4
    * dataset layout.
    *
-   * @return Returns a new PlainTxtExportLibraryContext class instance. Any
-   * other layout is asked for by instantiating its own LibraryContext
-   * descendant.
+   * @return Returns a new Yolo4ExportLibraryContext class instance.
    */
-  static LibraryContextPtr create_library_context();
+  static Yolo4ExportLibraryContextPtr create_yolo4_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the PyTorch
+   * Vision dataset layout, the one carrying the image cropper.
+   *
+   * @return Returns a new PyTorchExportLibraryContext class instance.
+   */
+  static PyTorchExportLibraryContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates the default library implementation.

@@ -15,11 +15,30 @@ set(GENERAL_MOCKS_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/tests/mocks")
 # src/tests/mocks) instead of linking the produced shared library, so they need
 # to name the very same translation units. Declared here, before any
 # subdirectory is added, so that every test tree below can see them.
+# One sub-directory per dataset layout, so a unit test names the sources of
+# its own layout only, while the whole list stays available for the tests
+# reaching every exporter at once.
+set(IADE_EXPORTERS_SRC_DIR
+  ${CMAKE_CURRENT_SOURCE_DIR}/exporters
+)
+
+set(IADE_PLAIN_TXT_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/PlainTxt/PlainTxt2FolderExporter.cpp
+)
+
+set(IADE_YOLO4_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/Yolo4/Yolo42FolderExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Yolo4/Yolov4CfgWriter.cpp
+)
+
+set(IADE_PYTORCH_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolderExporter.cpp
+)
+
 set(IADE_EXPORTERS_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/exporters/PlainTxt2FolderExporter.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/exporters/Yolo42FolderExporter.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/exporters/Yolov4CfgWriter.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/exporters/PyTorchVisionFolderExporter.cpp
+  ${IADE_PLAIN_TXT_SRC}
+  ${IADE_YOLO4_SRC}
+  ${IADE_PYTORCH_SRC}
 )
 
 # The installed contexts carry the accessors of the export data, so every test

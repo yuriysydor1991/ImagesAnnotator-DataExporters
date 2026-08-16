@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(
   UTEST_Yolo42FolderExporter
   UTEST_Yolo42FolderExporter.cpp
-  ${CMAKE_SOURCE_DIR}/src/exporters/Yolo42FolderExporter.cpp
-  ${CMAKE_SOURCE_DIR}/src/exporters/Yolov4CfgWriter.cpp
+  ${IADE_YOLO4_SRC}
   ${IADE_FACADE_SRC}
   ${IADE_HELPERS_SRC}
   ${IADE_CURL_SRC}

@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "src/exporters/PlainTxt2FolderExporter.h"
+#include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 
 #include <cassert>
 #include <memory>

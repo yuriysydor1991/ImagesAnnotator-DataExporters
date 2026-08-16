@@ -26,9 +26,24 @@ TEST_F(UTEST_LibFactory, create_default_lib_success)
   EXPECT_NE(factory->create_default_lib(), nullptr);
 }
 
-TEST_F(UTEST_LibFactory, create_default_context_success)
+TEST_F(UTEST_LibFactory, create_library_context_of_every_layout_success)
 {
-  EXPECT_NE(factory->create_default_context(), nullptr);
+  EXPECT_NE(factory->create_plain_txt_library_context(), nullptr);
+  EXPECT_NE(factory->create_yolo4_library_context(), nullptr);
+  EXPECT_NE(factory->create_pytorch_library_context(), nullptr);
+}
+
+// Every layout context has to name its own exporter, which is the whole reason
+// the factory hands out one method per layout instead of a default context.
+TEST_F(UTEST_LibFactory, every_created_context_names_its_own_exporter)
+{
+  EXPECT_NE(
+      factory->create_exporter(factory->create_plain_txt_library_context()),
+      nullptr);
+  EXPECT_NE(factory->create_exporter(factory->create_yolo4_library_context()),
+            nullptr);
+  EXPECT_NE(factory->create_exporter(factory->create_pytorch_library_context()),
+            nullptr);
 }
 
 TEST_F(UTEST_LibFactory, create_appropriate_lib_success)

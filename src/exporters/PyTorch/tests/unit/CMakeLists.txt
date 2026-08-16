@@ -7,7 +7,4 @@ endif()
 # disabling the asserts for the tests
 add_compile_options(-DNDEBUG=1)
 
-add_subdirectory(PlainTxt2FolderExporter)
-add_subdirectory(Yolo42FolderExporter)
-add_subdirectory(Yolov4CfgWriter)
 add_subdirectory(PyTorchVisionFolderExporter)

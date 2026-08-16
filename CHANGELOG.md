@@ -17,6 +17,40 @@ a training dataset without duplicating the code.
 
 ### Added
 
+- **The COCO object detection dataset layout**, `CocoExportLibraryContext`,
+  written by the `Coco2FolderExporter` of the new
+  [src/exporters/Coco](/src/exporters/Coco) sub-directory. Every layout this
+  library could write until now fed a YOLO training run or the PyTorch Vision
+  `ImageFolder`; the COCO JSON descriptor is read by Detectron2, MMDetection,
+  torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label
+  Studio and Roboflow. The export is the copied images under `images/` and the
+  single `annotations/instances_default.json` over them, which is all any of
+  those needs: the images directory is handed over as the dataset root and the
+  descriptor names its images by their file name alone.
+- It is also the one layout which hands a rectangle over untouched. The `bbox`
+  is the `[x, y, width, height]` of the top left corner in the image own
+  pixels - the very four numbers an `ImageRecordRect` holds - where every YOLO
+  layout divides them by the image size first. The `width` and the `height` of
+  the image travel along in the `images` array, so the descriptor is the one
+  export of this library that can be read back into the drawn rectangles.
+- The identifiers of the three arrays are running counters over what the export
+  has really written out and start at `1`, since a reader treats the category
+  `0` as the background one. `area` is the box area, `iscrowd` is `0` for a
+  named rectangle and `segmentation` is left empty, which is what makes the
+  export a detection dataset rather than a segmentation one. An annotation name
+  and a file name are both user text, so both are written out JSON escaped.
+- The two guards of the Ultralytics exporters apply here for a reason of their
+  own: a rectangle reaching over an image edge is cut down to the image and the
+  edges of a negative sized one are sorted before it is cut, because the `area`
+  written next to such a box, and every overlap ever computed against it, would
+  otherwise be a lie. A rectangle left with no area inside the image is logged
+  and dropped, while the image and the rest of its rectangles are exported as
+  usual.
+- `LibraryFacade::create_coco_library_context()`, one per layout as every other
+  context factory of this library, and the `UTEST_Coco2FolderExporter` unit
+  test with the `coco_export_writes_the_pixel_bbox_of_the_rectangle` case of
+  `CTEST_Exporters`, which drives the new context through the installed headers
+  the way a downstream project does.
 - **The three Ultralytics YOLO dataset layouts**, the ones every YOLO release
   since v5 reads: `UltralyticsDetectExportLibraryContext`,
   `UltralyticsObbExportLibraryContext` and
@@ -66,7 +100,7 @@ a training dataset without duplicating the code.
   `ultralytics_obb_export_writes_the_four_box_corners` and
   `ultralytics_segment_export_writes_the_box_polygon` cases of
   `CTEST_Exporters`, which drive the new contexts through the installed headers
-  the way a downstream project does. The suite counts 111 cases now.
+  the way a downstream project does. The suite counts 122 cases now.
 - The pose and the classification layouts of the YOLO family stay unwritten on
   purpose, and the produced dataset layouts documentation section says so: a
   pose label line carries the keypoints of the object, which the annotations

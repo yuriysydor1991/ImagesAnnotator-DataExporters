@@ -9,7 +9,7 @@ Each `LibraryContext` descendant is implemented by one exporter class under [src
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- The YOLO v4 and the three Ultralytics YOLO exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4, the three Ultralytics YOLO and the COCO exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -294,6 +294,78 @@ Two more members of the YOLO format family are left out on purpose:
 
 - **The pose, or keypoint, layout.** Its label line carries the keypoints of the object after the box, and the descriptor names their count and their left-right mirror pairs in a `kpt_shape` and a `flip_idx` key. The annotations database holds named rectangles and no keypoints at all, so there is nothing to write those columns out of.
 - **The classification layout**, which is a `train/<annotation name>/` and a `val/<annotation name>/` directory of cropped images. That is the PyTorch Vision `ImageFolder` layout described below with one split directory added on top of it, and the split is the very thing this library leaves to its consumer.
+
+### CocoExportLibraryContext
+
+The COCO object detection dataset: the copied images and the single JSON descriptor over them. The exporter creates the export directory itself when it is not there yet, together with the two sub-directories:
+
+```
+export_path/
+|-- annotations/
+|   `-- instances_default.json
+`-- images/
+    |-- park.jpg
+    `-- street.png
+```
+
+This is the one layout of the library read by something other than a YOLO training run. Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take the format, and none of them needs more than the descriptor and the directory holding the images:
+
+```python
+# Detectron2
+from detectron2.data.datasets import register_coco_instances
+
+register_coco_instances("my_dataset", {},
+                        "/home/user/dataset/annotations/instances_default.json",
+                        "/home/user/dataset/images")
+
+# torchvision
+from torchvision.datasets import CocoDetection
+
+data = CocoDetection(root="/home/user/dataset/images",
+                     annFile="/home/user/dataset/annotations/instances_default.json")
+```
+
+Every annotated image file is copied into `images/`. When a file of that name is already there, the copy receives a `-1`, `-2`, ... suffix before its extension, so `street.png` of a second source directory lands as `street-1.png`, and the descriptor names it under that new name.
+
+`annotations/instances_default.json` is the whole descriptor. Its five keys are the ones the format defines, and for the two record database above it reads:
+
+```json
+{
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.11.0"},
+"licenses": [],
+"images": [
+  {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
+  {"id": 2, "file_name": "park.jpg", "width": 640, "height": 480}
+],
+"annotations": [
+  {"id": 1, "image_id": 1, "category_id": 2, "bbox": [50, 20, 100, 40], "area": 4000, "iscrowd": 0, "segmentation": []},
+  {"id": 2, "image_id": 1, "category_id": 2, "bbox": [300, 25, 90, 45], "area": 4050, "iscrowd": 0, "segmentation": []},
+  {"id": 3, "image_id": 2, "category_id": 1, "bbox": [200, 130, 48, 52], "area": 2496, "iscrowd": 0, "segmentation": []},
+  {"id": 4, "image_id": 2, "category_id": 2, "bbox": [12, 8, 64, 64], "area": 4096, "iscrowd": 0, "segmentation": []}
+],
+"categories": [
+  {"id": 1, "name": "cat", "supercategory": ""},
+  {"id": 2, "name": "dog", "supercategory": ""}
+]
+}
+```
+
+- **`bbox`** is `[x, y, width, height]` of the top left corner, in the image own pixels. These are the very four numbers of the `ImageRecordRect`, which makes this the one layout of the library that normalises nothing away: a YOLO label file cannot be read back into pixels without the image size, this descriptor carries both.
+- **`file_name`** is the file name alone, since the `images` directory itself is what a reader is handed as the dataset root. The `width` and `height` next to it are the record `iwidth` and `iheight`.
+- **The identifiers** of all three arrays are running counters over what the export has really written out, and they start at `1`: a reader treats the category `0` as the background one. A category id is therefore the position of the name in the sorted set the database reports, plus one - which is the darknet and Ultralytics class index of that same name, plus one.
+- **`area`** is the `width` multiplied by the `height` of the box, the value the evaluation of a trained detector splits its results by the object size with.
+- **`iscrowd`** is `0` for every rectangle: the flag marks a single annotation covering a whole crowd of objects, which a named rectangle of the annotations database never is.
+- **`segmentation`** is left empty, since a rectangle carries no mask. That is what makes the export a detection dataset and not a segmentation one, and every reader of the format treats the empty list as "no mask here". Reach for `UltralyticsSegmentExportLibraryContext` when a box shaped mask is mask enough.
+- An annotation name and a file name are both user text, so every one of them is written out JSON escaped - a quote, a backslash or a control character inside a name stays a part of the name instead of ending the string.
+
+The two guards of the Ultralytics exporters apply here as well, for a different reason: a `bbox` reaching over an image edge would make the `area` written next to it, and every overlap ever computed against it, a lie.
+
+- **A rectangle reaching over an image edge is cut down to the image.**
+- **A rectangle drawn from the right or from the bottom carries a negative width or height.** Its edges are sorted before it is cut, so it describes the same area as the one drawn the other way round.
+
+A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them - and, since the arrays are written after the images are copied, such a record takes no image id with it.
+
+The whole set is offered as one dataset. Splitting it into a real training and validation part is left to the consumer, exactly as it is in every other layout here.
 
 ### PyTorchExportLibraryContext
 

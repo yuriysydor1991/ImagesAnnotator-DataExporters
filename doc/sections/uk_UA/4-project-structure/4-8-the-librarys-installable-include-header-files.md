@@ -13,6 +13,7 @@
 | [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/UltralyticsObbExportLibraryContext.h) | `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
 | [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | `LibraryContext` розкладки сегментації Ultralytics YOLO |
 | [CocoExportLibraryContext.h](/src/lib/facade/public/CocoExportLibraryContext.h) | `LibraryContext` розкладки детекції об'єктів COCO |
+| [PascalVocExportLibraryContext.h](/src/lib/facade/public/PascalVocExportLibraryContext.h) | `LibraryContext` розкладки набору даних Pascal VOC |
 | [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | `LibraryContext` розкладки PyTorch Vision разом із її обрізачем зображень |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | `IExporter::export_db()` - окремий експортер, використаний самостійно |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | інтерфейс, який реалізує проект-споживач, щоб вирізати зображення |

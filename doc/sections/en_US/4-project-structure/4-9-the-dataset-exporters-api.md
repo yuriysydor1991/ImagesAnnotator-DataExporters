@@ -18,14 +18,14 @@ The records the exporters read are not defined here. They come from the [ImagesA
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | the `IExporter` abstract exporter interface |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the `IImageCropperFacility` interface the consuming project implements |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the `LibraryContext` in and out data class both entry points are driven with |
-| [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
-| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
-| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/UltralyticsDetectExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO detection dataset layout |
-| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/UltralyticsObbExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
-| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO segmentation dataset layout |
-| [CocoExportLibraryContext.h](/src/lib/facade/public/CocoExportLibraryContext.h) | the `LibraryContext` descendant of the COCO object detection dataset layout |
-| [PascalVocExportLibraryContext.h](/src/lib/facade/public/PascalVocExportLibraryContext.h) | the `LibraryContext` descendant of the Pascal VOC dataset layout |
-| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout, with the image cropper of that layout |
+| [PlainTxtExportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtExportLibraryContext.h) | the `LibraryContext` descendant of the plain text dataset layout |
+| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ExportLibraryContext.h) | the `LibraryContext` descendant of the YOLO v4 (darknet) dataset layout |
+| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO detection dataset layout |
+| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO oriented bounding box dataset layout |
+| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` descendant of the Ultralytics YOLO segmentation dataset layout |
+| [CocoExportLibraryContext.h](/src/lib/facade/public/contexts/CocoExportLibraryContext.h) | the `LibraryContext` descendant of the COCO object detection dataset layout |
+| [PascalVocExportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocExportLibraryContext.h) | the `LibraryContext` descendant of the Pascal VOC dataset layout |
+| [PyTorchExportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchExportLibraryContext.h) | the `LibraryContext` descendant of the PyTorch Vision dataset layout, with the image cropper of that layout |
 | [ILib.h](/src/lib/facade/public/ILib.h) | the `ILib` abstract library interface with its `perform_export` method |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` factory class, the entry point of the library |
 

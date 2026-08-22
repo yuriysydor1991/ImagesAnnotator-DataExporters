@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- Gather the nine layout specific `LibraryContext` descendants into a `contexts` subdirectory of the installable public headers, so `src/lib/facade/public` lists the six headers that make up the API of the library - `ExportersAPI.h`, `IExporter.h`, `IImageCropperFacility.h`, `ILib.h`, `LibraryContext.h` and `LibraryFacade.h` - instead of burying them among nine files whose names differ only by the layout they stand for. The nine move together with no rename: `CocoExportLibraryContext.h`, `CreateMLExportLibraryContext.h`, `PascalVocExportLibraryContext.h`, `PlainTxtExportLibraryContext.h`, `PyTorchExportLibraryContext.h`, the three `Ultralytics*ExportLibraryContext.h` ones and `Yolo4ExportLibraryContext.h` are installed at `<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/` from now on, and each of them reaches the headers it left behind through `../`, which is what keeps them resolving once installed - the include root of a consumer is `<prefix>/include`, so the sibling spelling would have looked for `<prefix>/include/LibraryContext.h`. **No class, method or namespace changes with it**, and neither does the way a consumer is meant to reach them: `LibraryFacade.h` includes all nine, so a project including that one header alone - which is what the documented usage does, and what the ImagesAnnotator application does - needs no change whatsoever. Only a project that included a layout context header directly has to spell the `contexts/` component now. The base `LibraryContext.h` deliberately stays at the root of the public directory, since it is the type the `IExporter`, `ILib` and `LibraryFacade` signatures are written in and belongs to no single layout.
+
 ## [0.11.0] - 2026-08-01
 
 The first release of `ImagesAnnotatorDataExporters` as a project of its own. The

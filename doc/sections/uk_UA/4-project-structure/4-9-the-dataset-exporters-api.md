@@ -18,14 +18,14 @@ namespace iade = ImagesAnnotatorDataExporters011;
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | абстрактний інтерфейс експортера `IExporter` |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | інтерфейс `IImageCropperFacility`, який реалізує проект-споживач |
 | [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | клас вхідних і вихідних даних `LibraryContext`, яким керуються обидві точки входу |
-| [PlainTxtExportLibraryContext.h](/src/lib/facade/public/PlainTxtExportLibraryContext.h) | нащадка `LibraryContext` розкладки простого тексту |
-| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/Yolo4ExportLibraryContext.h) | нащадка `LibraryContext` розкладки YOLO v4 (darknet) |
-| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/UltralyticsDetectExportLibraryContext.h) | нащадка `LibraryContext` розкладки детекції Ultralytics YOLO |
-| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/UltralyticsObbExportLibraryContext.h) | нащадка `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
-| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/UltralyticsSegmentExportLibraryContext.h) | нащадка `LibraryContext` розкладки сегментації Ultralytics YOLO |
-| [CocoExportLibraryContext.h](/src/lib/facade/public/CocoExportLibraryContext.h) | нащадка `LibraryContext` розкладки детекції об'єктів COCO |
-| [PascalVocExportLibraryContext.h](/src/lib/facade/public/PascalVocExportLibraryContext.h) | нащадка `LibraryContext` розкладки набору даних Pascal VOC |
-| [PyTorchExportLibraryContext.h](/src/lib/facade/public/PyTorchExportLibraryContext.h) | нащадка `LibraryContext` розкладки PyTorch Vision, разом з обрізачем зображень тієї розкладки |
+| [PlainTxtExportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtExportLibraryContext.h) | нащадка `LibraryContext` розкладки простого тексту |
+| [Yolo4ExportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ExportLibraryContext.h) | нащадка `LibraryContext` розкладки YOLO v4 (darknet) |
+| [UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectExportLibraryContext.h) | нащадка `LibraryContext` розкладки детекції Ultralytics YOLO |
+| [UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbExportLibraryContext.h) | нащадка `LibraryContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
+| [UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportLibraryContext.h) | нащадка `LibraryContext` розкладки сегментації Ultralytics YOLO |
+| [CocoExportLibraryContext.h](/src/lib/facade/public/contexts/CocoExportLibraryContext.h) | нащадка `LibraryContext` розкладки детекції об'єктів COCO |
+| [PascalVocExportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocExportLibraryContext.h) | нащадка `LibraryContext` розкладки набору даних Pascal VOC |
+| [PyTorchExportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchExportLibraryContext.h) | нащадка `LibraryContext` розкладки PyTorch Vision, разом з обрізачем зображень тієї розкладки |
 | [ILib.h](/src/lib/facade/public/ILib.h) | абстрактний інтерфейс бібліотеки `ILib` із його методом `perform_export` |
 | [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | клас-фабрику `LibraryFacade`, точку входу бібліотеки |
 

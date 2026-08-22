@@ -65,13 +65,15 @@ exactly the following files:
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/ILib.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.11/LibraryFacade.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/CocoExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/PlainTxtExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/PyTorchExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsDetectExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsObbExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/UltralyticsSegmentExportLibraryContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/Yolo4ExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/CocoExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/CreateMLExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/PascalVocExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/PlainTxtExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/PyTorchExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/UltralyticsDetectExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/UltralyticsObbExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/UltralyticsSegmentExportLibraryContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.11/contexts/Yolo4ExportLibraryContext.h
 
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/ImagesAnnotatorDataExporters-0.11Config.cmake
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/ImagesAnnotatorDataExporters-0.11ConfigVersion.cmake

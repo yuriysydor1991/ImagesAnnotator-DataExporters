@@ -25,7 +25,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "PyTorchExportLibraryContext.h"
+#include "contexts/PyTorchExportLibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {

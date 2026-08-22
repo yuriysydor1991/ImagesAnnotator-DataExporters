@@ -25,46 +25,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context which writes the Pascal VOC dataset: the
- * JPEGImages directory, one Annotations XML descriptor per image over it and
- * the ImageSets/Main lists naming them.
+ * @brief The library context which writes the Create ML object detection
+ * dataset: the images and the single annotations.json descriptor beside them,
+ * in one flat directory.
  *
- * This is the devkit layout torchvision VOCDetection and the MMDetection
- * XMLDataset are pointed at, and the very files LabelImg saves its own work in,
- * so an exported project opens for correction in that annotator directly.
+ * This is the layout that leads to a Core ML detector running on an iPhone:
+ * the `directoryWithImagesAndJsonAnnotation` data source of Apple's
+ * MLObjectDetector, the one the Create ML application takes when a folder is
+ * dropped into its training well.
  *
- * A rectangle reaches the XML as the two corner points it was drawn between,
- * in the image own pixels, and its class name is written out as it stands
- * instead of as a position in the available annotations list, which is what
- * every other layout of this library writes.
+ * Its coordinates are the only ones of this library which are neither a corner
+ * nor normalised: `x`/`y` is the **centre** of the box, counted in the image
+ * own pixels from its top left corner, which is the halving every YOLO layout
+ * performs before it divides the result by the image size.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API PascalVocExportLibraryContext : public LibraryContext
+class IADE_API CreateMLExportLibraryContext : public LibraryContext
 {
  public:
-  using PascalVocExportLibraryContextPtr =
-      std::shared_ptr<PascalVocExportLibraryContext>;
+  using CreateMLExportLibraryContextPtr =
+      std::shared_ptr<CreateMLExportLibraryContext>;
 };
 
-using PascalVocExportLibraryContextPtr =
-    PascalVocExportLibraryContext::PascalVocExportLibraryContextPtr;
+using CreateMLExportLibraryContextPtr =
+    CreateMLExportLibraryContext::CreateMLExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H

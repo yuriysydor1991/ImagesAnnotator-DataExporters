@@ -25,47 +25,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context which writes the Create ML object detection
- * dataset: the images and the single annotations.json descriptor beside them,
- * in one flat directory.
- *
- * This is the layout that leads to a Core ML detector running on an iPhone:
- * the `directoryWithImagesAndJsonAnnotation` data source of Apple's
- * MLObjectDetector, the one the Create ML application takes when a folder is
- * dropped into its training well.
- *
- * Its coordinates are the only ones of this library which are neither a corner
- * nor normalised: `x`/`y` is the **centre** of the box, counted in the image
- * own pixels from its top left corner, which is the halving every YOLO layout
- * performs before it divides the result by the image size.
+ * @brief The library context which writes the YOLO v4 (darknet) training
+ * directory.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API CreateMLExportLibraryContext : public LibraryContext
+class IADE_API Yolo4ExportLibraryContext : public LibraryContext
 {
  public:
-  using CreateMLExportLibraryContextPtr =
-      std::shared_ptr<CreateMLExportLibraryContext>;
+  using Yolo4ExportLibraryContextPtr =
+      std::shared_ptr<Yolo4ExportLibraryContext>;
 };
 
-using CreateMLExportLibraryContextPtr =
-    CreateMLExportLibraryContext::CreateMLExportLibraryContextPtr;
+using Yolo4ExportLibraryContextPtr =
+    Yolo4ExportLibraryContext::Yolo4ExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H

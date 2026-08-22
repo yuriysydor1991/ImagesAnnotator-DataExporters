@@ -25,36 +25,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context which writes the YOLO v4 (darknet) training
- * directory.
+ * @brief The library context which writes the Ultralytics YOLO segmentation
+ * dataset: the data.yaml descriptor over the images/train and labels/train
+ * directories, one `class x1 y1 ... xn yn` polygon line per rectangle.
+ *
+ * The segmentation format takes a polygon of any three or more points. The
+ * mask of a rectangle annotation is the rectangle outline itself, so the
+ * polygon written is its four corners and the trained model reproduces masks
+ * exactly that coarse. Reach for this layout when a rectangle outline is mask
+ * enough.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API Yolo4ExportLibraryContext : public LibraryContext
+class IADE_API UltralyticsSegmentExportLibraryContext : public LibraryContext
 {
  public:
-  using Yolo4ExportLibraryContextPtr =
-      std::shared_ptr<Yolo4ExportLibraryContext>;
+  using UltralyticsSegmentExportLibraryContextPtr =
+      std::shared_ptr<UltralyticsSegmentExportLibraryContext>;
 };
 
-using Yolo4ExportLibraryContextPtr =
-    Yolo4ExportLibraryContext::Yolo4ExportLibraryContextPtr;
+using UltralyticsSegmentExportLibraryContextPtr =
+    UltralyticsSegmentExportLibraryContext::
+        UltralyticsSegmentExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H

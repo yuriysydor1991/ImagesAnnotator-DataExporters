@@ -25,48 +25,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "IImageCropperFacility.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context which writes the PyTorch Vision ImageFolder
- * layout of cropped out rectangles. Requires an IImageCropperFacility unless
- * the library was built with its own.
+ * @brief The library context which writes the Ultralytics YOLO oriented
+ * bounding box dataset: the data.yaml descriptor over the images/train and
+ * labels/train directories, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the
+ * four box corners per rectangle.
  *
- * Instantiating the class is what names the wanted dataset layout. The cropper
- * lives here rather than in LibraryContext because this is the one layout
- * which cuts pixels out, so no other export has to carry a slot it never
- * reads.
+ * The annotations database knows axis aligned rectangles only, so every box
+ * written here carries the rotation angle of zero. An OBB model trained on it
+ * still learns to detect the rotated instances of the very same objects.
+ *
+ * The class carries no data of its own: instantiating it is what names the
+ * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API PyTorchExportLibraryContext : public LibraryContext
+class IADE_API UltralyticsObbExportLibraryContext : public LibraryContext
 {
  public:
-  using PyTorchExportLibraryContextPtr =
-      std::shared_ptr<PyTorchExportLibraryContext>;
-
-  /// @brief In: the image cropper instance, optional in a build which found
-  /// OpenCV and mandatory in one which did not
-  const IImageCropperFacilityPtr& get_cropper() const;
-  void set_cropper(const IImageCropperFacilityPtr& newCropper);
-
- private:
-  IImageCropperFacilityPtr cropper;
+  using UltralyticsObbExportLibraryContextPtr =
+      std::shared_ptr<UltralyticsObbExportLibraryContext>;
 };
 
-using PyTorchExportLibraryContextPtr =
-    PyTorchExportLibraryContext::PyTorchExportLibraryContextPtr;
+using UltralyticsObbExportLibraryContextPtr =
+    UltralyticsObbExportLibraryContext::UltralyticsObbExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H

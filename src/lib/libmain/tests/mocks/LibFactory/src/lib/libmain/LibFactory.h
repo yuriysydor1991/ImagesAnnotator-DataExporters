@@ -10,9 +10,9 @@
 #include "IExporter.h"
 #include "ILib.h"
 #include "LibraryContext.h"
-#include "PlainTxtExportLibraryContext.h"
-#include "PyTorchExportLibraryContext.h"
-#include "Yolo4ExportLibraryContext.h"
+#include "contexts/PlainTxtExportLibraryContext.h"
+#include "contexts/PyTorchExportLibraryContext.h"
+#include "contexts/Yolo4ExportLibraryContext.h"
 
 namespace iade0impl
 {

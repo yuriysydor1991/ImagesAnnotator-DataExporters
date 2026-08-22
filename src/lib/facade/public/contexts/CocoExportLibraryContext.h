@@ -25,44 +25,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {
 
 /**
- * @brief The library context which writes the Ultralytics YOLO segmentation
- * dataset: the data.yaml descriptor over the images/train and labels/train
- * directories, one `class x1 y1 ... xn yn` polygon line per rectangle.
+ * @brief The library context which writes the COCO object detection dataset:
+ * the single annotations/instances_default.json descriptor over the images
+ * directory next to it.
  *
- * The segmentation format takes a polygon of any three or more points. The
- * mask of a rectangle annotation is the rectangle outline itself, so the
- * polygon written is its four corners and the trained model reproduces masks
- * exactly that coarse. Reach for this layout when a rectangle outline is mask
- * enough.
+ * This is the one layout of this library read by something other than a YOLO
+ * training run: Detectron2, MMDetection, torchvision, the HuggingFace
+ * detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take
+ * it. Its `bbox` is the `[x, y, width, height]` of the top left corner in the
+ * image own pixels, which is what an ImageRecordRect already holds, so nothing
+ * of a rectangle is normalised away the way every YOLO layout normalises it.
  *
  * The class carries no data of its own: instantiating it is what names the
  * wanted dataset layout, everything else is inherited from LibraryContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API UltralyticsSegmentExportLibraryContext : public LibraryContext
+class IADE_API CocoExportLibraryContext : public LibraryContext
 {
  public:
-  using UltralyticsSegmentExportLibraryContextPtr =
-      std::shared_ptr<UltralyticsSegmentExportLibraryContext>;
+  using CocoExportLibraryContextPtr = std::shared_ptr<CocoExportLibraryContext>;
 };
 
-using UltralyticsSegmentExportLibraryContextPtr =
-    UltralyticsSegmentExportLibraryContext::
-        UltralyticsSegmentExportLibraryContextPtr;
+using CocoExportLibraryContextPtr =
+    CocoExportLibraryContext::CocoExportLibraryContextPtr;
 
 }  // namespace ImagesAnnotatorDataExporters011
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTLIBRARYCONTEXT_CLASS_H

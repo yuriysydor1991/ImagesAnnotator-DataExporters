@@ -31,20 +31,20 @@
 #include <memory>
 #include <string>
 
-#include "CocoExportLibraryContext.h"
-#include "CreateMLExportLibraryContext.h"
 #include "ExportersAPI.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "ILib.h"
 #include "LibraryContext.h"
-#include "PascalVocExportLibraryContext.h"
-#include "PlainTxtExportLibraryContext.h"
-#include "PyTorchExportLibraryContext.h"
-#include "UltralyticsDetectExportLibraryContext.h"
-#include "UltralyticsObbExportLibraryContext.h"
-#include "UltralyticsSegmentExportLibraryContext.h"
-#include "Yolo4ExportLibraryContext.h"
+#include "contexts/CocoExportLibraryContext.h"
+#include "contexts/CreateMLExportLibraryContext.h"
+#include "contexts/PascalVocExportLibraryContext.h"
+#include "contexts/PlainTxtExportLibraryContext.h"
+#include "contexts/PyTorchExportLibraryContext.h"
+#include "contexts/UltralyticsDetectExportLibraryContext.h"
+#include "contexts/UltralyticsObbExportLibraryContext.h"
+#include "contexts/UltralyticsSegmentExportLibraryContext.h"
+#include "contexts/Yolo4ExportLibraryContext.h"
 
 /**
  * @brief The logging subsystem interface every project built from the

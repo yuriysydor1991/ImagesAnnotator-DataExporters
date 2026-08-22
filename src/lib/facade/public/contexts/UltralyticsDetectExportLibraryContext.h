@@ -30,8 +30,8 @@
 
 #include <memory>
 
-#include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "../ExportersAPI.h"
+#include "../LibraryContext.h"
 
 namespace ImagesAnnotatorDataExporters011
 {

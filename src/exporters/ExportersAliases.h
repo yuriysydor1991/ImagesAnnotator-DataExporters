@@ -35,7 +35,7 @@
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
 #include "LibraryContext.h"
-#include "PyTorchExportLibraryContext.h"
+#include "contexts/PyTorchExportLibraryContext.h"
 
 /**
  * @brief The images annotator exporter namespace that holds all annotator

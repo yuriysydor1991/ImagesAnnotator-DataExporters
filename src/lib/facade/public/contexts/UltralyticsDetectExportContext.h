@@ -25,36 +25,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSDETECTEXPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSDETECTEXPORTCONTEXT_CLASS_H
 
 #include <memory>
 
 #include "../ExportersAPI.h"
-#include "../LibraryContext.h"
+#include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief The library context which writes the YOLO v4 (darknet) training
- * directory.
+ * @brief The library context which writes the Ultralytics YOLO detection
+ * dataset: the data.yaml descriptor over the images/train and labels/train
+ * directories, one `class centre-x centre-y width height` line per rectangle.
+ *
+ * This is the layout YOLO v5 introduced and every Ultralytics release since -
+ * v8, v11 and the ones after them - reads. The darknet directory of
+ * Yolo4ExportContext holds the very same four normalised numbers, but
+ * names its classes, lists its images and describes its network in files of
+ * its own instead.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataExportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API Yolo4ExportLibraryContext : public LibraryContext
+class IADE_API UltralyticsDetectExportContext : public IADataExportersContext
 {
  public:
-  using Yolo4ExportLibraryContextPtr =
-      std::shared_ptr<Yolo4ExportLibraryContext>;
+  using UltralyticsDetectExportContextPtr =
+      std::shared_ptr<UltralyticsDetectExportContext>;
 };
 
-using Yolo4ExportLibraryContextPtr =
-    Yolo4ExportLibraryContext::Yolo4ExportLibraryContextPtr;
+using UltralyticsDetectExportContextPtr =
+    UltralyticsDetectExportContext::UltralyticsDetectExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_YOLO4EXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSDETECTEXPORTCONTEXT_CLASS_H

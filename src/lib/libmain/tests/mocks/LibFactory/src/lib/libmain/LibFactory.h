@@ -7,12 +7,12 @@
 #include <functional>
 #include <memory>
 
+#include "IADataExportersContext.h"
+#include "IADataExportersLib.h"
 #include "IExporter.h"
-#include "ILib.h"
-#include "LibraryContext.h"
-#include "contexts/PlainTxtExportLibraryContext.h"
-#include "contexts/PyTorchExportLibraryContext.h"
-#include "contexts/Yolo4ExportLibraryContext.h"
+#include "contexts/PlainTxtExportContext.h"
+#include "contexts/PyTorchExportContext.h"
+#include "contexts/Yolo4ExportContext.h"
 
 namespace iade0impl
 {
@@ -24,27 +24,31 @@ namespace iade0impl
 class LibFactorySynthParent
 {
  public:
-  using ILibPtr = ImagesAnnotatorDataExporters011::ILibPtr;
-  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
-  using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
-  using PlainTxtExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::PlainTxtExportLibraryContextPtr;
-  using Yolo4ExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::Yolo4ExportLibraryContextPtr;
-  using PyTorchExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::PyTorchExportLibraryContextPtr;
-  using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
+  using IADataExportersLibPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersLibPtr;
+  using IADataExportersContextPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
+  using IADataExportersContext =
+      ImagesAnnotatorDataExporters012::IADataExportersContext;
+  using PlainTxtExportContextPtr =
+      ImagesAnnotatorDataExporters012::PlainTxtExportContextPtr;
+  using Yolo4ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Yolo4ExportContextPtr;
+  using PyTorchExportContextPtr =
+      ImagesAnnotatorDataExporters012::PyTorchExportContextPtr;
+  using IExporterPtr = ImagesAnnotatorDataExporters012::IExporterPtr;
 
   virtual ~LibFactorySynthParent() = default;
   LibFactorySynthParent() = default;
 
-  virtual ILibPtr create_default_lib() = 0;
-  virtual PlainTxtExportLibraryContextPtr
-  create_plain_txt_library_context() = 0;
-  virtual Yolo4ExportLibraryContextPtr create_yolo4_library_context() = 0;
-  virtual PyTorchExportLibraryContextPtr create_pytorch_library_context() = 0;
-  virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx) = 0;
-  virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx) = 0;
+  virtual IADataExportersLibPtr create_default_lib() = 0;
+  virtual PlainTxtExportContextPtr create_plain_txt_library_context() = 0;
+  virtual Yolo4ExportContextPtr create_yolo4_library_context() = 0;
+  virtual PyTorchExportContextPtr create_pytorch_library_context() = 0;
+  virtual IADataExportersLibPtr create_appropriate_lib(
+      IADataExportersContextPtr ctx) = 0;
+  virtual IExporterPtr create_exporter(
+      const IADataExportersContextPtr& ctx) = 0;
 };
 
 class LibFactory : public LibFactorySynthParent
@@ -62,17 +66,17 @@ class LibFactory : public LibFactorySynthParent
 
   inline static std::function<void(LibFactory& instance)> onMockCreate;
 
-  MOCK_METHOD(ILibPtr, create_default_lib, (), (override));
-  MOCK_METHOD(PlainTxtExportLibraryContextPtr, create_plain_txt_library_context,
-              (), (override));
-  MOCK_METHOD(Yolo4ExportLibraryContextPtr, create_yolo4_library_context, (),
+  MOCK_METHOD(IADataExportersLibPtr, create_default_lib, (), (override));
+  MOCK_METHOD(PlainTxtExportContextPtr, create_plain_txt_library_context, (),
               (override));
-  MOCK_METHOD(PyTorchExportLibraryContextPtr, create_pytorch_library_context,
-              (), (override));
-  MOCK_METHOD(ILibPtr, create_appropriate_lib, (LibraryContextPtr ctx),
+  MOCK_METHOD(Yolo4ExportContextPtr, create_yolo4_library_context, (),
               (override));
-  MOCK_METHOD(IExporterPtr, create_exporter, (const LibraryContextPtr& ctx),
+  MOCK_METHOD(PyTorchExportContextPtr, create_pytorch_library_context, (),
               (override));
+  MOCK_METHOD(IADataExportersLibPtr, create_appropriate_lib,
+              (IADataExportersContextPtr ctx), (override));
+  MOCK_METHOD(IExporterPtr, create_exporter,
+              (const IADataExportersContextPtr& ctx), (override));
 
   inline static LibFactoryPtr create_factory()
   {

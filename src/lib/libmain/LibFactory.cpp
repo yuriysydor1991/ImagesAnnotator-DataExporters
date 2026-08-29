@@ -30,15 +30,15 @@
 #include <cassert>
 #include <memory>
 
-#include "contexts/CocoExportLibraryContext.h"
-#include "contexts/CreateMLExportLibraryContext.h"
-#include "contexts/PascalVocExportLibraryContext.h"
-#include "contexts/PlainTxtExportLibraryContext.h"
-#include "contexts/PyTorchExportLibraryContext.h"
-#include "contexts/UltralyticsDetectExportLibraryContext.h"
-#include "contexts/UltralyticsObbExportLibraryContext.h"
-#include "contexts/UltralyticsSegmentExportLibraryContext.h"
-#include "contexts/Yolo4ExportLibraryContext.h"
+#include "contexts/CocoExportContext.h"
+#include "contexts/CreateMLExportContext.h"
+#include "contexts/PascalVocExportContext.h"
+#include "contexts/PlainTxtExportContext.h"
+#include "contexts/PyTorchExportContext.h"
+#include "contexts/UltralyticsDetectExportContext.h"
+#include "contexts/UltralyticsObbExportContext.h"
+#include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo4ExportContext.h"
 #include "src/croppers/ImageCropperFactory.h"
 #include "src/exporters/Coco/Coco2FolderExporter.h"
 #include "src/exporters/CreateML/CreateML2FolderExporter.h"
@@ -55,69 +55,66 @@
 namespace iade0impl
 {
 
-using namespace ImagesAnnotatorDataExporters011;
+using namespace ImagesAnnotatorDataExporters012;
 
-LibFactory::ILibPtr LibFactory::create_default_lib()
+LibFactory::IADataExportersLibPtr LibFactory::create_default_lib()
 {
   return LibMain::create();
 }
 
-LibFactory::PlainTxtExportLibraryContextPtr
+LibFactory::PlainTxtExportContextPtr
 LibFactory::create_plain_txt_library_context()
 {
-  return std::make_shared<PlainTxtExportLibraryContext>();
+  return std::make_shared<PlainTxtExportContext>();
 }
 
-LibFactory::Yolo4ExportLibraryContextPtr
-LibFactory::create_yolo4_library_context()
+LibFactory::Yolo4ExportContextPtr LibFactory::create_yolo4_library_context()
 {
-  return std::make_shared<Yolo4ExportLibraryContext>();
+  return std::make_shared<Yolo4ExportContext>();
 }
 
-LibFactory::UltralyticsDetectExportLibraryContextPtr
+LibFactory::UltralyticsDetectExportContextPtr
 LibFactory::create_ultralytics_detect_library_context()
 {
-  return std::make_shared<UltralyticsDetectExportLibraryContext>();
+  return std::make_shared<UltralyticsDetectExportContext>();
 }
 
-LibFactory::UltralyticsObbExportLibraryContextPtr
+LibFactory::UltralyticsObbExportContextPtr
 LibFactory::create_ultralytics_obb_library_context()
 {
-  return std::make_shared<UltralyticsObbExportLibraryContext>();
+  return std::make_shared<UltralyticsObbExportContext>();
 }
 
-LibFactory::UltralyticsSegmentExportLibraryContextPtr
+LibFactory::UltralyticsSegmentExportContextPtr
 LibFactory::create_ultralytics_segment_library_context()
 {
-  return std::make_shared<UltralyticsSegmentExportLibraryContext>();
+  return std::make_shared<UltralyticsSegmentExportContext>();
 }
 
-LibFactory::CocoExportLibraryContextPtr
-LibFactory::create_coco_library_context()
+LibFactory::CocoExportContextPtr LibFactory::create_coco_library_context()
 {
-  return std::make_shared<CocoExportLibraryContext>();
+  return std::make_shared<CocoExportContext>();
 }
 
-LibFactory::PascalVocExportLibraryContextPtr
+LibFactory::PascalVocExportContextPtr
 LibFactory::create_pascal_voc_library_context()
 {
-  return std::make_shared<PascalVocExportLibraryContext>();
+  return std::make_shared<PascalVocExportContext>();
 }
 
-LibFactory::CreateMLExportLibraryContextPtr
+LibFactory::CreateMLExportContextPtr
 LibFactory::create_createml_library_context()
 {
-  return std::make_shared<CreateMLExportLibraryContext>();
+  return std::make_shared<CreateMLExportContext>();
 }
 
-LibFactory::PyTorchExportLibraryContextPtr
-LibFactory::create_pytorch_library_context()
+LibFactory::PyTorchExportContextPtr LibFactory::create_pytorch_library_context()
 {
-  return std::make_shared<PyTorchExportLibraryContext>();
+  return std::make_shared<PyTorchExportContext>();
 }
 
-LibFactory::ILibPtr LibFactory::create_appropriate_lib(
-    [[maybe_unused]] LibraryContextPtr ctx)
+LibFactory::IADataExportersLibPtr LibFactory::create_appropriate_lib(
+    [[maybe_unused]] IADataExportersContextPtr ctx)
 {
   assert(ctx != nullptr);
 
@@ -129,48 +126,46 @@ LibFactory::ILibPtr LibFactory::create_appropriate_lib(
 // here, where the concrete exporter classes are already known, instead of in
 // the installed headers.
 LibFactory::IExporterPtr LibFactory::create_exporter(
-    const LibraryContextPtr& ctx)
+    const IADataExportersContextPtr& ctx)
 {
-  if (std::dynamic_pointer_cast<PlainTxtExportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<PlainTxtExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::PlainTxt2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<Yolo4ExportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<Yolo4ExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::Yolo42FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<UltralyticsDetectExportLibraryContext>(ctx) !=
+  if (std::dynamic_pointer_cast<UltralyticsDetectExportContext>(ctx) !=
       nullptr) {
     return std::make_shared<
         iannotator::exporters::UltralyticsDetect2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<UltralyticsObbExportLibraryContext>(ctx) !=
-      nullptr) {
+  if (std::dynamic_pointer_cast<UltralyticsObbExportContext>(ctx) != nullptr) {
     return std::make_shared<
         iannotator::exporters::UltralyticsObb2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<UltralyticsSegmentExportLibraryContext>(ctx) !=
+  if (std::dynamic_pointer_cast<UltralyticsSegmentExportContext>(ctx) !=
       nullptr) {
     return std::make_shared<
         iannotator::exporters::UltralyticsSegment2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<CocoExportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<CocoExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::Coco2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<PascalVocExportLibraryContext>(ctx) !=
-      nullptr) {
+  if (std::dynamic_pointer_cast<PascalVocExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::PascalVoc2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<CreateMLExportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<CreateMLExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::CreateML2FolderExporter>();
   }
 
-  if (std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ctx) != nullptr) {
+  if (std::dynamic_pointer_cast<PyTorchExportContext>(ctx) != nullptr) {
     return std::make_shared<
         iannotator::exporters::PyTorchVisionFolderExporter>();
   }

@@ -66,7 +66,7 @@ class PascalVoc2FolderExporter : virtual public IExporter
   virtual ~PascalVoc2FolderExporter() = default;
   PascalVoc2FolderExporter() = default;
 
-  virtual bool export_db(LibraryContextPtr) override;
+  virtual bool export_db(IADataExportersContextPtr) override;
 
  private:
   /**
@@ -97,17 +97,17 @@ class PascalVoc2FolderExporter : virtual public IExporter
   /// way to write the size without one
   inline static constexpr const int imageDepth{3};
 
-  static bool create_subdirs(LibraryContextPtr ectx);
-  bool express_images(LibraryContextPtr ectx);
-  std::filesystem::path prepare_image(LibraryContextPtr ectx,
+  static bool create_subdirs(IADataExportersContextPtr ectx);
+  bool express_images(IADataExportersContextPtr ectx);
+  std::filesystem::path prepare_image(IADataExportersContextPtr ectx,
                                       ImageRecordPtr& ir);
-  static bool express_annotation(LibraryContextPtr ectx,
+  static bool express_annotation(IADataExportersContextPtr ectx,
                                  const ImageRecordPtr& ir,
                                  const std::filesystem::path& newpath);
   static std::string express_objects(const ImageRecordPtr& ir);
-  bool express_image_sets(LibraryContextPtr ectx) const;
+  bool express_image_sets(IADataExportersContextPtr ectx) const;
   bool express_image_set(const std::filesystem::path& fpath) const;
-  static std::filesystem::path get_new_filepath(LibraryContextPtr ectx,
+  static std::filesystem::path get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir);
   /// @brief The descriptor written beside the given copied image
   static std::filesystem::path annotation_filepath(

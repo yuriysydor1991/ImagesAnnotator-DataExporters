@@ -45,7 +45,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool PascalVoc2FolderExporter::export_db(LibraryContextPtr ectx)
+bool PascalVoc2FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
 
@@ -88,7 +88,7 @@ bool PascalVoc2FolderExporter::export_db(LibraryContextPtr ectx)
   return true;
 }
 
-bool PascalVoc2FolderExporter::create_subdirs(LibraryContextPtr ectx)
+bool PascalVoc2FolderExporter::create_subdirs(IADataExportersContextPtr ectx)
 {
   const fs::path dirPath = ectx->get_export_path();
 
@@ -116,7 +116,7 @@ bool PascalVoc2FolderExporter::create_subdirs(LibraryContextPtr ectx)
   return true;
 }
 
-bool PascalVoc2FolderExporter::express_images(LibraryContextPtr ectx)
+bool PascalVoc2FolderExporter::express_images(IADataExportersContextPtr ectx)
 {
   imageSet.str({});
 
@@ -157,7 +157,7 @@ bool PascalVoc2FolderExporter::express_images(LibraryContextPtr ectx)
   return true;
 }
 
-fs::path PascalVoc2FolderExporter::prepare_image(LibraryContextPtr ectx,
+fs::path PascalVoc2FolderExporter::prepare_image(IADataExportersContextPtr ectx,
                                                  ImageRecordPtr& ir)
 {
   assert(irloader != nullptr);
@@ -199,8 +199,8 @@ fs::path PascalVoc2FolderExporter::prepare_image(LibraryContextPtr ectx,
   return newpath;
 }
 
-fs::path PascalVoc2FolderExporter::get_new_filepath(LibraryContextPtr ectx,
-                                                    ImageRecordPtr& ir)
+fs::path PascalVoc2FolderExporter::get_new_filepath(
+    IADataExportersContextPtr ectx, ImageRecordPtr& ir)
 {
   const fs::path origPath = ir->get_full_path();
   const fs::path dirPath = ectx->get_export_path();
@@ -242,9 +242,9 @@ fs::path PascalVoc2FolderExporter::annotation_filepath(
 // The image is named by its file name and the directory holding it, since a
 // devkit reader is given the export directory itself as the dataset root and
 // joins the three on its own.
-bool PascalVoc2FolderExporter::express_annotation(LibraryContextPtr ectx,
-                                                  const ImageRecordPtr& ir,
-                                                  const fs::path& newpath)
+bool PascalVoc2FolderExporter::express_annotation(
+    IADataExportersContextPtr ectx, const ImageRecordPtr& ir,
+    const fs::path& newpath)
 {
   const fs::path fpath = annotation_filepath(ectx->get_export_path(), newpath);
 
@@ -321,7 +321,8 @@ std::string PascalVoc2FolderExporter::express_objects(const ImageRecordPtr& ir)
   return objects.str();
 }
 
-bool PascalVoc2FolderExporter::express_image_sets(LibraryContextPtr ectx) const
+bool PascalVoc2FolderExporter::express_image_sets(
+    IADataExportersContextPtr ectx) const
 {
   const fs::path dirPath = ectx->get_export_path();
 

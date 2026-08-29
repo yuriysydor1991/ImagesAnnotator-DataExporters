@@ -48,7 +48,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool Coco2FolderExporter::export_db(LibraryContextPtr ectx)
+bool Coco2FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
 
@@ -93,7 +93,7 @@ bool Coco2FolderExporter::export_db(LibraryContextPtr ectx)
   return true;
 }
 
-bool Coco2FolderExporter::create_subdirs(LibraryContextPtr ectx)
+bool Coco2FolderExporter::create_subdirs(IADataExportersContextPtr ectx)
 {
   const fs::path dirPath = ectx->get_export_path();
 
@@ -120,7 +120,7 @@ bool Coco2FolderExporter::create_subdirs(LibraryContextPtr ectx)
   return true;
 }
 
-bool Coco2FolderExporter::express_images(LibraryContextPtr ectx)
+bool Coco2FolderExporter::express_images(IADataExportersContextPtr ectx)
 {
   IdType imageId{0};
 
@@ -161,7 +161,7 @@ bool Coco2FolderExporter::express_images(LibraryContextPtr ectx)
   return true;
 }
 
-fs::path Coco2FolderExporter::prepare_image(LibraryContextPtr ectx,
+fs::path Coco2FolderExporter::prepare_image(IADataExportersContextPtr ectx,
                                             ImageRecordPtr& ir)
 {
   assert(irloader != nullptr);
@@ -203,7 +203,7 @@ fs::path Coco2FolderExporter::prepare_image(LibraryContextPtr ectx,
   return newpath;
 }
 
-fs::path Coco2FolderExporter::get_new_filepath(LibraryContextPtr ectx,
+fs::path Coco2FolderExporter::get_new_filepath(IADataExportersContextPtr ectx,
                                                ImageRecordPtr& ir)
 {
   const fs::path origPath = ir->get_full_path();
@@ -279,7 +279,8 @@ void Coco2FolderExporter::express_image_annotations(const ImageRecordPtr& ir,
   }
 }
 
-bool Coco2FolderExporter::express_instances_json(LibraryContextPtr ectx) const
+bool Coco2FolderExporter::express_instances_json(
+    IADataExportersContextPtr ectx) const
 {
   const fs::path fpath = fs::path{ectx->get_export_path()} / instancesJsonRel;
 

@@ -47,7 +47,7 @@ namespace iannotator::exporters::croppers
  * hands out a nullptr in a build without OpenCV.
  *
  * A cropper the consumer sets through
- * PyTorchExportLibraryContext::set_cropper() always wins over this one: a
+ * PyTorchExportContext::set_cropper() always wins over this one: a
  * project that already decodes images its own way keeps doing so, and this is
  * only what fills an empty slot.
  *

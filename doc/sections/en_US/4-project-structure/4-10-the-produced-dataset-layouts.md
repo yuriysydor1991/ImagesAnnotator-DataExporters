@@ -1,6 +1,6 @@
 ## The produced dataset layouts
 
-Each `LibraryContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the directory named by `LibraryContext::set_export_path()`. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Each `IADataExportersContext` descendant is implemented by one exporter class under [src/exporters](/src/exporters). This subsection describes what every one of them writes into the directory named by `IADataExportersContext::set_export_path()`. The interface that drives them is described in the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ### What they all have in common
 
@@ -18,7 +18,7 @@ The examples below all describe the very same two record database:
 | `/home/user/images/street.png` | 640 x 400 | `dog` (50, 20, 100, 40), `dog` (300, 25, 90, 45) |
 | `/home/user/images/park.jpg` | 640 x 480 | `cat` (200, 130, 48, 52), `dog` (12, 8, 64, 64) |
 
-### PlainTxtExportLibraryContext
+### PlainTxtExportContext
 
 The simplest layout: one plain text file per annotation name, written straight into the export directory and named `<annotation-name>.txt`.
 
@@ -49,7 +49,7 @@ and `cat.txt` reads:
 
 The lines follow the order of the records in the database. No image file is copied or rewritten - the first field is the `ImageRecord::get_full_path()` value, which for a preloaded web hosted record is the path of its temporary cached copy. A text file of an already existing name is truncated as soon as the export run opens it.
 
-### Yolo4ExportLibraryContext
+### Yolo4ExportContext
 
 The darknet training directory of the YOLO v4 detector. The exporter creates the export directory itself when it is not there yet, together with the `data`, `cfg` and `backup` sub-directories:
 
@@ -230,7 +230,7 @@ All three normalise a rectangle into the `0..1` range against the record `iwidth
 
 A rectangle left with no area inside the image at all - one drawn entirely outside of it - is logged and dropped, while the image and the rest of its rectangles are exported as usual. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
 
-### UltralyticsDetectExportLibraryContext
+### UltralyticsDetectExportContext
 
 The detection dataset. Every rectangle becomes one line of the class index and the box:
 
@@ -252,7 +252,7 @@ and `labels/train/park.txt` reads:
 1 0.06875 0.0833333 0.1 0.133333
 ```
 
-### UltralyticsObbExportLibraryContext
+### UltralyticsObbExportContext
 
 The oriented bounding box dataset. Every rectangle becomes one line of the class index and the four corners of the box, clockwise from the top left one:
 
@@ -276,7 +276,7 @@ and `labels/train/park.txt` reads:
 
 The annotations database knows axis aligned rectangles only, so every box written here carries the rotation angle of zero. That is not a wasted export: an OBB model trained on it detects the rotated instances of the very same objects.
 
-### UltralyticsSegmentExportLibraryContext
+### UltralyticsSegmentExportContext
 
 The instance segmentation dataset. Every rectangle becomes one line of the class index and the points of the polygon which outlines the object:
 
@@ -295,7 +295,7 @@ Two more members of the YOLO format family are left out on purpose:
 - **The pose, or keypoint, layout.** Its label line carries the keypoints of the object after the box, and the descriptor names their count and their left-right mirror pairs in a `kpt_shape` and a `flip_idx` key. The annotations database holds named rectangles and no keypoints at all, so there is nothing to write those columns out of.
 - **The classification layout**, which is a `train/<annotation name>/` and a `val/<annotation name>/` directory of cropped images. That is the PyTorch Vision `ImageFolder` layout described below with one split directory added on top of it, and the split is the very thing this library leaves to its consumer.
 
-### CocoExportLibraryContext
+### CocoExportContext
 
 The COCO object detection dataset: the copied images and the single JSON descriptor over them. The exporter creates the export directory itself when it is not there yet, together with the two sub-directories:
 
@@ -331,7 +331,7 @@ Every annotated image file is copied into `images/`. When a file of that name is
 
 ```json
 {
-"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.11.0"},
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.12.0"},
 "licenses": [],
 "images": [
   {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
@@ -355,7 +355,7 @@ Every annotated image file is copied into `images/`. When a file of that name is
 - **The identifiers** of all three arrays are running counters over what the export has really written out, and they start at `1`: a reader treats the category `0` as the background one. A category id is therefore the position of the name in the sorted set the database reports, plus one - which is the darknet and Ultralytics class index of that same name, plus one.
 - **`area`** is the `width` multiplied by the `height` of the box, the value the evaluation of a trained detector splits its results by the object size with.
 - **`iscrowd`** is `0` for every rectangle: the flag marks a single annotation covering a whole crowd of objects, which a named rectangle of the annotations database never is.
-- **`segmentation`** is left empty, since a rectangle carries no mask. That is what makes the export a detection dataset and not a segmentation one, and every reader of the format treats the empty list as "no mask here". Reach for `UltralyticsSegmentExportLibraryContext` when a box shaped mask is mask enough.
+- **`segmentation`** is left empty, since a rectangle carries no mask. That is what makes the export a detection dataset and not a segmentation one, and every reader of the format treats the empty list as "no mask here". Reach for `UltralyticsSegmentExportContext` when a box shaped mask is mask enough.
 - An annotation name and a file name are both user text, so every one of them is written out JSON escaped - a quote, a backslash or a control character inside a name stays a part of the name instead of ending the string.
 
 The two guards of the Ultralytics exporters apply here as well, for a different reason: a `bbox` reaching over an image edge would make the `area` written next to it, and every overlap ever computed against it, a lie.
@@ -367,7 +367,7 @@ A rectangle left with no area inside the image at all is logged and dropped, whi
 
 The whole set is offered as one dataset. Splitting it into a real training and validation part is left to the consumer, exactly as it is in every other layout here.
 
-### PascalVocExportLibraryContext
+### PascalVocExportContext
 
 The Pascal VOC dataset, in the devkit directory shape: the copied images, one XML descriptor per image over them and the image lists naming those. The exporter creates the export directory itself when it is not there yet, together with the three sub-directories:
 
@@ -453,7 +453,7 @@ Every annotated image file is copied into `JPEGImages/`. When a file of that nam
 - **`depth`** is `3` for every image. An `ImageRecord` carries no channel count, and the format leaves no way to write the size without one.
 - **`truncated`** is `1` exactly when the image edge really did cut the rectangle down, which is what the flag means: the object continues past the picture. A rectangle drawn wholly inside the image gets a `0`.
 - **`difficult`** is `0` for every rectangle - the database has no such mark, and the standard VOC evaluation drops a `1` from its results altogether. **`pose`** is `Unspecified`, since no viewing angle is held either.
-- **`segmented`** is `0`: the flag promises a mask in the segmentation directories of the devkit, and a rectangle carries none. Reach for `UltralyticsSegmentExportLibraryContext` when a box shaped mask is mask enough.
+- **`segmented`** is `0`: the flag promises a mask in the segmentation directories of the devkit, and a rectangle carries none. Reach for `UltralyticsSegmentExportContext` when a box shaped mask is mask enough.
 - An annotation name and a file name are both user text, so both are written out XML escaped - an `&`, a `<` or a `>` inside a name stays a part of the name instead of opening markup. The control characters XML 1.0 carries no way to write at all, not even as a numeric reference, are dropped from a name rather than written into a file no parser would accept.
 
 `ImageSets/Main/train.txt` and `ImageSets/Main/val.txt` both list the stems of the copied images, one per line:
@@ -474,7 +474,7 @@ A rectangle left with no area inside the image at all is logged and dropped, whi
 
 One limitation belongs to a reader rather than to the export: the MMDetection `XMLDataset` builds an image path by appending `.jpg` to a name of the list, so a project of PNG images is read by it only after that class is told otherwise. The descriptors themselves name the real file with their `filename` element, and every other reader of the format uses it.
 
-### CreateMLExportLibraryContext
+### CreateMLExportContext
 
 The Create ML object detection dataset: the copied images and the single JSON descriptor beside them, in one flat directory. The exporter creates the export directory itself when it is not there yet, and makes no sub-directory below it:
 
@@ -532,7 +532,7 @@ A rectangle left with no area inside the image at all is logged and dropped, whi
 
 The whole set is offered as one dataset, the way every other layout here offers it. This is the one place where that costs the consumer nothing: the Create ML application defaults its validation data to `Automatic` and holds a small part of the given set back on its own, so a directory written by this exporter is complete as it stands.
 
-### PyTorchExportLibraryContext
+### PyTorchExportContext
 
 The classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name, holding the images cropped down to the rectangles carrying that name.
 
@@ -547,7 +547,7 @@ export_path/
 
 The annotation name is used verbatim as the directory name, and the directory is created when it is not there yet. The export directory itself is not created, it has to exist beforehand.
 
-This is the only format that needs a cropper from `PyTorchExportLibraryContext::set_cropper()`: without one `export_db()` logs the fact and returns `false` right away. For every rectangle the exporter calls
+This is the only format that needs a cropper from `PyTorchExportContext::set_cropper()`: without one `export_db()` logs the fact and returns `false` right away. For every rectangle the exporter calls
 
 ```cpp
 cropper->crop_out_2_fs(ir, irr, tofpath);

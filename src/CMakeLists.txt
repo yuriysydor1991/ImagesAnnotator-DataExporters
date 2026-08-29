@@ -68,8 +68,8 @@ set(IADE_EXPORTERS_SRC
 # executable driving a context needs these translation units, exactly as the
 # library target itself does.
 set(IADE_FACADE_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/LibraryContext.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/PyTorchExportLibraryContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/IADataExportersContext.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/facade/PyTorchExportContext.cpp
 )
 
 set(IADE_HELPERS_SRC

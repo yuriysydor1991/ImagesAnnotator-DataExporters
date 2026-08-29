@@ -66,7 +66,7 @@ class Coco2FolderExporter : virtual public IExporter
   virtual ~Coco2FolderExporter() = default;
   Coco2FolderExporter() = default;
 
-  virtual bool export_db(LibraryContextPtr) override;
+  virtual bool export_db(IADataExportersContextPtr) override;
 
  private:
   using AnnotationsList = IImagesPathsDBProvider::AnnotationsList;
@@ -90,17 +90,17 @@ class Coco2FolderExporter : virtual public IExporter
   inline static const std::string instancesJsonRel =
       annotationsRel + "/instances_default.json";
 
-  static bool create_subdirs(LibraryContextPtr ectx);
-  bool express_images(LibraryContextPtr ectx);
-  std::filesystem::path prepare_image(LibraryContextPtr ectx,
+  static bool create_subdirs(IADataExportersContextPtr ectx);
+  bool express_images(IADataExportersContextPtr ectx);
+  std::filesystem::path prepare_image(IADataExportersContextPtr ectx,
                                       ImageRecordPtr& ir);
   void express_image(const ImageRecordPtr& ir, const IdType& imageId,
                      const std::string& fileName);
   void express_image_annotations(const ImageRecordPtr& ir,
                                  const IdType& imageId);
-  bool express_instances_json(LibraryContextPtr ectx) const;
+  bool express_instances_json(IADataExportersContextPtr ectx) const;
   std::string express_categories() const;
-  static std::filesystem::path get_new_filepath(LibraryContextPtr ectx,
+  static std::filesystem::path get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir);
   static bool clamp_into_image(const ImageRecordPtr& ir,
                                const ImageRecordRectPtr& irr, PixelRect& prect);

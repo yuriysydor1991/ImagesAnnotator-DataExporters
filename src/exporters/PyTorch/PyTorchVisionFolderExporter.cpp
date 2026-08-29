@@ -44,7 +44,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool PyTorchVisionFolderExporter::export_db(LibraryContextPtr ectx)
+bool PyTorchVisionFolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -61,7 +61,7 @@ bool PyTorchVisionFolderExporter::export_db(LibraryContextPtr ectx)
 
   // The cropper is carried by the context of this very layout, so an export
   // driven by any other one reaches the library's own cropper below, or fails.
-  auto pctx = std::dynamic_pointer_cast<PyTorchExportLibraryContext>(ectx);
+  auto pctx = std::dynamic_pointer_cast<PyTorchExportContext>(ectx);
 
   // A cropper the consumer supplied always wins: a project that already
   // decodes images its own way - the GUI cutters of the ImagesAnnotator

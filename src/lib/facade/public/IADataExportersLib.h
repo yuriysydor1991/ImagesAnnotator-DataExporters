@@ -25,19 +25,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSLIB_ABSTRACT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSLIB_ABSTRACT_CLASS_H
 
 #include <memory>
 
 #include "ExportersAPI.h"
-#include "LibraryContext.h"
+#include "IADataExportersContext.h"
 
 /**
  * @brief The implementation part of the library.
  * Hides all the guts of particular implementation code.
  */
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
@@ -48,34 +48,34 @@ namespace ImagesAnnotatorDataExporters011
  * takes a filled context, builds the exporter of the layout that context
  * stands for and runs that exporter over the database it points at. Projects
  * that need a finer grained control should rather build the exporter directly
- * through the LibraryFacade factory methods.
+ * through the IADataExportersFacade factory methods.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API ILib
+class IADE_API IADataExportersLib
 {
  public:
-  using ILibPtr = std::shared_ptr<ILib>;
+  using IADataExportersLibPtr = std::shared_ptr<IADataExportersLib>;
 
-  virtual ~ILib() = default;
-  ILib() = default;
+  virtual ~IADataExportersLib() = default;
+  IADataExportersLib() = default;
 
   /**
-   * @brief The library interface method which every ILib descendant
-   * must implement in order to provide it's functionality.
+   * @brief The library interface method which every IADataExportersLib
+   * descendant must implement in order to provide it's functionality.
    *
-   * @param ctx A filled LibraryContext descendant of the wanted dataset
-   * layout. On success its LibraryContext::get_exporter() gives the exporter
-   * instance the export was performed with.
+   * @param ctx A filled IADataExportersContext descendant of the wanted dataset
+   * layout. On success its IADataExportersContext::get_exporter() gives the
+   * exporter instance the export was performed with.
    *
    * @return Should return a true value on the success and false
    * in case of any error.
    */
-  virtual bool perform_export(LibraryContextPtr ctx) = 0;
+  virtual bool perform_export(IADataExportersContextPtr ctx) = 0;
 };
 
-using ILibPtr = ILib::ILibPtr;
+using IADataExportersLibPtr = IADataExportersLib::IADataExportersLibPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ILIB_ABSTRACT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSLIB_ABSTRACT_CLASS_H

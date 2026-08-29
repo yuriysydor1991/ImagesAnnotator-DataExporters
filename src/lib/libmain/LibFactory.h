@@ -30,19 +30,19 @@
 
 #include <memory>
 
+#include "IADataExportersContext.h"
+#include "IADataExportersLib.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
-#include "ILib.h"
-#include "LibraryContext.h"
-#include "contexts/CocoExportLibraryContext.h"
-#include "contexts/CreateMLExportLibraryContext.h"
-#include "contexts/PascalVocExportLibraryContext.h"
-#include "contexts/PlainTxtExportLibraryContext.h"
-#include "contexts/PyTorchExportLibraryContext.h"
-#include "contexts/UltralyticsDetectExportLibraryContext.h"
-#include "contexts/UltralyticsObbExportLibraryContext.h"
-#include "contexts/UltralyticsSegmentExportLibraryContext.h"
-#include "contexts/Yolo4ExportLibraryContext.h"
+#include "contexts/CocoExportContext.h"
+#include "contexts/CreateMLExportContext.h"
+#include "contexts/PascalVocExportContext.h"
+#include "contexts/PlainTxtExportContext.h"
+#include "contexts/PyTorchExportContext.h"
+#include "contexts/UltralyticsDetectExportContext.h"
+#include "contexts/UltralyticsObbExportContext.h"
+#include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo4ExportContext.h"
 
 namespace iade0impl
 {
@@ -56,31 +56,33 @@ class LibFactory
 {
  public:
   using LibFactoryPtr = std::shared_ptr<LibFactory>;
-  using ILibPtr = ImagesAnnotatorDataExporters011::ILibPtr;
-  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
-  using LibraryContext = ImagesAnnotatorDataExporters011::LibraryContext;
-  using PlainTxtExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::PlainTxtExportLibraryContextPtr;
-  using Yolo4ExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::Yolo4ExportLibraryContextPtr;
-  using PyTorchExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::PyTorchExportLibraryContextPtr;
-  using UltralyticsDetectExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::UltralyticsDetectExportLibraryContextPtr;
-  using UltralyticsObbExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::UltralyticsObbExportLibraryContextPtr;
-  using UltralyticsSegmentExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::
-          UltralyticsSegmentExportLibraryContextPtr;
-  using CocoExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::CocoExportLibraryContextPtr;
-  using PascalVocExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::PascalVocExportLibraryContextPtr;
-  using CreateMLExportLibraryContextPtr =
-      ImagesAnnotatorDataExporters011::CreateMLExportLibraryContextPtr;
-  using IExporterPtr = ImagesAnnotatorDataExporters011::IExporterPtr;
+  using IADataExportersLibPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersLibPtr;
+  using IADataExportersContextPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
+  using IADataExportersContext =
+      ImagesAnnotatorDataExporters012::IADataExportersContext;
+  using PlainTxtExportContextPtr =
+      ImagesAnnotatorDataExporters012::PlainTxtExportContextPtr;
+  using Yolo4ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Yolo4ExportContextPtr;
+  using PyTorchExportContextPtr =
+      ImagesAnnotatorDataExporters012::PyTorchExportContextPtr;
+  using UltralyticsDetectExportContextPtr =
+      ImagesAnnotatorDataExporters012::UltralyticsDetectExportContextPtr;
+  using UltralyticsObbExportContextPtr =
+      ImagesAnnotatorDataExporters012::UltralyticsObbExportContextPtr;
+  using UltralyticsSegmentExportContextPtr =
+      ImagesAnnotatorDataExporters012::UltralyticsSegmentExportContextPtr;
+  using CocoExportContextPtr =
+      ImagesAnnotatorDataExporters012::CocoExportContextPtr;
+  using PascalVocExportContextPtr =
+      ImagesAnnotatorDataExporters012::PascalVocExportContextPtr;
+  using CreateMLExportContextPtr =
+      ImagesAnnotatorDataExporters012::CreateMLExportContextPtr;
+  using IExporterPtr = ImagesAnnotatorDataExporters012::IExporterPtr;
   using IImageCropperFacilityPtr =
-      ImagesAnnotatorDataExporters011::IImageCropperFacilityPtr;
+      ImagesAnnotatorDataExporters012::IImageCropperFacilityPtr;
 
   virtual ~LibFactory() = default;
   LibFactory() = default;
@@ -92,78 +94,78 @@ class LibFactory
    * @return Returns the default library implementation. Currently returns
    * the LibMain class instance.
    */
-  virtual ILibPtr create_default_lib();
+  virtual IADataExportersLibPtr create_default_lib();
 
   /**
    * @brief Creates an empty context of the plain text dataset layout.
    *
-   * @return Returns an empty PlainTxtExportLibraryContext instance.
+   * @return Returns an empty PlainTxtExportContext instance.
    */
-  virtual PlainTxtExportLibraryContextPtr create_plain_txt_library_context();
+  virtual PlainTxtExportContextPtr create_plain_txt_library_context();
 
   /**
    * @brief Creates an empty context of the YOLO v4 dataset layout.
    *
-   * @return Returns an empty Yolo4ExportLibraryContext instance.
+   * @return Returns an empty Yolo4ExportContext instance.
    */
-  virtual Yolo4ExportLibraryContextPtr create_yolo4_library_context();
+  virtual Yolo4ExportContextPtr create_yolo4_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO detection dataset
    * layout.
    *
-   * @return Returns an empty UltralyticsDetectExportLibraryContext instance.
+   * @return Returns an empty UltralyticsDetectExportContext instance.
    */
-  virtual UltralyticsDetectExportLibraryContextPtr
+  virtual UltralyticsDetectExportContextPtr
   create_ultralytics_detect_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO oriented bounding
    * box dataset layout.
    *
-   * @return Returns an empty UltralyticsObbExportLibraryContext instance.
+   * @return Returns an empty UltralyticsObbExportContext instance.
    */
-  virtual UltralyticsObbExportLibraryContextPtr
+  virtual UltralyticsObbExportContextPtr
   create_ultralytics_obb_library_context();
 
   /**
    * @brief Creates an empty context of the Ultralytics YOLO segmentation
    * dataset layout.
    *
-   * @return Returns an empty UltralyticsSegmentExportLibraryContext instance.
+   * @return Returns an empty UltralyticsSegmentExportContext instance.
    */
-  virtual UltralyticsSegmentExportLibraryContextPtr
+  virtual UltralyticsSegmentExportContextPtr
   create_ultralytics_segment_library_context();
 
   /**
    * @brief Creates an empty context of the COCO object detection dataset
    * layout.
    *
-   * @return Returns an empty CocoExportLibraryContext instance.
+   * @return Returns an empty CocoExportContext instance.
    */
-  virtual CocoExportLibraryContextPtr create_coco_library_context();
+  virtual CocoExportContextPtr create_coco_library_context();
 
   /**
    * @brief Creates an empty context of the Pascal VOC dataset layout.
    *
-   * @return Returns an empty PascalVocExportLibraryContext instance.
+   * @return Returns an empty PascalVocExportContext instance.
    */
-  virtual PascalVocExportLibraryContextPtr create_pascal_voc_library_context();
+  virtual PascalVocExportContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Creates an empty context of the Create ML object detection dataset
    * layout.
    *
-   * @return Returns an empty CreateMLExportLibraryContext instance.
+   * @return Returns an empty CreateMLExportContext instance.
    */
-  virtual CreateMLExportLibraryContextPtr create_createml_library_context();
+  virtual CreateMLExportContextPtr create_createml_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.
    *
-   * @return Returns an empty PyTorchExportLibraryContext instance.
+   * @return Returns an empty PyTorchExportContext instance.
    */
-  virtual PyTorchExportLibraryContextPtr create_pytorch_library_context();
+  virtual PyTorchExportContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates appropriate library implementation instance
@@ -173,24 +175,25 @@ class LibFactory
    * or a nullptr in case of any error. Currently returns the LibMain class
    * instance only.
    */
-  virtual ILibPtr create_appropriate_lib(LibraryContextPtr ctx);
+  virtual IADataExportersLibPtr create_appropriate_lib(
+      IADataExportersContextPtr ctx);
 
   /**
    * @brief Creates the exporter implementing the dataset layout of the given
    * context.
    *
-   * @param ctx The LibraryContext descendant naming the wanted layout.
+   * @param ctx The IADataExportersContext descendant naming the wanted layout.
    *
    * @return Returns a new exporter or a nullptr for an empty context.
    */
-  virtual IExporterPtr create_exporter(const LibraryContextPtr& ctx);
+  virtual IExporterPtr create_exporter(const IADataExportersContextPtr& ctx);
 
   /**
    * @brief Creates the image cropper the library ships itself.
    *
    * @return Returns a new cropper when this build found OpenCV, and a nullptr
    * when it did not. A nullptr only means the consumer has to supply one of
-   * its own through PyTorchExportLibraryContext::set_cropper().
+   * its own through PyTorchExportContext::set_cropper().
    */
   virtual IImageCropperFacilityPtr create_image_cropper();
 

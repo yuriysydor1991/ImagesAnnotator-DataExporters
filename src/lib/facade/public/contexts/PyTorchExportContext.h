@@ -25,44 +25,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTCONTEXT_CLASS_H
 
 #include <memory>
 
 #include "../ExportersAPI.h"
-#include "../LibraryContext.h"
+#include "../IADataExportersContext.h"
+#include "../IImageCropperFacility.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief The library context which writes the Ultralytics YOLO segmentation
- * dataset: the data.yaml descriptor over the images/train and labels/train
- * directories, one `class x1 y1 ... xn yn` polygon line per rectangle.
+ * @brief The library context which writes the PyTorch Vision ImageFolder
+ * layout of cropped out rectangles. Requires an IImageCropperFacility unless
+ * the library was built with its own.
  *
- * The segmentation format takes a polygon of any three or more points. The
- * mask of a rectangle annotation is the rectangle outline itself, so the
- * polygon written is its four corners and the trained model reproduces masks
- * exactly that coarse. Reach for this layout when a rectangle outline is mask
- * enough.
- *
- * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * Instantiating the class is what names the wanted dataset layout. The cropper
+ * lives here rather than in IADataExportersContext because this is the one
+ * layout which cuts pixels out, so no other export has to carry a slot it never
+ * reads.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API UltralyticsSegmentExportLibraryContext : public LibraryContext
+class IADE_API PyTorchExportContext : public IADataExportersContext
 {
  public:
-  using UltralyticsSegmentExportLibraryContextPtr =
-      std::shared_ptr<UltralyticsSegmentExportLibraryContext>;
+  using PyTorchExportContextPtr = std::shared_ptr<PyTorchExportContext>;
+
+  /// @brief In: the image cropper instance, optional in a build which found
+  /// OpenCV and mandatory in one which did not
+  const IImageCropperFacilityPtr& get_cropper() const;
+  void set_cropper(const IImageCropperFacilityPtr& newCropper);
+
+ private:
+  IImageCropperFacilityPtr cropper;
 };
 
-using UltralyticsSegmentExportLibraryContextPtr =
-    UltralyticsSegmentExportLibraryContext::
-        UltralyticsSegmentExportLibraryContextPtr;
+using PyTorchExportContextPtr = PyTorchExportContext::PyTorchExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTCONTEXT_CLASS_H

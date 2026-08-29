@@ -32,15 +32,15 @@
 
 #include "ExportersAPI.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief Only declared here, since the LibraryContext holds an IExporterPtr
- * of its own and its header is the one which includes this file.
+ * @brief Only declared here, since the IADataExportersContext holds an
+ * IExporterPtr of its own and its header is the one which includes this file.
  */
-class IADE_API LibraryContext;
-using LibraryContextPtr = std::shared_ptr<LibraryContext>;
+class IADE_API IADataExportersContext;
+using IADataExportersContextPtr = std::shared_ptr<IADataExportersContext>;
 
 /**
  * @brief The abstract class to define the interface for the all available
@@ -68,11 +68,11 @@ class IADE_API IExporter
    *
    * @return Returns true when the export as a whole ran through.
    */
-  virtual bool export_db(LibraryContextPtr ectx) = 0;
+  virtual bool export_db(IADataExportersContextPtr ectx) = 0;
 };
 
 using IExporterPtr = IExporter::IExporterPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IEXPORTER_ABSTRACT_CLASS_H

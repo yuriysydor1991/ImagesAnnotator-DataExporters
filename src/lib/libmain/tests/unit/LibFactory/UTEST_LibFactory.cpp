@@ -3,19 +3,19 @@
 
 #include <memory>
 
-#include "LibraryContext.h"
-#include "contexts/CocoExportLibraryContext.h"
-#include "contexts/CreateMLExportLibraryContext.h"
-#include "contexts/PascalVocExportLibraryContext.h"
-#include "contexts/PlainTxtExportLibraryContext.h"
-#include "contexts/PyTorchExportLibraryContext.h"
-#include "contexts/UltralyticsDetectExportLibraryContext.h"
-#include "contexts/UltralyticsObbExportLibraryContext.h"
-#include "contexts/UltralyticsSegmentExportLibraryContext.h"
-#include "contexts/Yolo4ExportLibraryContext.h"
+#include "IADataExportersContext.h"
+#include "contexts/CocoExportContext.h"
+#include "contexts/CreateMLExportContext.h"
+#include "contexts/PascalVocExportContext.h"
+#include "contexts/PlainTxtExportContext.h"
+#include "contexts/PyTorchExportContext.h"
+#include "contexts/UltralyticsDetectExportContext.h"
+#include "contexts/UltralyticsObbExportContext.h"
+#include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo4ExportContext.h"
 #include "src/lib/libmain/LibFactory.h"
 
-using namespace ImagesAnnotatorDataExporters011;
+using namespace ImagesAnnotatorDataExporters012;
 using namespace iade0impl;
 using namespace testing;
 
@@ -82,45 +82,41 @@ TEST_F(UTEST_LibFactory, create_appropriate_lib_success)
 
 TEST_F(UTEST_LibFactory, create_exporter_gives_an_instance_for_every_context)
 {
+  EXPECT_NE(factory->create_exporter(std::make_shared<PlainTxtExportContext>()),
+            nullptr);
+  EXPECT_NE(factory->create_exporter(std::make_shared<Yolo4ExportContext>()),
+            nullptr);
   EXPECT_NE(factory->create_exporter(
-                std::make_shared<PlainTxtExportLibraryContext>()),
+                std::make_shared<UltralyticsDetectExportContext>()),
             nullptr);
   EXPECT_NE(
-      factory->create_exporter(std::make_shared<Yolo4ExportLibraryContext>()),
+      factory->create_exporter(std::make_shared<UltralyticsObbExportContext>()),
       nullptr);
   EXPECT_NE(factory->create_exporter(
-                std::make_shared<UltralyticsDetectExportLibraryContext>()),
+                std::make_shared<UltralyticsSegmentExportContext>()),
             nullptr);
-  EXPECT_NE(factory->create_exporter(
-                std::make_shared<UltralyticsObbExportLibraryContext>()),
-            nullptr);
-  EXPECT_NE(factory->create_exporter(
-                std::make_shared<UltralyticsSegmentExportLibraryContext>()),
+  EXPECT_NE(factory->create_exporter(std::make_shared<CocoExportContext>()),
             nullptr);
   EXPECT_NE(
-      factory->create_exporter(std::make_shared<CocoExportLibraryContext>()),
+      factory->create_exporter(std::make_shared<PascalVocExportContext>()),
       nullptr);
-  EXPECT_NE(factory->create_exporter(
-                std::make_shared<PascalVocExportLibraryContext>()),
+  EXPECT_NE(factory->create_exporter(std::make_shared<CreateMLExportContext>()),
             nullptr);
-  EXPECT_NE(factory->create_exporter(
-                std::make_shared<CreateMLExportLibraryContext>()),
+  EXPECT_NE(factory->create_exporter(std::make_shared<PyTorchExportContext>()),
             nullptr);
-  EXPECT_NE(
-      factory->create_exporter(std::make_shared<PyTorchExportLibraryContext>()),
-      nullptr);
 }
 
 TEST_F(UTEST_LibFactory, create_exporter_without_a_layout_context_failure)
 {
   EXPECT_EQ(factory->create_exporter({}), nullptr);
-  EXPECT_EQ(factory->create_exporter(std::make_shared<LibraryContext>()),
-            nullptr);
+  EXPECT_EQ(
+      factory->create_exporter(std::make_shared<IADataExportersContext>()),
+      nullptr);
 }
 
 // The one cropper case that runs in every configuration: with OpenCV the
 // factory hands out the library's own cropper, without it a nullptr, which is
-// what makes PyTorchExportLibraryContext::set_cropper() mandatory again. The
+// what makes PyTorchExportContext::set_cropper() mandatory again. The
 // cropper itself is covered by UTEST_OpenCVImageCropper, configured only in an
 // OpenCV build.
 TEST_F(UTEST_LibFactory, create_image_cropper_matches_what_the_build_found)

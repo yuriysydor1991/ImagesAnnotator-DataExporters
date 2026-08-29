@@ -3,12 +3,12 @@
 
 #include <memory>
 
+#include "IADataExportersContext.h"
 #include "IExporter.h"
-#include "LibraryContext.h"
 #include "src/lib/libmain/LibFactory.h"
 #include "src/lib/libmain/LibMain.h"
 
-using namespace ImagesAnnotatorDataExporters011;
+using namespace ImagesAnnotatorDataExporters012;
 using namespace iade0impl;
 using namespace testing;
 
@@ -18,7 +18,7 @@ namespace
 class ExporterMock : public IExporter
 {
  public:
-  MOCK_METHOD(bool, export_db, (LibraryContextPtr ctx), (override));
+  MOCK_METHOD(bool, export_db, (IADataExportersContextPtr ctx), (override));
 };
 
 }  // namespace
@@ -30,9 +30,9 @@ class UTEST_LibMain : public Test
 
   ~UTEST_LibMain() { LibFactory::onMockCreate = {}; }
 
-  LibraryContextPtr filled_context()
+  IADataExportersContextPtr filled_context()
   {
-    auto ctx = std::make_shared<LibraryContext>();
+    auto ctx = std::make_shared<IADataExportersContext>();
     ctx->set_export_path("/tmp/some-export-dir");
     return ctx;
   }

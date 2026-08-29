@@ -46,7 +46,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool CreateML2FolderExporter::export_db(LibraryContextPtr ectx)
+bool CreateML2FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
 
@@ -91,7 +91,7 @@ bool CreateML2FolderExporter::export_db(LibraryContextPtr ectx)
 
 // The images and the descriptor share this one directory, so there is no
 // subdirectory to make below it
-bool CreateML2FolderExporter::create_export_dir(LibraryContextPtr ectx)
+bool CreateML2FolderExporter::create_export_dir(IADataExportersContextPtr ectx)
 {
   const fs::path dirPath = ectx->get_export_path();
 
@@ -113,7 +113,7 @@ bool CreateML2FolderExporter::create_export_dir(LibraryContextPtr ectx)
   return true;
 }
 
-bool CreateML2FolderExporter::express_images(LibraryContextPtr ectx)
+bool CreateML2FolderExporter::express_images(IADataExportersContextPtr ectx)
 {
   imagesJson.str({});
 
@@ -149,7 +149,7 @@ bool CreateML2FolderExporter::express_images(LibraryContextPtr ectx)
   return true;
 }
 
-fs::path CreateML2FolderExporter::prepare_image(LibraryContextPtr ectx,
+fs::path CreateML2FolderExporter::prepare_image(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir)
 {
   assert(irloader != nullptr);
@@ -191,8 +191,8 @@ fs::path CreateML2FolderExporter::prepare_image(LibraryContextPtr ectx,
   return newpath;
 }
 
-fs::path CreateML2FolderExporter::get_new_filepath(LibraryContextPtr ectx,
-                                                   ImageRecordPtr& ir)
+fs::path CreateML2FolderExporter::get_new_filepath(
+    IADataExportersContextPtr ectx, ImageRecordPtr& ir)
 {
   const fs::path origPath = ir->get_full_path();
   const fs::path dirPath = ectx->get_export_path();
@@ -276,7 +276,7 @@ std::string CreateML2FolderExporter::express_annotations(
 }
 
 bool CreateML2FolderExporter::express_annotations_json(
-    LibraryContextPtr ectx) const
+    IADataExportersContextPtr ectx) const
 {
   const fs::path fpath = fs::path{ectx->get_export_path()} / annotationsRel;
 

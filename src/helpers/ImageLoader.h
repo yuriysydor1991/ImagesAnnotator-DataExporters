@@ -28,7 +28,7 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IMAGELOADER_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IMAGELOADER_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
 
 #include <filesystem>
 #include <memory>
@@ -50,7 +50,7 @@ class ImageLoader : public std::enable_shared_from_this<ImageLoader>,
 {
  public:
   using ImageLoaderPtr = std::shared_ptr<ImageLoader>;
-  using ImageRecordPtr = ImagesAnnotatorDataDrivers011::ImageRecordPtr;
+  using ImageRecordPtr = ImagesAnnotatorDataDrivers012::ImageRecordPtr;
   using download_buffer = curli::CURLController::download_buffer;
   using CURLControllerPtr = curli::CURLControllerPtr;
 

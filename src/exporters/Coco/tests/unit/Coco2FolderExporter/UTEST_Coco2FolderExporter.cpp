@@ -11,10 +11,10 @@
 
 using namespace testing;
 using iannotator::exporters::Coco2FolderExporter;
+using iannotator::exporters::IADataExportersContext;
 using iannotator::exporters::ImageRecord;
 using iannotator::exporters::ImageRecordRect;
 using iannotator::exporters::ImageRecordsSet;
-using iannotator::exporters::LibraryContext;
 
 namespace
 {
@@ -75,7 +75,7 @@ class UTEST_Coco2FolderExporter : public Test
     provider = std::make_shared<FakeProvider>();
     provider->annotations = {"cat", "dog"};
 
-    ctx = std::make_shared<LibraryContext>();
+    ctx = std::make_shared<IADataExportersContext>();
     ctx->set_export_path(dst.string());
     ctx->set_db_provider(provider);
   }
@@ -103,7 +103,7 @@ class UTEST_Coco2FolderExporter : public Test
   fs::path srcDir;
   fs::path dst;
   std::shared_ptr<FakeProvider> provider;
-  std::shared_ptr<LibraryContext> ctx;
+  std::shared_ptr<IADataExportersContext> ctx;
 };
 
 }  // namespace
@@ -283,7 +283,7 @@ TEST_F(UTEST_Coco2FolderExporter, refuses_an_unusable_context)
 {
   EXPECT_FALSE(Coco2FolderExporter{}.export_db({}));
 
-  auto empty = std::make_shared<LibraryContext>();
+  auto empty = std::make_shared<IADataExportersContext>();
 
   EXPECT_FALSE(Coco2FolderExporter{}.export_db(empty));
 

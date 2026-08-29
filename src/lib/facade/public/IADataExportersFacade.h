@@ -25,26 +25,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSFACADE_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSFACADE_CLASS_H
 
 #include <memory>
 #include <string>
 
 #include "ExportersAPI.h"
+#include "IADataExportersContext.h"
+#include "IADataExportersLib.h"
 #include "IExporter.h"
 #include "IImageCropperFacility.h"
-#include "ILib.h"
-#include "LibraryContext.h"
-#include "contexts/CocoExportLibraryContext.h"
-#include "contexts/CreateMLExportLibraryContext.h"
-#include "contexts/PascalVocExportLibraryContext.h"
-#include "contexts/PlainTxtExportLibraryContext.h"
-#include "contexts/PyTorchExportLibraryContext.h"
-#include "contexts/UltralyticsDetectExportLibraryContext.h"
-#include "contexts/UltralyticsObbExportLibraryContext.h"
-#include "contexts/UltralyticsSegmentExportLibraryContext.h"
-#include "contexts/Yolo4ExportLibraryContext.h"
+#include "contexts/CocoExportContext.h"
+#include "contexts/CreateMLExportContext.h"
+#include "contexts/PascalVocExportContext.h"
+#include "contexts/PlainTxtExportContext.h"
+#include "contexts/PyTorchExportContext.h"
+#include "contexts/UltralyticsDetectExportContext.h"
+#include "contexts/UltralyticsObbExportContext.h"
+#include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo4ExportContext.h"
 
 /**
  * @brief The logging subsystem interface every project built from the
@@ -58,7 +58,7 @@ namespace logger
 class ILogger;
 }  // namespace logger
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
@@ -69,104 +69,104 @@ namespace ImagesAnnotatorDataExporters011
  * interfaces returned from here.
  *
  * @code
- * namespace iadd = ImagesAnnotatorDataDrivers011;
- * namespace iade = ImagesAnnotatorDataExporters011;
+ * namespace iadd = ImagesAnnotatorDataDrivers012;
+ * namespace iade = ImagesAnnotatorDataExporters012;
  *
- * auto db = iadd::LibraryFacade::open_annotations_db("project.json");
+ * auto db = iadd::IADataDriversFacade::open_annotations_db("project.json");
  *
- * auto ctx = iade::LibraryFacade::create_yolo4_library_context();
+ * auto ctx = iade::IADataExportersFacade::create_yolo4_library_context();
  * ctx->set_db_provider(db);
  * ctx->set_export_path("/tmp/yolo-dataset");
  *
- * auto exporter = iade::LibraryFacade::create_exporter(ctx);
+ * auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
  *
  * return exporter != nullptr && exporter->export_db(ctx);
  * @endcode
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API LibraryFacade
+class IADE_API IADataExportersFacade
 {
  public:
-  virtual ~LibraryFacade() = default;
-  LibraryFacade() = default;
+  virtual ~IADataExportersFacade() = default;
+  IADataExportersFacade() = default;
 
   /**
    * @brief Factory method to create an empty library context of the plain
    * text dataset layout.
    *
-   * @return Returns a new PlainTxtExportLibraryContext class instance.
+   * @return Returns a new PlainTxtExportContext class instance.
    */
-  static PlainTxtExportLibraryContextPtr create_plain_txt_library_context();
+  static PlainTxtExportContextPtr create_plain_txt_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the YOLO v4
    * dataset layout.
    *
-   * @return Returns a new Yolo4ExportLibraryContext class instance.
+   * @return Returns a new Yolo4ExportContext class instance.
    */
-  static Yolo4ExportLibraryContextPtr create_yolo4_library_context();
+  static Yolo4ExportContextPtr create_yolo4_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO detection dataset layout.
    *
-   * @return Returns a new UltralyticsDetectExportLibraryContext class
+   * @return Returns a new UltralyticsDetectExportContext class
    * instance.
    */
-  static UltralyticsDetectExportLibraryContextPtr
+  static UltralyticsDetectExportContextPtr
   create_ultralytics_detect_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO oriented bounding box dataset layout.
    *
-   * @return Returns a new UltralyticsObbExportLibraryContext class instance.
+   * @return Returns a new UltralyticsObbExportContext class instance.
    */
-  static UltralyticsObbExportLibraryContextPtr
+  static UltralyticsObbExportContextPtr
   create_ultralytics_obb_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the
    * Ultralytics YOLO segmentation dataset layout.
    *
-   * @return Returns a new UltralyticsSegmentExportLibraryContext class
+   * @return Returns a new UltralyticsSegmentExportContext class
    * instance.
    */
-  static UltralyticsSegmentExportLibraryContextPtr
+  static UltralyticsSegmentExportContextPtr
   create_ultralytics_segment_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the COCO
    * object detection dataset layout.
    *
-   * @return Returns a new CocoExportLibraryContext class instance.
+   * @return Returns a new CocoExportContext class instance.
    */
-  static CocoExportLibraryContextPtr create_coco_library_context();
+  static CocoExportContextPtr create_coco_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the Pascal VOC
    * dataset layout.
    *
-   * @return Returns a new PascalVocExportLibraryContext class instance.
+   * @return Returns a new PascalVocExportContext class instance.
    */
-  static PascalVocExportLibraryContextPtr create_pascal_voc_library_context();
+  static PascalVocExportContextPtr create_pascal_voc_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the Create ML
    * object detection dataset layout.
    *
-   * @return Returns a new CreateMLExportLibraryContext class instance.
+   * @return Returns a new CreateMLExportContext class instance.
    */
-  static CreateMLExportLibraryContextPtr create_createml_library_context();
+  static CreateMLExportContextPtr create_createml_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch
    * Vision dataset layout, the one carrying the image cropper.
    *
-   * @return Returns a new PyTorchExportLibraryContext class instance.
+   * @return Returns a new PyTorchExportContext class instance.
    */
-  static PyTorchExportLibraryContextPtr create_pytorch_library_context();
+  static PyTorchExportContextPtr create_pytorch_library_context();
 
   /**
    * @brief Creates the default library implementation.
@@ -174,35 +174,36 @@ class IADE_API LibraryFacade
    * @return Returns the default library implementation. Currently returns
    * the LibMain class instance.
    */
-  static ILibPtr create_default_lib();
+  static IADataExportersLibPtr create_default_lib();
 
   /**
-   * @brief Creates and returns the appropriate ILib instance.
+   * @brief Creates and returns the appropriate IADataExportersLib instance.
    *
-   * @param ctx Filled LibraryContext to check for an appropriate ILib
-   * instance.
+   * @param ctx Filled IADataExportersContext to check for an appropriate
+   * IADataExportersLib instance.
    *
-   * @return Returns a new ILib descendant or a nullptr in case of any error.
+   * @return Returns a new IADataExportersLib descendant or a nullptr in case of
+   * any error.
    */
-  static ILibPtr create_library(LibraryContextPtr ctx);
+  static IADataExportersLibPtr create_library(IADataExportersContextPtr ctx);
 
   /**
    * @brief Creates the exporter implementing the dataset layout of the given
    * context.
    *
-   * @param ctx The LibraryContext descendant naming the wanted layout.
+   * @param ctx The IADataExportersContext descendant naming the wanted layout.
    *
    * @return Returns a new IExporter descendant, or a nullptr for an empty
    * context.
    */
-  static IExporterPtr create_exporter(const LibraryContextPtr& ctx);
+  static IExporterPtr create_exporter(const IADataExportersContextPtr& ctx);
 
   /**
    * @brief Factory method to create the image cropper the library ships
    * itself.
    *
    * The library decodes no image format of its own, which is why
-   * PyTorchExportLibraryContext::set_cropper() exists: the PyTorch Vision
+   * PyTorchExportContext::set_cropper() exists: the PyTorch Vision
    * export asks its consumer to cut the rectangles out. When this build of the
    * library found OpenCV it is able to do that itself, and this method hands
    * out such a cropper.
@@ -241,6 +242,6 @@ class IADE_API LibraryFacade
       const std::shared_ptr<logger::ILogger>& realLogger);
 };
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYFACADE_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSFACADE_CLASS_H

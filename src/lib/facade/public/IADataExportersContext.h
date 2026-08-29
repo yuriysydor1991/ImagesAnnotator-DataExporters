@@ -25,10 +25,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/IImagesPathsDBProvider.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IImagesPathsDBProvider.h>
 
 #include <memory>
 #include <string>
@@ -36,7 +36,7 @@
 #include "ExportersAPI.h"
 #include "IExporter.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
@@ -44,27 +44,27 @@ namespace ImagesAnnotatorDataExporters011
  * the library underlying implementation.
  *
  * The very same instance drives both entry points of the library: the one
- * shot ILib::perform_export and the IExporter::export_db of an exporter built
- * by hand through the LibraryFacade factory methods.
+ * shot IADataExportersLib::perform_export and the IExporter::export_db of an
+ * exporter built by hand through the IADataExportersFacade factory methods.
  *
  * The dataset layout to write is named by the descendant instantiated. What
  * every layout needs is held here; a descendant adds only what its own layout
- * asks for, the way PyTorchExportLibraryContext adds the image cropper. See
- * PlainTxtExportLibraryContext, Yolo4ExportLibraryContext and
- * PyTorchExportLibraryContext. This class itself names no layout, so an export
+ * asks for, the way PyTorchExportContext adds the image cropper. See
+ * PlainTxtExportContext, Yolo4ExportContext and
+ * PyTorchExportContext. This class itself names no layout, so an export
  * driven by it finds no exporter.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API LibraryContext
+class IADE_API IADataExportersContext
 {
  public:
-  using LibraryContextPtr = std::shared_ptr<LibraryContext>;
+  using IADataExportersContextPtr = std::shared_ptr<IADataExportersContext>;
   using IImagesPathsDBProviderPtr =
-      ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr;
+      ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr;
 
-  virtual ~LibraryContext() = default;
-  LibraryContext() = default;
+  virtual ~IADataExportersContext() = default;
+  IADataExportersContext() = default;
 
   /// @brief In: the destination directory of the export, mandatory
   const std::string& get_export_path() const;
@@ -74,7 +74,8 @@ class IADE_API LibraryContext
   const IImagesPathsDBProviderPtr& get_db_provider() const;
   void set_db_provider(const IImagesPathsDBProviderPtr& newProvider);
 
-  /// @brief Out: the exporter instance the last ILib::perform_export ran
+  /// @brief Out: the exporter instance the last
+  /// IADataExportersLib::perform_export ran
   const IExporterPtr& get_exporter() const;
   void set_exporter(const IExporterPtr& newExporter);
 
@@ -84,8 +85,9 @@ class IADE_API LibraryContext
   IExporterPtr exporter;
 };
 
-using LibraryContextPtr = LibraryContext::LibraryContextPtr;
+using IADataExportersContextPtr =
+    IADataExportersContext::IADataExportersContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_LIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H

@@ -5,10 +5,10 @@
 <g font-family="sans-serif">
 <rect x="40" y="60" width="830" height="144" rx="4" fill="#EFEFEF" stroke="#000000" stroke-width="1.4"/>
 <rect x="40" y="38" width="484" height="22" rx="3" fill="#EFEFEF" stroke="#000000" stroke-width="1.4"/>
-<text x="50" y="54" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataDrivers011  (dependency, linked PUBLIC)</text>
+<text x="50" y="54" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataDrivers012  (dependency, linked PUBLIC)</text>
 <rect x="40" y="260" width="1220" height="460" rx="4" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
 <rect x="40" y="238" width="498" height="22" rx="3" fill="#FFFFFF" stroke="#000000" stroke-width="1.4"/>
-<text x="50" y="254" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataExporters011  (installed public interface)</text>
+<text x="50" y="254" font-size="13.5" font-weight="bold" fill="#000000">ImagesAnnotatorDataExporters012  (installed public interface)</text>
 <rect x="40" y="776" width="1220" height="444" rx="4" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
 <rect x="40" y="754" width="396" height="22" rx="3" fill="#F7F7F7" stroke="#000000" stroke-width="1.4"/>
 <text x="50" y="770" font-size="13.5" font-weight="bold" fill="#000000">Implementation  (hidden symbols, not installed)</text>
@@ -58,27 +58,27 @@
 <text x="510" y="162" font-size="12.5" fill="#000000">+ int iwidth, iheight</text>
 <text x="510" y="180" font-size="12.5" fill="#000000">+ std::string get_full_path() const</text>
 <rect x="60" y="300" width="470" height="152" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="295.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibraryFacade</text>
+<text x="295.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">IADataExportersFacade</text>
 <line x1="60" y1="326" x2="530" y2="326" stroke="#181818" stroke-width="1"/>
-<text x="70" y="348" font-size="12.5" fill="#000000">+ static LibraryContextPtr create_library_context()</text>
-<text x="70" y="366" font-size="12.5" fill="#000000">+ static ILibPtr create_default_lib()</text>
-<text x="70" y="384" font-size="12.5" fill="#000000">+ static ILibPtr create_library(LibraryContextPtr)</text>
+<text x="70" y="348" font-size="12.5" fill="#000000">+ static IADataExportersContextPtr create_library_context()</text>
+<text x="70" y="366" font-size="12.5" fill="#000000">+ static IADataExportersLibPtr create_default_lib()</text>
+<text x="70" y="384" font-size="12.5" fill="#000000">+ static IADataExportersLibPtr create_library(ctx)</text>
 <text x="70" y="402" font-size="12.5" fill="#000000">+ static ExportContextPtr create_export_context()</text>
-<text x="70" y="420" font-size="12.5" fill="#000000">+ static IExporterPtr create_exporter(const LibraryContextPtr&amp;)</text>
+<text x="70" y="420" font-size="12.5" fill="#000000">+ static IExporterPtr create_exporter(ctx)</text>
 <text x="70" y="438" font-size="12.5" fill="#000000">+ static std::string library_version()</text>
 <rect x="570" y="300" width="330" height="116" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
-<text x="735.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibraryContext</text>
+<text x="735.0" y="318" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">IADataExportersContext</text>
 <line x1="570" y1="326" x2="900" y2="326" stroke="#181818" stroke-width="1"/>
 <text x="580" y="348" font-size="12.5" fill="#000000">+ std::string export_path</text>
 <text x="580" y="366" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
 <text x="580" y="384" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
 <text x="580" y="402" font-size="12.5" fill="#000000">+ IExporterPtr exporter   // out</text>
 <rect x="940" y="300" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="322" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxtExportLibraryContext</text>
+<text x="1090.0" y="322" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxtExportContext</text>
 <rect x="940" y="355" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="377" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo4ExportLibraryContext</text>
+<text x="1090.0" y="377" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">Yolo4ExportContext</text>
 <rect x="940" y="410" width="300" height="35" rx="3" fill="#FDF6E3" stroke="#181818" stroke-width="1"/>
-<text x="1090.0" y="432" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchExportLibraryContext</text>
+<text x="1090.0" y="432" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PyTorchExportContext</text>
 <rect x="570" y="460" width="330" height="98" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="735.0" y="478" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">ExportContext</text>
 <line x1="570" y1="486" x2="900" y2="486" stroke="#181818" stroke-width="1"/>
@@ -86,9 +86,9 @@
 <text x="580" y="526" font-size="12.5" fill="#000000">+ IImagesPathsDBProviderPtr dbProvider</text>
 <text x="580" y="544" font-size="12.5" fill="#000000">+ IImageCropperFacilityPtr cropper</text>
 <rect x="60" y="480" width="470" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
-<text x="295.0" y="498" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» ILib</text>
+<text x="295.0" y="498" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IADataExportersLib</text>
 <line x1="60" y1="506" x2="530" y2="506" stroke="#181818" stroke-width="1"/>
-<text x="70" y="528" font-size="12.5" fill="#000000">+ bool perform_export(LibraryContextPtr ctx)</text>
+<text x="70" y="528" font-size="12.5" fill="#000000">+ bool perform_export(IADataExportersContextPtr ctx)</text>
 <rect x="570" y="580" width="330" height="62" rx="3" fill="#EAF4F5" stroke="#181818" stroke-width="1"/>
 <text x="735.0" y="598" font-size="13.5" font-weight="bold" font-style="italic" text-anchor="middle" fill="#000000">«interface» IExporter</text>
 <line x1="570" y1="606" x2="900" y2="606" stroke="#181818" stroke-width="1"/>
@@ -107,16 +107,16 @@
 <rect x="60" y="804" width="340" height="80" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="230.0" y="822" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibMain</text>
 <line x1="60" y1="830" x2="400" y2="830" stroke="#181818" stroke-width="1"/>
-<text x="70" y="852" font-size="12.5" fill="#000000">+ bool perform_export(LibraryContextPtr ctx)</text>
+<text x="70" y="852" font-size="12.5" fill="#000000">+ bool perform_export(ctx)</text>
 <text x="70" y="870" font-size="12.5" fill="#000000">+ static LibMainPtr create()</text>
 <rect x="60" y="934" width="470" height="152" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="295.0" y="952" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">LibFactory</text>
 <line x1="60" y1="960" x2="530" y2="960" stroke="#181818" stroke-width="1"/>
-<text x="70" y="982" font-size="12.5" fill="#000000">+ ILibPtr create_default_lib()</text>
-<text x="70" y="1000" font-size="12.5" fill="#000000">+ LibraryContextPtr create_default_context()</text>
-<text x="70" y="1018" font-size="12.5" fill="#000000">+ ILibPtr create_appropriate_lib(LibraryContextPtr)</text>
+<text x="70" y="982" font-size="12.5" fill="#000000">+ IADataExportersLibPtr create_default_lib()</text>
+<text x="70" y="1000" font-size="12.5" fill="#000000">+ IADataExportersContextPtr create_default_context()</text>
+<text x="70" y="1018" font-size="12.5" fill="#000000">+ IADataExportersLibPtr create_appropriate_lib(ctx)</text>
 <text x="70" y="1036" font-size="12.5" fill="#000000">+ ExportContextPtr create_export_context()</text>
-<text x="70" y="1054" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter(const LibraryContextPtr&amp;)</text>
+<text x="70" y="1054" font-size="12.5" fill="#000000">+ IExporterPtr create_exporter(ctx)</text>
 <text x="70" y="1072" font-size="12.5" fill="#000000">+ static LibFactoryPtr create_factory()</text>
 <rect x="620" y="804" width="330" height="35" rx="3" fill="#F1F1F1" stroke="#181818" stroke-width="1"/>
 <text x="785.0" y="826" font-size="13.5" font-weight="bold" text-anchor="middle" fill="#000000">PlainTxt2FolderExporter</text>

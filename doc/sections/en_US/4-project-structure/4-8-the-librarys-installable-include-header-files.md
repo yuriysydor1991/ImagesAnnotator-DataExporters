@@ -1,37 +1,37 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataExporters011` namespace. Six of them are the API proper and sit at the root of the directory:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataExporters012` namespace. Six of them are the API proper and sit at the root of the directory:
 
 | Header | Declares |
 |---|---|
-| [LibraryFacade.h](/src/lib/facade/public/LibraryFacade.h) | the `LibraryFacade` static methods, the entry point of the library |
-| [ILib.h](/src/lib/facade/public/ILib.h) | `ILib::perform_export()` - runs an export described by a `LibraryContext` |
-| [LibraryContext.h](/src/lib/facade/public/LibraryContext.h) | the data accessors of a `perform_export()` and of an `export_db()`, plus the `get_exporter()` out-one |
+| [IADataExportersFacade.h](/src/lib/facade/public/IADataExportersFacade.h) | the `IADataExportersFacade` static methods, the entry point of the library |
+| [IADataExportersLib.h](/src/lib/facade/public/IADataExportersLib.h) | `IADataExportersLib::perform_export()` - runs an export described by an `IADataExportersContext` |
+| [IADataExportersContext.h](/src/lib/facade/public/IADataExportersContext.h) | the data accessors of a `perform_export()` and of an `export_db()`, plus the `get_exporter()` out-one |
 | [IExporter.h](/src/lib/facade/public/IExporter.h) | `IExporter::export_db()` - a single exporter used on its own |
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the interface the consuming project implements to crop images out |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | the `IADE_API` visibility macro |
 
-The nine remaining ones are the layout specific `LibraryContext` descendants - one per dataset layout the library writes - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, since there are more of them than of the rest of the interface put together and each differs from its neighbours only by the layout it names:
+The nine remaining ones are the layout specific `IADataExportersContext` descendants - one per dataset layout the library writes - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, since there are more of them than of the rest of the interface put together and each differs from its neighbours only by the layout it names:
 
 | Header | Declares |
 |---|---|
-| [contexts/PlainTxtExportLibraryContext.h](/src/lib/facade/public/contexts/PlainTxtExportLibraryContext.h) | the `LibraryContext` of the plain text dataset layout |
-| [contexts/Yolo4ExportLibraryContext.h](/src/lib/facade/public/contexts/Yolo4ExportLibraryContext.h) | the `LibraryContext` of the YOLO v4 (darknet) dataset layout |
-| [contexts/UltralyticsDetectExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsDetectExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO detection dataset layout |
-| [contexts/UltralyticsObbExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsObbExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO oriented bounding box dataset layout |
-| [contexts/UltralyticsSegmentExportLibraryContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportLibraryContext.h) | the `LibraryContext` of the Ultralytics YOLO segmentation dataset layout |
-| [contexts/CocoExportLibraryContext.h](/src/lib/facade/public/contexts/CocoExportLibraryContext.h) | the `LibraryContext` of the COCO object detection dataset layout |
-| [contexts/PascalVocExportLibraryContext.h](/src/lib/facade/public/contexts/PascalVocExportLibraryContext.h) | the `LibraryContext` of the Pascal VOC dataset layout |
-| [contexts/CreateMLExportLibraryContext.h](/src/lib/facade/public/contexts/CreateMLExportLibraryContext.h) | the `LibraryContext` of the Create ML object detection dataset layout |
-| [contexts/PyTorchExportLibraryContext.h](/src/lib/facade/public/contexts/PyTorchExportLibraryContext.h) | the `LibraryContext` of the PyTorch Vision dataset layout, plus its image cropper |
+| [contexts/PlainTxtExportContext.h](/src/lib/facade/public/contexts/PlainTxtExportContext.h) | the `IADataExportersContext` of the plain text dataset layout |
+| [contexts/Yolo4ExportContext.h](/src/lib/facade/public/contexts/Yolo4ExportContext.h) | the `IADataExportersContext` of the YOLO v4 (darknet) dataset layout |
+| [contexts/UltralyticsDetectExportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectExportContext.h) | the `IADataExportersContext` of the Ultralytics YOLO detection dataset layout |
+| [contexts/UltralyticsObbExportContext.h](/src/lib/facade/public/contexts/UltralyticsObbExportContext.h) | the `IADataExportersContext` of the Ultralytics YOLO oriented bounding box dataset layout |
+| [contexts/UltralyticsSegmentExportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportContext.h) | the `IADataExportersContext` of the Ultralytics YOLO segmentation dataset layout |
+| [contexts/CocoExportContext.h](/src/lib/facade/public/contexts/CocoExportContext.h) | the `IADataExportersContext` of the COCO object detection dataset layout |
+| [contexts/PascalVocExportContext.h](/src/lib/facade/public/contexts/PascalVocExportContext.h) | the `IADataExportersContext` of the Pascal VOC dataset layout |
+| [contexts/CreateMLExportContext.h](/src/lib/facade/public/contexts/CreateMLExportContext.h) | the `IADataExportersContext` of the Create ML object detection dataset layout |
+| [contexts/PyTorchExportContext.h](/src/lib/facade/public/contexts/PyTorchExportContext.h) | the `IADataExportersContext` of the PyTorch Vision dataset layout, plus its image cropper |
 
-Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataExporters-0.11/`, so a plain `#include "LibraryContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `LibraryFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
+Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataExporters-0.12/`, so a plain `#include "IADataExportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `IADataExportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
 
-[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataExporters-0.11/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
+[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataExporters-0.12/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>  // recommended
-#include <LibraryFacade.h>                                 // also works
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>  // recommended
+#include <IADataExportersFacade.h>                                    // also works
 ```
 
 The prefixed form is the safe one - names such as `IExporter.h` are generic enough to collide in a busy include path.
@@ -46,16 +46,16 @@ So a new public class belongs in [src/lib/facade/public](/src/lib/facade/public)
 
 ### The installed CMake package
 
-Along with the binary and the headers the build installs a CMake package, generated by [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) from [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in). It lands in `<libdir>/cmake/ImagesAnnotatorDataExporters-0.11/` and consists of three files: the exported targets, an `ImagesAnnotatorDataExporters-0.11ConfigVersion.cmake` written by `write_basic_package_version_file()` with `SameMajorVersion` compatibility, and the `ImagesAnnotatorDataExporters-0.11Config.cmake` that `find_dependency()`s the data drivers package before including the targets - the public headers name its record types, so it has to be resolved first.
+Along with the binary and the headers the build installs a CMake package, generated by [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) from [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in). It lands in `<libdir>/cmake/ImagesAnnotatorDataExporters-0.12/` and consists of three files: the exported targets, an `ImagesAnnotatorDataExporters-0.12ConfigVersion.cmake` written by `write_basic_package_version_file()` with `SameMajorVersion` compatibility, and the `ImagesAnnotatorDataExporters-0.12Config.cmake` that `find_dependency()`s the data drivers package before including the targets - the public headers name its record types, so it has to be resolved first.
 
 A downstream project therefore needs no more than:
 
 ```cmake
-find_package(ImagesAnnotatorDataExporters-0.11 0.11 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.12 0.12 REQUIRED)
 
 target_link_libraries(
   your_target
-  PRIVATE ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorDataExporters-0.11
+  PRIVATE ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12
 )
 ```
 

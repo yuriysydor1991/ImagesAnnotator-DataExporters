@@ -18,7 +18,7 @@ cmake --build build -j$(nproc)
 
 That produces the following executables:
 
-- `UTEST_LibraryFacade`
+- `UTEST_IADataExportersFacade`
 - `UTEST_LibFactory`
 - `UTEST_LibMain`
 - `UTEST_PlainTxt2FolderExporter`

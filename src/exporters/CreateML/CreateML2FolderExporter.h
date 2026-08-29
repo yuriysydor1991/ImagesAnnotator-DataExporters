@@ -75,7 +75,7 @@ class CreateML2FolderExporter : virtual public IExporter
   virtual ~CreateML2FolderExporter() = default;
   CreateML2FolderExporter() = default;
 
-  virtual bool export_db(LibraryContextPtr) override;
+  virtual bool export_db(IADataExportersContextPtr) override;
 
  private:
   /**
@@ -93,14 +93,14 @@ class CreateML2FolderExporter : virtual public IExporter
   /// @brief The one JSON file the data source allows the directory to hold
   inline static const std::string annotationsRel = "annotations.json";
 
-  static bool create_export_dir(LibraryContextPtr ectx);
-  bool express_images(LibraryContextPtr ectx);
-  std::filesystem::path prepare_image(LibraryContextPtr ectx,
+  static bool create_export_dir(IADataExportersContextPtr ectx);
+  bool express_images(IADataExportersContextPtr ectx);
+  std::filesystem::path prepare_image(IADataExportersContextPtr ectx,
                                       ImageRecordPtr& ir);
   void express_image(const ImageRecordPtr& ir, const std::string& fileName);
   static std::string express_annotations(const ImageRecordPtr& ir);
-  bool express_annotations_json(LibraryContextPtr ectx) const;
-  static std::filesystem::path get_new_filepath(LibraryContextPtr ectx,
+  bool express_annotations_json(IADataExportersContextPtr ectx) const;
+  static std::filesystem::path get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir);
   static bool clamp_into_image(const ImageRecordPtr& ir,
                                const ImageRecordRectPtr& irr, PixelRect& prect);

@@ -25,36 +25,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
+#include "contexts/PyTorchExportContext.h"
 
-#include <memory>
-
-#include "../ExportersAPI.h"
-#include "../LibraryContext.h"
-
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
-/**
- * @brief The library context which writes one `<annotation-name>.txt` file per
- * annotation name.
- *
- * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
- *
- * Current file is a target for the library header installation.
- */
-class IADE_API PlainTxtExportLibraryContext : public LibraryContext
+const IImageCropperFacilityPtr& PyTorchExportContext::get_cropper() const
 {
- public:
-  using PlainTxtExportLibraryContextPtr =
-      std::shared_ptr<PlainTxtExportLibraryContext>;
-};
+  return cropper;
+}
 
-using PlainTxtExportLibraryContextPtr =
-    PlainTxtExportLibraryContext::PlainTxtExportLibraryContextPtr;
+void PyTorchExportContext::set_cropper(
+    const IImageCropperFacilityPtr& newCropper)
+{
+  cropper = newCropper;
+}
 
-}  // namespace ImagesAnnotatorDataExporters011
-
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTLIBRARYCONTEXT_CLASS_H
+}  // namespace ImagesAnnotatorDataExporters012

@@ -25,20 +25,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "contexts/PyTorchExportLibraryContext.h"
+#include "IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters011
+#include <memory>
+#include <string>
+
+namespace ImagesAnnotatorDataExporters012
 {
 
-const IImageCropperFacilityPtr& PyTorchExportLibraryContext::get_cropper() const
+const std::string& IADataExportersContext::get_export_path() const
 {
-  return cropper;
+  return export_path;
 }
 
-void PyTorchExportLibraryContext::set_cropper(
-    const IImageCropperFacilityPtr& newCropper)
+void IADataExportersContext::set_export_path(const std::string& newPath)
 {
-  cropper = newCropper;
+  export_path = newPath;
 }
 
-}  // namespace ImagesAnnotatorDataExporters011
+const IADataExportersContext::IImagesPathsDBProviderPtr&
+IADataExportersContext::get_db_provider() const
+{
+  return dbProvider;
+}
+
+void IADataExportersContext::set_db_provider(
+    const IImagesPathsDBProviderPtr& newProvider)
+{
+  dbProvider = newProvider;
+}
+
+const IExporterPtr& IADataExportersContext::get_exporter() const
+{
+  return exporter;
+}
+
+void IADataExportersContext::set_exporter(const IExporterPtr& newExporter)
+{
+  exporter = newExporter;
+}
+
+}  // namespace ImagesAnnotatorDataExporters012

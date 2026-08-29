@@ -14,21 +14,21 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Nine dataset layouts out of one database** - selected by the `LibraryContext` descendant instantiated and implemented by one exporter class each:
-  - **Plain text** (`PlainTxtExportLibraryContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
-  - **YOLO v4 (darknet)** (`Yolo4ExportLibraryContext`) - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
-  - **Ultralytics YOLO - detection** (`UltralyticsDetectExportLibraryContext`) - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
-  - **Ultralytics YOLO - oriented bounding boxes** (`UltralyticsObbExportLibraryContext`) - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle;
-  - **Ultralytics YOLO - segmentation** (`UltralyticsSegmentExportLibraryContext`) - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle;
-  - **COCO JSON** (`CocoExportLibraryContext`) - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for;
-  - **Pascal VOC XML** (`PascalVocExportLibraryContext`) - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index;
-  - **Create ML JSON** (`CreateMLExportLibraryContext`) - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away;
-  - **PyTorch Vision `ImageFolder`** (`PyTorchExportLibraryContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
-- **A one shot entry point** - fill the `LibraryContext` descendant of the wanted layout with the destination directory and the database, and `ILib::perform_export()` builds the right exporter and runs it. `LibraryFacade::create_exporter()` gives the same result with a finer grained control.
+- **Nine dataset layouts out of one database** - selected by the `IADataExportersContext` descendant instantiated and implemented by one exporter class each:
+  - **Plain text** (`PlainTxtExportContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
+  - **YOLO v4 (darknet)** (`Yolo4ExportContext`) - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
+  - **Ultralytics YOLO - detection** (`UltralyticsDetectExportContext`) - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
+  - **Ultralytics YOLO - oriented bounding boxes** (`UltralyticsObbExportContext`) - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle;
+  - **Ultralytics YOLO - segmentation** (`UltralyticsSegmentExportContext`) - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle;
+  - **COCO JSON** (`CocoExportContext`) - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for;
+  - **Pascal VOC XML** (`PascalVocExportContext`) - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index;
+  - **Create ML JSON** (`CreateMLExportContext`) - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away;
+  - **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
+- **A one shot entry point** - fill the `IADataExportersContext` descendant of the wanted layout with the destination directory and the database, and `IADataExportersLib::perform_export()` builds the right exporter and runs it. `IADataExportersFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
 - **Robust over a partial database** - a record without rectangles, with a zero size or with an unreadable image file is logged and skipped, the export run itself carries on.
 - **No image codec of its own** - the library copies image files as they are. The one format that has to cut rectangles out asks the consuming project to do it through the `IImageCropperFacility` interface, over whatever imaging stack that project already links.
-- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.11` major and minor pair, so two minor releases install side by side.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.12` major and minor pair, so two minor releases install side by side.
 
 # Usage example
 
@@ -41,54 +41,54 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.11 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.12 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorDataExporters-0.11)
+target_link_libraries(mytool ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12)
 ```
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 
 int main(int argc, char** argv)
 {
   if (argc < 3) { return 1; }
 
-  auto db = iadd::LibraryFacade::open_annotations_db(argv[1]);
+  auto db = iadd::IADataDriversFacade::open_annotations_db(argv[1]);
 
   if (db == nullptr) { return 1; }
 
-  auto ctx = iade::LibraryFacade::create_yolo4_library_context();
+  auto ctx = iade::IADataExportersFacade::create_yolo4_library_context();
 
   ctx->set_export_path(argv[2]);
   ctx->set_db_provider(db);
 
   std::filesystem::create_directories(ctx->get_export_path());
 
-  auto lib = iade::LibraryFacade::create_default_lib();
+  auto lib = iade::IADataExportersFacade::create_default_lib();
 
   if (lib == nullptr || !lib->perform_export(ctx)) {
     std::cerr << "the export has failed\n";
     return 1;
   }
 
-  std::cout << "exported with " << iade::LibraryFacade::library_version() << "\n";
+  std::cout << "exported with " << iade::IADataExportersFacade::library_version() << "\n";
 
   return 0;
 }
 ```
 
-The `ImagesAnnotatorDataExporters011` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
+The `ImagesAnnotatorDataExporters012` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>` and a plain `#include <LibraryFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: header names like `LibraryFacade.h`, `LibraryContext.h` or `ILib.h` are generic enough to collide in a busy include path - the data drivers library installs headers of exactly those names.
+Both `#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>` and a plain `#include <IADataExportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
 More on the API and on the produced datasets is in the [dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md), the [produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) and the [using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) documentation sections.
 
@@ -103,7 +103,7 @@ Both of the following are **mandatory** for the library to build:
 
 The libcurl is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent` - see the [enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) section for the source and tag overriding variables. It is linked **privately**: no public header exposes a curl type.
 
-The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.11 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
 The logging component is compiled straight into the shared library, so no logger implementation has to be supplied by the consumer.
 

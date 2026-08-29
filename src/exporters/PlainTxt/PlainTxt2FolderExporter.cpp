@@ -38,7 +38,7 @@ namespace iannotator::exporters
 
 PlainTxt2FolderExporter::~PlainTxt2FolderExporter() { clear(); }
 
-bool PlainTxt2FolderExporter::export_db(LibraryContextPtr ectx)
+bool PlainTxt2FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(ectx->get_db_provider() != nullptr);

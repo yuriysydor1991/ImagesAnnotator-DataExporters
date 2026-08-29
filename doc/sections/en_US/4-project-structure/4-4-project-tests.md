@@ -6,9 +6,9 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 
 | Binary | Under test | Sources |
 |---|---|---|
-| `UTEST_LibraryFacade` | the installed facade | [src/lib/facade/LibraryFacade.cpp](/src/lib/facade/LibraryFacade.cpp) |
+| `UTEST_IADataExportersFacade` | the installed facade | [src/lib/facade/IADataExportersFacade.cpp](/src/lib/facade/IADataExportersFacade.cpp) |
 | `UTEST_LibFactory` | the object factory | [src/lib/libmain/LibFactory.cpp](/src/lib/libmain/LibFactory.cpp) |
-| `UTEST_LibMain` | the `ILib` implementation | [src/lib/libmain/LibMain.cpp](/src/lib/libmain/LibMain.cpp) |
+| `UTEST_LibMain` | the `IADataExportersLib` implementation | [src/lib/libmain/LibMain.cpp](/src/lib/libmain/LibMain.cpp) |
 | `UTEST_PlainTxt2FolderExporter` | the plain text exporter | [src/exporters/PlainTxt/PlainTxt2FolderExporter.cpp](/src/exporters/PlainTxt/PlainTxt2FolderExporter.cpp) |
 | `UTEST_Yolo42FolderExporter` | the darknet YOLOv4 exporter | [src/exporters/Yolo4/Yolo42FolderExporter.cpp](/src/exporters/Yolo4/Yolo42FolderExporter.cpp) |
 | `UTEST_Yolov4CfgWriter` | the darknet network descriptor writer | [src/exporters/Yolo4/Yolov4CfgWriter.cpp](/src/exporters/Yolo4/Yolov4CfgWriter.cpp) |

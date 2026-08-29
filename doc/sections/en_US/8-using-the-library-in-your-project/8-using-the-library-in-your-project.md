@@ -1,6 +1,6 @@
 # Using the library in your project
 
-The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataExporters-0.11.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
+The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataExporters-0.12.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
 
 ## What has to be installed first
 
@@ -12,9 +12,9 @@ Two things have to be installed before a consumer may be configured:
 The install puts the following into the chosen prefix:
 
 ```
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/     the public headers
-<prefix>/lib/libImagesAnnotatorDataExporters-0.11.so    the shared object, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/   the CMake package files
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/     the public headers
+<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so    the shared object, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/   the CMake package files
 ```
 
 ## Finding the package with CMake
@@ -27,17 +27,17 @@ project(MyExportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.11 0.11 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.12 0.12 REQUIRED)
 
 add_executable(my-exporting-tool main.cpp)
 
 target_link_libraries(
   my-exporting-tool
-  PRIVATE ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorDataExporters-0.11
+  PRIVATE ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12
 )
 ```
 
-Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataExporters-0.11ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
+Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataExporters-0.12ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
 
 The installed package configuration file, generated from [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in), calls `find_dependency()` on the data drivers package before it reads the exported targets. The data drivers library is linked `PUBLIC` because the installable headers of this library name its record types, so linking the target above brings the data drivers include path and shared object along with it. A separate `find_package()` for the data drivers is not needed in a consumer, although calling one does no harm.
 
@@ -58,61 +58,61 @@ The very same variable is what this library itself needs at its own configure ti
 Two include roots are exported, so both spellings compile:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>  // recommended
-#include <LibraryFacade.h>                                    // also works
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>  // recommended
+#include <IADataExportersFacade.h>                                    // also works
 ```
 
-Prefer the prefixed one. Header names such as `LibraryFacade.h`, `LibraryContext.h` and `ILib.h` are generic enough to collide in a busy include path - the data drivers library installs headers of exactly those names, and with both plain include roots in play the short spelling picks whichever of the two the compiler happens to see first.
+Prefer the prefixed one. Header names such as `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
-`LibraryFacade.h` includes every other public header of the library, so it is usually the only one a consumer names.
+`IADataExportersFacade.h` includes every other public header of the library, so it is usually the only one a consumer names.
 
 ## Aliasing the namespaces
 
 The interface namespaces of both libraries carry their major and minor version numbers. Alias them once and the version bump stays a one line change:
 
 ```cpp
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 ```
 
 ## What your project has to supply
 
-- **The database.** `LibraryContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::LibraryFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
+- **The database.** `IADataExportersContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::IADataDriversFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
 - **The destination directory.** Only the YOLO v4 export creates its own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
-- **An image cropper, for one layout only.** `PyTorchExportLibraryContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportLibraryContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The eight other layouts need no cropper at all.
+- **An image cropper, for one layout only.** `PyTorchExportContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The eight other layouts need no cropper at all.
 
 ## A minimal consumer
 
-The `main.cpp` below opens a project file and writes it out through the single shot `ILib::perform_export` entry point:
+The `main.cpp` below opens a project file and writes it out through the single shot `IADataExportersLib::perform_export` entry point:
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 
 int main()
 {
-  auto db = iadd::LibraryFacade::open_annotations_db("project.json");
+  auto db = iadd::IADataDriversFacade::open_annotations_db("project.json");
 
   if (db == nullptr) {
     std::cerr << "fail to open the project file\n";
     return 1;
   }
 
-  auto ctx = iade::LibraryFacade::create_plain_txt_library_context();
+  auto ctx = iade::IADataExportersFacade::create_plain_txt_library_context();
 
   ctx->set_export_path("plain-dataset");
   ctx->set_db_provider(db);
 
   std::filesystem::create_directories(ctx->get_export_path());
 
-  auto lib = iade::LibraryFacade::create_library(ctx);
+  auto lib = iade::IADataExportersFacade::create_library(ctx);
 
   if (lib == nullptr || !lib->perform_export(ctx)) {
     std::cerr << "the export has failed\n";
@@ -120,13 +120,13 @@ int main()
   }
 
   std::cout << "exported with the library version "
-            << iade::LibraryFacade::library_version() << '\n';
+            << iade::IADataExportersFacade::library_version() << '\n';
 
   return 0;
 }
 ```
 
-Instantiate `iade::Yolo4ExportLibraryContext`, one of the three `iade::Ultralytics*ExportLibraryContext` ones, `iade::CocoExportLibraryContext`, `iade::PascalVocExportLibraryContext`, `iade::CreateMLExportLibraryContext` or `iade::PyTorchExportLibraryContext` instead to get one of the eight other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::LibraryFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Instantiate `iade::Yolo4ExportContext`, one of the three `iade::Ultralytics*ExportContext` ones, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext` or `iade::PyTorchExportContext` instead to get one of the eight other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::IADataExportersFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ## Running the result
 
@@ -136,7 +136,7 @@ Both shared objects have to be reachable by the dynamic linker at the run time. 
 LD_LIBRARY_PATH=/opt/iade/lib:/opt/iadd/lib ./my-exporting-tool
 ```
 
-`iade::LibraryFacade::library_version()` reports the version of the binary that was actually loaded, which is the quickest way to tell which of several installed copies your program ended up with.
+`iade::IADataExportersFacade::library_version()` reports the version of the binary that was actually loaded, which is the quickest way to tell which of several installed copies your program ended up with.
 
 ## A worked example inside this project
 

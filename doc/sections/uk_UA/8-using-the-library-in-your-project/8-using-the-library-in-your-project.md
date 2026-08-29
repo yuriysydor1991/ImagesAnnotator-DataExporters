@@ -1,6 +1,6 @@
 # Використання бібліотеки у власному проекті
 
-Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataExporters-0.11.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
+Бібліотека призначена для споживання іншими проектами: вона не створює власного виконуваного файлу, лише спільний обʼєкт `libImagesAnnotatorDataExporters-0.12.so` разом зі своїми встановлюваними заголовками і CMake-пакунком. Дана секція описує, що має зробити проект нижче за течією, щоб побудуватись проти неї.
 
 ## Що потрібно встановити спершу
 
@@ -12,9 +12,9 @@
 Встановлення розміщує в обраному префіксі наступне:
 
 ```
-<prefix>/include/ImagesAnnotatorDataExporters-0.11/     публічні заголовки
-<prefix>/lib/libImagesAnnotatorDataExporters-0.11.so    спільний обʼєкт, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.11/   файли CMake-пакунка
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/     публічні заголовки
+<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so    спільний обʼєкт, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/   файли CMake-пакунка
 ```
 
 ## Пошук пакунка за допомогою CMake
@@ -27,17 +27,17 @@ project(MyExportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.11 0.11 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.12 0.12 REQUIRED)
 
 add_executable(my-exporting-tool main.cpp)
 
 target_link_libraries(
   my-exporting-tool
-  PRIVATE ImagesAnnotatorDataExporters-0.11::ImagesAnnotatorDataExporters-0.11
+  PRIVATE ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12
 )
 ```
 
-І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataExporters-0.11ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
+І імʼя пакунка, і імпортована ціль несуть мажорну та мінорну версії бібліотеки, тож майбутній випуск можна встановити паралельно з цим. Запит версії звіряється зі встановленим файлом `ImagesAnnotatorDataExporters-0.12ConfigVersion.cmake` за правилом сумісності `SameMajorVersion`.
 
 Встановлений файл конфігурації пакунка, згенерований з [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in), викликає `find_dependency()` для пакунка драйверів даних перед тим як прочитати експортовані цілі. Бібліотека драйверів даних лінкується як `PUBLIC`, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів, тож лінкування наведеної вище цілі приносить із собою і шлях до заголовків, і спільний обʼєкт драйверів даних. Окремий `find_package()` для драйверів даних у споживачі не потрібен, хоча його виклик і не шкодить.
 
@@ -58,61 +58,61 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH="/opt/iadd;/opt/iade"
 Експортуються два корені підключення, тож компілюються обидва написання:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>  // рекомендовано
-#include <LibraryFacade.h>                                    // теж працює
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>  // рекомендовано
+#include <IADataExportersFacade.h>                                    // теж працює
 ```
 
-Надавай перевагу написанню з префіксом. Імена заголовків на кшталт `LibraryFacade.h`, `LibraryContext.h` і `ILib.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення - бібліотека драйверів даних встановлює заголовки точно з такими іменами, і за наявності обох простих коренів підключення коротке написання підхоплює той із двох, який компілятор побачить першим.
+Надавай перевагу написанню з префіксом. Імена заголовків на кшталт `IExporter.h` і `ExportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
 
-`LibraryFacade.h` підключає кожен інший публічний заголовок бібліотеки, тож зазвичай це єдиний, який згадує споживач.
+`IADataExportersFacade.h` підключає кожен інший публічний заголовок бібліотеки, тож зазвичай це єдиний, який згадує споживач.
 
 ## Скорочення просторів імен
 
 Інтерфейсні простори імен обох бібліотек несуть номери своїх мажорної і мінорної версій. Признач їм скорочення один раз - і підняття версії залишиться зміною в один рядок:
 
 ```cpp
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 ```
 
 ## Що має надати твій проект
 
-- **Базу даних.** `LibraryContext::set_db_provider()` приймає `ImagesAnnotatorDataDrivers011::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::LibraryFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
+- **Базу даних.** `IADataExportersContext::set_db_provider()` приймає `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::IADataDriversFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
 - **Директорію призначення.** Лише експорт YOLO v4 створює її сам. Для розкладок простого тексту і PyTorch Vision директорія `export_path` має існувати до початку експорту.
-- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportLibraryContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `PyTorchExportLibraryContext::set_cropper()`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Восьми іншим розкладкам обрізач не потрібен зовсім.
+- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `PyTorchExportContext::set_cropper()`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Восьми іншим розкладкам обрізач не потрібен зовсім.
 
 ## Мінімальний споживач
 
-Наведений нижче `main.cpp` відкриває файл проекту і записує його назовні через одноразову точку входу `ILib::perform_export`:
+Наведений нижче `main.cpp` відкриває файл проекту і записує його назовні через одноразову точку входу `IADataExportersLib::perform_export`:
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
-#include <ImagesAnnotatorDataExporters-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 
 int main()
 {
-  auto db = iadd::LibraryFacade::open_annotations_db("project.json");
+  auto db = iadd::IADataDriversFacade::open_annotations_db("project.json");
 
   if (db == nullptr) {
     std::cerr << "fail to open the project file\n";
     return 1;
   }
 
-  auto ctx = iade::LibraryFacade::create_plain_txt_library_context();
+  auto ctx = iade::IADataExportersFacade::create_plain_txt_library_context();
 
   ctx->set_export_path("plain-dataset");
   ctx->set_db_provider(db);
 
   std::filesystem::create_directories(ctx->get_export_path());
 
-  auto lib = iade::LibraryFacade::create_library(ctx);
+  auto lib = iade::IADataExportersFacade::create_library(ctx);
 
   if (lib == nullptr || !lib->perform_export(ctx)) {
     std::cerr << "the export has failed\n";
@@ -120,13 +120,13 @@ int main()
   }
 
   std::cout << "exported with the library version "
-            << iade::LibraryFacade::library_version() << '\n';
+            << iade::IADataExportersFacade::library_version() << '\n';
 
   return 0;
 }
 ```
 
-Створи натомість `iade::Yolo4ExportLibraryContext`, один із трьох `iade::Ultralytics*ExportLibraryContext`, `iade::CocoExportLibraryContext`, `iade::PascalVocExportLibraryContext`, `iade::CreateMLExportLibraryContext` чи `iade::PyTorchExportLibraryContext`, щоб отримати одну з восьми інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::LibraryFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
+Створи натомість `iade::Yolo4ExportContext`, один із трьох `iade::Ultralytics*ExportContext`, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext` чи `iade::PyTorchExportContext`, щоб отримати одну з восьми інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::IADataExportersFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
 
 ## Запуск результату
 
@@ -136,7 +136,7 @@ int main()
 LD_LIBRARY_PATH=/opt/iade/lib:/opt/iadd/lib ./my-exporting-tool
 ```
 
-`iade::LibraryFacade::library_version()` повідомляє версію бінарника, який було справді завантажено, і це найшвидший спосіб зʼясувати, яка саме з кількох встановлених копій дісталась твоїй програмі.
+`iade::IADataExportersFacade::library_version()` повідомляє версію бінарника, який було справді завантажено, і це найшвидший спосіб зʼясувати, яка саме з кількох встановлених копій дісталась твоїй програмі.
 
 ## Опрацьований приклад усередині цього проекту
 

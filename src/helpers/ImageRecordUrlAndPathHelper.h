@@ -28,7 +28,7 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IMAGERECORDURLANDPATHHELPER_HELPER_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IMAGERECORDURLANDPATHHELPER_HELPER_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
 
 #include "src/helpers/IHelper.h"
 
@@ -41,7 +41,7 @@ namespace iannotator::exporters::helpers
 class ImageRecordUrlAndPathHelper : virtual public IHelper
 {
  public:
-  using ImageRecordPtr = ImagesAnnotatorDataDrivers011::ImageRecordPtr;
+  using ImageRecordPtr = ImagesAnnotatorDataDrivers012::ImageRecordPtr;
 
   virtual ~ImageRecordUrlAndPathHelper() = default;
   ImageRecordUrlAndPathHelper() = default;

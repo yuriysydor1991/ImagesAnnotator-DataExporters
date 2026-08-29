@@ -5,22 +5,24 @@
 
 #include <memory>
 
-#include "ILib.h"
-#include "LibraryContext.h"
+#include "IADataExportersContext.h"
+#include "IADataExportersLib.h"
 
 namespace iade0impl
 {
 
-class LibMain : public ImagesAnnotatorDataExporters011::ILib
+class LibMain : public ImagesAnnotatorDataExporters012::IADataExportersLib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
+  using IADataExportersContextPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
 
   virtual ~LibMain() = default;
   LibMain() = default;
 
-  MOCK_METHOD(bool, perform_export, (LibraryContextPtr ctx), (override));
+  MOCK_METHOD(bool, perform_export, (IADataExportersContextPtr ctx),
+              (override));
 
   inline static LibMainPtr create() { return std::make_shared<LibMain>(); }
 };

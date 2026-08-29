@@ -45,7 +45,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool Ultralytics2FolderExporter::export_db(LibraryContextPtr ectx)
+bool Ultralytics2FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
 
@@ -88,7 +88,7 @@ bool Ultralytics2FolderExporter::export_db(LibraryContextPtr ectx)
   return true;
 }
 
-bool Ultralytics2FolderExporter::create_subdirs(LibraryContextPtr ectx)
+bool Ultralytics2FolderExporter::create_subdirs(IADataExportersContextPtr ectx)
 {
   const fs::path dirPath = ectx->get_export_path();
 
@@ -115,7 +115,8 @@ bool Ultralytics2FolderExporter::create_subdirs(LibraryContextPtr ectx)
   return true;
 }
 
-bool Ultralytics2FolderExporter::express_data_yaml(LibraryContextPtr ectx) const
+bool Ultralytics2FolderExporter::express_data_yaml(
+    IADataExportersContextPtr ectx) const
 {
   const fs::path fpath = fs::path{ectx->get_export_path()} / dataYamlRel;
 
@@ -173,7 +174,7 @@ bool Ultralytics2FolderExporter::express_data_yaml(LibraryContextPtr ectx) const
   return true;
 }
 
-bool Ultralytics2FolderExporter::express_images(LibraryContextPtr ectx)
+bool Ultralytics2FolderExporter::express_images(IADataExportersContextPtr ectx)
 {
   const fs::path labelsPath = fs::path{ectx->get_export_path()} / labelsRel;
 
@@ -214,8 +215,8 @@ bool Ultralytics2FolderExporter::express_images(LibraryContextPtr ectx)
   return true;
 }
 
-fs::path Ultralytics2FolderExporter::prepare_image(LibraryContextPtr ectx,
-                                                   ImageRecordPtr& ir)
+fs::path Ultralytics2FolderExporter::prepare_image(
+    IADataExportersContextPtr ectx, ImageRecordPtr& ir)
 {
   assert(irloader != nullptr);
 
@@ -256,8 +257,8 @@ fs::path Ultralytics2FolderExporter::prepare_image(LibraryContextPtr ectx,
   return newpath;
 }
 
-fs::path Ultralytics2FolderExporter::get_new_filepath(LibraryContextPtr ectx,
-                                                      ImageRecordPtr& ir)
+fs::path Ultralytics2FolderExporter::get_new_filepath(
+    IADataExportersContextPtr ectx, ImageRecordPtr& ir)
 {
   const fs::path origPath = ir->get_full_path();
   const fs::path imagesPath = fs::path{ectx->get_export_path()} / imagesRel;

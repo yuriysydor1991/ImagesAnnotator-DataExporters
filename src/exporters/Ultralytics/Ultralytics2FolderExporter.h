@@ -64,7 +64,7 @@ class Ultralytics2FolderExporter : virtual public IExporter,
   virtual ~Ultralytics2FolderExporter() = default;
   Ultralytics2FolderExporter() = default;
 
-  virtual bool export_db(LibraryContextPtr) override;
+  virtual bool export_db(IADataExportersContextPtr) override;
 
  protected:
   using AnnotationsList = IImagesPathsDBProvider::AnnotationsList;
@@ -107,16 +107,16 @@ class Ultralytics2FolderExporter : virtual public IExporter,
   inline static const std::string labelsRel = "labels/train";
   inline static const std::string dataYamlRel = "data.yaml";
 
-  static bool create_subdirs(LibraryContextPtr ectx);
-  bool express_data_yaml(LibraryContextPtr ectx) const;
-  bool express_images(LibraryContextPtr ectx);
-  std::filesystem::path prepare_image(LibraryContextPtr ectx,
+  static bool create_subdirs(IADataExportersContextPtr ectx);
+  bool express_data_yaml(IADataExportersContextPtr ectx) const;
+  bool express_images(IADataExportersContextPtr ectx);
+  std::filesystem::path prepare_image(IADataExportersContextPtr ectx,
                                       ImageRecordPtr& ir);
   bool express_image_annotations(ImageRecordPtr& ir,
                                  const std::filesystem::path& irtxtpath) const;
   static bool normalize(const ImageRecordPtr& ir, const ImageRecordRectPtr& irr,
                         NormalizedRect& nrect);
-  static std::filesystem::path get_new_filepath(LibraryContextPtr ectx,
+  static std::filesystem::path get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir);
   /// @brief Wraps a value into the YAML single quoted style, so an annotation
   /// name or a path holding a colon, a hash or a quote stays one scalar

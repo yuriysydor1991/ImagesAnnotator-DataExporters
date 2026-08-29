@@ -25,47 +25,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTCONTEXT_CLASS_H
 
 #include <memory>
 
 #include "../ExportersAPI.h"
-#include "../LibraryContext.h"
+#include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief The library context which writes the Create ML object detection
- * dataset: the images and the single annotations.json descriptor beside them,
- * in one flat directory.
+ * @brief The library context which writes the Ultralytics YOLO segmentation
+ * dataset: the data.yaml descriptor over the images/train and labels/train
+ * directories, one `class x1 y1 ... xn yn` polygon line per rectangle.
  *
- * This is the layout that leads to a Core ML detector running on an iPhone:
- * the `directoryWithImagesAndJsonAnnotation` data source of Apple's
- * MLObjectDetector, the one the Create ML application takes when a folder is
- * dropped into its training well.
- *
- * Its coordinates are the only ones of this library which are neither a corner
- * nor normalised: `x`/`y` is the **centre** of the box, counted in the image
- * own pixels from its top left corner, which is the halving every YOLO layout
- * performs before it divides the result by the image size.
+ * The segmentation format takes a polygon of any three or more points. The
+ * mask of a rectangle annotation is the rectangle outline itself, so the
+ * polygon written is its four corners and the trained model reproduces masks
+ * exactly that coarse. Reach for this layout when a rectangle outline is mask
+ * enough.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataExportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API CreateMLExportLibraryContext : public LibraryContext
+class IADE_API UltralyticsSegmentExportContext : public IADataExportersContext
 {
  public:
-  using CreateMLExportLibraryContextPtr =
-      std::shared_ptr<CreateMLExportLibraryContext>;
+  using UltralyticsSegmentExportContextPtr =
+      std::shared_ptr<UltralyticsSegmentExportContext>;
 };
 
-using CreateMLExportLibraryContextPtr =
-    CreateMLExportLibraryContext::CreateMLExportLibraryContextPtr;
+using UltralyticsSegmentExportContextPtr =
+    UltralyticsSegmentExportContext::UltralyticsSegmentExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTCONTEXT_CLASS_H

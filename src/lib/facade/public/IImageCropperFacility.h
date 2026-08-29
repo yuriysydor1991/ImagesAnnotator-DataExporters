@@ -28,20 +28,20 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecord.h>
-#include <ImagesAnnotatorDataDrivers-0.11/ImageRecordRect.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.12/ImageRecordRect.h>
 
 #include <memory>
 #include <string>
 
 #include "ExportersAPI.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
  * @brief The image cropping service the consuming project supplies for the
- * PyTorchExportLibraryContext export.
+ * PyTorchExportContext export.
  *
  * The library decodes no image format of its own, so the one export that has
  * to cut a rectangle out of a picture asks its consumer to do it over
@@ -54,8 +54,8 @@ class IADE_API IImageCropperFacility
  public:
   using IImageCropperFacilityPtr = std::shared_ptr<IImageCropperFacility>;
 
-  using ImageRecordPtr = ImagesAnnotatorDataDrivers011::ImageRecordPtr;
-  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers011::ImageRecordRectPtr;
+  using ImageRecordPtr = ImagesAnnotatorDataDrivers012::ImageRecordPtr;
+  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers012::ImageRecordRectPtr;
 
   virtual ~IImageCropperFacility() = default;
   IImageCropperFacility() = default;
@@ -86,6 +86,6 @@ class IADE_API IImageCropperFacility
 using IImageCropperFacilityPtr =
     IImageCropperFacility::IImageCropperFacilityPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H

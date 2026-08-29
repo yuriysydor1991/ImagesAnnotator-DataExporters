@@ -10,10 +10,10 @@
 #include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 
 using namespace testing;
+using iannotator::exporters::IADataExportersContext;
 using iannotator::exporters::ImageRecord;
 using iannotator::exporters::ImageRecordRect;
 using iannotator::exporters::ImageRecordsSet;
-using iannotator::exporters::LibraryContext;
 using iannotator::exporters::PlainTxt2FolderExporter;
 
 namespace
@@ -58,7 +58,7 @@ TEST(UTEST_PlainTxt2FolderExporter, exports_one_txt_file_per_tag)
       std::make_shared<ImageRecordRect>("dog", 9, 10, 11, 12));
   provider->records.emplace_back(ir);
 
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataExportersContext>();
   ctx->set_export_path(dir.string());
   ctx->set_db_provider(provider);
 
@@ -84,7 +84,7 @@ TEST(UTEST_PlainTxt2FolderExporter, skips_records_without_annotations)
   auto provider = std::make_shared<FakeProvider>();
   provider->records.emplace_back(ImageRecord::create("noann.png", "/imgs"));
 
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataExportersContext>();
   ctx->set_export_path(dir.string());
   ctx->set_db_provider(provider);
 
@@ -98,7 +98,7 @@ TEST(UTEST_PlainTxt2FolderExporter, skips_records_without_annotations)
 
 TEST(UTEST_PlainTxt2FolderExporter, fails_when_export_path_is_empty)
 {
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataExportersContext>();
   ctx->set_export_path("");
   ctx->set_db_provider(std::make_shared<FakeProvider>());
 
@@ -109,7 +109,7 @@ TEST(UTEST_PlainTxt2FolderExporter, fails_when_export_path_is_empty)
 
 TEST(UTEST_PlainTxt2FolderExporter, fails_without_a_db_provider)
 {
-  auto ctx = std::make_shared<LibraryContext>();
+  auto ctx = std::make_shared<IADataExportersContext>();
   ctx->set_export_path("/some/dir");
 
   PlainTxt2FolderExporter exporter;

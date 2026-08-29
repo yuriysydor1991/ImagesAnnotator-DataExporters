@@ -30,8 +30,8 @@
 
 #include <memory>
 
-#include "ILib.h"
-#include "LibraryContext.h"
+#include "IADataExportersContext.h"
+#include "IADataExportersLib.h"
 
 namespace iade0impl
 {
@@ -43,30 +43,32 @@ namespace iade0impl
  * the layout named by the given context and drives it over the database that
  * very same context points at.
  */
-class LibMain : public ImagesAnnotatorDataExporters011::ILib
+class LibMain : public ImagesAnnotatorDataExporters012::IADataExportersLib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
-  using LibraryContextPtr = ImagesAnnotatorDataExporters011::LibraryContextPtr;
+  using IADataExportersContextPtr =
+      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
 
   virtual ~LibMain() = default;
   LibMain();
 
   /**
-   * @brief The implemented library interface method derived from an ILib
-   * abstract class. Designed to contain the main library code implementation.
+   * @brief The implemented library interface method derived from an
+   * IADataExportersLib abstract class. Designed to contain the main library
+   * code implementation.
    *
    * Builds the exporter of the context layout and runs it over that very same
    * context. The exporter that was used is provided back through the context
    * exporter field.
    *
-   * @param ctx A filled LibraryContext descendant with appropriate data
+   * @param ctx A filled IADataExportersContext descendant with appropriate data
    * to perform it's actions.
    *
    * @return Returns a true value on the success and false in case of any
    * error.
    */
-  virtual bool perform_export(LibraryContextPtr ctx) override;
+  virtual bool perform_export(IADataExportersContextPtr ctx) override;
 
   static LibMainPtr create();
 };

@@ -25,42 +25,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTCONTEXT_CLASS_H
 
 #include <memory>
 
 #include "../ExportersAPI.h"
-#include "../LibraryContext.h"
+#include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief The library context which writes the Ultralytics YOLO oriented
- * bounding box dataset: the data.yaml descriptor over the images/train and
- * labels/train directories, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the
- * four box corners per rectangle.
+ * @brief The library context which writes the COCO object detection dataset:
+ * the single annotations/instances_default.json descriptor over the images
+ * directory next to it.
  *
- * The annotations database knows axis aligned rectangles only, so every box
- * written here carries the rotation angle of zero. An OBB model trained on it
- * still learns to detect the rotated instances of the very same objects.
+ * This is the one layout of this library read by something other than a YOLO
+ * training run: Detectron2, MMDetection, torchvision, the HuggingFace
+ * detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take
+ * it. Its `bbox` is the `[x, y, width, height]` of the top left corner in the
+ * image own pixels, which is what an ImageRecordRect already holds, so nothing
+ * of a rectangle is normalised away the way every YOLO layout normalises it.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataExportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API UltralyticsObbExportLibraryContext : public LibraryContext
+class IADE_API CocoExportContext : public IADataExportersContext
 {
  public:
-  using UltralyticsObbExportLibraryContextPtr =
-      std::shared_ptr<UltralyticsObbExportLibraryContext>;
+  using CocoExportContextPtr = std::shared_ptr<CocoExportContext>;
 };
 
-using UltralyticsObbExportLibraryContextPtr =
-    UltralyticsObbExportLibraryContext::UltralyticsObbExportLibraryContextPtr;
+using CocoExportContextPtr = CocoExportContext::CocoExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTCONTEXT_CLASS_H

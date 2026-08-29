@@ -25,46 +25,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
-#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
+#ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTCONTEXT_CLASS_H
+#define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTCONTEXT_CLASS_H
 
 #include <memory>
 
 #include "../ExportersAPI.h"
-#include "../LibraryContext.h"
+#include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters011
+namespace ImagesAnnotatorDataExporters012
 {
 
 /**
- * @brief The library context which writes the Pascal VOC dataset: the
- * JPEGImages directory, one Annotations XML descriptor per image over it and
- * the ImageSets/Main lists naming them.
+ * @brief The library context which writes the Ultralytics YOLO oriented
+ * bounding box dataset: the data.yaml descriptor over the images/train and
+ * labels/train directories, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the
+ * four box corners per rectangle.
  *
- * This is the devkit layout torchvision VOCDetection and the MMDetection
- * XMLDataset are pointed at, and the very files LabelImg saves its own work in,
- * so an exported project opens for correction in that annotator directly.
- *
- * A rectangle reaches the XML as the two corner points it was drawn between,
- * in the image own pixels, and its class name is written out as it stands
- * instead of as a position in the available annotations list, which is what
- * every other layout of this library writes.
+ * The annotations database knows axis aligned rectangles only, so every box
+ * written here carries the rotation angle of zero. An OBB model trained on it
+ * still learns to detect the rotated instances of the very same objects.
  *
  * The class carries no data of its own: instantiating it is what names the
- * wanted dataset layout, everything else is inherited from LibraryContext.
+ * wanted dataset layout, everything else is inherited from
+ * IADataExportersContext.
  *
  * Current file is a target for the library header installation.
  */
-class IADE_API PascalVocExportLibraryContext : public LibraryContext
+class IADE_API UltralyticsObbExportContext : public IADataExportersContext
 {
  public:
-  using PascalVocExportLibraryContextPtr =
-      std::shared_ptr<PascalVocExportLibraryContext>;
+  using UltralyticsObbExportContextPtr =
+      std::shared_ptr<UltralyticsObbExportContext>;
 };
 
-using PascalVocExportLibraryContextPtr =
-    PascalVocExportLibraryContext::PascalVocExportLibraryContextPtr;
+using UltralyticsObbExportContextPtr =
+    UltralyticsObbExportContext::UltralyticsObbExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters011
+}  // namespace ImagesAnnotatorDataExporters012
 
-#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTLIBRARYCONTEXT_CLASS_H
+#endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSOBBEXPORTCONTEXT_CLASS_H

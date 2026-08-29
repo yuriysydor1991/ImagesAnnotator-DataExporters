@@ -1,4 +1,4 @@
-#include <ImagesAnnotatorDataDrivers-0.11/LibraryFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "IADataExportersFacade.h"
 #include "IImageCropperFacility.h"
-#include "LibraryFacade.h"
 
-namespace iadd = ImagesAnnotatorDataDrivers011;
-namespace iade = ImagesAnnotatorDataExporters011;
+namespace iadd = ImagesAnnotatorDataDrivers012;
+namespace iade = ImagesAnnotatorDataExporters012;
 
 namespace
 {
@@ -68,7 +68,7 @@ class CTEST_Exporters : public testing::Test
     image << "not-a-real-image";
     image.close();
 
-    auto factory = iadd::LibraryFacade::create_records_factory();
+    auto factory = iadd::IADataDriversFacade::create_records_factory();
 
     ASSERT_NE(factory, nullptr);
 
@@ -81,7 +81,7 @@ class CTEST_Exporters : public testing::Test
     ir->rects.emplace_back(
         factory->create_image_rect_record("dog", 50, 20, 100, 40));
 
-    db = iadd::LibraryFacade::create_annotations_db();
+    db = iadd::IADataDriversFacade::create_annotations_db();
 
     ASSERT_NE(db, nullptr);
 
@@ -115,9 +115,9 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
   const std::filesystem::path dir = root / "plain";
   std::filesystem::create_directories(dir);
 
-  auto ctx = context<iade::PlainTxtExportLibraryContext>("plain");
+  auto ctx = context<iade::PlainTxtExportContext>("plain");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -129,9 +129,9 @@ TEST_F(CTEST_Exporters, plain_txt_export_writes_one_file_per_annotation)
 
 TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
 {
-  auto ctx = context<iade::Yolo4ExportLibraryContext>("yolo");
+  auto ctx = context<iade::Yolo4ExportContext>("yolo");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -146,9 +146,9 @@ TEST_F(CTEST_Exporters, yolo4_export_writes_the_darknet_layout)
 
 TEST_F(CTEST_Exporters, ultralytics_detect_export_writes_the_data_yaml_layout)
 {
-  auto ctx = context<iade::UltralyticsDetectExportLibraryContext>("ul-detect");
+  auto ctx = context<iade::UltralyticsDetectExportContext>("ul-detect");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -168,9 +168,9 @@ TEST_F(CTEST_Exporters, ultralytics_detect_export_writes_the_data_yaml_layout)
 
 TEST_F(CTEST_Exporters, ultralytics_obb_export_writes_the_four_box_corners)
 {
-  auto ctx = context<iade::UltralyticsObbExportLibraryContext>("ul-obb");
+  auto ctx = context<iade::UltralyticsObbExportContext>("ul-obb");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -184,9 +184,9 @@ TEST_F(CTEST_Exporters, ultralytics_obb_export_writes_the_four_box_corners)
 // the file, not the file itself.
 TEST_F(CTEST_Exporters, ultralytics_segment_export_writes_the_box_polygon)
 {
-  auto ctx = context<iade::UltralyticsSegmentExportLibraryContext>("ul-seg");
+  auto ctx = context<iade::UltralyticsSegmentExportContext>("ul-seg");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -197,9 +197,9 @@ TEST_F(CTEST_Exporters, ultralytics_segment_export_writes_the_box_polygon)
 
 TEST_F(CTEST_Exporters, coco_export_writes_the_pixel_bbox_of_the_rectangle)
 {
-  auto ctx = context<iade::CocoExportLibraryContext>("coco");
+  auto ctx = context<iade::CocoExportContext>("coco");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -224,9 +224,9 @@ TEST_F(CTEST_Exporters, coco_export_writes_the_pixel_bbox_of_the_rectangle)
 
 TEST_F(CTEST_Exporters, pascal_voc_export_writes_the_corners_of_the_rectangle)
 {
-  auto ctx = context<iade::PascalVocExportLibraryContext>("voc");
+  auto ctx = context<iade::PascalVocExportContext>("voc");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -251,9 +251,9 @@ TEST_F(CTEST_Exporters, pascal_voc_export_writes_the_corners_of_the_rectangle)
 TEST_F(CTEST_Exporters,
        createml_export_writes_the_pixel_centre_of_the_rectangle)
 {
-  auto ctx = context<iade::CreateMLExportLibraryContext>("createml");
+  auto ctx = context<iade::CreateMLExportContext>("createml");
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -275,12 +275,12 @@ TEST_F(CTEST_Exporters,
 
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 {
-  auto ctx = context<iade::PyTorchExportLibraryContext>("pytorch");
+  auto ctx = context<iade::PyTorchExportContext>("pytorch");
   ctx->set_cropper(std::make_shared<FakeCropper>());
 
   std::filesystem::create_directories(ctx->get_export_path());
 
-  auto exporter = iade::LibraryFacade::create_exporter(ctx);
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
 
   ASSERT_NE(exporter, nullptr);
   ASSERT_TRUE(exporter->export_db(ctx));
@@ -294,12 +294,12 @@ TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)
 TEST_F(CTEST_Exporters,
        perform_export_runs_the_export_named_by_the_library_context)
 {
-  auto ctx = std::make_shared<iade::Yolo4ExportLibraryContext>();
+  auto ctx = std::make_shared<iade::Yolo4ExportContext>();
 
   ctx->set_export_path((root / "perform_export").string());
   ctx->set_db_provider(db);
 
-  auto lib = iade::LibraryFacade::create_library(ctx);
+  auto lib = iade::IADataExportersFacade::create_library(ctx);
 
   ASSERT_NE(lib, nullptr);
   ASSERT_TRUE(lib->perform_export(ctx));
@@ -310,6 +310,6 @@ TEST_F(CTEST_Exporters,
 
 TEST_F(CTEST_Exporters, library_version_matches_the_data_drivers_one_it_reads)
 {
-  EXPECT_FALSE(iade::LibraryFacade::library_version().empty());
-  EXPECT_FALSE(iadd::LibraryFacade::library_version().empty());
+  EXPECT_FALSE(iade::IADataExportersFacade::library_version().empty());
+  EXPECT_FALSE(iadd::IADataDriversFacade::library_version().empty());
 }

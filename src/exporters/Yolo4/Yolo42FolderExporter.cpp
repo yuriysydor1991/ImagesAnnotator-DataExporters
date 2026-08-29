@@ -45,7 +45,7 @@ namespace
 namespace fs = std::filesystem;
 }
 
-bool Yolo42FolderExporter::export_db(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::export_db(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -85,7 +85,7 @@ bool Yolo42FolderExporter::export_db(LibraryContextPtr ectx)
   return true;
 }
 
-bool Yolo42FolderExporter::create_subdirs(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::create_subdirs(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -140,7 +140,7 @@ bool Yolo42FolderExporter::create_subdirs(LibraryContextPtr ectx)
   return true;
 }
 
-bool Yolo42FolderExporter::express_obj_names(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::express_obj_names(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -166,7 +166,7 @@ bool Yolo42FolderExporter::express_obj_names(LibraryContextPtr ectx)
   return true;
 }
 
-bool Yolo42FolderExporter::express_obj_data(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::express_obj_data(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -192,7 +192,7 @@ bool Yolo42FolderExporter::express_obj_data(LibraryContextPtr ectx)
   return true;
 }
 
-bool Yolo42FolderExporter::express_yolocfg(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::express_yolocfg(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -219,7 +219,7 @@ bool Yolo42FolderExporter::express_yolocfg(LibraryContextPtr ectx)
   return true;
 }
 
-bool Yolo42FolderExporter::express_train_and_val(LibraryContextPtr ectx)
+bool Yolo42FolderExporter::express_train_and_val(IADataExportersContextPtr ectx)
 {
   assert(ectx != nullptr);
   assert(!ectx->get_export_path().empty());
@@ -285,7 +285,7 @@ bool Yolo42FolderExporter::express_train_and_val(LibraryContextPtr ectx)
 }
 
 Yolo42FolderExporter::DataImage2TxtRec Yolo42FolderExporter::prepare_image(
-    LibraryContextPtr ectx, ImageRecordPtr& ir)
+    IADataExportersContextPtr ectx, ImageRecordPtr& ir)
 {
   assert(ir != nullptr);
   assert(irloader != nullptr);
@@ -334,7 +334,7 @@ Yolo42FolderExporter::DataImage2TxtRec Yolo42FolderExporter::prepare_image(
       (fs::path{dataRel} / (newpath.stem().string() + ".txt")).string());
 }
 
-fs::path Yolo42FolderExporter::get_new_filepath(LibraryContextPtr ectx,
+fs::path Yolo42FolderExporter::get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir)
 {
   const fs::path origPath = ir->get_full_path();
@@ -359,7 +359,7 @@ fs::path Yolo42FolderExporter::get_new_filepath(LibraryContextPtr ectx,
 }
 
 bool Yolo42FolderExporter::express_image_annotations(
-    [[maybe_unused]] LibraryContextPtr ectx, ImageRecordPtr& ir,
+    [[maybe_unused]] IADataExportersContextPtr ectx, ImageRecordPtr& ir,
     const std::string& irtxtpath)
 {
   assert(ectx != nullptr);

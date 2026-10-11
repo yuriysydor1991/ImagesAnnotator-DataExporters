@@ -1,6 +1,6 @@
 ## Публічні інтерфейсні файли бібліотеки
 
-Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - п'ятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataExporters012`. Шість із них є власне API і лежать у корені директорії:
+Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - девʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataExporters012`. Шість із них є власне API і лежать у корені директорії:
 
 | Заголовок | Оголошує |
 |---|---|
@@ -11,7 +11,7 @@
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | інтерфейс, який реалізує проект-споживач, щоб вирізати зображення |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | макрос видимості `IADE_API` |
 
-Решта дев'ять є нащадками `IADataExportersContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку пише бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище, бо їх більше, ніж усього іншого інтерфейсу разом узятого, і кожен відрізняється від сусідів лише розкладкою, яку називає:
+Решта тринадцять є нащадками `IADataExportersContext`, специфічними для розкладок - по одному на кожну розкладку набору даних, яку пише бібліотека, - і лежать разом у піддиректорії [contexts](/src/lib/facade/public/contexts), а не поруч із шістьма вище, бо їх більше, ніж усього іншого інтерфейсу разом узятого, і кожен відрізняється від сусідів лише розкладкою, яку називає:
 
 | Заголовок | Оголошує |
 |---|---|
@@ -23,9 +23,13 @@
 | [contexts/CocoExportContext.h](/src/lib/facade/public/contexts/CocoExportContext.h) | `IADataExportersContext` розкладки детекції об'єктів COCO |
 | [contexts/PascalVocExportContext.h](/src/lib/facade/public/contexts/PascalVocExportContext.h) | `IADataExportersContext` розкладки набору даних Pascal VOC |
 | [contexts/CreateMLExportContext.h](/src/lib/facade/public/contexts/CreateMLExportContext.h) | `IADataExportersContext` розкладки набору даних для детекції об'єктів Create ML |
+| [contexts/Dxxwjz2ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ExportContext.h) | `IADataExportersContext` розкладки тренувальної директорії darknetxx, тієї, що з мережею для тренування dxxwjz2 |
+| [contexts/Dxxwjz3ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ExportContext.h) | `IADataExportersContext` розкладки тренувальної директорії darknetxx, тієї, що з мережею для тренування dxxwjz3 |
+| [contexts/Dxxwjz2pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pExportContext.h) | `IADataExportersContext` розкладки тренувального проекту dxxwjz2p від darknetxx |
+| [contexts/Dxxwjz3pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pExportContext.h) | `IADataExportersContext` розкладки тренувального проекту dxxwjz3p від darknetxx |
 | [contexts/PyTorchExportContext.h](/src/lib/facade/public/contexts/PyTorchExportContext.h) | `IADataExportersContext` розкладки PyTorch Vision разом із її обрізачем зображень |
 
-Кожен із тих дев'яти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataExporters-0.12/`, тож звичайне `#include "IADataExportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх дев'яти через `IADataExportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
+Кожен із тих тринадцяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataExporters-0.12/`, тож звичайне `#include "IADataExportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх тринадцяти через `IADataExportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
 
 [src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataExporters-0.12/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
 

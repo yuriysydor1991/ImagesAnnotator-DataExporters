@@ -78,8 +78,8 @@ namespace iade = ImagesAnnotatorDataExporters012;
 ## Що має надати твій проект
 
 - **Базу даних.** `IADataExportersContext::set_db_provider()` приймає `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`. Зазвичай він походить з `iadd::IADataDriversFacade::open_annotations_db("project.json")`, але підійде будь-яка реалізація того інтерфейсу - зібрані у памʼяті записи працюють так само добре.
-- **Директорію призначення.** Лише експорт YOLO v4 створює її сам. Для розкладок простого тексту і PyTorch Vision директорія `export_path` має існувати до початку експорту.
-- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `PyTorchExportContext::set_cropper()`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Восьми іншим розкладкам обрізач не потрібен зовсім.
+- **Директорію призначення.** Експорти YOLO v4, чотири експорти darknetxx, три експорти Ultralytics YOLO, експорти COCO, Pascal VOC та Create ML створюють її самі. Для розкладок простого тексту і PyTorch Vision директорія `export_path` має існувати до початку експорту.
+- **Обрізач зображень, лише для однієї розкладки.** `PyTorchExportContext` вирізає анотовані прямокутники із зображень, а сама бібліотека не декодує жодного формату зображень. Реалізуй `IImageCropperFacility` над тим набором засобів роботи із зображеннями, який твій проект уже лінкує, і передай примірник через `PyTorchExportContext::set_cropper()`. Без нього той експорт одразу зазнає невдачі. Підсекція [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md) містить начерк реалізації. Дванадцятьом іншим розкладкам обрізач не потрібен зовсім.
 
 ## Мінімальний споживач
 
@@ -126,7 +126,7 @@ int main()
 }
 ```
 
-Створи натомість `iade::Yolo4ExportContext`, один із трьох `iade::Ultralytics*ExportContext`, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext` чи `iade::PyTorchExportContext`, щоб отримати одну з восьми інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::IADataExportersFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
+Створи натомість `iade::Yolo4ExportContext`, один із трьох `iade::Ultralytics*ExportContext`, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext`, один із чотирьох `iade::Dxxwjz2ExportContext`, `iade::Dxxwjz3ExportContext`, `iade::Dxxwjz2pExportContext` та `iade::Dxxwjz3pExportContext` від darknetxx чи `iade::PyTorchExportContext`, щоб отримати одну з дванадцяти інших розкладок, описаних у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md). Побудова експортера напряму за допомогою `iade::IADataExportersFacade::create_exporter()` дає той самий результат із дрібнішим контролем - переглянь підсекцію [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md).
 
 ## Запуск результату
 

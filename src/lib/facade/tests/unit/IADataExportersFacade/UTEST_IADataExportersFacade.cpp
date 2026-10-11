@@ -177,6 +177,66 @@ TEST_F(UTEST_IADataExportersFacade, create_createml_library_context_success)
   auto res = IADataExportersFacade::create_createml_library_context();
 }
 
+TEST_F(UTEST_IADataExportersFacade, create_dxxwjz2_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz2_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = IADataExportersFacade::create_dxxwjz2_library_context();
+}
+
+TEST_F(UTEST_IADataExportersFacade, create_dxxwjz3_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz3_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = IADataExportersFacade::create_dxxwjz3_library_context();
+}
+
+TEST_F(UTEST_IADataExportersFacade, create_dxxwjz2p_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz2p_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = IADataExportersFacade::create_dxxwjz2p_library_context();
+}
+
+TEST_F(UTEST_IADataExportersFacade, create_dxxwjz3p_library_context_success)
+{
+  MockFunction<void(LibFactory&)> mockEnsurer;
+
+  EXPECT_CALL(mockEnsurer, Call)
+      .Times(1)
+      .WillOnce(Invoke([](LibFactory& instance) {
+        EXPECT_CALL(instance, create_dxxwjz3p_library_context()).Times(1);
+      }));
+
+  LibFactory::onMockCreate = mockEnsurer.AsStdFunction();
+
+  auto res = IADataExportersFacade::create_dxxwjz3p_library_context();
+}
+
 TEST_F(UTEST_IADataExportersFacade, create_pytorch_library_context_success)
 {
   MockFunction<void(LibFactory&)> mockEnsurer;

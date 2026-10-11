@@ -25,6 +25,11 @@ The records the exporters read are not defined here. They come from the [ImagesA
 | [UltralyticsSegmentExportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportContext.h) | the `IADataExportersContext` descendant of the Ultralytics YOLO segmentation dataset layout |
 | [CocoExportContext.h](/src/lib/facade/public/contexts/CocoExportContext.h) | the `IADataExportersContext` descendant of the COCO object detection dataset layout |
 | [PascalVocExportContext.h](/src/lib/facade/public/contexts/PascalVocExportContext.h) | the `IADataExportersContext` descendant of the Pascal VOC dataset layout |
+| [CreateMLExportContext.h](/src/lib/facade/public/contexts/CreateMLExportContext.h) | the `IADataExportersContext` descendant of the Create ML object detection dataset layout |
+| [Dxxwjz2ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ExportContext.h) | the `IADataExportersContext` descendant of the darknetxx training directory layout, the one with the dxxwjz2 network to train |
+| [Dxxwjz3ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ExportContext.h) | the `IADataExportersContext` descendant of the darknetxx training directory layout, the one with the dxxwjz3 network to train |
+| [Dxxwjz2pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pExportContext.h) | the `IADataExportersContext` descendant of the darknetxx dxxwjz2p training project layout |
+| [Dxxwjz3pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pExportContext.h) | the `IADataExportersContext` descendant of the darknetxx dxxwjz3p training project layout |
 | [PyTorchExportContext.h](/src/lib/facade/public/contexts/PyTorchExportContext.h) | the `IADataExportersContext` descendant of the PyTorch Vision dataset layout, with the image cropper of that layout |
 | [IADataExportersLib.h](/src/lib/facade/public/IADataExportersLib.h) | the `IADataExportersLib` abstract library interface with its `perform_export` method |
 | [IADataExportersFacade.h](/src/lib/facade/public/IADataExportersFacade.h) | the `IADataExportersFacade` factory class, the entry point of the library |
@@ -42,20 +47,30 @@ class UltralyticsSegmentExportContext : public IADataExportersContext;
 class CocoExportContext : public IADataExportersContext;
 class PascalVocExportContext : public IADataExportersContext;
 class CreateMLExportContext : public IADataExportersContext;
+class Dxxwjz2ExportContext : public IADataExportersContext;
+class Dxxwjz3ExportContext : public IADataExportersContext;
+class Dxxwjz2pExportContext : public IADataExportersContext;
+class Dxxwjz3pExportContext : public IADataExportersContext;
 class PyTorchExportContext : public IADataExportersContext;
 ```
 
-The nine `IADataExportersContext` descendants name the nine dataset layouts the library is able to write. Instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. All but the last add nothing to `IADataExportersContext`; `PyTorchExportContext` adds the `get_cropper()` / `set_cropper()` pair, since cutting pixels out is what its layout alone does - it has a subsection of its own below. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
+The thirteen `IADataExportersContext` descendants name the thirteen dataset layouts the library is able to write. Instantiating one is what picks the layout, and the library maps that type onto the exporter which writes it. All but the last add nothing to `IADataExportersContext`; `PyTorchExportContext` adds the `get_cropper()` / `set_cropper()` pair, since cutting pixels out is what its layout alone does - it has a subsection of its own below. What each of them puts on the disk is described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection.
 
-Four of them are of the YOLO family, and they are not interchangeable. `Yolo4ExportContext` writes the darknet training directory, which names its classes, lists its images and carries its whole network in files of its own. The three `Ultralytics*` ones write the layout YOLO v5 introduced and every Ultralytics release since - v8, v11 and the ones after them - reads: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories. Those three share every byte of that layout and differ only in the label file line of a rectangle, which is what the trained task - detection, oriented boxes or segmentation - expects.
+Six of them are of the YOLO family, and they are not interchangeable. `Yolo4ExportContext` writes the darknet training directory, which names its classes, lists its images and carries its whole network in files of its own, and `Dxxwjz2ExportContext` and `Dxxwjz3ExportContext` write that very directory with one file more, the network to train of the darknetxx. The three `Ultralytics*` ones write the layout YOLO v5 introduced and every Ultralytics release since - v8, v11 and the ones after them - reads: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories. Those three share every byte of that layout and differ only in the label file line of a rectangle, which is what the trained task - detection, oriented boxes or segmentation - expects.
 
 `CocoExportContext` and `PascalVocExportContext` are the two layouts of the list read by something other than a YOLO training run: Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all take the COCO JSON descriptor, and the VOC devkit directory is what torchvision `VOCDetection`, the MMDetection `XMLDataset` and LabelImg read. Both also hand a rectangle over untouched, where every YOLO layout divides its numbers by the image size first - the COCO `bbox` as the `[x, y, width, height]` pixels of the image, the VOC `bndbox` as the two corner points in those same pixels. `PascalVocExportContext` is on top of that one of the two layouts which write an annotation name instead of its position in the sorted set of names, so a name added to a project renumbers nothing that was exported before it.
 
 `CreateMLExportContext` is the one layout of the list which leads off the training frameworks entirely: it writes what Apple's `MLObjectDetector` reads, and a model trained from it is a Core ML detector that runs on an iPhone. It is also the only layout whose coordinates are neither a corner nor normalised - `x`/`y` is the **centre** of the box in the image own pixels, which is the halving the three `Ultralytics*` layouts perform before they divide by the image size - and the second, next to `PascalVocExportContext`, to write a class name instead of an index.
 
+`Dxxwjz2ExportContext` is the layout of the [darknetxx](https://github.com/yuriysydor1991/darknetxx), the C++ port of the darknet trainer whose `darknetxx-gui` trains the YOLO v4 directory as it is. Next to the files of that directory it writes `cfg/yolov4-obj.dxxwjz2`, the dxxwjz2 file of the network alone: the gzip compressed JSON document of the cfg text and of the class names at the indexes the label files number them by, carrying no weights. The darknetxx trains such a file from scratch with no other file named, and every weights file the training saves keeps those class names. `Dxxwjz3ExportContext` writes the same directory with `cfg/yolov4-obj.dxxwjz3` instead, the dxxwjz3 file of the third version of the darknetxx: the same network alone, of nothing but the JSON data - the options of the cfg sections as the JSON values instead of the cfg text, the class names as the array of the names of their indexes.
+
+`Dxxwjz2pExportContext` and `Dxxwjz3pExportContext` are the two darknetxx training projects: no YOLO v4 directory at all, but the one `yolov4-obj.dxxwjz2p` or `yolov4-obj.dxxwjz3p` file of the YOLO v4 network of the project, its class names and the annotations of its images - the ImagesAnnotator project structure the darknetxx reads - beside the `images/` folder of the copied images and an empty `backup/`. The darknetxx trains such a project from scratch, reading the images of its annotations, and updates it with the weights of every save. The dxxwjz2p one keeps the network as the cfg text, the dxxwjz3p one as the JSON of the dxxwjz3 file.
+
+The dxxwjz1 file of the darknetxx has no layout here, since it keeps the weights of a network alone and an annotations database has none of them.
+
 ### IADataExportersContext
 
-The single data class of the library, the one both of its entry points are driven with: the one shot `IADataExportersLib::perform_export()` and the `IExporter::export_db()` of an exporter built by hand. Create it with the `IADataExportersFacade` factory method of the wanted layout - `create_plain_txt_library_context()`, `create_yolo4_library_context()`, `create_ultralytics_detect_library_context()`, `create_ultralytics_obb_library_context()`, `create_ultralytics_segment_library_context()`, `create_coco_library_context()`, `create_pascal_voc_library_context()`, `create_createml_library_context()` or `create_pytorch_library_context()` - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
+The single data class of the library, the one both of its entry points are driven with: the one shot `IADataExportersLib::perform_export()` and the `IExporter::export_db()` of an exporter built by hand. Create it with the `IADataExportersFacade` factory method of the wanted layout - `create_plain_txt_library_context()`, `create_yolo4_library_context()`, `create_ultralytics_detect_library_context()`, `create_ultralytics_obb_library_context()`, `create_ultralytics_segment_library_context()`, `create_coco_library_context()`, `create_pascal_voc_library_context()`, `create_createml_library_context()`, `create_dxxwjz2_library_context()` or `create_pytorch_library_context()` - or by instantiating that descendant yourself, which is what a consumer templated over the layout type does.
 
 The data it carries is private and reached through accessors only. Every getter hands out a `const` reference to what the context holds, every setter copies the given value in:
 
@@ -127,6 +142,11 @@ A class of static factory methods only, and the only entry point a consuming pro
 | `create_ultralytics_segment_library_context()` | a new empty `UltralyticsSegmentExportContextPtr` |
 | `create_coco_library_context()` | a new empty `CocoExportContextPtr` |
 | `create_pascal_voc_library_context()` | a new empty `PascalVocExportContextPtr` |
+| `create_createml_library_context()` | a new empty `CreateMLExportContextPtr` |
+| `create_dxxwjz2_library_context()` | a new empty `Dxxwjz2ExportContextPtr` |
+| `create_dxxwjz3_library_context()` | a new empty `Dxxwjz3ExportContextPtr` |
+| `create_dxxwjz2p_library_context()` | a new empty `Dxxwjz2pExportContextPtr` |
+| `create_dxxwjz3p_library_context()` | a new empty `Dxxwjz3pExportContextPtr` |
 | `create_pytorch_library_context()` | a new empty `PyTorchExportContextPtr`, the one carrying the cropper |
 | `create_default_lib()` | the default `IADataExportersLibPtr` implementation |
 | `create_library(IADataExportersContextPtr ctx)` | the `IADataExportersLibPtr` implementation appropriate for the given context |
@@ -189,7 +209,7 @@ int main(int argc, char** argv)
 }
 ```
 
-The `std::filesystem::create_directories` call is there because only the YOLO v4, the three Ultralytics YOLO, the COCO and the Pascal VOC exporters create their destination directory on their own. The plain text and the PyTorch Vision formats expect `export_path` to exist already.
+The `std::filesystem::create_directories` call is there because only the YOLO v4, the four darknetxx, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory on their own. The plain text and the PyTorch Vision formats expect `export_path` to exist already.
 
 ### Implementing an image cropper
 

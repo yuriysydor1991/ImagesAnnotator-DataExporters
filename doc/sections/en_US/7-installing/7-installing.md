@@ -67,6 +67,10 @@ exactly the following files:
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/CocoExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/CreateMLExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz2ExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz2pExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz3ExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz3pExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PascalVocExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PlainTxtExportContext.h
 <prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PyTorchExportContext.h
@@ -83,7 +87,7 @@ exactly the following files:
 
 The `.so.0.12.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
-compiler follows. The headers are the thirteen public ones of the
+compiler follows. The headers are the nineteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 

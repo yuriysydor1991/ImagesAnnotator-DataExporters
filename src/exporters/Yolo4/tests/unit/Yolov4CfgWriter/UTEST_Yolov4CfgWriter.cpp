@@ -188,3 +188,21 @@ TEST(UTEST_Yolov4CfgWriter, routes_the_neck_into_the_backbone_feature_maps)
   // upsamples its way down to
   EXPECT_EQ(merged, (std::vector<std::string>{"512", "256"}));
 }
+
+// the comment tells the command line of the files the network goes into
+TEST(UTEST_Yolov4CfgWriter, tells_the_command_line_to_train_the_network_with)
+{
+  EXPECT_NE(write(1).find("\n#\n#   darknet detector train data/obj.data "
+                          "cfg/yolov4-obj.cfg yolov4.conv.137 -map\n#\n"),
+            std::string::npos);
+
+  std::ostringstream out;
+
+  Yolov4CfgWriter{out, 1, 0, "darknetxx --train-cfg yolov4-obj.dxxwjz2p"}
+      .write();
+
+  EXPECT_NE(out.str().find("\n#\n#   darknetxx --train-cfg yolov4-obj.dxxwjz2p"
+                           "\n#\n"),
+            std::string::npos);
+  EXPECT_EQ(out.str().find("darknet detector train"), std::string::npos);
+}

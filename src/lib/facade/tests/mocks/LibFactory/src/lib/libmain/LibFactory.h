@@ -13,6 +13,10 @@
 #include "IImageCropperFacility.h"
 #include "contexts/CocoExportContext.h"
 #include "contexts/CreateMLExportContext.h"
+#include "contexts/Dxxwjz2ExportContext.h"
+#include "contexts/Dxxwjz2pExportContext.h"
+#include "contexts/Dxxwjz3ExportContext.h"
+#include "contexts/Dxxwjz3pExportContext.h"
 #include "contexts/PascalVocExportContext.h"
 #include "contexts/PlainTxtExportContext.h"
 #include "contexts/PyTorchExportContext.h"
@@ -55,6 +59,14 @@ class LibFactorySynthParent
       ImagesAnnotatorDataExporters012::PascalVocExportContextPtr;
   using CreateMLExportContextPtr =
       ImagesAnnotatorDataExporters012::CreateMLExportContextPtr;
+  using Dxxwjz2ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz2ExportContextPtr;
+  using Dxxwjz3ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz3ExportContextPtr;
+  using Dxxwjz2pExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz2pExportContextPtr;
+  using Dxxwjz3pExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz3pExportContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters012::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters012::IImageCropperFacilityPtr;
@@ -74,6 +86,10 @@ class LibFactorySynthParent
   virtual CocoExportContextPtr create_coco_library_context() = 0;
   virtual PascalVocExportContextPtr create_pascal_voc_library_context() = 0;
   virtual CreateMLExportContextPtr create_createml_library_context() = 0;
+  virtual Dxxwjz2ExportContextPtr create_dxxwjz2_library_context() = 0;
+  virtual Dxxwjz3ExportContextPtr create_dxxwjz3_library_context() = 0;
+  virtual Dxxwjz2pExportContextPtr create_dxxwjz2p_library_context() = 0;
+  virtual Dxxwjz3pExportContextPtr create_dxxwjz3p_library_context() = 0;
   virtual PyTorchExportContextPtr create_pytorch_library_context() = 0;
   virtual IADataExportersLibPtr create_appropriate_lib(
       IADataExportersContextPtr ctx) = 0;
@@ -113,6 +129,14 @@ class LibFactory : public LibFactorySynthParent
   MOCK_METHOD(PascalVocExportContextPtr, create_pascal_voc_library_context, (),
               (override));
   MOCK_METHOD(CreateMLExportContextPtr, create_createml_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz2ExportContextPtr, create_dxxwjz2_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz3ExportContextPtr, create_dxxwjz3_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz2pExportContextPtr, create_dxxwjz2p_library_context, (),
+              (override));
+  MOCK_METHOD(Dxxwjz3pExportContextPtr, create_dxxwjz3p_library_context, (),
               (override));
   MOCK_METHOD(PyTorchExportContextPtr, create_pytorch_library_context, (),
               (override));

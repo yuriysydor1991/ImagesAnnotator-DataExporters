@@ -54,19 +54,31 @@ class Yolo42FolderExporter : virtual public IExporter,
 
   virtual bool export_db(IADataExportersContextPtr) override;
 
- private:
+ protected:
   using AnnotationsList = IImagesPathsDBProvider::AnnotationsList;
+
+  inline static const std::string cfgRel = "cfg";
+  /// @brief The network descriptor, the name of which darknet names the
+  /// weights files of its training after
+  inline static const std::string yolov4CfgRel = cfgRel + "/yolov4-obj.cfg";
+
+  /// @brief The class names of the export: the darknet class index of a name
+  /// is its position in this sorted set
+  AnnotationsList aList;
+  /// @brief The text of the network descriptor the export has written into
+  /// the cfg/yolov4-obj.cfg file
+  std::string yoloCfg;
+
+ private:
   using DataImage2TxtRec = std::pair<std::string, std::string>;
   using IndexType = AnnotationsList::difference_type;
 
   inline static const std::string dataRel = "data";
-  inline static const std::string cfgRel = "cfg";
   inline static const std::string backupRel = "backup";
   inline static const std::string objNamesRel = dataRel + "/obj.names";
   inline static const std::string objDataRel = dataRel + "/obj.data";
   inline static const std::string trainTxtRel = dataRel + "/train.txt";
   inline static const std::string valTxtRel = dataRel + "/val.txt";
-  inline static const std::string yolov4CfgRel = cfgRel + "/yolov4-obj.cfg";
 
   static bool create_subdirs(IADataExportersContextPtr ectx);
   bool express_obj_names(IADataExportersContextPtr ectx);
@@ -84,7 +96,6 @@ class Yolo42FolderExporter : virtual public IExporter,
   static std::filesystem::path get_new_filepath(IADataExportersContextPtr ectx,
                                                 ImageRecordPtr& ir);
 
-  AnnotationsList aList;
   helpers::ImageLoaderPtr irloader;
   /// @brief The images the export has put into the training list
   std::size_t exportedImages{0};

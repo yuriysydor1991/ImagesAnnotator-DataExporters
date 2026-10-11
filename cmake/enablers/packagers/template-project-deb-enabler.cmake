@@ -22,9 +22,10 @@ set(CPACK_DEB_COMPONENT_INSTALL ON)
 set(CPACK_PACKAGE_DESCRIPTION ${CMAKE_PROJECT_DESCRIPTION})
 set(CPACK_DEB_PACKAGE_ARCHITECTURE "amd64")  # Or arm64
 
-# The produced shared object links libcurl and the ImagesAnnotatorDataDrivers
-# library, so let dpkg-shlibdeps read those dependencies out of the binary
-# instead of spelling distribution package names out here.
+# The produced shared object links libcurl, the zlib and the
+# ImagesAnnotatorDataDrivers library, so let dpkg-shlibdeps read those
+# dependencies out of the binary instead of spelling distribution package names
+# out here.
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)

@@ -212,7 +212,13 @@ bool Yolo42FolderExporter::express_yolocfg(IADataExportersContextPtr ectx)
     LOGW("No annotation classes: darknet trains no detector of 0 classes");
   }
 
-  Yolov4CfgWriter{yoloCfgFile, aList.size(), exportedImages}.write();
+  std::ostringstream cfgText;
+
+  Yolov4CfgWriter{cfgText, aList.size(), exportedImages}.write();
+
+  yoloCfg = cfgText.str();
+
+  yoloCfgFile << yoloCfg;
 
   yoloCfgFile.close();
 
@@ -351,7 +357,7 @@ fs::path Yolo42FolderExporter::get_new_filepath(IADataExportersContextPtr ectx,
   unsigned long long index{1};
   do {
     newpath = fs::path{ectx->get_export_path()} / dataRel /
-              (origPath.stem().string() + "-" + std::to_string(index) +
+              (origPath.stem().string() + "-" + std::to_string(index++) +
                origPath.extension().string());
   } while (fs::is_regular_file(newpath));
 

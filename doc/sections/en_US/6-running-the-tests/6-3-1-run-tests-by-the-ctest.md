@@ -11,7 +11,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix> \
 cmake --build build -j$(nproc)
 ```
 
-With both options on the suite holds 61 test cases and all 61 pass. Run them
+With both options on the suite holds 219 test cases and all 219 pass. Run them
 with the `ctest` command from the project build directory (GNU/Linux based):
 
 ```
@@ -27,16 +27,21 @@ directory (GNU/Linux based):
 ctest --tests-dir /path/to/the/project/build/directory
 ```
 
-The cases are distributed over nineteen binaries: sixteen unit test ones
+The cases are distributed over thirty binaries: twenty seven unit test ones
 (`UTEST_IADataExportersFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter`,
 `UTEST_Yolov4CfgWriter`, `UTEST_Ultralytics2FolderExporter`,
 `UTEST_Coco2FolderExporter`, `UTEST_PascalVoc2FolderExporter`,
-`UTEST_CreateML2FolderExporter`,
+`UTEST_CreateML2FolderExporter`, `UTEST_Dxxwjz2FolderExporter`,
+`UTEST_Dxxwjz2NetworkWriter`, `UTEST_Dxxwjz3FolderExporter`,
+`UTEST_Dxxwjz3NetworkWriter`, `UTEST_Dxxwjz3CfgJson`,
+`UTEST_Dxxwjz2pProjectExporter`, `UTEST_Dxxwjz3pProjectExporter`,
+`UTEST_Dxxwjz2pProjectWriter`, `UTEST_Dxxwjz3pProjectWriter`,
+`UTEST_Dxxwjz2pAnnotationsWriter`,
 `UTEST_PyTorchVisionFolderExporter`, `UTEST_OpenCVImageCropper`,
 `UTEST_ImageLoader`, `UTEST_ImageRecordUrlAndPathHelper`, `UTEST_TypeHelper`,
-`UTEST_CURLController`) and three component test ones (`CTEST_Exporters`,
-`CTEST_LibraryRealLogger`, `CTEST_DefaultLogger`). List them without running
+`UTEST_ZlibController`, `UTEST_CURLController`) and four component test ones (`CTEST_Exporters`,
+`CTEST_LibraryRealLogger`, `CTEST_DefaultLogger`, `CTEST_ZlibController`). List them without running
 anything:
 
 ```

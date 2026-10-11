@@ -36,6 +36,10 @@
 #include "IImageCropperFacility.h"
 #include "contexts/CocoExportContext.h"
 #include "contexts/CreateMLExportContext.h"
+#include "contexts/Dxxwjz2ExportContext.h"
+#include "contexts/Dxxwjz2pExportContext.h"
+#include "contexts/Dxxwjz3ExportContext.h"
+#include "contexts/Dxxwjz3pExportContext.h"
 #include "contexts/PascalVocExportContext.h"
 #include "contexts/PlainTxtExportContext.h"
 #include "contexts/PyTorchExportContext.h"
@@ -80,6 +84,14 @@ class LibFactory
       ImagesAnnotatorDataExporters012::PascalVocExportContextPtr;
   using CreateMLExportContextPtr =
       ImagesAnnotatorDataExporters012::CreateMLExportContextPtr;
+  using Dxxwjz2ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz2ExportContextPtr;
+  using Dxxwjz3ExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz3ExportContextPtr;
+  using Dxxwjz2pExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz2pExportContextPtr;
+  using Dxxwjz3pExportContextPtr =
+      ImagesAnnotatorDataExporters012::Dxxwjz3pExportContextPtr;
   using IExporterPtr = ImagesAnnotatorDataExporters012::IExporterPtr;
   using IImageCropperFacilityPtr =
       ImagesAnnotatorDataExporters012::IImageCropperFacilityPtr;
@@ -159,6 +171,38 @@ class LibFactory
    * @return Returns an empty CreateMLExportContext instance.
    */
   virtual CreateMLExportContextPtr create_createml_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx training directory
+   * layout.
+   *
+   * @return Returns an empty Dxxwjz2ExportContext instance.
+   */
+  virtual Dxxwjz2ExportContextPtr create_dxxwjz2_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx training directory
+   * layout of the dxxwjz3 network.
+   *
+   * @return Returns an empty Dxxwjz3ExportContext instance.
+   */
+  virtual Dxxwjz3ExportContextPtr create_dxxwjz3_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx dxxwjz2p training
+   * project layout.
+   *
+   * @return Returns an empty Dxxwjz2pExportContext instance.
+   */
+  virtual Dxxwjz2pExportContextPtr create_dxxwjz2p_library_context();
+
+  /**
+   * @brief Creates an empty context of the darknetxx dxxwjz3p training
+   * project layout.
+   *
+   * @return Returns an empty Dxxwjz3pExportContext instance.
+   */
+  virtual Dxxwjz3pExportContextPtr create_dxxwjz3p_library_context();
 
   /**
    * @brief Creates an empty context of the PyTorch Vision dataset layout.

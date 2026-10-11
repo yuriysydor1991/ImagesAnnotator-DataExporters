@@ -14,7 +14,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Features
 
-- **Nine dataset layouts out of one database** - selected by the `IADataExportersContext` descendant instantiated and implemented by one exporter class each:
+- **Thirteen dataset layouts out of one database** - selected by the `IADataExportersContext` descendant instantiated and implemented by one exporter class each:
   - **Plain text** (`PlainTxtExportContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
   - **YOLO v4 (darknet)** (`Yolo4ExportContext`) - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
   - **Ultralytics YOLO - detection** (`UltralyticsDetectExportContext`) - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
@@ -23,6 +23,10 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
   - **COCO JSON** (`CocoExportContext`) - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for;
   - **Pascal VOC XML** (`PascalVocExportContext`) - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index;
   - **Create ML JSON** (`CreateMLExportContext`) - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away;
+  - **darknetxx dxxwjz2** (`Dxxwjz2ExportContext`) - the YOLO v4 darknet training directory above, which the `darknetxx-gui` of the [darknetxx](https://github.com/yuriysydor1991/darknetxx) trains as it is, with the `cfg/yolov4-obj.dxxwjz2` network to train beside its cfg file: the gzip compressed JSON document of the darknetxx carrying the cfg text and the class names at the indexes the label files number them by, and no weights, which `darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2` trains from scratch with no other file named;
+  - **darknetxx dxxwjz3** (`Dxxwjz3ExportContext`) - the same directory with the `cfg/yolov4-obj.dxxwjz3` network to train instead: the dxxwjz3 file of the darknetxx, the document of nothing but the JSON data, carrying the options of the cfg sections as the JSON values instead of the cfg text and the class names as the array of the names of their indexes - the very file the darknetxx converter makes of the cfg and the class names of the directory, but the generator;
+  - **darknetxx dxxwjz2p project** (`Dxxwjz2pExportContext`) - the darknetxx training project: the single `yolov4-obj.dxxwjz2p` file of the YOLO v4 network of the project, its class names and the annotations of its images in the ImagesAnnotator project structure, beside the `images/` folder of the copied images and an empty `backup/`, which `darknetxx --train-cfg yolov4-obj.dxxwjz2p` and the `darknetxx-train-gui` train from scratch, updating the project with the weights;
+  - **darknetxx dxxwjz3p project** (`Dxxwjz3pExportContext`) - the same project of the `yolov4-obj.dxxwjz3p` file, the network of which is the JSON one of the dxxwjz3 file;
   - **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
 - **A one shot entry point** - fill the `IADataExportersContext` descendant of the wanted layout with the destination directory and the database, and `IADataExportersLib::perform_export()` builds the right exporter and runs it. `IADataExportersFacade::create_exporter()` gives the same result with a finer grained control.
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
@@ -94,14 +98,17 @@ More on the API and on the produced datasets is in the [dataset exporters API](/
 
 # Dependencies
 
-Both of the following are **mandatory** for the library to build:
+All three of the following are **mandatory** for the library to build:
 
 | CMake option | Library | Why it is needed |
 | --- | --- | --- |
 | (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database and the image records the exporters read |
 | `ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | it preloads the image records that point at a web URL instead of a local file |
+| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | it compresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts write |
 
 The libcurl is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent` - see the [enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) section for the source and tag overriding variables. It is linked **privately**: no public header exposes a curl type.
+
+The zlib is probed and fetched the same way and linked **privately** as well. It is reached through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 
 The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
@@ -125,7 +132,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 148 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 219 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 
@@ -183,6 +190,7 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
         1. [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
+        1. [Enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md)
         1. [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 1. Running the tests
     1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)

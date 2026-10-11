@@ -1,6 +1,6 @@
 ## The library's installable include header files
 
-The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - fifteen headers, all in the `ImagesAnnotatorDataExporters012` namespace. Six of them are the API proper and sit at the root of the directory:
+The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole installable interface of the library - nineteen headers, all in the `ImagesAnnotatorDataExporters012` namespace. Six of them are the API proper and sit at the root of the directory:
 
 | Header | Declares |
 |---|---|
@@ -11,7 +11,7 @@ The [src/lib/facade/public](/src/lib/facade/public) directory holds the whole in
 | [IImageCropperFacility.h](/src/lib/facade/public/IImageCropperFacility.h) | the interface the consuming project implements to crop images out |
 | [ExportersAPI.h](/src/lib/facade/public/ExportersAPI.h) | the `IADE_API` visibility macro |
 
-The nine remaining ones are the layout specific `IADataExportersContext` descendants - one per dataset layout the library writes - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, since there are more of them than of the rest of the interface put together and each differs from its neighbours only by the layout it names:
+The thirteen remaining ones are the layout specific `IADataExportersContext` descendants - one per dataset layout the library writes - and they sit together in the [contexts](/src/lib/facade/public/contexts) subdirectory instead of beside the six above, since there are more of them than of the rest of the interface put together and each differs from its neighbours only by the layout it names:
 
 | Header | Declares |
 |---|---|
@@ -23,9 +23,13 @@ The nine remaining ones are the layout specific `IADataExportersContext` descend
 | [contexts/CocoExportContext.h](/src/lib/facade/public/contexts/CocoExportContext.h) | the `IADataExportersContext` of the COCO object detection dataset layout |
 | [contexts/PascalVocExportContext.h](/src/lib/facade/public/contexts/PascalVocExportContext.h) | the `IADataExportersContext` of the Pascal VOC dataset layout |
 | [contexts/CreateMLExportContext.h](/src/lib/facade/public/contexts/CreateMLExportContext.h) | the `IADataExportersContext` of the Create ML object detection dataset layout |
+| [contexts/Dxxwjz2ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2ExportContext.h) | the `IADataExportersContext` of the darknetxx training directory layout, the one with the dxxwjz2 network to train |
+| [contexts/Dxxwjz3ExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3ExportContext.h) | the `IADataExportersContext` of the darknetxx training directory layout, the one with the dxxwjz3 network to train |
+| [contexts/Dxxwjz2pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz2pExportContext.h) | the `IADataExportersContext` of the darknetxx dxxwjz2p training project layout |
+| [contexts/Dxxwjz3pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pExportContext.h) | the `IADataExportersContext` of the darknetxx dxxwjz3p training project layout |
 | [contexts/PyTorchExportContext.h](/src/lib/facade/public/contexts/PyTorchExportContext.h) | the `IADataExportersContext` of the PyTorch Vision dataset layout, plus its image cropper |
 
-Each of the nine reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataExporters-0.12/`, so a plain `#include "IADataExportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all nine through `IADataExportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
+Each of the thirteen reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataExporters-0.12/`, so a plain `#include "IADataExportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all thirteen through `IADataExportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
 
 [src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataExporters-0.12/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
 

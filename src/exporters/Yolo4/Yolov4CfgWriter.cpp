@@ -46,8 +46,12 @@ const std::string linear{"linear"};
 
 Yolov4CfgWriter::Yolov4CfgWriter(std::ostream& destination,
                                  std::size_t classesCount,
-                                 std::size_t imagesCount)
-    : stream{destination}, classes{classesCount}, images{imagesCount}
+                                 std::size_t imagesCount,
+                                 const std::string& trainCommand)
+    : stream{destination},
+      classes{classesCount},
+      images{imagesCount},
+      command{trainCommand}
 {
 }
 
@@ -82,8 +86,7 @@ void Yolov4CfgWriter::net_section()
          << "# of the exported annotations project.\n"
          << "# https://github.com/yuriysydor1991/darknetxx\n"
          << "#\n"
-         << "#   darknet detector train data/obj.data cfg/yolov4-obj.cfg "
-            "yolov4.conv.137 -map\n"
+         << "#   " << command << "\n"
          << "#\n"
          << "# Raise the subdivisions below, or lower the width and the height "
             "to any\n"

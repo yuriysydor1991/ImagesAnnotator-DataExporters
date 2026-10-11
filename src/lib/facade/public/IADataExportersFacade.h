@@ -38,6 +38,10 @@
 #include "IImageCropperFacility.h"
 #include "contexts/CocoExportContext.h"
 #include "contexts/CreateMLExportContext.h"
+#include "contexts/Dxxwjz2ExportContext.h"
+#include "contexts/Dxxwjz2pExportContext.h"
+#include "contexts/Dxxwjz3ExportContext.h"
+#include "contexts/Dxxwjz3pExportContext.h"
 #include "contexts/PascalVocExportContext.h"
 #include "contexts/PlainTxtExportContext.h"
 #include "contexts/PyTorchExportContext.h"
@@ -159,6 +163,42 @@ class IADE_API IADataExportersFacade
    * @return Returns a new CreateMLExportContext class instance.
    */
   static CreateMLExportContextPtr create_createml_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx training directory layout, the one carrying the dxxwjz2 network
+   * to train.
+   *
+   * @return Returns a new Dxxwjz2ExportContext class instance.
+   */
+  static Dxxwjz2ExportContextPtr create_dxxwjz2_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx training directory layout, the one carrying the dxxwjz3 network
+   * to train.
+   *
+   * @return Returns a new Dxxwjz3ExportContext class instance.
+   */
+  static Dxxwjz3ExportContextPtr create_dxxwjz3_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx dxxwjz2p training project layout, the project file beside
+   * the images folder.
+   *
+   * @return Returns a new Dxxwjz2pExportContext class instance.
+   */
+  static Dxxwjz2pExportContextPtr create_dxxwjz2p_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * darknetxx dxxwjz3p training project layout, the project file beside
+   * the images folder.
+   *
+   * @return Returns a new Dxxwjz3pExportContext class instance.
+   */
+  static Dxxwjz3pExportContextPtr create_dxxwjz3p_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the PyTorch

@@ -32,6 +32,10 @@
 
 #include "contexts/CocoExportContext.h"
 #include "contexts/CreateMLExportContext.h"
+#include "contexts/Dxxwjz2ExportContext.h"
+#include "contexts/Dxxwjz2pExportContext.h"
+#include "contexts/Dxxwjz3ExportContext.h"
+#include "contexts/Dxxwjz3pExportContext.h"
 #include "contexts/PascalVocExportContext.h"
 #include "contexts/PlainTxtExportContext.h"
 #include "contexts/PyTorchExportContext.h"
@@ -42,6 +46,10 @@
 #include "src/croppers/ImageCropperFactory.h"
 #include "src/exporters/Coco/Coco2FolderExporter.h"
 #include "src/exporters/CreateML/CreateML2FolderExporter.h"
+#include "src/exporters/Darknetxx/Dxxwjz2FolderExporter.h"
+#include "src/exporters/Darknetxx/Dxxwjz2pProjectExporter.h"
+#include "src/exporters/Darknetxx/Dxxwjz3FolderExporter.h"
+#include "src/exporters/Darknetxx/Dxxwjz3pProjectExporter.h"
 #include "src/exporters/PascalVoc/PascalVoc2FolderExporter.h"
 #include "src/exporters/PlainTxt/PlainTxt2FolderExporter.h"
 #include "src/exporters/PyTorch/PyTorchVisionFolderExporter.h"
@@ -108,6 +116,28 @@ LibFactory::create_createml_library_context()
   return std::make_shared<CreateMLExportContext>();
 }
 
+LibFactory::Dxxwjz2ExportContextPtr LibFactory::create_dxxwjz2_library_context()
+{
+  return std::make_shared<Dxxwjz2ExportContext>();
+}
+
+LibFactory::Dxxwjz3ExportContextPtr LibFactory::create_dxxwjz3_library_context()
+{
+  return std::make_shared<Dxxwjz3ExportContext>();
+}
+
+LibFactory::Dxxwjz2pExportContextPtr
+LibFactory::create_dxxwjz2p_library_context()
+{
+  return std::make_shared<Dxxwjz2pExportContext>();
+}
+
+LibFactory::Dxxwjz3pExportContextPtr
+LibFactory::create_dxxwjz3p_library_context()
+{
+  return std::make_shared<Dxxwjz3pExportContext>();
+}
+
 LibFactory::PyTorchExportContextPtr LibFactory::create_pytorch_library_context()
 {
   return std::make_shared<PyTorchExportContext>();
@@ -163,6 +193,22 @@ LibFactory::IExporterPtr LibFactory::create_exporter(
 
   if (std::dynamic_pointer_cast<CreateMLExportContext>(ctx) != nullptr) {
     return std::make_shared<iannotator::exporters::CreateML2FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz2ExportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::Dxxwjz2FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz3ExportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::Dxxwjz3FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz2pExportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::Dxxwjz2pProjectExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Dxxwjz3pExportContext>(ctx) != nullptr) {
+    return std::make_shared<iannotator::exporters::Dxxwjz3pProjectExporter>();
   }
 
   if (std::dynamic_pointer_cast<PyTorchExportContext>(ctx) != nullptr) {

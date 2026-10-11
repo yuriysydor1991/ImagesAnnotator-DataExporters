@@ -71,8 +71,23 @@ class Yolov4CfgWriter
   /// @brief The iterations count a single class of the dataset is given.
   inline static const std::size_t iterationsPerClass{2000};
 
+  /// @brief The command line the descriptor comment tells to train the YOLO v4
+  /// training directory with.
+  inline static const std::string darknetTrainCommand{
+      "darknet detector train data/obj.data cfg/yolov4-obj.cfg "
+      "yolov4.conv.137 -map"};
+
+  /**
+   * @param destination The stream the descriptor text goes into.
+   * @param classesCount The classes of the detector.
+   * @param imagesCount The images of the training.
+   * @param trainCommand The command line the descriptor comment tells to
+   * train the network with, the darknet one of the YOLO v4 training directory
+   * by default.
+   */
   Yolov4CfgWriter(std::ostream& destination, std::size_t classesCount,
-                  std::size_t imagesCount);
+                  std::size_t imagesCount,
+                  const std::string& trainCommand = darknetTrainCommand);
 
   /// @brief Writes the whole network descriptor into the destination stream.
   void write();
@@ -118,6 +133,7 @@ class Yolov4CfgWriter
   std::ostream& stream;
   const std::size_t classes;
   const std::size_t images;
+  const std::string command;
   /// @brief The layers written so far, that is the index of the next one.
   std::size_t layers{0};
 };

@@ -114,6 +114,7 @@ set(IADE_PUBLIC_INCLUDE_DIR
 add_subdirectory(lib)
 
 add_subdirectory(helpers)
+add_subdirectory(zlib)
 add_subdirectory(croppers)
 add_subdirectory(CURL)
 add_subdirectory(exporters)

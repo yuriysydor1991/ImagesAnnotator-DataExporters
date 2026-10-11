@@ -15,6 +15,7 @@ include(template-project-git-enabler)
 # inside it can be linked against them.
 include(template-project-data-drivers-enabler)
 include(template-project-libcurl-enabler)
+include(template-project-zlib-enabler)
 
 # Optional: when OpenCV is there the library also ships an image cropper of its
 # own, so a consumer with no imaging stack of its own still gets the PyTorch

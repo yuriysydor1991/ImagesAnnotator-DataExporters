@@ -44,6 +44,10 @@ package "ImagesAnnotatorDataExporters012 (installed interface)" {
   class CocoExportContext
   class PascalVocExportContext
   class CreateMLExportContext
+  class Dxxwjz2ExportContext
+  class Dxxwjz3ExportContext
+  class Dxxwjz2pExportContext
+  class Dxxwjz3pExportContext
 
   class PyTorchExportContext {
     -IImageCropperFacilityPtr cropper
@@ -64,6 +68,10 @@ package "ImagesAnnotatorDataExporters012 (installed interface)" {
     +{static} CocoExportContextPtr create_coco_library_context()
     +{static} PascalVocExportContextPtr create_pascal_voc_library_context()
     +{static} CreateMLExportContextPtr create_createml_library_context()
+    +{static} Dxxwjz2ExportContextPtr create_dxxwjz2_library_context()
+    +{static} Dxxwjz3ExportContextPtr create_dxxwjz3_library_context()
+    +{static} Dxxwjz2pExportContextPtr create_dxxwjz2p_library_context()
+    +{static} Dxxwjz3pExportContextPtr create_dxxwjz3p_library_context()
     +{static} PyTorchExportContextPtr create_pytorch_library_context()
     +{static} IADataExportersLibPtr create_default_lib()
     +{static} IADataExportersLibPtr create_library(IADataExportersContextPtr ctx)
@@ -88,6 +96,10 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +CocoExportContextPtr create_coco_library_context()
     +PascalVocExportContextPtr create_pascal_voc_library_context()
     +CreateMLExportContextPtr create_createml_library_context()
+    +Dxxwjz2ExportContextPtr create_dxxwjz2_library_context()
+    +Dxxwjz3ExportContextPtr create_dxxwjz3_library_context()
+    +Dxxwjz2pExportContextPtr create_dxxwjz2p_library_context()
+    +Dxxwjz3pExportContextPtr create_dxxwjz3p_library_context()
     +PyTorchExportContextPtr create_pytorch_library_context()
     +IADataExportersLibPtr create_appropriate_lib(IADataExportersContextPtr ctx)
     +IExporterPtr create_exporter(const IADataExportersContextPtr& ctx)
@@ -119,6 +131,50 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +bool export_db(IADataExportersContextPtr ectx)
   }
 
+  class Dxxwjz2FolderExporter {
+    +bool export_db(IADataExportersContextPtr ectx)
+    #const std::string& network_extension()
+    #bool write_network(std::ostream& document, const std::vector<std::string>& classes)
+  }
+
+  class Dxxwjz3FolderExporter
+
+  class Dxxwjz2pProjectExporter {
+    +bool export_db(IADataExportersContextPtr ectx)
+    #const std::string& project_extension()
+    #bool write_project(std::ostream& document, const std::string& cfgText, const std::vector<std::string>& classes, const Images& images)
+  }
+
+  class Dxxwjz3pProjectExporter
+
+  class Dxxwjz2NetworkWriter {
+    +bool write()
+    +{static} std::string quote(const std::string& text)
+    #bool keeps_cfg()
+    #void network()
+    #void training()
+    #void members()
+  }
+
+  class Dxxwjz3NetworkWriter
+  class Dxxwjz2pProjectWriter
+  class Dxxwjz3pProjectWriter
+
+  class Dxxwjz3CfgJson {
+    +bool valid()
+    +const std::string& net()
+    +const std::vector<std::string>& layers()
+    +{static} std::string json_of(const std::optional<std::string>& value)
+  }
+
+  class Dxxwjz2pAnnotationsWriter {
+    +void write()
+  }
+
+  class Yolov4CfgWriter {
+    +void write()
+  }
+
   class PyTorchVisionFolderExporter
 
   class ImageLoader {
@@ -126,6 +182,15 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   }
 
   class CURLController
+
+}
+
+package "src/zlib" {
+  class ZlibController {
+    +bool compress_to_file(const std::string& path, const buffer& input)
+    +std::unique_ptr<GzipIStream> create_file_reader(const std::string& path)
+    +std::unique_ptr<GzipOStream> create_file_writer(const std::string& path, int level)
+  }
 }
 
 note right of IImageCropperFacility
@@ -168,6 +233,20 @@ note bottom of CreateML2FolderExporter
   x/y is the box centre in pixels.
 end note
 
+note bottom of Dxxwjz2FolderExporter
+  The YOLO v4 directory the darknetxx
+  trains, with the dxxwjz2 network to
+  train beside its cfg: the cfg text
+  and the class names, no weights.
+end note
+
+note bottom of Dxxwjz2pProjectExporter
+  The darknetxx training project:
+  one file of the network, the class
+  names and the annotations beside
+  the images/ copies, no weights.
+end note
+
 note bottom of ImageLoader
   Preloads the web hosted image
   records into a local cache before
@@ -181,11 +260,18 @@ IExporter <|-- Ultralytics2FolderExporter
 IExporter <|-- Coco2FolderExporter
 IExporter <|-- PascalVoc2FolderExporter
 IExporter <|-- CreateML2FolderExporter
+IExporter <|-- Dxxwjz2pProjectExporter
 IExporter <|-- PyTorchVisionFolderExporter
 
 Ultralytics2FolderExporter <|-- UltralyticsDetect2FolderExporter
 Ultralytics2FolderExporter <|-- UltralyticsObb2FolderExporter
 Ultralytics2FolderExporter <|-- UltralyticsSegment2FolderExporter
+Yolo42FolderExporter <|-- Dxxwjz2FolderExporter
+Dxxwjz2FolderExporter <|-- Dxxwjz3FolderExporter
+Dxxwjz2pProjectExporter <|-- Dxxwjz3pProjectExporter
+Dxxwjz2NetworkWriter <|-- Dxxwjz3NetworkWriter
+Dxxwjz2NetworkWriter <|-- Dxxwjz2pProjectWriter
+Dxxwjz3NetworkWriter <|-- Dxxwjz3pProjectWriter
 
 IADataExportersFacade --> LibFactory : creates
 LibMain --> LibFactory : creates
@@ -198,6 +284,10 @@ LibFactory ..> UltralyticsSegment2FolderExporter : creates
 LibFactory ..> Coco2FolderExporter : creates
 LibFactory ..> PascalVoc2FolderExporter : creates
 LibFactory ..> CreateML2FolderExporter : creates
+LibFactory ..> Dxxwjz2FolderExporter : creates
+LibFactory ..> Dxxwjz3FolderExporter : creates
+LibFactory ..> Dxxwjz2pProjectExporter : creates
+LibFactory ..> Dxxwjz3pProjectExporter : creates
 LibFactory ..> PyTorchVisionFolderExporter : creates
 
 IADataExportersContext <|-- PlainTxtExportContext
@@ -208,6 +298,10 @@ IADataExportersContext <|-- UltralyticsSegmentExportContext
 IADataExportersContext <|-- CocoExportContext
 IADataExportersContext <|-- PascalVocExportContext
 IADataExportersContext <|-- CreateMLExportContext
+IADataExportersContext <|-- Dxxwjz2ExportContext
+IADataExportersContext <|-- Dxxwjz3ExportContext
+IADataExportersContext <|-- Dxxwjz2pExportContext
+IADataExportersContext <|-- Dxxwjz3pExportContext
 IADataExportersContext <|-- PyTorchExportContext
 
 LibFactory ..> PlainTxtExportContext : creates and casts to pick
@@ -218,6 +312,10 @@ LibFactory ..> UltralyticsSegmentExportContext : creates and casts to pick
 LibFactory ..> CocoExportContext : creates and casts to pick
 LibFactory ..> PascalVocExportContext : creates and casts to pick
 LibFactory ..> CreateMLExportContext : creates and casts to pick
+LibFactory ..> Dxxwjz2ExportContext : creates and casts to pick
+LibFactory ..> Dxxwjz3ExportContext : creates and casts to pick
+LibFactory ..> Dxxwjz2pExportContext : creates and casts to pick
+LibFactory ..> Dxxwjz3pExportContext : creates and casts to pick
 LibFactory ..> PyTorchExportContext : creates and casts to pick
 PyTorchVisionFolderExporter ..> PyTorchExportContext : casts for the cropper
 
@@ -233,7 +331,19 @@ Ultralytics2FolderExporter --> ImageLoader
 Coco2FolderExporter --> ImageLoader
 PascalVoc2FolderExporter --> ImageLoader
 CreateML2FolderExporter --> ImageLoader
+Dxxwjz2pProjectExporter --> ImageLoader
 PyTorchVisionFolderExporter --> ImageLoader
 ImageLoader --> CURLController
+Dxxwjz2FolderExporter --> Dxxwjz2NetworkWriter : writes the network by
+Dxxwjz2FolderExporter --> ZlibController : compresses it by
+Dxxwjz3FolderExporter --> Dxxwjz3NetworkWriter : writes the network by
+Dxxwjz3NetworkWriter --> Dxxwjz3CfgJson : the JSON of the cfg by
+Dxxwjz2pProjectExporter --> Yolov4CfgWriter : writes the network cfg by
+Dxxwjz2pProjectExporter --> Dxxwjz2pProjectWriter : writes the project by
+Dxxwjz3pProjectExporter --> Dxxwjz3pProjectWriter : writes the project by
+Dxxwjz2pProjectWriter --> Dxxwjz2pAnnotationsWriter : the annotations by
+Dxxwjz3pProjectWriter --> Dxxwjz2pAnnotationsWriter : the annotations by
+Dxxwjz2pProjectExporter --> ZlibController : compresses it by
+Yolo42FolderExporter --> Yolov4CfgWriter : writes the network cfg by
 
 @enduml

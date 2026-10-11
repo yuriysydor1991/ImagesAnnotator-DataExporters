@@ -7,8 +7,8 @@ The class diagram of the `lib` component - the installable interface, the implem
 Three groups are drawn:
 
 - `ImagesAnnotatorDataDrivers012` - the records the exporters consume (`IImagesPathsDBProvider`, `ImageRecord`), owned by the dependency;
-- `ImagesAnnotatorDataExporters012` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataExportersFacade`, `IADataExportersLib`, `IADataExportersContext` with its nine layout descendants, `IExporter` and the consumer implemented `IImageCropperFacility`;
-- the implementation, whose symbols stay inside the shared object: `LibMain`, `LibFactory`, the exporters - the three Ultralytics YOLO ones sharing the `Ultralytics2FolderExporter` base - `ImageLoader` and `CURLController`.
+- `ImagesAnnotatorDataExporters012` - everything installed from [src/lib/facade/public](/src/lib/facade/public): `IADataExportersFacade`, `IADataExportersLib`, `IADataExportersContext` with its thirteen layout descendants, `IExporter` and the consumer implemented `IImageCropperFacility`;
+- the implementation, whose symbols stay inside the shared object: `LibMain`, `LibFactory`, the exporters - the three Ultralytics YOLO ones sharing the `Ultralytics2FolderExporter` base and the darknetxx `Dxxwjz2FolderExporter` extending the `Yolo42FolderExporter` one, the `Dxxwjz3FolderExporter` extending the `Dxxwjz2FolderExporter` one and the `Dxxwjz3pProjectExporter` extending the `Dxxwjz2pProjectExporter` one - `ImageLoader`, `ZlibController` and `CURLController`.
 
 The image is rendered from the PlantUML source at [doc/diagrams/plantuml/lib-class-structure.puml](/doc/diagrams/plantuml/lib-class-structure.puml). Edit that file and render it again whenever the public interface changes:
 

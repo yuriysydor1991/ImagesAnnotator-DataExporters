@@ -50,6 +50,31 @@ set(IADE_CREATEML_SRC
   ${IADE_EXPORTERS_SRC_DIR}/CreateML/CreateML2FolderExporter.cpp
 )
 
+# The zlib controller of the cpp-app-template the darknetxx layouts write their
+# gzip compressed documents through. The darknetxx list below carries it, so a
+# test executable naming that list links the ZLIB::ZLIB target as well.
+set(IADE_ZLIB_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/zlib/GzipFileStreams.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/zlib/ZlibController.cpp
+)
+
+# The darknetxx layouts write the YOLO v4 network (the training directory ones
+# extend the YOLO v4 layout too), so a test of them names the IADE_YOLO4_SRC
+# list next to this one.
+set(IADE_DARKNETXX_SRC
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2FolderExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2NetworkWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3CfgJson.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3NetworkWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3FolderExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2pAnnotationsWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2pProjectWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3pProjectWriter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz2pProjectExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Darknetxx/Dxxwjz3pProjectExporter.cpp
+  ${IADE_ZLIB_SRC}
+)
+
 set(IADE_PYTORCH_SRC
   ${IADE_EXPORTERS_SRC_DIR}/PyTorch/PyTorchVisionFolderExporter.cpp
 )
@@ -61,6 +86,7 @@ set(IADE_EXPORTERS_SRC
   ${IADE_COCO_SRC}
   ${IADE_PASCAL_VOC_SRC}
   ${IADE_CREATEML_SRC}
+  ${IADE_DARKNETXX_SRC}
   ${IADE_PYTORCH_SRC}
 )
 

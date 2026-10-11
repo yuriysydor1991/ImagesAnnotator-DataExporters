@@ -116,6 +116,44 @@ IADataExportersFacade::create_createml_library_context()
   return libFactory->create_createml_library_context();
 }
 
+Dxxwjz2ExportContextPtr IADataExportersFacade::create_dxxwjz2_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz2_library_context();
+}
+
+Dxxwjz3ExportContextPtr IADataExportersFacade::create_dxxwjz3_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz3_library_context();
+}
+
+Dxxwjz2pExportContextPtr
+IADataExportersFacade::create_dxxwjz2p_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz2p_library_context();
+}
+
+Dxxwjz3pExportContextPtr
+IADataExportersFacade::create_dxxwjz3p_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_dxxwjz3p_library_context();
+}
+
 PyTorchExportContextPtr IADataExportersFacade::create_pytorch_library_context()
 {
   auto libFactory = iade0impl::LibFactory::create_factory();

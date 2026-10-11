@@ -1,12 +1,16 @@
 #include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <zlib.h>
 
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "IADataExportersFacade.h"
@@ -43,6 +47,51 @@ std::string read_file(const std::filesystem::path& p)
   std::string s = ss.str();
   while (!s.empty() && (s.back() == '\n' || s.back() == '\r')) s.pop_back();
   return s;
+}
+
+std::string read_binary(const std::filesystem::path& p)
+{
+  std::ifstream f(p, std::ios::binary);
+
+  return {std::istreambuf_iterator<char>{f}, std::istreambuf_iterator<char>{}};
+}
+
+/**
+ * @brief The text of the gzip file of one member, decompressed by the zlib,
+ * or an empty text for anything else.
+ */
+std::string gunzip(const std::string& member)
+{
+  // the window bits of the gzip wrapper
+  constexpr int gzipWindowBits{15 + 16};
+
+  z_stream zs{};
+
+  if (inflateInit2(&zs, gzipWindowBits) != Z_OK) {
+    return {};
+  }
+
+  zs.next_in = reinterpret_cast<Bytef*>(const_cast<char*>(member.data()));
+  zs.avail_in = static_cast<uInt>(member.size());
+
+  std::string text;
+  std::vector<char> chunk(16384U);
+  int ret{Z_OK};
+
+  do {
+    zs.next_out = reinterpret_cast<Bytef*>(chunk.data());
+    zs.avail_out = static_cast<uInt>(chunk.size());
+
+    ret = inflate(&zs, Z_NO_FLUSH);
+
+    text.append(chunk.data(), chunk.size() - zs.avail_out);
+  } while (ret == Z_OK);
+
+  const bool whole = ret == Z_STREAM_END && zs.avail_in == 0U;
+
+  inflateEnd(&zs);
+
+  return whole ? text : std::string{};
 }
 
 /// @brief The four corners of the one rectangle of the database below, the
@@ -271,6 +320,143 @@ TEST_F(CTEST_Exporters,
   EXPECT_NE(json.find("{\"label\": \"dog\", \"coordinates\": {\"x\": 100, "
                       "\"y\": 40, \"width\": 100, \"height\": 40}}"),
             std::string::npos);
+}
+
+// The YOLO v4 directory once more, which the darknetxx-gui trains, with the
+// gzip compressed JSON document of the network to train beside its cfg file:
+// the cfg text and the class names the labels number
+TEST_F(CTEST_Exporters, dxxwjz2_export_adds_the_network_to_train)
+{
+  auto ctx = iade::IADataExportersFacade::create_dxxwjz2_library_context();
+
+  ASSERT_NE(ctx, nullptr);
+
+  ctx->set_export_path((root / "dxxwjz2").string());
+  ctx->set_db_provider(db);
+
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "dxxwjz2";
+
+  EXPECT_TRUE(std::filesystem::is_directory(dir / "backup"));
+  EXPECT_EQ(read_file(dir / "data" / "obj.names"), "dog");
+  EXPECT_EQ(read_file(dir / "data" / "a.txt"), "0 0.5 0.4 0.5 0.4");
+
+  const std::string cfg = read_binary(dir / "cfg" / "yolov4-obj.cfg");
+  const std::string member = read_binary(dir / "cfg" / "yolov4-obj.dxxwjz2");
+
+  ASSERT_FALSE(cfg.empty());
+  ASSERT_GE(member.size(), 2U);
+  EXPECT_EQ(member.substr(0, 2), "\x1F\x8B");
+
+  const std::string document = gunzip(member);
+
+  EXPECT_EQ(document.rfind("{\n  \"format\": \"dxxwjz2\",\n"
+                           "  \"version\": 2,\n",
+                           0),
+            0U);
+  // the first line of the cfg text, as the JSON string keeps it
+  EXPECT_NE(document.find("\"network\": {\"cfg\": \"" +
+                          cfg.substr(0, cfg.find('\n')) + "\\n"),
+            std::string::npos);
+  EXPECT_NE(document.find("\"classes\": [\n"
+                          "    {\"index\": 0, \"name\": \"dog\"}\n  ]}"),
+            std::string::npos);
+  EXPECT_NE(document.find("\"training\": {\"seconds\": 0,"), std::string::npos);
+}
+
+// The YOLO v4 directory of the darknetxx once more, of the dxxwjz3 network to
+// train: the cfg options of the JSON values instead of the cfg text
+TEST_F(CTEST_Exporters, dxxwjz3_export_adds_the_json_network_to_train)
+{
+  auto ctx = iade::IADataExportersFacade::create_dxxwjz3_library_context();
+
+  ASSERT_NE(ctx, nullptr);
+
+  ctx->set_export_path((root / "dxxwjz3").string());
+  ctx->set_db_provider(db);
+
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  const std::filesystem::path dir = root / "dxxwjz3";
+
+  EXPECT_TRUE(std::filesystem::is_directory(dir / "backup"));
+  EXPECT_EQ(read_file(dir / "data" / "a.txt"), "0 0.5 0.4 0.5 0.4");
+  EXPECT_TRUE(std::filesystem::is_regular_file(dir / "cfg" / "yolov4-obj.cfg"));
+  EXPECT_FALSE(std::filesystem::exists(dir / "cfg" / "yolov4-obj.dxxwjz2"));
+
+  const std::string document =
+      gunzip(read_binary(dir / "cfg" / "yolov4-obj.dxxwjz3"));
+
+  EXPECT_EQ(document.rfind("{\n  \"format\": \"dxxwjz3\",\n"
+                           "  \"version\": 3,\n",
+                           0),
+            0U);
+  EXPECT_NE(document.find("\"network\": {\"net\": {\"batch\": 64, "),
+            std::string::npos);
+  EXPECT_NE(document.find("\n  ], \"classes\": [\"dog\"]},\n"),
+            std::string::npos);
+  EXPECT_EQ(document.find("\"cfg\""), std::string::npos);
+}
+
+// The darknetxx training projects: the one file of the network, the class
+// names and the annotations beside the copies of the images
+TEST_F(CTEST_Exporters, darknetxx_project_exports_write_the_project_files)
+{
+  const std::vector<std::pair<iade::IADataExportersContextPtr, std::string>>
+      projects{
+          {iade::IADataExportersFacade::create_dxxwjz2p_library_context(),
+           "dxxwjz2p"},
+          {iade::IADataExportersFacade::create_dxxwjz3p_library_context(),
+           "dxxwjz3p"},
+      };
+
+  for (const auto& [ctx, format] : projects) {
+    ASSERT_NE(ctx, nullptr) << format;
+
+    const std::filesystem::path dir = root / format;
+
+    ctx->set_export_path(dir.string());
+    ctx->set_db_provider(db);
+
+    auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
+
+    ASSERT_NE(exporter, nullptr) << format;
+    ASSERT_TRUE(exporter->export_db(ctx)) << format;
+
+    EXPECT_TRUE(std::filesystem::is_directory(dir / "backup")) << format;
+    EXPECT_EQ(read_file(dir / "images" / "a.png"), "not-a-real-image")
+        << format;
+    // none of the YOLO v4 directory
+    EXPECT_FALSE(std::filesystem::exists(dir / "data")) << format;
+    EXPECT_FALSE(std::filesystem::exists(dir / "cfg")) << format;
+
+    const std::string document =
+        gunzip(read_binary(dir / ("yolov4-obj." + format)));
+
+    EXPECT_EQ(
+        document.rfind(
+            "{\n  \"format\": \"" + format + "\",\n  \"version\": 1,\n", 0),
+        0U)
+        << format;
+    EXPECT_NE(
+        document.find(
+            ",\n  \"annotations\": {\"ImagesAnnotator\": {\"version\": "
+            "\"0.12.0\"}, \"annotations\": [\n"
+            "    {\"db\": {\"path\": \"images\"}, \"annotations\": [\n"
+            "      {\"rel_path\": \"a.png\", \"width\": 200, \"height\": "
+            "100, \"annotations\": [{\"name\": \"dog\", \"rect\": {\"x\": "
+            "50, \"y\": 20, \"width\": 100, \"height\": 40}}]}\n"
+            "    ]}\n  ]}\n}\n"),
+        std::string::npos)
+        << format;
+  }
 }
 
 TEST_F(CTEST_Exporters, pytorch_vision_export_crops_into_the_tag_directory)

@@ -351,7 +351,7 @@ fs::path Yolo42FolderExporter::get_new_filepath(IADataExportersContextPtr ectx,
   unsigned long long index{1};
   do {
     newpath = fs::path{ectx->get_export_path()} / dataRel /
-              (origPath.stem().string() + "-" + std::to_string(index) +
+              (origPath.stem().string() + "-" + std::to_string(index++) +
                origPath.extension().string());
   } while (fs::is_regular_file(newpath));
 

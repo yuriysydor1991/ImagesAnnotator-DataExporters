@@ -145,3 +145,46 @@ TEST(UTEST_Yolo42FolderExporter, normalizes_the_rectangles_of_a_copied_image)
 
   std::filesystem::remove_all(root);
 }
+
+// the images of the same name of the different folders go into the one data
+// folder, every one of a name of its own: the third one of the name included
+TEST(UTEST_Yolo42FolderExporter, names_the_copies_of_the_same_name_apart)
+{
+  const std::filesystem::path root =
+      std::filesystem::path{testing::TempDir()} / "utest_yolo_names";
+  const std::filesystem::path dir = root / "dst";
+
+  std::filesystem::remove_all(root);
+
+  auto provider = std::make_shared<FakeProvider>();
+  provider->annotations = {"dog"};
+
+  for (const std::string folder : {"x", "y", "z"}) {
+    std::filesystem::create_directories(root / folder);
+    write_file(root / folder / "a.png", "image of " + folder);
+
+    auto ir = ImageRecord::create("a.png", (root / folder).string());
+    ir->iwidth = 200;
+    ir->iheight = 100;
+    ir->rects.emplace_back(
+        std::make_shared<ImageRecordRect>("dog", 50, 20, 100, 40));
+
+    provider->records.emplace_back(ir);
+  }
+
+  auto ctx = std::make_shared<IADataExportersContext>();
+  ctx->set_export_path(dir.string());
+  ctx->set_db_provider(provider);
+
+  Yolo42FolderExporter exporter;
+
+  EXPECT_TRUE(exporter.export_db(ctx));
+
+  EXPECT_EQ(read_file(dir / "data" / "a.png"), "image of x");
+  EXPECT_EQ(read_file(dir / "data" / "a-1.png"), "image of y");
+  EXPECT_EQ(read_file(dir / "data" / "a-2.png"), "image of z");
+  EXPECT_EQ(read_file(dir / "data" / "train.txt"),
+            "data/a.png\ndata/a-1.png\ndata/a-2.png");
+
+  std::filesystem::remove_all(root);
+}

@@ -11,7 +11,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix> \
 cmake --build build -j$(nproc)
 ```
 
-With both options on the suite holds 219 test cases and all 219 pass. Run them
+With both options on the suite holds 246 test cases and all 246 pass. Run them
 with the `ctest` command from the project build directory (GNU/Linux based):
 
 ```
@@ -27,7 +27,7 @@ directory (GNU/Linux based):
 ctest --tests-dir /path/to/the/project/build/directory
 ```
 
-The cases are distributed over thirty binaries: twenty seven unit test ones
+The cases are distributed over thirty one binaries: twenty seven unit test ones
 (`UTEST_IADataExportersFacade`, `UTEST_LibFactory`, `UTEST_LibMain`,
 `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter`,
 `UTEST_Yolov4CfgWriter`, `UTEST_Ultralytics2FolderExporter`,

@@ -132,7 +132,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-З обома увімкненими опціями набір містить 219 тестових випадків. Цілі `ENABLE_UNIT_TESTS` компілюються прямо із сирців проти gmock-замінників з [src/tests/mocks](/src/tests/mocks), тоді як `CTEST_Exporters` з `ENABLE_COMPONENT_TESTS` лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки - точно як це робить проект нижче за течією.
+З обома увімкненими опціями набір містить 246 тестових випадків. Цілі `ENABLE_UNIT_TESTS` компілюються прямо із сирців проти gmock-замінників з [src/tests/mocks](/src/tests/mocks), тоді як `CTEST_Exporters` з `ENABLE_COMPONENT_TESTS` лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки - точно як це робить проект нижче за течією.
 
 Встановлення - звичайне `sudo cmake --install build`, докладно описане у секції [встановлення](/doc/sections/uk_UA/7-installing/7-installing.md).
 

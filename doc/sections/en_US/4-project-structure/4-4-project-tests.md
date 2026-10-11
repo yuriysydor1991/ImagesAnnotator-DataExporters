@@ -42,7 +42,7 @@ The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 
 `CTEST_Exporters` is the test that would notice a broken install interface - a header left out of the install set, or a symbol that never left the shared object because it lost its `IADE_API` mark.
 
-With both options on the suite counts 219 test cases:
+With both options on the suite counts 246 test cases:
 
 ```
 # from the project root directory

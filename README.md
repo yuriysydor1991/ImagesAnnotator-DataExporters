@@ -132,7 +132,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 219 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 246 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 

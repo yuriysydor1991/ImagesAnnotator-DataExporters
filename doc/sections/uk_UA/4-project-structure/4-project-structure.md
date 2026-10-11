@@ -15,6 +15,7 @@
 | [src/exporters](/src/exporters) | по одній піддиректорії на родину розкладок наборів даних - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco` та `PyTorch`, - кожна несе власні реалізації `IExporter`, свій `CMakeLists.txt` і свої модульні тести, плюс спільний для всіх `ExportersAliases.h` |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` і необовʼязковий OpenCV-`IImageCropperFacility` за ним |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
+| [src/zlib](/src/zlib) | `ZlibController` і його потоки gzip-файлів - контролер zlib з cpp-app-template, через який розкладки darknetxx записують свої gzip-файли |
 | [src/CURL](/src/CURL) | `CURLController` - обгортка libcurl для попереднього звантаження вебзображень |
 | [src/log](/src/log) | макроси журналювання і простий логер, вкомпільований у бібліотеку |
 | [cmake](/cmake) | система збірки: опції компіляції та вмикачі залежностей |

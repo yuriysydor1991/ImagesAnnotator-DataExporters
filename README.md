@@ -94,14 +94,17 @@ More on the API and on the produced datasets is in the [dataset exporters API](/
 
 # Dependencies
 
-Both of the following are **mandatory** for the library to build:
+All three of the following are **mandatory** for the library to build:
 
 | CMake option | Library | Why it is needed |
 | --- | --- | --- |
 | (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database and the image records the exporters read |
 | `ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | it preloads the image records that point at a web URL instead of a local file |
+| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | it compresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts write |
 
 The libcurl is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent` - see the [enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) section for the source and tag overriding variables. It is linked **privately**: no public header exposes a curl type.
+
+The zlib is probed and fetched the same way and linked **privately** as well. It is reached through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 
 The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
@@ -183,6 +186,7 @@ Examine the `doc` directory for possible translations of a current md document:
         1. [Enabling RPM package generation with cpack](/doc/sections/en_US/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Libraries
         1. [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md)
+        1. [Enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md)
         1. [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 1. Running the tests
     1. [Run tests by the ctest](/doc/sections/en_US/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)

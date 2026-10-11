@@ -15,6 +15,7 @@ The top level layout:
 | [src/exporters](/src/exporters) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco` and `PyTorch` - each carrying its own `IExporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` they all share |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
+| [src/zlib](/src/zlib) | `ZlibController` and its gzip file streams - the zlib controller of the cpp-app-template the darknetxx layouts write their gzip files through |
 | [src/CURL](/src/CURL) | `CURLController` - the libcurl wrapper used to preload web hosted images |
 | [src/log](/src/log) | the logging macros and the simple logger compiled into the library |
 | [cmake](/cmake) | the build system: compile options and the dependency enablers |

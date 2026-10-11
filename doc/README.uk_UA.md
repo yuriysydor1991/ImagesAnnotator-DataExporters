@@ -94,14 +94,17 @@ int main(int argc, char** argv)
 
 # Залежності
 
-Обидві наведені нижче є **обовʼязковими** для побудови бібліотеки:
+Усі три наведені нижче є **обовʼязковими** для побудови бібліотеки:
 
 | CMake-опція | Бібліотека | Навіщо вона потрібна |
 | --- | --- | --- |
 | (завжди увімкнено) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | вона оголошує базу даних анотацій і записи зображень, які читають експортери |
 | `ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | вона попередньо звантажує записи зображень, які вказують на вебадресу замість локального файлу |
+| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | вона компресує gzip-файли dxxwjz [darknetxx](https://github.com/yuriysydor1991/darknetxx), які пишуть розкладки darknetxx |
 
 libcurl спершу шукається у системі, і коли її не знайдено - затягується через CMake `FetchContent`; переглянь секцію [вмикання інтеграції libcurl](/doc/sections/uk_UA/5-project-build/5-14-enabling-libcurl.md) щодо змінних заміни джерела і теґу. Вона лінкується **приватно**: жоден публічний заголовок не відкриває curl-типів.
+
+zlib шукається і завантажується так само і так само лінкується **приватно**. Бібліотека звертається до неї через `ZlibController` з [src/zlib](/src/zlib), компонент контролера zlib з гілки `appZlib` [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) в адаптації, яку зробив з нього darknetxx - див. секцію [вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md).
 
 Бібліотека драйверів даних відрізняється. Вона має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
 
@@ -183,6 +186,7 @@ cd build && ctest --output-on-failure
         1. [Вмикання підтримки генерування RPM-пакунків з cpack](/doc/sections/uk_UA/5-project-build/packagers/5-22-enabling-RPM-package-generation-with-cpack.md)
     1. Бібліотеки
         1. [Вмикання інтеграції libcurl](/doc/sections/uk_UA/5-project-build/5-14-enabling-libcurl.md)
+        1. [Вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md)
         1. [Вмикання обрізача зображень на OpenCV](/doc/sections/uk_UA/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md)
 1. Запуск тестів
     1. [Запуск тестів за допомогою ctest](/doc/sections/uk_UA/6-running-the-tests/6-3-1-run-tests-by-the-ctest.md)

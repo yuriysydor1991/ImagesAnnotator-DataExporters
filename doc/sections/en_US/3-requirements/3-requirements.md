@@ -2,10 +2,11 @@
 
 This section contains the list of the required packages and tools that must be present in the system in order to build the exporters library.
 
-Two dependencies are mandatory - the CMake configuration step fails without them:
+Three dependencies are mandatory - the CMake configuration step fails without them:
 
 - The **ImagesAnnotatorDataDrivers** library. The exporters read their image records and their annotations database through it, so it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` and linked `PUBLIC`, because the installable headers name its record types. Build and install it from [https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) first and point this project at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>`. Examine the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection.
 - **libcurl**. The image loader preloads the web hosted image records through it, so the `ENABLE_LIBCURL` option defaults to `ON` and is required. A system wide libcurl is probed first and, when none is found, the library is fetched from its Git repository, which needs Internet access. Examine the [Enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) subsection.
+- **zlib**. The darknetxx layouts write their gzip compressed dxxwjz files through it, so the `ENABLE_ZLIB` option defaults to `ON` and is required. A system wide zlib is probed first and, when none is found, the library is fetched from its Git repository, which needs Internet access. Examine the [Enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) subsection.
 
 Everything listed below is either a basic build tool or an optional addition needed for a particular development task only.
 
@@ -17,4 +18,4 @@ Everything listed below is either a basic build tool or an optional addition nee
 1. [Optional for the code analyzer (cppcheck)](/doc/sections/en_US/3-requirements/3-6-optional-for-the-code-analyzer-cppcheck.md)
 1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 
-The ImagesAnnotatorDataDrivers library and libcurl are the only mandatory third party dependencies the library has. OpenCV is the one optional dependency: with it the library also ships an image cropper of its own, and without it the configure only says so - see [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md). Everything else listed above is optional tooling.
+The ImagesAnnotatorDataDrivers library, libcurl and zlib are the only mandatory third party dependencies the library has. OpenCV is the one optional dependency: with it the library also ships an image cropper of its own, and without it the configure only says so - see [Enabling the OpenCV image cropper](/doc/sections/en_US/5-project-build/5-37-enabling-the-OpenCV-image-cropper.md). Everything else listed above is optional tooling.

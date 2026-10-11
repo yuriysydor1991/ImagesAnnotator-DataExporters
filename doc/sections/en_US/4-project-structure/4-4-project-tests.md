@@ -15,6 +15,7 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 | `UTEST_PyTorchVisionFolderExporter` | the PyTorch vision exporter | [src/exporters/PyTorch/PyTorchVisionFolderExporter.cpp](/src/exporters/PyTorch/PyTorchVisionFolderExporter.cpp) |
 | `UTEST_ImageRecordUrlAndPathHelper` | the record path and URL resolution | [src/helpers/ImageRecordUrlAndPathHelper.cpp](/src/helpers/ImageRecordUrlAndPathHelper.cpp) |
 | `UTEST_ImageLoader` | the web hosted image preloader | [src/helpers/ImageLoader.cpp](/src/helpers/ImageLoader.cpp) |
+| `UTEST_ZlibController` | the zlib controller | [src/zlib/ZlibController.cpp](/src/zlib/ZlibController.cpp) |
 | `UTEST_TypeHelper` | the numeric cast helper | [src/helpers/TypeHelper.h](/src/helpers/TypeHelper.h) |
 | `UTEST_CURLController` | the libcurl adaptor | [src/CURL/CURLController.cpp](/src/CURL/CURLController.cpp) |
 
@@ -26,6 +27,7 @@ The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
 |---|---|
 | `UTEST_OpenCVImageCropper` | the library's own image cropper, configured only in a build that found OpenCV |
 | `CTEST_DefaultLogger` | the logger compiled into the library, driven through its own class |
+| `CTEST_ZlibController` | the zlib controller and its gzip file streams over the real zlib and real files: the round trips, the levels, the concatenated, the truncated and the corrupted gzip files |
 | `CTEST_Exporters` | compiles none of the library: it links the produced shared object and drives it through the installable public headers only, exactly the way a downstream project does |
 
 `CTEST_Exporters` is the test that would notice a broken install interface - a header left out of the install set, or a symbol that never left the shared object because it lost its `IADE_API` mark.

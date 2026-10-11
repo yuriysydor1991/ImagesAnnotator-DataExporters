@@ -9,7 +9,7 @@ Each `IADataExportersContext` descendant is implemented by one exporter class un
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- The YOLO v4, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4, the four darknetxx, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -531,6 +531,217 @@ The two guards of the Ultralytics exporters apply here as well, and the centre i
 A rectangle left with no area inside the image at all is logged and dropped, while the image and the rest of its rectangles are exported as usual - an image whose every rectangle was dropped still reaches the descriptor, with an empty `annotation` array. Records without rectangles, and records with a zero `iwidth` or `iheight`, are skipped the way every format skips them.
 
 The whole set is offered as one dataset, the way every other layout here offers it. This is the one place where that costs the consumer nothing: the Create ML application defaults its validation data to `Automatic` and holds a small part of the given set back on its own, so a directory written by this exporter is complete as it stands.
+
+### Dxxwjz2ExportContext
+
+The training directory of the [darknetxx](https://github.com/yuriysydor1991/darknetxx), the C++ port of the darknet trainer. It is the very directory the `Yolo4ExportContext` above writes - the `darknetxx-gui` trains it as it stands - with one file more beside its cfg, the network to train:
+
+```
+export_path/
+|-- backup/
+|-- cfg/
+|   |-- yolov4-obj.cfg
+|   `-- yolov4-obj.dxxwjz2
+`-- data/
+    |-- obj.data
+    |-- obj.names
+    |-- park.jpg
+    |-- park.txt
+    |-- street.png
+    |-- street.txt
+    |-- train.txt
+    `-- val.txt
+```
+
+Every file but the new one is the YOLO v4 export byte for byte - the network descriptor, the class names, the copied images with their label files and the two lists, written by the same rules and skipping the same records - so everything the subsection above tells of them holds here too.
+
+`cfg/yolov4-obj.dxxwjz2` is a dxxwjz2 file, the gzip compressed UTF-8 JSON document the darknetxx keeps a network in, together with its class names, the record of its training and its weights. The one the export writes is the network alone, the very file the darknetxx converter makes of a cfg file and a class names file: the text of `cfg/yolov4-obj.cfg` and the names of `data/obj.names` at their class indexes, with an empty training record and no weights at all. `gzip -dc cfg/yolov4-obj.dxxwjz2` unpacks it into:
+
+```
+{
+  "format": "dxxwjz2",
+  "version": 2,
+  "generator": "ImagesAnnotatorDataExporters-0.12 0.12.0",
+  "network": {"cfg": "# The YOLO v4 detector of the darknet project, written for the 2 classes\n...", "classes": [
+    {"index": 0, "name": "cat"},
+    {"index": 1, "name": "dog"}
+  ]},
+  "training": {"seconds": 0,
+    "iteration": [],
+    "loss": [],
+    "avg_loss": []
+  }
+}
+```
+
+- **`network.cfg`** is the whole text of `cfg/yolov4-obj.cfg`, the very bytes the export writes into that file, so the two never describe two different networks.
+- **`network.classes`** puts every name at the index the label files number it by: its position in the sorted set the database reports, which is the line of `data/obj.names` it stands on. From here on the names travel inside of the network - every weights file a darknetxx training of this file saves - the dxxwjz3 one by default, the dxxwjz2 one of the `--save-format dxxwjz2` - keeps them.
+- **The weights are left out**, the `header` and the `layers` of the format both, the way the darknetxx leaves them out of a network to train: the file loads no weights and its training starts from the iteration zero.
+- The text is laid out the way the darknetxx writes it, a class on a line and a column of the training record on a line, so the darknetxx converter turns the file into the very same text and only the `generator` tells the two apart. The strings follow the darknetxx too: a quote, a backslash and a control character are JSON escaped, and a byte which is no part of a valid UTF-8 sequence - a Latin-1 encoded name, for example - becomes the U+FFFD replacement character, since the darknetxx refuses a document that isn't UTF-8.
+
+The gzip file is written by the zlib at its default compression level, through the `ZlibController` of [src/zlib](/src/zlib) - the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it - which every gzip reader takes, the darknetxx one and `gzip -d` among them.
+
+Named after the cfg file, the network shares its base name with it, and the darknetxx names the weights files of a training after that base: a training started from either of the two saves the same `backup/yolov4-obj_last.dxxwjz3`, `backup/yolov4-obj_final.dxxwjz3`, ... files (the dxxwjz3 ones the darknetxx saves by default), and the `darknetxx-gui` resumes from them however the training was started. From inside of the exported directory:
+
+```
+# the network to train alone: its cfg and its class names are inside of it
+darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2
+
+# a stopped training goes on from its last weights file alone
+darknetxx --train-cfg backup/yolov4-obj_last.dxxwjz3
+```
+
+The `darknetxx-gui` window takes the exported directory itself, the way it takes every YOLO v4 one.
+
+The dxxwjz1 file, the other weights file of the darknetxx, has no layout of its own: it keeps the weights of a network and nothing else, while an annotations database holds no weights to write into it.
+
+### Dxxwjz3ExportContext
+
+The training directory of the darknetxx once more, of the network to train of the dxxwjz3 file, the third version of the darknetxx files. It is the directory of the `Dxxwjz2ExportContext` above, every file of it but the network the YOLO v4 export byte for byte, with `cfg/yolov4-obj.dxxwjz3` in the place of `cfg/yolov4-obj.dxxwjz2`:
+
+```
+export_path/
+|-- backup/
+|-- cfg/
+|   |-- yolov4-obj.cfg
+|   `-- yolov4-obj.dxxwjz3
+`-- data/
+    |-- obj.data
+    |-- obj.names
+    |-- park.jpg
+    |-- park.txt
+    |-- street.png
+    |-- street.txt
+    |-- train.txt
+    `-- val.txt
+```
+
+The dxxwjz3 file is the dxxwjz2 document of nothing but the JSON data: the network member keeps the JSON structure of the network cfg instead of its text, so any JSON tool reads and edits every option of the network (`gzip -dc cfg/yolov4-obj.dxxwjz3 | jq .network.net.batch`). The one the export writes is the network alone again - of the cfg of `cfg/yolov4-obj.cfg` and of the names of `data/obj.names`, with an empty training record and no weights - the very file `darknetxxConverter --convert-to dxxwjz3 --convert-dst <file> --convert-cfg cfg/yolov4-obj.cfg --convert-names data/obj.names` makes of the exported directory, byte for byte but the `generator`:
+
+```
+{
+  "format": "dxxwjz3",
+  "version": 3,
+  "generator": "ImagesAnnotatorDataExporters-0.12 0.12.0",
+  "network": {"net": {"batch": 64, "subdivisions": 32, "width": 832, "height": 832, "channels": 3, "momentum": 0.949, "decay": 0.0005, "angle": 0, "saturation": 1.5, "exposure": 1.5, "hue": 0.1, "learning_rate": 0.001, "burn_in": 1000, "max_batches": 6000, "policy": "steps", "steps": [4800,5400], "scales": [0.1,0.1], "mosaic": 1}, "layers": [
+    {"type": "convolutional", "options": {"batch_normalize": 1, "filters": 32, "size": 3, "stride": 1, "pad": 1, "activation": "mish"}},
+    ...
+    {"type": "convolutional", "options": {"filters": 21, "size": 1, "stride": 1, "pad": 1, "activation": "linear"}},
+    {"type": "yolo", "options": {"mask": [6,7,8], "anchors": [12,16,19,36,40,28,36,75,76,55,72,146,142,110,192,243,459,401], "classes": 2, "num": 9, "jitter": 0.3, ..., "random": 1}}
+  ], "classes": ["cat", "dog"]},
+  "training": {"seconds": 0,
+    "loss": [],
+    "avg_loss": []
+  }
+}
+```
+
+- **`network.net`** holds the options of the `[net]` section, **`network.layers`** an object of every other section in the order of the cfg: the `type` of the section name without the brackets and the `options` of its `key=value` lines. The cfg text is read the way the darknet reads it - every white space of a line dropped, the comment lines skipped, the first option of a repeated key kept - so the comment head of `cfg/yolov4-obj.cfg` is not there, while the network is the very same one.
+- **Every option value is the JSON value the darknet reads the same as the text**: the integer of the integer text (`64`, `-2`), the shortest fixed notation decimal of the float of a fraction (`.1` is `0.1`, `1.0` is `1`), the array of the comma separated values (`[4800,5400]`), the `null` of the line of no `=` and the string of the rest (`"mish"`). A text the `atoi()` of which differs from the one of its number stays the string, so `1e-3` is written as `"1e-3"`.
+- **`network.classes`** is the array of the class names in the order of their indexes, the order the label files number them by.
+- **The layers keep no arrays and the document no `header`**, the way the darknetxx writes the network to train, and the training record has no `iteration` column: the losses of an index are the ones of the iteration of the index + 1.
+
+The darknetxx trains it the way it trains the dxxwjz2 one, from inside of the exported directory, and saves the weights of the training into the dxxwjz3 files of the same `backup/yolov4-obj_*` names:
+
+```
+darknetxx --train-cfg cfg/yolov4-obj.dxxwjz3
+```
+
+### Dxxwjz2pExportContext
+
+The darknetxx training project of the dxxwjz2p file, the whole YOLO v4 training project but the images in one file: the network, the class names, the training record and the annotations of the images. No YOLO v4 directory is written - no labels, no lists, no `cfg/` - but the project file beside the copies of the annotated images:
+
+```
+export_path/
+|-- backup/
+|-- images/
+|   |-- park.jpg
+|   `-- street.png
+`-- yolov4-obj.dxxwjz2p
+```
+
+- **`images/`** holds the copies of the images the YOLO v4 export copies, of the same rules: an image of rectangles and of a known `iwidth` and `iheight`, a web hosted one preloaded first, the record of no readable file skipped. The copies land in the one folder by the file names of their images, so the image of a name already there gets a `-1`, `-2`, ... suffix before its extension, `street.png` of a second and of a third source directory landing as `street-1.png` and `street-2.png`.
+- **`backup/`** is the folder the darknetxx training saves the weights files of the project into, the default one of the darknetxx beside the project file, since the network cfg names none.
+- **`yolov4-obj.dxxwjz2p`** is the project, named after the network files of the YOLO v4 export, so the darknetxx names the backups of its training `backup/yolov4-obj_*` as well.
+
+The project is the dxxwjz2 document of the network to train - the text of the YOLO v4 network of the YOLO v4 export, written for the classes and the images of the export, and the class names at their indexes, no weights and an empty training record - with the `annotations` member beside it, the ImagesAnnotator project structure (of its `0.12.0` version) the darknetxx reads. `gzip -dc yolov4-obj.dxxwjz2p` unpacks it into:
+
+```
+{
+  "format": "dxxwjz2p",
+  "version": 1,
+  "generator": "ImagesAnnotatorDataExporters-0.12 0.12.0",
+  "network": {"cfg": "# The YOLO v4 detector of the darknet project, written for the 2 classes\n# of the exported annotations project.\n# https://github.com/yuriysydor1991/darknetxx\n#\n#   darknetxx --train-cfg yolov4-obj.dxxwjz2p\n...", "classes": [
+    {"index": 0, "name": "cat"},
+    {"index": 1, "name": "dog"}
+  ]},
+  "training": {"seconds": 0,
+    "iteration": [],
+    "loss": [],
+    "avg_loss": []
+  },
+  "annotations": {"ImagesAnnotator": {"version": "0.12.0"}, "annotations": [
+    {"db": {"path": "images"}, "annotations": [
+      {"rel_path": "street.png", "width": 640, "height": 400, "annotations": [{"name": "dog", "rect": {"x": 50, "y": 20, "width": 100, "height": 40}}, {"name": "dog", "rect": {"x": 300, "y": 25, "width": 90, "height": 45}}]},
+      {"rel_path": "park.jpg", "width": 640, "height": 480, "annotations": [{"name": "cat", "rect": {"x": 200, "y": 130, "width": 48, "height": 52}}, {"name": "dog", "rect": {"x": 12, "y": 8, "width": 64, "height": 64}}]}
+    ]}
+  ]}
+}
+```
+
+- **`network.cfg`** is the network the `cfg/yolov4-obj.cfg` of the YOLO v4 export would be, but for its comment head, which tells the command line the project is trained with instead of the darknet one.
+- **`annotations`** names the version of the structure in its `ImagesAnnotator` object and keeps one folder of the images, the `db` of the `images` path relative to the project file, so the directory moves as a whole. An image is the `rel_path` of its copy in that folder, its `width` and `height` and the boxes of its rectangles, each of the class `name` and of the `rect` of the integer pixels of the image - the `x` and the `y` of the top left corner, the `width` and the `height` - exactly as the record keeps them. The images are written in the order of the database, an image on a line. A project of no image keeps no folder: `"annotations": []`.
+- No image is marked the `validation` one, so the darknetxx calculates the mAP of the training images, the darknet way, the way the two identical lists of the YOLO v4 export ask it to.
+
+The darknetxx trains the project from scratch, on the images of its annotations, from inside of the exported directory - and so does the `darknetxx-train-gui`, which opens it:
+
+```
+darknetxx --train-cfg yolov4-obj.dxxwjz2p
+```
+
+Every save of the training updates the project itself with the weights and the training record, so a stopped training goes on of the same command, while the `backup/yolov4-obj_*` files of the save format (the dxxwjz3 one by default) are saved beside.
+
+### Dxxwjz3pExportContext
+
+The darknetxx training project of the dxxwjz3p file: the dxxwjz2p project above of the dxxwjz3 document, the whole training project of the JSON data alone. The directory is the one of the `Dxxwjz2pExportContext`, the copies of the images and the backup folder written by the same rules, with `yolov4-obj.dxxwjz3p` in the place of the dxxwjz2p file:
+
+```
+export_path/
+|-- backup/
+|-- images/
+|   |-- park.jpg
+|   `-- street.png
+`-- yolov4-obj.dxxwjz3p
+```
+
+The network member and the training record are the ones of the `Dxxwjz3ExportContext` above, the annotations member the one of the dxxwjz2p project:
+
+```
+{
+  "format": "dxxwjz3p",
+  "version": 1,
+  "generator": "ImagesAnnotatorDataExporters-0.12 0.12.0",
+  "network": {"net": {"batch": 64, "subdivisions": 32, "width": 832, "height": 832, ...}, "layers": [
+    ...
+  ], "classes": ["cat", "dog"]},
+  "training": {"seconds": 0,
+    "loss": [],
+    "avg_loss": []
+  },
+  "annotations": {"ImagesAnnotator": {"version": "0.12.0"}, "annotations": [
+    {"db": {"path": "images"}, "annotations": [
+      {"rel_path": "street.png", "width": 640, "height": 400, "annotations": [...]},
+      {"rel_path": "park.jpg", "width": 640, "height": 480, "annotations": [...]}
+    ]}
+  ]}
+}
+```
+
+The darknetxx trains it the way it trains the dxxwjz2p one, from inside of the exported directory, updating the project with the weights of every save and keeping the `backup/yolov4-obj_*.dxxwjz3` files beside it:
+
+```
+darknetxx --train-cfg yolov4-obj.dxxwjz3p
+```
 
 ### PyTorchExportContext
 

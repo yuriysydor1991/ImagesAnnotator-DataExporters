@@ -78,8 +78,8 @@ namespace iade = ImagesAnnotatorDataExporters012;
 ## What your project has to supply
 
 - **The database.** `IADataExportersContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::IADataDriversFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
-- **The destination directory.** Only the YOLO v4 export creates its own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
-- **An image cropper, for one layout only.** `PyTorchExportContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The eight other layouts need no cropper at all.
+- **The destination directory.** The YOLO v4, the four darknetxx, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exports create their own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
+- **An image cropper, for one layout only.** `PyTorchExportContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The twelve other layouts need no cropper at all.
 
 ## A minimal consumer
 
@@ -126,7 +126,7 @@ int main()
 }
 ```
 
-Instantiate `iade::Yolo4ExportContext`, one of the three `iade::Ultralytics*ExportContext` ones, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext` or `iade::PyTorchExportContext` instead to get one of the eight other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::IADataExportersFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
+Instantiate `iade::Yolo4ExportContext`, one of the three `iade::Ultralytics*ExportContext` ones, `iade::CocoExportContext`, `iade::PascalVocExportContext`, `iade::CreateMLExportContext`, one of the four darknetxx `iade::Dxxwjz2ExportContext`, `iade::Dxxwjz3ExportContext`, `iade::Dxxwjz2pExportContext` and `iade::Dxxwjz3pExportContext` ones or `iade::PyTorchExportContext` instead to get one of the twelve other layouts, described in the [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) subsection. Building the exporter directly with `iade::IADataExportersFacade::create_exporter()` gives the same result with a finer grained control - see the [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection.
 
 ## Running the result
 

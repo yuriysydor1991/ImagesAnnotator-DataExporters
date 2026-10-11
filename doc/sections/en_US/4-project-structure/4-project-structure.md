@@ -12,7 +12,7 @@ The top level layout:
 | [src/lib/facade/IADataExportersFacade.cpp](/src/lib/facade/IADataExportersFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
-| [src/exporters](/src/exporters) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco` and `PyTorch` - each carrying its own `IExporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` they all share |
+| [src/exporters](/src/exporters) | one sub-directory per dataset layout family - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML`, `Darknetxx` and `PyTorch` - each carrying its own `IExporter` implementations, its `CMakeLists.txt` and its unit tests, plus the `ExportersAliases.h` they all share |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` and the optional OpenCV `IImageCropperFacility` behind it |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
 | [src/zlib](/src/zlib) | `ZlibController` and its gzip file streams - the zlib controller of the cpp-app-template the darknetxx layouts write their gzip files through |

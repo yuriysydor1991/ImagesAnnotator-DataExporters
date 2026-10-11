@@ -12,7 +12,7 @@
 | [src/lib/facade/IADataExportersFacade.cpp](/src/lib/facade/IADataExportersFacade.cpp) | реалізація фасаду, точка входу бібліотеки |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` та `LibFactory.cpp` - ядро реалізації |
 | [src/lib/cmake](/src/lib/cmake) | генерація встановлюваного CMake-пакунка бібліотеки |
-| [src/exporters](/src/exporters) | по одній піддиректорії на родину розкладок наборів даних - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco` та `PyTorch`, - кожна несе власні реалізації `IExporter`, свій `CMakeLists.txt` і свої модульні тести, плюс спільний для всіх `ExportersAliases.h` |
+| [src/exporters](/src/exporters) | по одній піддиректорії на родину розкладок наборів даних - `PlainTxt`, `Yolo4`, `Ultralytics`, `Coco`, `PascalVoc`, `CreateML`, `Darknetxx` та `PyTorch`, - кожна несе власні реалізації `IExporter`, свій `CMakeLists.txt` і свої модульні тести, плюс спільний для всіх `ExportersAliases.h` |
 | [src/croppers](/src/croppers) | `create_builtin_cropper()` і необовʼязковий OpenCV-`IImageCropperFacility` за ним |
 | [src/helpers](/src/helpers) | `IHelper.h`, `TypeHelper.h`, `ImageRecordUrlAndPathHelper`, `ImageLoader` |
 | [src/zlib](/src/zlib) | `ZlibController` і його потоки gzip-файлів - контролер zlib з cpp-app-template, через який розкладки darknetxx записують свої gzip-файли |

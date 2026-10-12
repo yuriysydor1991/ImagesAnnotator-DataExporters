@@ -37,7 +37,7 @@ cmake -S . -B build -DENABLE_OPENCV=ON
 `IADataExportersFacade::create_image_cropper()` видає той самий обрізач або `nullptr` у збірці без OpenCV. Це і є спосіб дізнатись, чи має збірка обрізач:
 
 ```cpp
-namespace iade = ImagesAnnotatorDataExporters013;
+namespace iade = ImagesAnnotatorDataExporters014;
 
 auto ctx = iade::IADataExportersFacade::create_pytorch_library_context();
 ctx->set_export_path("/tmp/pytorch-dataset");

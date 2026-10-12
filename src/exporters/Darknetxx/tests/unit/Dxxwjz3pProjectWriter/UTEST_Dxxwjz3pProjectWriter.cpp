@@ -26,7 +26,7 @@ TEST(UTEST_Dxxwjz3pProjectWriter, writes_the_document_of_the_project_to_train)
       "{\n"
       "  \"format\": \"dxxwjz3p\",\n"
       "  \"version\": 1,\n"
-      "  \"generator\": \"ImagesAnnotatorDataExporters-0.13 0.13.0\",\n"
+      "  \"generator\": \"ImagesAnnotatorDataExporters-0.14 0.14.0\",\n"
       "  \"network\": {\"net\": {\"batch\": 64}, \"layers\": [\n"
       "    {\"type\": \"maxpool\", \"options\": {\"size\": 2}}\n"
       "  ], \"classes\": [\"cat\", \"dog\"]},\n"

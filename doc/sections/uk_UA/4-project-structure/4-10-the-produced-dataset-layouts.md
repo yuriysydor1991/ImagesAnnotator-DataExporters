@@ -331,7 +331,7 @@ data = CocoDetection(root="/home/user/dataset/images",
 
 ```json
 {
-"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.13.0"},
+"info": {"description": "The ImagesAnnotator annotations dataset", "version": "0.14.0"},
 "licenses": [],
 "images": [
   {"id": 1, "file_name": "street.png", "width": 640, "height": 400},
@@ -561,7 +561,7 @@ export_path/
 {
   "format": "dxxwjz2",
   "version": 2,
-  "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+  "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
   "network": {"cfg": "# The YOLO v4 detector of the darknet project, written for the 2 classes\n...", "classes": [
     {"index": 0, "name": "cat"},
     {"index": 1, "name": "dog"}
@@ -622,7 +622,7 @@ export_path/
 {
   "format": "dxxwjz3",
   "version": 3,
-  "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+  "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
   "network": {"net": {"batch": 64, "subdivisions": 32, "width": 832, "height": 832, "channels": 3, "momentum": 0.949, "decay": 0.0005, "angle": 0, "saturation": 1.5, "exposure": 1.5, "hue": 0.1, "learning_rate": 0.001, "burn_in": 1000, "max_batches": 6000, "policy": "steps", "steps": [4800,5400], "scales": [0.1,0.1], "mosaic": 1}, "layers": [
     {"type": "convolutional", "options": {"batch_normalize": 1, "filters": 32, "size": 3, "stride": 1, "pad": 1, "activation": "mish"}},
     ...
@@ -670,7 +670,7 @@ export_path/
 {
   "format": "dxxwjz2p",
   "version": 1,
-  "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+  "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
   "network": {"cfg": "# The YOLO v4 detector of the darknet project, written for the 2 classes\n# of the exported annotations project.\n# https://github.com/yuriysydor1991/darknetxx\n#\n#   darknetxx --train-cfg yolov4-obj.dxxwjz2p\n...", "classes": [
     {"index": 0, "name": "cat"},
     {"index": 1, "name": "dog"}
@@ -720,7 +720,7 @@ export_path/
 {
   "format": "dxxwjz3p",
   "version": 1,
-  "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+  "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
   "network": {"net": {"batch": 64, "subdivisions": 32, "width": 832, "height": 832, ...}, "layers": [
     ...
   ], "classes": ["cat", "dog"]},

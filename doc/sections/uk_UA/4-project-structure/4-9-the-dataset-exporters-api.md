@@ -1,14 +1,14 @@
 ## API експортерів наборів даних
 
-Увесь інтерфейс бібліотеки оголошено заголовковими файлами у [src/lib/facade/public](/src/lib/facade/public), і він встановлюється у субдиректорію `include/ImagesAnnotatorDataExporters-0.13` обраного префіксу встановлення. Нічого іншого зі спільного обʼєкта не виходить: кожен клас реалізації залишається за описаними тут абстрактними інтерфейсами.
+Увесь інтерфейс бібліотеки оголошено заголовковими файлами у [src/lib/facade/public](/src/lib/facade/public), і він встановлюється у субдиректорію `include/ImagesAnnotatorDataExporters-0.14` обраного префіксу встановлення. Нічого іншого зі спільного обʼєкта не виходить: кожен клас реалізації залишається за описаними тут абстрактними інтерфейсами.
 
-Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataExporters013`. Імʼя несе номери мажорної і мінорної версій бібліотеки (`0.13` дає суфікс `013`), щоб дві версії бібліотеки могли співіснувати в одній одиниці трансляції. Признач йому скорочення один раз у власному коді:
+Усі встановлювані оголошення живуть у просторі імен `ImagesAnnotatorDataExporters014`. Імʼя несе номери мажорної і мінорної версій бібліотеки (`0.14` дає суфікс `014`), щоб дві версії бібліотеки могли співіснувати в одній одиниці трансляції. Признач йому скорочення один раз у власному коді:
 
 ```cpp
-namespace iade = ImagesAnnotatorDataExporters013;
+namespace iade = ImagesAnnotatorDataExporters014;
 ```
 
-Записи, які читають експортери, тут не оголошено. Вони походять з бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), інтерфейсним простором імен якої є `ImagesAnnotatorDataDrivers013` (скорочений нижче як `iadd`). Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової сторони тієї залежності.
+Записи, які читають експортери, тут не оголошено. Вони походять з бібліотеки [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), інтерфейсним простором імен якої є `ImagesAnnotatorDataDrivers014` (скорочений нижче як `iadd`). Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) щодо збіркової сторони тієї залежності.
 
 ### Встановлювані заголовкові файли
 
@@ -77,10 +77,10 @@ class PyTorchExportContext : public IADataExportersContext;
 | Методи доступу | Напрямок | Значення |
 | --- | --- | --- |
 | `get_export_path()`, `set_export_path()` | вх. | директорія призначення експорту, `std::string`, обовʼязкове |
-| `get_db_provider()`, `set_db_provider()` | вх. | база даних анотацій, з якої читаються записи, `ImagesAnnotatorDataDrivers013::IImagesPathsDBProviderPtr`, обовʼязкове |
+| `get_db_provider()`, `set_db_provider()` | вх. | база даних анотацій, з якої читаються записи, `ImagesAnnotatorDataDrivers014::IImagesPathsDBProviderPtr`, обовʼязкове |
 | `get_exporter()`, `set_exporter()` | вих. | примірник експортера, яким виконався останній `perform_export`, `IExporterPtr` |
 
-`IADataExportersContextPtr` є скороченням для `std::shared_ptr<IADataExportersContext>`. `ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr` можна передати до `set_db_provider()` напряму, оскільки `IAnnotationsDB` походить від `IImagesPathsDBProvider`.
+`IADataExportersContextPtr` є скороченням для `std::shared_ptr<IADataExportersContext>`. `ImagesAnnotatorDataDrivers014::IAnnotationsDBPtr` можна передати до `set_db_provider()` напряму, оскільки `IAnnotationsDB` походить від `IImagesPathsDBProvider`.
 
 ### PyTorchExportContext
 
@@ -123,7 +123,7 @@ virtual IImageCropperFacilityPtr clone() = 0;
 
 `clone()` має створити копію, яка не поділяє з оригіналом жодного змінюваного стану декодування. Експортери, що постачаються сьогодні, викликають лише `crop_out_2_fs()`, але метод є частиною інтерфейсу і має бути реалізований.
 
-`ImageRecordPtr` та `ImageRecordRectPtr` є вказівниками на записи з `ImagesAnnotatorDataDrivers013`.
+`ImageRecordPtr` та `ImageRecordRectPtr` є вказівниками на записи з `ImagesAnnotatorDataDrivers014`.
 
 ### IADataExportersLib
 
@@ -159,15 +159,15 @@ virtual IImageCropperFacilityPtr clone() = 0;
 Наведена нижче програма відкриває файл проекту ImagesAnnotator за допомогою бібліотеки драйверів даних і записує його як тренувальну директорію YOLO v4. Переглянь секцію [Використання бібліотеки у власному проекті](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) щодо CMake-сторони цього.
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.14/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.14/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers013;
-namespace iade = ImagesAnnotatorDataExporters013;
+namespace iadd = ImagesAnnotatorDataDrivers014;
+namespace iade = ImagesAnnotatorDataExporters014;
 
 int main(int argc, char** argv)
 {
@@ -216,12 +216,12 @@ int main(int argc, char** argv)
 `PyTorchExportContext` є єдиною розкладкою, якій потрібен обрізач. Наведений нижче начерк підключає його до тих засобів роботи із зображеннями, які проект-споживач уже має - заміни виклики `my_imaging` власними викликами декодування та кодування:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.13/IImageCropperFacility.h>
+#include <ImagesAnnotatorDataExporters-0.14/IImageCropperFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iade = ImagesAnnotatorDataExporters013;
+namespace iade = ImagesAnnotatorDataExporters014;
 
 class MyCropper : public iade::IImageCropperFacility
 {

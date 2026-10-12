@@ -51,7 +51,7 @@ namespace iannotator::exporters
  * {
  *   "format": "dxxwjz2",
  *   "version": 2,
- *   "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+ *   "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
  *   "network": {"cfg": "[net]\nbatch=64\n...", "classes": [
  *     {"index": 0, "name": "cat"},
  *     {"index": 1, "name": "dog"}

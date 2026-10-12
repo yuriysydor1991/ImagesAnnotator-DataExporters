@@ -12,7 +12,7 @@
 #include "src/log/severity-macro-consts.h"
 
 using namespace testing;
-using namespace ImagesAnnotatorDataExporters013;
+using namespace ImagesAnnotatorDataExporters014;
 using namespace default_logger;
 
 namespace

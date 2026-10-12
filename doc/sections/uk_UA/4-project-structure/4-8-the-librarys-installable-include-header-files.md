@@ -1,6 +1,6 @@
 ## Публічні інтерфейсні файли бібліотеки
 
-Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - девʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataExporters013`. Шість із них є власне API і лежать у корені директорії:
+Директорія [src/lib/facade/public](/src/lib/facade/public) містить увесь встановлюваний інтерфейс бібліотеки - девʼятнадцять заголовків, усі у просторі імен `ImagesAnnotatorDataExporters014`. Шість із них є власне API і лежать у корені директорії:
 
 | Заголовок | Оголошує |
 |---|---|
@@ -29,12 +29,12 @@
 | [contexts/Dxxwjz3pExportContext.h](/src/lib/facade/public/contexts/Dxxwjz3pExportContext.h) | `IADataExportersContext` розкладки тренувального проекту dxxwjz3p від darknetxx |
 | [contexts/PyTorchExportContext.h](/src/lib/facade/public/contexts/PyTorchExportContext.h) | `IADataExportersContext` розкладки PyTorch Vision разом із її обрізачем зображень |
 
-Кожен із тих тринадцяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataExporters-0.13/`, тож звичайне `#include "IADataExportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх тринадцяти через `IADataExportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
+Кожен із тих тринадцяти дістається шістьох вище через підключення з `../`, і саме це лишає їх розв'язними після встановлення: коренем підключення споживача є директорія, яка містить `ImagesAnnotatorDataExporters-0.14/`, тож звичайне `#include "IADataExportersContext.h"` зсередини `contexts/` шукало б його у тому корені й не знайшло б. Споживача це не стосується: він дістається всіх тринадцяти через `IADataExportersFacade.h`, який їх підключає, і лише проект, що виписує заголовок розкладки напряму, називає складову `contexts/` сам.
 
-[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataExporters-0.13/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
+[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) встановлює директорію цілком під `include/${PROJECT_LIBRARY_NAME}`, що для поточної назви і версії дає `include/ImagesAnnotatorDataExporters-0.14/`. І ту піддиректорію, і звичайний корінь підключення експортує ціль бібліотеки, тож споживач може писати будь-яку з двох форм:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>  // рекомендована
+#include <ImagesAnnotatorDataExporters-0.14/IADataExportersFacade.h>  // рекомендована
 #include <IADataExportersFacade.h>                                    // теж працює
 ```
 
@@ -50,16 +50,16 @@
 
 ### Встановлюваний CMake-пакунок
 
-Разом із бінарником і заголовками збірка встановлює CMake-пакунок, згенерований [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) із [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in). Він потрапляє до `<libdir>/cmake/ImagesAnnotatorDataExporters-0.13/` і складається з трьох файлів: експортовані цілі, `ImagesAnnotatorDataExporters-0.13ConfigVersion.cmake`, записаний `write_basic_package_version_file()` із сумісністю `SameMajorVersion`, та `ImagesAnnotatorDataExporters-0.13Config.cmake`, який виконує `find_dependency()` пакунка драйверів даних перед підключенням цілей - публічні заголовки називають його типи записів, тож його треба розвʼязати першим.
+Разом із бінарником і заголовками збірка встановлює CMake-пакунок, згенерований [src/lib/cmake/lib-cmake-module-gen.cmake](/src/lib/cmake/lib-cmake-module-gen.cmake) із [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in). Він потрапляє до `<libdir>/cmake/ImagesAnnotatorDataExporters-0.14/` і складається з трьох файлів: експортовані цілі, `ImagesAnnotatorDataExporters-0.14ConfigVersion.cmake`, записаний `write_basic_package_version_file()` із сумісністю `SameMajorVersion`, та `ImagesAnnotatorDataExporters-0.14Config.cmake`, який виконує `find_dependency()` пакунка драйверів даних перед підключенням цілей - публічні заголовки називають його типи записів, тож його треба розвʼязати першим.
 
 Тому проекту нижче за течією не потрібно нічого більшого за:
 
 ```cmake
-find_package(ImagesAnnotatorDataExporters-0.13 0.13 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.14 0.14 REQUIRED)
 
 target_link_libraries(
   your_target
-  PRIVATE ImagesAnnotatorDataExporters-0.13::ImagesAnnotatorDataExporters-0.13
+  PRIVATE ImagesAnnotatorDataExporters-0.14::ImagesAnnotatorDataExporters-0.14
 )
 ```
 

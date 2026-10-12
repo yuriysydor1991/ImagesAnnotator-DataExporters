@@ -33,7 +33,7 @@ TEST(UTEST_Dxxwjz3NetworkWriter, writes_the_document_of_the_network_to_train)
       "{\n"
       "  \"format\": \"dxxwjz3\",\n"
       "  \"version\": 3,\n"
-      "  \"generator\": \"ImagesAnnotatorDataExporters-0.13 0.13.0\",\n"
+      "  \"generator\": \"ImagesAnnotatorDataExporters-0.14 0.14.0\",\n"
       "  \"network\": {\"net\": {\"batch\": 64, \"hue\": 0.1}, \"layers\": [\n"
       "    {\"type\": \"convolutional\", \"options\": {\"filters\": 32, "
       "\"activation\": \"mish\"}},\n"

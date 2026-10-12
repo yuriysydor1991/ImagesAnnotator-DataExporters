@@ -56,7 +56,7 @@ namespace iannotator::exporters
  * {
  *   "format": "dxxwjz3",
  *   "version": 3,
- *   "generator": "ImagesAnnotatorDataExporters-0.13 0.13.0",
+ *   "generator": "ImagesAnnotatorDataExporters-0.14 0.14.0",
  *   "network": {"net": {"batch": 64, "hue": 0.1}, "layers": [
  *     {"type": "convolutional", "options": {"filters": 32, "size": 3}},
  *     {"type": "yolo", "options": {"mask": [0,1,2], "classes": 2}}

@@ -1,6 +1,6 @@
 # Project structure
 
-The repository builds a single shared library - `libImagesAnnotatorDataExporters-0.12.so` - that turns an ImagesAnnotator annotations database into a training dataset on disk. There is no executable: apart from the library itself the build only produces test binaries.
+The repository builds a single shared library - `libImagesAnnotatorDataExporters-0.13.so` - that turns an ImagesAnnotator annotations database into a training dataset on disk. There is no executable: apart from the library itself the build only produces test binaries.
 
 The exporters were moved out of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application (its `src/annotator-business/exporters` component), so that the application and any other tool may produce the same datasets without duplicating the code. The annotation records themselves are not defined here: they are read through the [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which had earlier taken the annotations database out of that same application.
 
@@ -8,7 +8,7 @@ The top level layout:
 
 | Path | Contents |
 |---|---|
-| [src/lib/facade/public](/src/lib/facade/public) | the installable public headers - the whole `ImagesAnnotatorDataExporters012` interface |
+| [src/lib/facade/public](/src/lib/facade/public) | the installable public headers - the whole `ImagesAnnotatorDataExporters013` interface |
 | [src/lib/facade/IADataExportersFacade.cpp](/src/lib/facade/IADataExportersFacade.cpp) | the facade implementation, the entry point of the library |
 | [src/lib/libmain](/src/lib/libmain) | `LibMain.cpp` and `LibFactory.cpp` - the implementation core |
 | [src/lib/cmake](/src/lib/cmake) | generation of the installable CMake package of the library |
@@ -22,7 +22,7 @@ The top level layout:
 | [doc](/doc) | this documentation and the project diagrams |
 | [misc](/misc) | the Jenkins pipeline and the Docker files |
 
-The implementation lives in the `iade0impl`, `iannotator::exporters`, `iannotator::exporters::helpers` and `iannotator::exporters::curli` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataExporters012` (an `iade` alias is recommended).
+The implementation lives in the `iade0impl`, `iannotator::exporters`, `iannotator::exporters::helpers` and `iannotator::exporters::curli` namespaces. None of them is installed - a consuming project only ever sees `ImagesAnnotatorDataExporters013` (an `iade` alias is recommended).
 
 1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
 1. [Where the exporters implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)

@@ -43,12 +43,12 @@ namespace iade0impl
  * the layout named by the given context and drives it over the database that
  * very same context points at.
  */
-class LibMain : public ImagesAnnotatorDataExporters012::IADataExportersLib
+class LibMain : public ImagesAnnotatorDataExporters013::IADataExportersLib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
   using IADataExportersContextPtr =
-      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
+      ImagesAnnotatorDataExporters013::IADataExportersContextPtr;
 
   virtual ~LibMain() = default;
   LibMain();

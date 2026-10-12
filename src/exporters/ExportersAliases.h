@@ -28,9 +28,9 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTERSALIASES_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_EXPORTERSALIASES_H
 
-#include <ImagesAnnotatorDataDrivers-0.12/IImagesPathsDBProvider.h>
-#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
-#include <ImagesAnnotatorDataDrivers-0.12/ImageRecordRect.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IImagesPathsDBProvider.h>
+#include <ImagesAnnotatorDataDrivers-0.13/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.13/ImageRecordRect.h>
 
 #include "IADataExportersContext.h"
 #include "IExporter.h"
@@ -44,7 +44,7 @@
  * This is the implementation side of the library: the namespace name is the
  * one the code carried inside the ImagesAnnotator application it was moved
  * out of. Nothing declared under it is installed - a consuming project only
- * ever sees the ImagesAnnotatorDataExporters012 interfaces.
+ * ever sees the ImagesAnnotatorDataExporters013 interfaces.
  */
 namespace iannotator::exporters
 {
@@ -54,22 +54,22 @@ namespace iannotator::exporters
  * names into the implementation namespace, so that the moved exporters code
  * keeps referring to them unqualified the way it did inside the application.
  */
-using ImagesAnnotatorDataExporters012::IADataExportersContext;
-using ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
-using ImagesAnnotatorDataExporters012::IExporter;
-using ImagesAnnotatorDataExporters012::IExporterPtr;
-using ImagesAnnotatorDataExporters012::IImageCropperFacility;
-using ImagesAnnotatorDataExporters012::IImageCropperFacilityPtr;
-using ImagesAnnotatorDataExporters012::PyTorchExportContext;
+using ImagesAnnotatorDataExporters013::IADataExportersContext;
+using ImagesAnnotatorDataExporters013::IADataExportersContextPtr;
+using ImagesAnnotatorDataExporters013::IExporter;
+using ImagesAnnotatorDataExporters013::IExporterPtr;
+using ImagesAnnotatorDataExporters013::IImageCropperFacility;
+using ImagesAnnotatorDataExporters013::IImageCropperFacilityPtr;
+using ImagesAnnotatorDataExporters013::PyTorchExportContext;
 
-using ImagesAnnotatorDataDrivers012::IImagesPathsDBProvider;
-using ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr;
-using ImagesAnnotatorDataDrivers012::ImageRecord;
-using ImagesAnnotatorDataDrivers012::ImageRecordPtr;
-using ImagesAnnotatorDataDrivers012::ImageRecordRect;
-using ImagesAnnotatorDataDrivers012::ImageRecordRectPtr;
-using ImagesAnnotatorDataDrivers012::ImageRecordRectSet;
-using ImagesAnnotatorDataDrivers012::ImageRecordsSet;
+using ImagesAnnotatorDataDrivers013::IImagesPathsDBProvider;
+using ImagesAnnotatorDataDrivers013::IImagesPathsDBProviderPtr;
+using ImagesAnnotatorDataDrivers013::ImageRecord;
+using ImagesAnnotatorDataDrivers013::ImageRecordPtr;
+using ImagesAnnotatorDataDrivers013::ImageRecordRect;
+using ImagesAnnotatorDataDrivers013::ImageRecordRectPtr;
+using ImagesAnnotatorDataDrivers013::ImageRecordRectSet;
+using ImagesAnnotatorDataDrivers013::ImageRecordsSet;
 
 }  // namespace iannotator::exporters
 

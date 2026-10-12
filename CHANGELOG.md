@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.13.0] - 2026-10-12
 
 ### Added
 
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **The installable names carry the `0.13` pair**, which every consumer of this library has to follow: the public namespace is `ImagesAnnotatorDataExporters013`, the headers install into `<prefix>/include/ImagesAnnotatorDataExporters-0.13/`, the binary is `libImagesAnnotatorDataExporters-0.13.so.0.13.0` and the CMake package a consumer resolves is `find_package(ImagesAnnotatorDataExporters-0.13 0.13 REQUIRED CONFIG)`. The data drivers dependency is followed to the 0.13 names of its own 0.13.0 release at the same time: `find_package(ImagesAnnotatorDataDrivers-0.13 REQUIRED CONFIG)`, the `<ImagesAnnotatorDataDrivers-0.13/...>` includes and the `ImagesAnnotatorDataDrivers013` namespace. A 0.12 installation stays on the disk beside the new one instead of being overwritten by it, so a consumer built against the previous names keeps building until it is repointed.
 - **The library depends on the [zlib](https://zlib.net/)**, made available by the new `template-project-zlib-enabler` and linked `PRIVATE` by the `template-project-zlib-linker` module the way the libcurl is: the system wide zlib is probed first, its `v1.3.1` sources are fetched for none, and `ENABLE_ZLIB=OFF` stops the configure. Install the `zlib1g-dev` package (Debian, Ubuntu) to keep the configure offline; the Jenkins pipeline image installs it. See the new [Enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 - The `Yolo42FolderExporter` keeps the class names of the export and the text of the network descriptor it writes into `cfg/yolov4-obj.cfg` as protected members, for the darknetxx exporter to reuse; what it writes is unchanged.
 - The `Yolov4CfgWriter` takes the command line the comment head of the descriptor tells to train the network with as an optional fourth constructor parameter, the darknet `darknet detector train data/obj.data cfg/yolov4-obj.cfg yolov4.conv.137 -map` one by default, so the descriptor of the YOLO v4 export is unchanged while the darknetxx projects name their own.

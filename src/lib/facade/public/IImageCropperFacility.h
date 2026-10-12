@@ -28,15 +28,15 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.12/ImageRecord.h>
-#include <ImagesAnnotatorDataDrivers-0.12/ImageRecordRect.h>
+#include <ImagesAnnotatorDataDrivers-0.13/ImageRecord.h>
+#include <ImagesAnnotatorDataDrivers-0.13/ImageRecordRect.h>
 
 #include <memory>
 #include <string>
 
 #include "ExportersAPI.h"
 
-namespace ImagesAnnotatorDataExporters012
+namespace ImagesAnnotatorDataExporters013
 {
 
 /**
@@ -54,8 +54,8 @@ class IADE_API IImageCropperFacility
  public:
   using IImageCropperFacilityPtr = std::shared_ptr<IImageCropperFacility>;
 
-  using ImageRecordPtr = ImagesAnnotatorDataDrivers012::ImageRecordPtr;
-  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers012::ImageRecordRectPtr;
+  using ImageRecordPtr = ImagesAnnotatorDataDrivers013::ImageRecordPtr;
+  using ImageRecordRectPtr = ImagesAnnotatorDataDrivers013::ImageRecordRectPtr;
 
   virtual ~IImageCropperFacility() = default;
   IImageCropperFacility() = default;
@@ -86,6 +86,6 @@ class IADE_API IImageCropperFacility
 using IImageCropperFacilityPtr =
     IImageCropperFacility::IImageCropperFacilityPtr;
 
-}  // namespace ImagesAnnotatorDataExporters012
+}  // namespace ImagesAnnotatorDataExporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IIMAGECROPPERFACILITY_ABSTRACT_CLASS_H

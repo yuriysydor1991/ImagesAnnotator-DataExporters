@@ -36,7 +36,7 @@ TEST(UTEST_Dxxwjz2NetworkWriter, writes_the_document_of_the_network_to_train)
       "{\n"
       "  \"format\": \"dxxwjz2\",\n"
       "  \"version\": 2,\n"
-      "  \"generator\": \"ImagesAnnotatorDataExporters-0.12 0.12.0\",\n"
+      "  \"generator\": \"ImagesAnnotatorDataExporters-0.13 0.13.0\",\n"
       "  \"network\": {\"cfg\": \"[net]\\nbatch=64\\n\", \"classes\": [\n"
       "    {\"index\": 0, \"name\": \"cat\"},\n"
       "    {\"index\": 1, \"name\": \"dog\"}\n"
@@ -73,7 +73,7 @@ TEST(UTEST_Dxxwjz2NetworkWriter, numbers_the_classes_in_their_given_order)
 TEST(UTEST_Dxxwjz2NetworkWriter, writes_the_generator_of_this_library)
 {
   EXPECT_EQ(Dxxwjz2NetworkWriter::generator(),
-            "ImagesAnnotatorDataExporters-0.12 0.12.0");
+            "ImagesAnnotatorDataExporters-0.13 0.13.0");
 }
 
 TEST(UTEST_Dxxwjz2NetworkWriter, quotes_the_names_written_into_the_document)

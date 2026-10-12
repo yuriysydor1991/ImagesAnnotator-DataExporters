@@ -1,6 +1,6 @@
 # Using the library in your project
 
-The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataExporters-0.12.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
+The library is meant to be consumed by other projects: it produces no executable of its own, only the `libImagesAnnotatorDataExporters-0.13.so` shared object with its installable headers and a CMake package. This section describes what a downstream project has to do to build against it.
 
 ## What has to be installed first
 
@@ -12,9 +12,9 @@ Two things have to be installed before a consumer may be configured:
 The install puts the following into the chosen prefix:
 
 ```
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/     the public headers
-<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so    the shared object, soname .so.0
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/   the CMake package files
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/     the public headers
+<prefix>/lib/libImagesAnnotatorDataExporters-0.13.so    the shared object, soname .so.0
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.13/   the CMake package files
 ```
 
 ## Finding the package with CMake
@@ -27,17 +27,17 @@ project(MyExportingTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.12 0.12 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.13 0.13 REQUIRED)
 
 add_executable(my-exporting-tool main.cpp)
 
 target_link_libraries(
   my-exporting-tool
-  PRIVATE ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12
+  PRIVATE ImagesAnnotatorDataExporters-0.13::ImagesAnnotatorDataExporters-0.13
 )
 ```
 
-Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataExporters-0.12ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
+Both the package name and the imported target carry the library major and minor version, so a future release may be installed side by side with this one. The version request is matched against the installed `ImagesAnnotatorDataExporters-0.13ConfigVersion.cmake` file with the `SameMajorVersion` compatibility rule.
 
 The installed package configuration file, generated from [src/lib/cmake/ExportersLibraryConfig.cmake.in](/src/lib/cmake/ExportersLibraryConfig.cmake.in), calls `find_dependency()` on the data drivers package before it reads the exported targets. The data drivers library is linked `PUBLIC` because the installable headers of this library name its record types, so linking the target above brings the data drivers include path and shared object along with it. A separate `find_package()` for the data drivers is not needed in a consumer, although calling one does no harm.
 
@@ -58,7 +58,7 @@ The very same variable is what this library itself needs at its own configure ti
 Two include roots are exported, so both spellings compile:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>  // recommended
+#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>  // recommended
 #include <IADataExportersFacade.h>                                    // also works
 ```
 
@@ -71,13 +71,13 @@ Prefer the prefixed one. Header names such as `IExporter.h` and `ExportersAPI.h`
 The interface namespaces of both libraries carry their major and minor version numbers. Alias them once and the version bump stays a one line change:
 
 ```cpp
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iade = ImagesAnnotatorDataExporters013;
 ```
 
 ## What your project has to supply
 
-- **The database.** `IADataExportersContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::IADataDriversFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
+- **The database.** `IADataExportersContext::set_db_provider()` takes an `ImagesAnnotatorDataDrivers013::IImagesPathsDBProviderPtr`. Usually it comes from `iadd::IADataDriversFacade::open_annotations_db("project.json")`, but any implementation of that interface will do - records assembled in memory work just as well.
 - **The destination directory.** The YOLO v4, the four darknetxx, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exports create their own. For the plain text and the PyTorch Vision layouts the `export_path` directory has to exist before the export is started.
 - **An image cropper, for one layout only.** `PyTorchExportContext` cuts the annotated rectangles out of the pictures, and the library decodes no image format itself. Implement `IImageCropperFacility` over the imaging stack your project already links and pass the instance in through `PyTorchExportContext::set_cropper()`. Without it that export fails immediately. The [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md) subsection carries an implementation sketch. The twelve other layouts need no cropper at all.
 
@@ -86,15 +86,15 @@ namespace iade = ImagesAnnotatorDataExporters012;
 The `main.cpp` below opens a project file and writes it out through the single shot `IADataExportersLib::perform_export` entry point:
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iade = ImagesAnnotatorDataExporters013;
 
 int main()
 {

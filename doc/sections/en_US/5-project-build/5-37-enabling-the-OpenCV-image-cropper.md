@@ -37,7 +37,7 @@ So an existing consumer sees no change at all, and a new one may simply leave th
 `IADataExportersFacade::create_image_cropper()` hands out the same cropper, or a `nullptr` in a build without OpenCV. It is the way to find out whether a build has one:
 
 ```cpp
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iade = ImagesAnnotatorDataExporters013;
 
 auto ctx = iade::IADataExportersFacade::create_pytorch_library_context();
 ctx->set_export_path("/tmp/pytorch-dataset");

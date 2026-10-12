@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters012
+namespace ImagesAnnotatorDataExporters013
 {
 
 /**
@@ -66,6 +66,6 @@ class IADE_API CreateMLExportContext : public IADataExportersContext
 using CreateMLExportContextPtr =
     CreateMLExportContext::CreateMLExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters012
+}  // namespace ImagesAnnotatorDataExporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_CREATEMLEXPORTCONTEXT_CLASS_H

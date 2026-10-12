@@ -63,7 +63,7 @@
 namespace iade0impl
 {
 
-using namespace ImagesAnnotatorDataExporters012;
+using namespace ImagesAnnotatorDataExporters013;
 
 LibFactory::IADataExportersLibPtr LibFactory::create_default_lib()
 {

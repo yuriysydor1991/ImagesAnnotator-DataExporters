@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters012
+namespace ImagesAnnotatorDataExporters013
 {
 
 /**
@@ -63,6 +63,6 @@ class IADE_API UltralyticsSegmentExportContext : public IADataExportersContext
 using UltralyticsSegmentExportContextPtr =
     UltralyticsSegmentExportContext::UltralyticsSegmentExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters012
+}  // namespace ImagesAnnotatorDataExporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_ULTRALYTICSSEGMENTEXPORTCONTEXT_CLASS_H

@@ -32,7 +32,7 @@
 - **Вебзображення попередньо звантажуються** - запис, який вказує на вебсторінку, звантажується за допомогою [libcurl](https://curl.se/libcurl/) у тимчасовий кеш попереднього завантаження ще до того як експорт його торкнеться, тож проект, що змішує локальні й віддалені зображення, експортується як одне ціле.
 - **Стійкість до неповної бази даних** - запис без прямокутників, із нульовим розміром чи з непридатним до читання файлом зображення потрапляє до журналу і пропускається, а сам прохід експорту триває далі.
 - **Жодного власного кодека зображень** - бібліотека копіює файли зображень як є. Єдиний формат, який має вирізати прямокутники, просить проект-споживач зробити це через інтерфейс `IImageCropperFacility`, за допомогою тих засобів роботи із зображеннями, які той проект уже лінкує.
-- **Версійований встановлюваний інтерфейс** - простір імен, бінарник, директорія заголовків і CMake-пакунок усі несуть пару мажорної й мінорної версій `0.12`, тож два мінорні випуски встановлюються паралельно.
+- **Версійований встановлюваний інтерфейс** - простір імен, бінарник, директорія заголовків і CMake-пакунок усі несуть пару мажорної й мінорної версій `0.13`, тож два мінорні випуски встановлюються паралельно.
 
 # Приклад використання
 
@@ -45,22 +45,22 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.12 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.13 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12)
+target_link_libraries(mytool ImagesAnnotatorDataExporters-0.13::ImagesAnnotatorDataExporters-0.13)
 ```
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iade = ImagesAnnotatorDataExporters013;
 
 int main(int argc, char** argv)
 {
@@ -90,9 +90,9 @@ int main(int argc, char** argv)
 }
 ```
 
-Імʼя простору імен `ImagesAnnotatorDataExporters012` навмисно несе номери мажорної й мінорної версій бібліотеки: дві версії бібліотеки можуть співіснувати всередині однієї одиниці трансляції без жодного зіткнення символів. Признач йому скорочення, як показано вище, і підняття версії залишиться зміною в один рядок на твоєму боці.
+Імʼя простору імен `ImagesAnnotatorDataExporters013` навмисно несе номери мажорної й мінорної версій бібліотеки: дві версії бібліотеки можуть співіснувати всередині однієї одиниці трансляції без жодного зіткнення символів. Признач йому скорочення, як показано вище, і підняття версії залишиться зміною в один рядок на твоєму боці.
 
-Для встановленого споживача працюють обидва написання - і `#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>`, і просте `#include <IADataExportersFacade.h>`, оскільки бібліотека експортує корінь підключення разом зі своєю версійованою субдиректорією. Рекомендованим є написання з префіксом: `IExporter.h` і `ExportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
+Для встановленого споживача працюють обидва написання - і `#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>`, і просте `#include <IADataExportersFacade.h>`, оскільки бібліотека експортує корінь підключення разом зі своєю версійованою субдиректорією. Рекомендованим є написання з префіксом: `IExporter.h` і `ExportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
 
 Більше про API і про згенеровані набори даних - у секціях документації [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md), [розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md) і [використання бібліотеки у власному проекті](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md).
 
@@ -110,7 +110,7 @@ libcurl спершу шукається у системі, і коли її не
 
 zlib шукається і завантажується так само і так само лінкується **приватно**. Бібліотека звертається до неї через `ZlibController` з [src/zlib](/src/zlib), компонент контролера zlib з гілки `appZlib` [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) в адаптації, яку зробив з нього darknetxx - див. секцію [вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md).
 
-Бібліотека драйверів даних відрізняється. Вона має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.12 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
+Бібліотека драйверів даних відрізняється. Вона має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.13 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
 
 Компонент журналювання компілюється прямо у спільну бібліотеку, тож споживач не має надавати жодної реалізації журналювання.
 

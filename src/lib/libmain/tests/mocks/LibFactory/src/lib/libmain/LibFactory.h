@@ -25,18 +25,18 @@ class LibFactorySynthParent
 {
  public:
   using IADataExportersLibPtr =
-      ImagesAnnotatorDataExporters012::IADataExportersLibPtr;
+      ImagesAnnotatorDataExporters013::IADataExportersLibPtr;
   using IADataExportersContextPtr =
-      ImagesAnnotatorDataExporters012::IADataExportersContextPtr;
+      ImagesAnnotatorDataExporters013::IADataExportersContextPtr;
   using IADataExportersContext =
-      ImagesAnnotatorDataExporters012::IADataExportersContext;
+      ImagesAnnotatorDataExporters013::IADataExportersContext;
   using PlainTxtExportContextPtr =
-      ImagesAnnotatorDataExporters012::PlainTxtExportContextPtr;
+      ImagesAnnotatorDataExporters013::PlainTxtExportContextPtr;
   using Yolo4ExportContextPtr =
-      ImagesAnnotatorDataExporters012::Yolo4ExportContextPtr;
+      ImagesAnnotatorDataExporters013::Yolo4ExportContextPtr;
   using PyTorchExportContextPtr =
-      ImagesAnnotatorDataExporters012::PyTorchExportContextPtr;
-  using IExporterPtr = ImagesAnnotatorDataExporters012::IExporterPtr;
+      ImagesAnnotatorDataExporters013::PyTorchExportContextPtr;
+  using IExporterPtr = ImagesAnnotatorDataExporters013::IExporterPtr;
 
   virtual ~LibFactorySynthParent() = default;
   LibFactorySynthParent() = default;

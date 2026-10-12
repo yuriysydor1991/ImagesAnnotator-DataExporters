@@ -34,7 +34,7 @@
 #include "../IADataExportersContext.h"
 #include "../IImageCropperFacility.h"
 
-namespace ImagesAnnotatorDataExporters012
+namespace ImagesAnnotatorDataExporters013
 {
 
 /**
@@ -65,6 +65,6 @@ class IADE_API PyTorchExportContext : public IADataExportersContext
 
 using PyTorchExportContextPtr = PyTorchExportContext::PyTorchExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters012
+}  // namespace ImagesAnnotatorDataExporters013
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PYTORCHEXPORTCONTEXT_CLASS_H

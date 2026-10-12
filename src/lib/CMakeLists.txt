@@ -15,7 +15,7 @@ target_include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/facade/public>
     # Both the plain include root and the versioned sub-directory are exported,
     # so a consumer may write either
-    #   #include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>  (recommended)
+    #   #include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>  (recommended)
     # or the short
     #   #include <IADataExportersFacade.h>
     # The prefixed form is the safe one: header names such as IExporter.h are

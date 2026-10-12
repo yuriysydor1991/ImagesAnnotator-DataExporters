@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is `0.12.0` the package name may look like `ImagesAnnotatorDataExporters-0.12.0-amd64.pkg` (the actual architecture suffix depends on the build host).
+The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is `0.13.0` the package name may look like `ImagesAnnotatorDataExporters-0.13.0-amd64.pkg` (the actual architecture suffix depends on the build host).
 
 In order to examine details of the FreeBSD `pkg` package configuration visit the [cmake/enablers/packagers/template-project-freebsd-pkg-enabler.cmake](/cmake/enablers/packagers/template-project-freebsd-pkg-enabler.cmake) file.
 

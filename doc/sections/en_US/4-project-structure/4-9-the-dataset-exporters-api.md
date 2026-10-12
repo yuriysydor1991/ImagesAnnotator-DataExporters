@@ -1,14 +1,14 @@
 ## The dataset exporters API
 
-The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataExporters-0.12` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
+The whole interface of the library is declared by the header files under [src/lib/facade/public](/src/lib/facade/public) and gets installed into the `include/ImagesAnnotatorDataExporters-0.13` sub-directory of the chosen install prefix. Nothing else leaves the shared object: every implementation class stays behind the abstract interfaces described here.
 
-All the installable declarations live in the `ImagesAnnotatorDataExporters012` namespace. The name carries the library major and minor version numbers (`0.12` gives the `012` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
+All the installable declarations live in the `ImagesAnnotatorDataExporters013` namespace. The name carries the library major and minor version numbers (`0.13` gives the `013` suffix) so that two library versions may coexist in a single translation unit. Alias it once in your own code:
 
 ```cpp
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iade = ImagesAnnotatorDataExporters013;
 ```
 
-The records the exporters read are not defined here. They come from the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, whose interface namespace is `ImagesAnnotatorDataDrivers012` (aliased below as `iadd`). See the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection for the build side of that dependency.
+The records the exporters read are not defined here. They come from the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, whose interface namespace is `ImagesAnnotatorDataDrivers013` (aliased below as `iadd`). See the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection for the build side of that dependency.
 
 ### The installable header files
 
@@ -77,10 +77,10 @@ The data it carries is private and reached through accessors only. Every getter 
 | Accessors | Direction | Meaning |
 | --- | --- | --- |
 | `get_export_path()`, `set_export_path()` | in | the destination directory of the export, a `std::string`, mandatory |
-| `get_db_provider()`, `set_db_provider()` | in | the annotations database to read the records out of, an `ImagesAnnotatorDataDrivers012::IImagesPathsDBProviderPtr`, mandatory |
+| `get_db_provider()`, `set_db_provider()` | in | the annotations database to read the records out of, an `ImagesAnnotatorDataDrivers013::IImagesPathsDBProviderPtr`, mandatory |
 | `get_exporter()`, `set_exporter()` | out | the exporter instance the last `perform_export` ran, an `IExporterPtr` |
 
-`IADataExportersContextPtr` is the `std::shared_ptr<IADataExportersContext>` alias. An `ImagesAnnotatorDataDrivers012::IAnnotationsDBPtr` may be handed to `set_db_provider()` directly, since `IAnnotationsDB` derives from `IImagesPathsDBProvider`.
+`IADataExportersContextPtr` is the `std::shared_ptr<IADataExportersContext>` alias. An `ImagesAnnotatorDataDrivers013::IAnnotationsDBPtr` may be handed to `set_db_provider()` directly, since `IAnnotationsDB` derives from `IImagesPathsDBProvider`.
 
 ### PyTorchExportContext
 
@@ -123,7 +123,7 @@ A library built with OpenCV ships an implementation of its own, so this interfac
 
 `clone()` has to produce a copy sharing no mutable decoding state with the original. The exporters shipped today only ever call `crop_out_2_fs()`, but the method is a part of the interface and has to be implemented.
 
-`ImageRecordPtr` and `ImageRecordRectPtr` are the `ImagesAnnotatorDataDrivers012` record pointers.
+`ImageRecordPtr` and `ImageRecordRectPtr` are the `ImagesAnnotatorDataDrivers013` record pointers.
 
 ### IADataExportersLib
 
@@ -159,15 +159,15 @@ A class of static factory methods only, and the only entry point a consuming pro
 The program below opens an ImagesAnnotator project file through the data drivers library and writes it out as a YOLO v4 training directory. See the [Using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) section for the CMake side of it.
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.12/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.13/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers012;
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iadd = ImagesAnnotatorDataDrivers013;
+namespace iade = ImagesAnnotatorDataExporters013;
 
 int main(int argc, char** argv)
 {
@@ -216,12 +216,12 @@ The `std::filesystem::create_directories` call is there because only the YOLO v4
 `PyTorchExportContext` is the only layout that needs a cropper. The sketch below wires one up over the imaging routines the consuming project already has - substitute your own decoding and encoding calls for the `my_imaging` ones:
 
 ```cpp
-#include <ImagesAnnotatorDataExporters-0.12/IImageCropperFacility.h>
+#include <ImagesAnnotatorDataExporters-0.13/IImageCropperFacility.h>
 
 #include <memory>
 #include <string>
 
-namespace iade = ImagesAnnotatorDataExporters012;
+namespace iade = ImagesAnnotatorDataExporters013;
 
 class MyCropper : public iade::IImageCropperFacility
 {

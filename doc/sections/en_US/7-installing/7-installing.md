@@ -51,52 +51,52 @@ sudo cmake --install . --prefix "/usr"
 
 ## What gets installed
 
-For the default `ImagesAnnotatorDataExporters-0.12` library name a prefix receives
+For the default `ImagesAnnotatorDataExporters-0.13` library name a prefix receives
 exactly the following files:
 
 ```
-<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so.0.12.0
-<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so.0
-<prefix>/lib/libImagesAnnotatorDataExporters-0.12.so
+<prefix>/lib/libImagesAnnotatorDataExporters-0.13.so.0.13.0
+<prefix>/lib/libImagesAnnotatorDataExporters-0.13.so.0
+<prefix>/lib/libImagesAnnotatorDataExporters-0.13.so
 
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/ExportersAPI.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/IExporter.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/IImageCropperFacility.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/IADataExportersLib.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/IADataExportersContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/IADataExportersFacade.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/CocoExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/CreateMLExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz2ExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz2pExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz3ExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Dxxwjz3pExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PascalVocExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PlainTxtExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/PyTorchExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/UltralyticsDetectExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/UltralyticsObbExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/UltralyticsSegmentExportContext.h
-<prefix>/include/ImagesAnnotatorDataExporters-0.12/contexts/Yolo4ExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/ExportersAPI.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/IExporter.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/IImageCropperFacility.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/IADataExportersLib.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/IADataExportersContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/IADataExportersFacade.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/CocoExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/CreateMLExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/Dxxwjz2ExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/Dxxwjz2pExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/Dxxwjz3ExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/Dxxwjz3pExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/PascalVocExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/PlainTxtExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/PyTorchExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/UltralyticsDetectExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/UltralyticsObbExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/UltralyticsSegmentExportContext.h
+<prefix>/include/ImagesAnnotatorDataExporters-0.13/contexts/Yolo4ExportContext.h
 
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/ImagesAnnotatorDataExporters-0.12Config.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/ImagesAnnotatorDataExporters-0.12ConfigVersion.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/ImagesAnnotatorDataExporters-0.12Targets.cmake
-<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.12/ImagesAnnotatorDataExporters-0.12Targets-<config>.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.13/ImagesAnnotatorDataExporters-0.13Config.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.13/ImagesAnnotatorDataExporters-0.13ConfigVersion.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.13/ImagesAnnotatorDataExporters-0.13Targets.cmake
+<prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.13/ImagesAnnotatorDataExporters-0.13Targets-<config>.cmake
 ```
 
-The `.so.0.12.0` file is the library itself, `.so.0` is the `SONAME` link the
+The `.so.0.13.0` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
 compiler follows. The headers are the nineteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
 [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md).
 
 The four CMake files form the package that answers
-`find_package(ImagesAnnotatorDataExporters-0.12 0.12 REQUIRED)`. The `Config` one
-pulls the public `ImagesAnnotatorDataDrivers-0.12` dependency in before including
+`find_package(ImagesAnnotatorDataExporters-0.13 0.13 REQUIRED)`. The `Config` one
+pulls the public `ImagesAnnotatorDataDrivers-0.13` dependency in before including
 the exported targets, the `ConfigVersion` one makes the version request
 succeed, and the `Targets` pair defines the
-`ImagesAnnotatorDataExporters-0.12::ImagesAnnotatorDataExporters-0.12` imported
+`ImagesAnnotatorDataExporters-0.13::ImagesAnnotatorDataExporters-0.13` imported
 target. The `<config>` part of the last file name follows the build type, and
 is `noconfig` when no `CMAKE_BUILD_TYPE` was set.
 
@@ -108,7 +108,7 @@ all four path segments above change together if the name is customised, see
 ## Install components
 
 The installed files are split into two components. `Runtime` holds what a
-program needs to run, that is the `.so.0.12.0` file and its `SONAME` link.
+program needs to run, that is the `.so.0.13.0` file and its `SONAME` link.
 `Development` holds what a project needs to build against the library, that is
 the bare `.so` link, the headers and the CMake package files. Either one may be
 installed alone:
@@ -122,7 +122,7 @@ cmake --install . --component Development
 
 ## Using the installed library
 
-The library keeps the `ImagesAnnotatorDataDrivers-0.12` dependency public, so both
+The library keeps the `ImagesAnnotatorDataDrivers-0.13` dependency public, so both
 packages must be visible to the consuming project. Pass their prefixes through
 `CMAKE_PREFIX_PATH`:
 

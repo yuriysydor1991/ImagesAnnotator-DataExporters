@@ -12,26 +12,56 @@
 
 💵 Підтримай проект за посиланням [http://kytok.org.ua/page/pozertvy](http://kytok.org.ua/page/pozertvy)
 
+# Розкладки наборів даних
+
+З однієї бази даних записуються тринадцять розкладок наборів даних, кожна з яких обирається створеним нащадком `IADataExportersContext` і реалізована окремим класом-експортером:
+
+## Звичайний текст
+
+- **Звичайний текст** (`PlainTxtExportContext`) - по одному файлу `<імʼя-анотації>.txt` на кожне імʼя анотації, де кожен рядок називає зображення і його прямокутники.
+
+## Darknet / YOLO v4 / darknetxx
+
+- **YOLO v4 (darknet)** (`Yolo4ExportContext`) - ціла тренувальна директорія darknet для детектора YOLO v4: `data/obj.names`, `data/obj.data`, опис `cfg/yolov4-obj.cfg` цілої 162-шарової мережі YOLO v4, записаний під класи проекту, скопійовані зображення з їхніми нормалізованими файлами міток `.txt`, переліки `train.txt` і `val.txt` та порожня `backup/`.
+
+- **darknetxx dxxwjz2** (`Dxxwjz2ExportContext`) - описана вище тренувальна директорія darknet для YOLO v4, яку `darknetxx-gui` з [darknetxx](https://github.com/yuriysydor1991/darknetxx) тренує як є, з мережею для тренування `cfg/yolov4-obj.dxxwjz2` поруч із її файлом cfg: стиснутим gzip JSON-документом darknetxx, що несе текст cfg та імена класів під тими індексами, якими їх нумерують файли міток, і не несе жодних ваг, - `darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2` тренує її з нуля без жодного іншого вказаного файлу.
+
+- **darknetxx dxxwjz3** (`Dxxwjz3ExportContext`) - та сама директорія з мережею для тренування `cfg/yolov4-obj.dxxwjz3` натомість: файлом dxxwjz3 з darknetxx, документом лише з даних JSON, що несе опції секцій cfg як значення JSON замість тексту cfg та імена класів як масив імен їхніх індексів, - тим самим файлом, який конвертер darknetxx створює з cfg та імен класів директорії, окрім generator.
+
+- **darknetxx dxxwjz2p project** (`Dxxwjz2pExportContext`) - тренувальний проект darknetxx: єдиний файл `yolov4-obj.dxxwjz2p` з мережею YOLO v4 проекту, іменами її класів та анотаціями зображень у структурі проекту ImagesAnnotator, поруч із директорією `images/` скопійованих зображень та порожньою `backup/`, який `darknetxx --train-cfg yolov4-obj.dxxwjz2p` і `darknetxx-train-gui` тренують з нуля, оновлюючи проект вагами.
+
+- **darknetxx dxxwjz3p project** (`Dxxwjz3pExportContext`) - той самий проект у файлі `yolov4-obj.dxxwjz3p`, мережа якого є мережею JSON файлу dxxwjz3.
+
+## Ultralytics YOLO
+
+- **Ultralytics YOLO - детекція** (`UltralyticsDetectExportContext`) - набір даних для детекції, який читає кожен випуск Ultralytics, розкладка, що її запровадив YOLO v5, а v8, v11 і наступні за ними зберегли: єдиний дескриптор `data.yaml` над директоріями `images/train` та `labels/train`, один рядок `клас центр-x центр-y ширина висота` на прямокутник.
+
+- **Ultralytics YOLO - орієнтовані обмежувальні рамки** (`UltralyticsObbExportContext`) - та сама директорія і той самий дескриптор для задачі орієнтованих обмежувальних рамок, один рядок `клас x1 y1 x2 y2 x3 y3 x4 y4` із чотирьох кутів рамки на прямокутник.
+
+- **Ultralytics YOLO - сегментація** (`UltralyticsSegmentExportContext`) - та сама директорія і той самий дескриптор для задачі сегментації екземплярів, один рядок-багатокутник `клас x1 y1 ... xn yn` на прямокутник.
+
+## COCO / Pascal VOC / Create ML
+
+- **COCO JSON** (`CocoExportContext`) - набір даних для детекції об'єктів COCO, який читають Detectron2, MMDetection, torchvision, трансформери детекції HuggingFace, CVAT, FiftyOne, Label Studio і Roboflow: скопійовані зображення і єдиний дескриптор `annotations/instances_default.json` над ними, що несе кожен прямокутник як пікселі `[x, y, ширина, висота]` того зображення, на якому його намалювали, замість нормалізованих чисел, яких вимагає кожна розкладка YOLO вище.
+
+- **Pascal VOC XML** (`PascalVocExportContext`) - набір даних Pascal VOC у формі директорій devkit, ті самі файли, які записує і читає [LabelImg](https://github.com/HumanSignal/labelImg), і те, що беруть `VOCDetection` з torchvision та `XMLDataset` з MMDetection: скопійовані зображення під `JPEGImages/`, по одному дескриптору `Annotations/<основа>.xml` на зображення над ними і переліки `ImageSets/Main`, що їх називають, де кожен прямокутник є двома кутовими точками, між якими його намалювали, а імʼя його класу записане як є, а не як індекс.
+
+- **Create ML JSON** (`CreateMLExportContext`) - набір даних для детекції об'єктів Create ML, шлях від проекту до детектора Core ML, що працює на iPhone: скопійовані зображення і єдиний дескриптор `annotations.json` поруч із ними в одній пласкій директорії, що є джерелом даних [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) з `MLObjectDetector` від Apple і тією самою текою, яку бере застосунок Create ML, коли її кидають до його тренувального лотка, де кожен прямокутник несе піксельний **центр** рамки поруч із її розміром - те саме ділення навпіл, яке виконує кожна розкладка YOLO вище, лише лишене в пікселях зображення замість нормалізованого.
+
+## Класифікація / PyTorch Vision
+
+- **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - класифікаційна розкладка, яку читає набір даних `ImageFolder` з PyTorch Vision: одна директорія на імʼя анотації, що містить зображення, обрізані до прямокутників із тим іменем.
+
 # Можливості
 
-- **Тринадцять розкладок наборів даних з однієї бази даних** - обираються створеним нащадком `IADataExportersContext` і реалізовані окремим класом-експортером кожна:
-  - **Звичайний текст** (`PlainTxtExportContext`) - по одному файлу `<імʼя-анотації>.txt` на кожне імʼя анотації, де кожен рядок називає зображення і його прямокутники;
-  - **YOLO v4 (darknet)** (`Yolo4ExportContext`) - ціла тренувальна директорія darknet для детектора YOLO v4: `data/obj.names`, `data/obj.data`, опис `cfg/yolov4-obj.cfg` цілої 162-шарової мережі YOLO v4, записаний під класи проекту, скопійовані зображення з їхніми нормалізованими файлами міток `.txt`, переліки `train.txt` і `val.txt` та порожня `backup/`;
-  - **Ultralytics YOLO - детекція** (`UltralyticsDetectExportContext`) - набір даних для детекції, який читає кожен випуск Ultralytics, розкладка, що її запровадив YOLO v5, а v8, v11 і наступні за ними зберегли: єдиний дескриптор `data.yaml` над директоріями `images/train` та `labels/train`, один рядок `клас центр-x центр-y ширина висота` на прямокутник;
-  - **Ultralytics YOLO - орієнтовані обмежувальні рамки** (`UltralyticsObbExportContext`) - та сама директорія і той самий дескриптор для задачі орієнтованих обмежувальних рамок, один рядок `клас x1 y1 x2 y2 x3 y3 x4 y4` із чотирьох кутів рамки на прямокутник;
-  - **Ultralytics YOLO - сегментація** (`UltralyticsSegmentExportContext`) - та сама директорія і той самий дескриптор для задачі сегментації екземплярів, один рядок-багатокутник `клас x1 y1 ... xn yn` на прямокутник;
-  - **COCO JSON** (`CocoExportContext`) - набір даних для детекції об'єктів COCO, який читають Detectron2, MMDetection, torchvision, трансформери детекції HuggingFace, CVAT, FiftyOne, Label Studio і Roboflow: скопійовані зображення і єдиний дескриптор `annotations/instances_default.json` над ними, що несе кожен прямокутник як пікселі `[x, y, ширина, висота]` того зображення, на якому його намалювали, замість нормалізованих чисел, яких вимагає кожна розкладка YOLO вище;
-  - **Pascal VOC XML** (`PascalVocExportContext`) - набір даних Pascal VOC у формі директорій devkit, ті самі файли, які записує і читає [LabelImg](https://github.com/HumanSignal/labelImg), і те, що беруть `VOCDetection` з torchvision та `XMLDataset` з MMDetection: скопійовані зображення під `JPEGImages/`, по одному дескриптору `Annotations/<основа>.xml` на зображення над ними і переліки `ImageSets/Main`, що їх називають, де кожен прямокутник є двома кутовими точками, між якими його намалювали, а імʼя його класу записане як є, а не як індекс;
-  - **Create ML JSON** (`CreateMLExportContext`) - набір даних для детекції об'єктів Create ML, шлях від проекту до детектора Core ML, що працює на iPhone: скопійовані зображення і єдиний дескриптор `annotations.json` поруч із ними в одній пласкій директорії, що є джерелом даних [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) з `MLObjectDetector` від Apple і тією самою текою, яку бере застосунок Create ML, коли її кидають до його тренувального лотка, де кожен прямокутник несе піксельний **центр** рамки поруч із її розміром - те саме ділення навпіл, яке виконує кожна розкладка YOLO вище, лише лишене в пікселях зображення замість нормалізованого;
-  - **darknetxx dxxwjz2** (`Dxxwjz2ExportContext`) - описана вище тренувальна директорія darknet для YOLO v4, яку `darknetxx-gui` з [darknetxx](https://github.com/yuriysydor1991/darknetxx) тренує як є, з мережею для тренування `cfg/yolov4-obj.dxxwjz2` поруч із її файлом cfg: стиснутим gzip JSON-документом darknetxx, що несе текст cfg та імена класів під тими індексами, якими їх нумерують файли міток, і не несе жодних ваг, - `darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2` тренує її з нуля без жодного іншого вказаного файлу;
-  - **darknetxx dxxwjz3** (`Dxxwjz3ExportContext`) - та сама директорія з мережею для тренування `cfg/yolov4-obj.dxxwjz3` натомість: файлом dxxwjz3 з darknetxx, документом лише з даних JSON, що несе опції секцій cfg як значення JSON замість тексту cfg та імена класів як масив імен їхніх індексів, - тим самим файлом, який конвертер darknetxx створює з cfg та імен класів директорії, окрім generator;
-  - **darknetxx dxxwjz2p project** (`Dxxwjz2pExportContext`) - тренувальний проект darknetxx: єдиний файл `yolov4-obj.dxxwjz2p` з мережею YOLO v4 проекту, іменами її класів та анотаціями зображень у структурі проекту ImagesAnnotator, поруч із директорією `images/` скопійованих зображень та порожньою `backup/`, який `darknetxx --train-cfg yolov4-obj.dxxwjz2p` і `darknetxx-train-gui` тренують з нуля, оновлюючи проект вагами;
-  - **darknetxx dxxwjz3p project** (`Dxxwjz3pExportContext`) - той самий проект у файлі `yolov4-obj.dxxwjz3p`, мережа якого є мережею JSON файлу dxxwjz3;
-  - **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - класифікаційна розкладка, яку читає набір даних `ImageFolder` з PyTorch Vision: одна директорія на імʼя анотації, що містить зображення, обрізані до прямокутників із тим іменем.
 - **Одноразова точка входу** - заповни нащадка `IADataExportersContext` потрібної розкладки директорією призначення і базою даних, і `IADataExportersLib::perform_export()` побудує потрібний експортер та запустить його. `IADataExportersFacade::create_exporter()` дає той самий результат із дрібнішим контролем.
+
 - **Вебзображення попередньо звантажуються** - запис, який вказує на вебсторінку, звантажується за допомогою [libcurl](https://curl.se/libcurl/) у тимчасовий кеш попереднього завантаження ще до того як експорт його торкнеться, тож проект, що змішує локальні й віддалені зображення, експортується як одне ціле.
+
 - **Стійкість до неповної бази даних** - запис без прямокутників, із нульовим розміром чи з непридатним до читання файлом зображення потрапляє до журналу і пропускається, а сам прохід експорту триває далі.
+
 - **Жодного власного кодека зображень** - бібліотека копіює файли зображень як є. Єдиний формат, який має вирізати прямокутники, просить проект-споживач зробити це через інтерфейс `IImageCropperFacility`, за допомогою тих засобів роботи із зображеннями, які той проект уже лінкує.
+
 - **Версійований встановлюваний інтерфейс** - простір імен, бінарник, директорія заголовків і CMake-пакунок усі несуть пару мажорної й мінорної версій `0.14`, тож два мінорні випуски встановлюються паралельно.
 
 # Приклад використання
@@ -138,7 +168,7 @@ cd build && ctest --output-on-failure
 
 # Звідки походить код
 
-Сирці було виділено із застосунку [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git), а саме з його компонента `src/annotator-business/exporters`, разом із замиканням залежностей, якого він потребує - `ImageLoader`, `ImageRecordUrlAndPathHelper`, `TypeHelper` і `CURLController`. Застосунок має позбутись власної копії і споживати цю бібліотеку натомість.
+Сирці було виділено із застосунку [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git), а саме з його компонента `src/annotator-business/exporters`, разом із замиканням залежностей, якого він потребує - `ImageLoader`, `ImageRecordUrlAndPathHelper`, `TypeHelper` і `CURLController`. Відтоді застосунок позбувся власної копії і споживає цю бібліотеку натомість.
 
 Сама база даних анотацій - розбирач файлу проекту, серіалізатор і правила злиття - **не** є частиною цієї бібліотеки. Вона живе у спорідненому проекті [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git), через який ця читає свої записи.
 

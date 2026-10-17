@@ -12,26 +12,56 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 💵 Donate at [http://kytok.org.ua/page/pozertvy](http://kytok.org.ua/page/pozertvy)
 
+# Dataset layouts
+
+Thirteen dataset layouts are written out of one database, each of them selected by the `IADataExportersContext` descendant instantiated and implemented by an exporter class of its own:
+
+## Plain text
+
+- **Plain text** (`PlainTxtExportContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles.
+
+## Darknet / YOLO v4 / darknetxx
+
+- **YOLO v4 (darknet)** (`Yolo4ExportContext`) - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`.
+
+- **darknetxx dxxwjz2** (`Dxxwjz2ExportContext`) - the YOLO v4 darknet training directory above, which the `darknetxx-gui` of the [darknetxx](https://github.com/yuriysydor1991/darknetxx) trains as it is, with the `cfg/yolov4-obj.dxxwjz2` network to train beside its cfg file: the gzip compressed JSON document of the darknetxx carrying the cfg text and the class names at the indexes the label files number them by, and no weights, which `darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2` trains from scratch with no other file named.
+
+- **darknetxx dxxwjz3** (`Dxxwjz3ExportContext`) - the same directory with the `cfg/yolov4-obj.dxxwjz3` network to train instead: the dxxwjz3 file of the darknetxx, the document of nothing but the JSON data, carrying the options of the cfg sections as the JSON values instead of the cfg text and the class names as the array of the names of their indexes - the very file the darknetxx converter makes of the cfg and the class names of the directory, but the generator.
+
+- **darknetxx dxxwjz2p project** (`Dxxwjz2pExportContext`) - the darknetxx training project: the single `yolov4-obj.dxxwjz2p` file of the YOLO v4 network of the project, its class names and the annotations of its images in the ImagesAnnotator project structure, beside the `images/` folder of the copied images and an empty `backup/`, which `darknetxx --train-cfg yolov4-obj.dxxwjz2p` and the `darknetxx-train-gui` train from scratch, updating the project with the weights.
+
+- **darknetxx dxxwjz3p project** (`Dxxwjz3pExportContext`) - the same project of the `yolov4-obj.dxxwjz3p` file, the network of which is the JSON one of the dxxwjz3 file.
+
+## Ultralytics YOLO
+
+- **Ultralytics YOLO - detection** (`UltralyticsDetectExportContext`) - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle.
+
+- **Ultralytics YOLO - oriented bounding boxes** (`UltralyticsObbExportContext`) - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle.
+
+- **Ultralytics YOLO - segmentation** (`UltralyticsSegmentExportContext`) - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle.
+
+## COCO / Pascal VOC / Create ML
+
+- **COCO JSON** (`CocoExportContext`) - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for.
+
+- **Pascal VOC XML** (`PascalVocExportContext`) - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index.
+
+- **Create ML JSON** (`CreateMLExportContext`) - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away.
+
+## Classification / PyTorch Vision
+
+- **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
+
 # Features
 
-- **Thirteen dataset layouts out of one database** - selected by the `IADataExportersContext` descendant instantiated and implemented by one exporter class each:
-  - **Plain text** (`PlainTxtExportContext`) - one `<annotation-name>.txt` file per annotation name, each line naming an image and its rectangles;
-  - **YOLO v4 (darknet)** (`Yolo4ExportContext`) - the whole darknet training directory of the YOLO v4 detector: `data/obj.names`, `data/obj.data`, the `cfg/yolov4-obj.cfg` descriptor of the whole 162 layer YOLO v4 network written for the classes of the project, the copied images with their normalised `.txt` label files, the `train.txt` and `val.txt` lists and an empty `backup/`;
-  - **Ultralytics YOLO - detection** (`UltralyticsDetectExportContext`) - the detection dataset every Ultralytics release reads, the layout YOLO v5 introduced and v8, v11 and the ones after them kept: a single `data.yaml` descriptor over the `images/train` and `labels/train` directories, one `class centre-x centre-y width height` line per rectangle;
-  - **Ultralytics YOLO - oriented bounding boxes** (`UltralyticsObbExportContext`) - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle;
-  - **Ultralytics YOLO - segmentation** (`UltralyticsSegmentExportContext`) - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle;
-  - **COCO JSON** (`CocoExportContext`) - the COCO object detection dataset Detectron2, MMDetection, torchvision, the HuggingFace detection transformers, CVAT, FiftyOne, Label Studio and Roboflow all read: the copied images and the single `annotations/instances_default.json` descriptor over them, carrying each rectangle as the `[x, y, width, height]` pixels of the image it was drawn in instead of the normalised numbers every YOLO layout above asks for;
-  - **Pascal VOC XML** (`PascalVocExportContext`) - the Pascal VOC dataset in the devkit directory shape, the very files [LabelImg](https://github.com/HumanSignal/labelImg) writes and reads and what the torchvision `VOCDetection` and the MMDetection `XMLDataset` take: the copied images under `JPEGImages/`, one `Annotations/<stem>.xml` descriptor per image over them and the `ImageSets/Main` lists naming those, with each rectangle as the two corner points it was drawn between and its class name written out as it stands instead of as an index;
-  - **Create ML JSON** (`CreateMLExportContext`) - the Create ML object detection dataset, the route from a project to a Core ML detector running on an iPhone: the copied images and the single `annotations.json` descriptor beside them in one flat directory, which is the [`directoryWithImagesAndJsonAnnotation`](https://developer.apple.com/documentation/createml/building-an-object-detector-data-source) data source of Apple's `MLObjectDetector` and the very folder the Create ML application takes when one is dropped into its training well, carrying each rectangle as the pixel **centre** of the box next to its size - the halving every YOLO layout above performs, only left in the pixels of the image instead of normalised away;
-  - **darknetxx dxxwjz2** (`Dxxwjz2ExportContext`) - the YOLO v4 darknet training directory above, which the `darknetxx-gui` of the [darknetxx](https://github.com/yuriysydor1991/darknetxx) trains as it is, with the `cfg/yolov4-obj.dxxwjz2` network to train beside its cfg file: the gzip compressed JSON document of the darknetxx carrying the cfg text and the class names at the indexes the label files number them by, and no weights, which `darknetxx --train-cfg cfg/yolov4-obj.dxxwjz2` trains from scratch with no other file named;
-  - **darknetxx dxxwjz3** (`Dxxwjz3ExportContext`) - the same directory with the `cfg/yolov4-obj.dxxwjz3` network to train instead: the dxxwjz3 file of the darknetxx, the document of nothing but the JSON data, carrying the options of the cfg sections as the JSON values instead of the cfg text and the class names as the array of the names of their indexes - the very file the darknetxx converter makes of the cfg and the class names of the directory, but the generator;
-  - **darknetxx dxxwjz2p project** (`Dxxwjz2pExportContext`) - the darknetxx training project: the single `yolov4-obj.dxxwjz2p` file of the YOLO v4 network of the project, its class names and the annotations of its images in the ImagesAnnotator project structure, beside the `images/` folder of the copied images and an empty `backup/`, which `darknetxx --train-cfg yolov4-obj.dxxwjz2p` and the `darknetxx-train-gui` train from scratch, updating the project with the weights;
-  - **darknetxx dxxwjz3p project** (`Dxxwjz3pExportContext`) - the same project of the `yolov4-obj.dxxwjz3p` file, the network of which is the JSON one of the dxxwjz3 file;
-  - **PyTorch Vision `ImageFolder`** (`PyTorchExportContext`) - the classification layout the PyTorch Vision `ImageFolder` dataset reads: one directory per annotation name holding the images cropped down to the rectangles of that name.
 - **A one shot entry point** - fill the `IADataExportersContext` descendant of the wanted layout with the destination directory and the database, and `IADataExportersLib::perform_export()` builds the right exporter and runs it. `IADataExportersFacade::create_exporter()` gives the same result with a finer grained control.
+
 - **Web hosted images are preloaded** - a record pointing at a web page is downloaded through [libcurl](https://curl.se/libcurl/) into a temporary preloads cache before the export touches it, so a project mixing local and remote images exports as one.
+
 - **Robust over a partial database** - a record without rectangles, with a zero size or with an unreadable image file is logged and skipped, the export run itself carries on.
+
 - **No image codec of its own** - the library copies image files as they are. The one format that has to cut rectangles out asks the consuming project to do it through the `IImageCropperFacility` interface, over whatever imaging stack that project already links.
+
 - **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.14` major and minor pair, so two minor releases install side by side.
 
 # Usage example
@@ -138,7 +168,7 @@ Installing is a usual `sudo cmake --install build`, described in detail in the [
 
 # Where the code came from
 
-The sources were lifted out of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application, namely its `src/annotator-business/exporters` component together with the dependency closure it needs - the `ImageLoader`, the `ImageRecordUrlAndPathHelper`, the `TypeHelper` and the `CURLController`. The application is to drop its own copy and to consume this library instead.
+The sources were lifted out of the [ImagesAnnotator](https://github.com/yuriysydor1991/ImagesAnnotator.git) application, namely its `src/annotator-business/exporters` component together with the dependency closure it needs - the `ImageLoader`, the `ImageRecordUrlAndPathHelper`, the `TypeHelper` and the `CURLController`. The application has dropped its own copy since and consumes this library instead.
 
 The annotations database itself - the project file parser, the serializer and the merging rules - is **not** a part of this library. It lives in the sibling [ImagesAnnotator-DataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) project, which this one reads its records through.
 
@@ -159,7 +189,7 @@ Examine the `doc` directory for possible translations of a current md document:
     1. [Optional for the code analyzer with clang-tidy](/doc/sections/en_US/3-requirements/3-7-optional-for-the-code-analyzer-with-clang-tidy.md)
 1. [Project structure](/doc/sections/en_US/4-project-structure/4-project-structure.md)
     1. [Project diagrams](/doc/sections/en_US/4-project-structure/4-0-project-diagrams.md)
-    1. [Implement code straight away!](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)
+    1. [Where the exporters implementation lives](/doc/sections/en_US/4-project-structure/4-1-implement-code-straight-away.md)
     1. [The library's installable include header files](/doc/sections/en_US/4-project-structure/4-8-the-librarys-installable-include-header-files.md)
     1. [The dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md)
     1. [The produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md)

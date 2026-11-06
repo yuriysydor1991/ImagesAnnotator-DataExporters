@@ -23,6 +23,7 @@ namespace iade = ImagesAnnotatorDataExporters015;
 | [UltralyticsDetectExportContext.h](/src/lib/facade/public/contexts/UltralyticsDetectExportContext.h) | нащадка `IADataExportersContext` розкладки детекції Ultralytics YOLO |
 | [UltralyticsObbExportContext.h](/src/lib/facade/public/contexts/UltralyticsObbExportContext.h) | нащадка `IADataExportersContext` розкладки орієнтованих обмежувальних рамок Ultralytics YOLO |
 | [UltralyticsSegmentExportContext.h](/src/lib/facade/public/contexts/UltralyticsSegmentExportContext.h) | нащадка `IADataExportersContext` розкладки сегментації Ultralytics YOLO |
+| [Yolo26SegmentExportContext.h](/src/lib/facade/public/contexts/Yolo26SegmentExportContext.h) | нащадка `IADataExportersContext` розкладки сегментації Ultralytics YOLO26 |
 | [CocoExportContext.h](/src/lib/facade/public/contexts/CocoExportContext.h) | нащадка `IADataExportersContext` розкладки детекції об'єктів COCO |
 | [PascalVocExportContext.h](/src/lib/facade/public/contexts/PascalVocExportContext.h) | нащадка `IADataExportersContext` розкладки набору даних Pascal VOC |
 | [CreateMLExportContext.h](/src/lib/facade/public/contexts/CreateMLExportContext.h) | нащадка `IADataExportersContext` розкладки набору даних для детекції об'єктів Create ML |
@@ -44,6 +45,7 @@ class Yolo4ExportContext : public IADataExportersContext;
 class UltralyticsDetectExportContext : public IADataExportersContext;
 class UltralyticsObbExportContext : public IADataExportersContext;
 class UltralyticsSegmentExportContext : public IADataExportersContext;
+class Yolo26SegmentExportContext : public IADataExportersContext;
 class CocoExportContext : public IADataExportersContext;
 class PascalVocExportContext : public IADataExportersContext;
 class CreateMLExportContext : public IADataExportersContext;
@@ -54,9 +56,9 @@ class Dxxwjz3pExportContext : public IADataExportersContext;
 class PyTorchExportContext : public IADataExportersContext;
 ```
 
-Ці тринадцять нащадків `IADataExportersContext` називають тринадцять розкладок наборів даних, які бібліотека здатна записати. Створення одного з них і є вибором розкладки, а бібліотека відображає той тип на експортер, який її записує. Усі, окрім останнього, не додають до `IADataExportersContext` нічого; `PyTorchExportContext` додає пару `get_cropper()` / `set_cropper()`, оскільки вирізання пікселів робить лише його розкладка.
+Ці чотирнадцять нащадків `IADataExportersContext` називають чотирнадцять розкладок наборів даних, які бібліотека здатна записати. Створення одного з них і є вибором розкладки, а бібліотека відображає той тип на експортер, який її записує. Усі, окрім останнього, не додають до `IADataExportersContext` нічого; `PyTorchExportContext` додає пару `get_cropper()` / `set_cropper()`, оскільки вирізання пікселів робить лише його розкладка.
 
-Шість із них належать до родини YOLO і не є взаємозамінними. `Yolo4ExportContext` записує тренувальну директорію darknet, яка називає свої класи, перелічує свої зображення і несе всю свою мережу у власних файлах, а `Dxxwjz2ExportContext` і `Dxxwjz3ExportContext` записують ту саму директорію з ще одним файлом - мережею darknetxx для тренування. Три `Ultralytics*` записують розкладку, що її запровадив YOLO v5 і читає кожен наступний випуск Ultralytics - v8, v11 і ті, що після них: єдиний дескриптор `data.yaml` над директоріями `images/train` та `labels/train`. Ці три поділяють кожен байт тієї розкладки і відрізняються лише рядком прямокутника у файлі міток, якого очікує тренована задача - детекція, орієнтовані рамки чи сегментація. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
+Сім із них належать до родини YOLO і не є взаємозамінними. `Yolo4ExportContext` записує тренувальну директорію darknet, яка називає свої класи, перелічує свої зображення і несе всю свою мережу у власних файлах, а `Dxxwjz2ExportContext` і `Dxxwjz3ExportContext` записують ту саму директорію з ще одним файлом - мережею darknetxx для тренування. Три `Ultralytics*` і `Yolo26SegmentExportContext` записують розкладку, що її запровадив YOLO v5 і читає кожен наступний випуск Ultralytics - v8, v11 і ті, що після них: єдиний дескриптор `data.yaml` над директоріями `images/train` та `labels/train`. Ці чотири поділяють кожен байт тієї розкладки і відрізняються лише рядком анотації у файлі міток, якого очікує тренована задача - детекція, орієнтовані рамки чи сегментація. Дві розкладки сегментації відрізняються багатокутником сегмента: `UltralyticsSegmentExportContext` записує кути його прямокутника, обмежувальної рамки багатокутника, а `Yolo26SegmentExportContext` - розкладка, на якій тренуються моделі `-seg` YOLO26, - сам багатокутник. Що кожна з них розміщує на диску, описано у підсекції [Розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md).
 
 `CocoExportContext` і `PascalVocExportContext` - дві розкладки переліку, які читає щось інше, ніж тренувальний прохід YOLO: дескриптор COCO JSON беруть Detectron2, MMDetection, torchvision, трансформери детекції HuggingFace, CVAT, FiftyOne, Label Studio і Roboflow, а директорію devkit VOC читають `VOCDetection` з torchvision, `XMLDataset` з MMDetection і LabelImg. Обидві ж передають прямокутник недоторканим, тоді як кожна розкладка YOLO спершу ділить його числа на розмір зображення - `bbox` COCO як пікселі `[x, y, ширина, висота]` зображення, `bndbox` VOC як дві кутові точки у тих самих пікселях. `PascalVocExportContext` до того ж є однією з двох розкладок, які записують імʼя анотації, а не його позицію у впорядкованій множині імен, тож додане до проекту імʼя не перенумеровує нічого з експортованого раніше.
 
@@ -70,7 +72,7 @@ class PyTorchExportContext : public IADataExportersContext;
 
 ### IADataExportersContext
 
-Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `IADataExportersLib::perform_export()` і `IExporter::export_db()` збудованого власноруч експортера. Створюй його методом-фабрикою `IADataExportersFacade` бажаної розкладки - `create_plain_txt_library_context()`, `create_yolo4_library_context()`, `create_ultralytics_detect_library_context()`, `create_ultralytics_obb_library_context()`, `create_ultralytics_segment_library_context()`, `create_coco_library_context()`, `create_pascal_voc_library_context()`, `create_createml_library_context()`, `create_dxxwjz2_library_context()`, `create_dxxwjz3_library_context()`, `create_dxxwjz2p_library_context()`, `create_dxxwjz3p_library_context()` чи `create_pytorch_library_context()` - або інстанціюй того нащадка самотужки, як це робить споживач, шаблонізований за типом розкладки.
+Єдиний клас даних бібліотеки, той самий, яким керуються обидві її точки входу: одноразовий `IADataExportersLib::perform_export()` і `IExporter::export_db()` збудованого власноруч експортера. Створюй його методом-фабрикою `IADataExportersFacade` бажаної розкладки - `create_plain_txt_library_context()`, `create_yolo4_library_context()`, `create_ultralytics_detect_library_context()`, `create_ultralytics_obb_library_context()`, `create_ultralytics_segment_library_context()`, `create_yolo26_segment_library_context()`, `create_coco_library_context()`, `create_pascal_voc_library_context()`, `create_createml_library_context()`, `create_dxxwjz2_library_context()`, `create_dxxwjz3_library_context()`, `create_dxxwjz2p_library_context()`, `create_dxxwjz3p_library_context()` чи `create_pytorch_library_context()` - або інстанціюй того нащадка самотужки, як це робить споживач, шаблонізований за типом розкладки.
 
 Дані, які він несе, є приватними і доступні лише через методи доступу. Кожен геттер видає `const`-посилання на те, що тримає контекст, кожен сеттер копіює до себе задане значення:
 
@@ -140,6 +142,7 @@ virtual IImageCropperFacilityPtr clone() = 0;
 | `create_ultralytics_detect_library_context()` | новий порожній `UltralyticsDetectExportContextPtr` |
 | `create_ultralytics_obb_library_context()` | новий порожній `UltralyticsObbExportContextPtr` |
 | `create_ultralytics_segment_library_context()` | новий порожній `UltralyticsSegmentExportContextPtr` |
+| `create_yolo26_segment_library_context()` | новий порожній `Yolo26SegmentExportContextPtr` |
 | `create_coco_library_context()` | новий порожній `CocoExportContextPtr` |
 | `create_pascal_voc_library_context()` | новий порожній `PascalVocExportContextPtr` |
 | `create_createml_library_context()` | новий порожній `CreateMLExportContextPtr` |
@@ -209,7 +212,7 @@ int main(int argc, char** argv)
 }
 ```
 
-Виклик `std::filesystem::create_directories` присутній тому, що лише експортер YOLO v4, чотири експортери darknetxx, три експортери Ultralytics YOLO, експортер COCO, експортер Pascal VOC та експортер Create ML створюють свою директорію призначення самотужки. Формати простого тексту та PyTorch Vision очікують, що `export_path` уже існує.
+Виклик `std::filesystem::create_directories` присутній тому, що лише експортер YOLO v4, чотири експортери darknetxx, чотири експортери Ultralytics YOLO, експортер COCO, експортер Pascal VOC та експортер Create ML створюють свою директорію призначення самотужки. Формати простого тексту та PyTorch Vision очікують, що `export_path` уже існує.
 
 ### Реалізація обрізача зображень
 

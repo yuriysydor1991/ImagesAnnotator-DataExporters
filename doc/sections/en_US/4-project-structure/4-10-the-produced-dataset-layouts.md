@@ -9,7 +9,7 @@ Each `IADataExportersContext` descendant is implemented by one exporter class un
 - Before an image is touched the record is handed to the internal image loader. A record that points at a web page is downloaded with [libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) into a temporary preloads cache first, and from that moment on its `ImageRecord::get_full_path()` yields the local cached copy. A record that already points at a local file is left alone.
 - The library decodes no image format itself. It copies image files as they are, or asks the supplied `IImageCropperFacility` to produce the cropped ones.
 - A record that cannot be processed is logged and skipped, the run itself carries on.
-- The YOLO v4, the four darknetxx, the three Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
+- The YOLO v4, the four darknetxx, the four Ultralytics YOLO, the COCO, the Pascal VOC and the Create ML exporters create their destination directory. For the plain text and the PyTorch Vision formats `export_path` has to exist before `export_db()` is called.
 
 The examples below all describe the very same two record database:
 
@@ -173,9 +173,9 @@ and `data/park.txt` reads:
 
 Besides the records without rectangles, this exporter also skips the records whose `iwidth` or `iheight` is zero (the normalisation would divide by zero), and the ones whose image file is not a readable regular file or could not be copied. The `backup/` directory is created empty, darknet writes its weight snapshots there during the training.
 
-### What the three Ultralytics YOLO layouts share
+### What the four Ultralytics YOLO layouts share
 
-Three of the contexts write the layout every Ultralytics release reads - the one YOLO v5 introduced and v8, v11 and the ones after them kept. The directory is the same for all three of them, and so is the `data.yaml` descriptor. What the trained task changes is the single label file line of a rectangle, which is the only thing the three sections below differ in.
+Four of the contexts write the layout every Ultralytics release reads - the one YOLO v5 introduced and v8, v11 and the ones after them kept. The directory is the same for all four of them, and so is the `data.yaml` descriptor. What the trained task changes is the single label file line of an annotation, which is the only thing the four sections below differ in.
 
 The exporter creates the export directory itself when it is not there yet, together with the two sub-directories:
 
@@ -221,9 +221,9 @@ A training run reads the exported directory as it is:
 yolo detect train data=/home/user/dataset/data.yaml model=yolo11n.pt
 ```
 
-with `detect` replaced by `obb` or `segment` for the two other layouts, and the model by the pre-trained weights of that very task.
+with `detect` replaced by `obb` or `segment` for the three other layouts, and the model by the pre-trained weights of that very task.
 
-All three normalise a rectangle into the `0..1` range against the record `iwidth` and `iheight`, and all three apply two guards the darknet exporter does not:
+All four normalise an annotation into the `0..1` range against the record `iwidth` and `iheight`, and all four apply two guards the darknet exporter does not:
 
 - **A rectangle reaching over an image edge is cut down to the image.** An Ultralytics release refuses a whole image over a single label coordinate outside of the `0..1` range, so a rectangle drawn a little over the border would otherwise have cost that image its place in the dataset.
 - **A rectangle drawn from the right or from the bottom carries a negative width or height.** Its edges are sorted before it is cut, so it describes the same area as the one drawn the other way round.
@@ -274,7 +274,7 @@ and `labels/train/park.txt` reads:
 1 0.01875 0.0166667 0.11875 0.0166667 0.11875 0.15 0.01875 0.15
 ```
 
-The annotations database knows axis aligned rectangles only, so every box written here carries the rotation angle of zero. That is not a wasted export: an OBB model trained on it detects the rotated instances of the very same objects.
+The annotations database knows no rotated boxes, so every box written here carries the rotation angle of zero. That is not a wasted export: an OBB model trained on it detects the rotated instances of the very same objects.
 
 ### UltralyticsSegmentExportContext
 
@@ -286,7 +286,38 @@ The instance segmentation dataset. Every rectangle becomes one line of the class
 
 The format takes a polygon of any three or more points. The mask of a rectangle annotation is the rectangle outline itself, so the polygon written is its four corners - which makes these label files identical to the oriented bounding box ones above, both spelling out the corners of one and the same rectangle. What tells the two layouts apart is the training task that reads them: a polygon of an arbitrary point count here against the four corners of a rotated box there.
 
-A mask is therefore only ever as tight as the drawn rectangle, and the trained segmentation model reproduces exactly that coarseness. Reach for this layout when a rectangle outline is mask enough, and annotate with real polygons in a tool that draws them when it is not.
+A mask is therefore only ever as tight as the drawn rectangle - a segment, the `ImageRecordSegment` polygon annotation of the data drivers, is written here as its rectangle too, the bounding box of the polygon - and the trained segmentation model reproduces exactly that coarseness. Reach for this layout when a rectangle outline is mask enough, and annotate the objects as segments exported by the `Yolo26SegmentExportContext` below when it is not.
+
+### Yolo26SegmentExportContext
+
+The instance segmentation dataset once more, of the real polygons - the one the YOLO26 `-seg` models are trained on. The directory, the descriptor and the label file line are the ones of the layout above:
+
+```
+<class index> <x1> <y1> ... <xn> <yn>
+```
+
+What differs is the polygon: every annotation is written as the outline the data drivers report for it, `ImageRecordRect::outline()`, in the image pixels divided by the image size.
+
+- **A segment**, the `ImageRecordSegment`, is written as its polygon. Its points, kept in the `0..1` space of its rectangle, are turned back into the image pixels first. A segment of fewer than three points is written as the corners of its rectangle.
+- **A rectangle** is written as its four corners - clockwise from the top left one for a rectangle drawn from the top left, the very line of the layout above.
+
+So every line carries a polygon of at least three points, which is what the [Ultralytics segmentation format](https://docs.ultralytics.com/datasets/segment/) asks of every object: the rows may differ in length, while a segment dataset whose box and polygon counts differ is rejected when its labels load. The two record database above holds rectangles only, so its label files are the very ones of the layout above. A database of the single 200 x 100 image `a.png`, holding a `dog` rectangle (50, 20, 100, 40) and a `dog` segment drawn through (50, 20), (150, 20) and (100, 60) - whose rectangle is that very (50, 20, 100, 40) - gets a `labels/train/a.txt` of:
+
+```
+0 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6
+0 0.25 0.2 0.75 0.2 0.5 0.6
+```
+
+where the layout above writes the first line twice.
+
+A point drawn over an image edge is moved onto it, since an Ultralytics release refuses the whole image over a single coordinate outside of the `0..1` range, and an annotation whose rectangle has no area inside the image is logged and dropped, as in the three other layouts. A training run, the way the Ultralytics documentation starts one:
+
+```python
+from ultralytics import YOLO
+
+model = YOLO("yolo26n-seg.pt")
+results = model.train(data="/home/user/dataset/data.yaml", epochs=100, imgsz=640)
+```
 
 ### The YOLO formats this library does not write
 

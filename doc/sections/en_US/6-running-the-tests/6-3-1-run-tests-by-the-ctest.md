@@ -11,7 +11,7 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix> \
 cmake --build build -j$(nproc)
 ```
 
-With both options on the suite holds 246 test cases and all 246 pass. Run them
+With both options on the suite holds 251 test cases and all 251 pass. Run them
 with the `ctest` command from the project build directory (GNU/Linux based):
 
 ```

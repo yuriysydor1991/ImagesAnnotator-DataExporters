@@ -14,7 +14,7 @@ See more at the [kytok.org.ua](http://www.kytok.org.ua/)
 
 # Dataset layouts
 
-Thirteen dataset layouts are written out of one database, each of them selected by the `IADataExportersContext` descendant instantiated and implemented by an exporter class of its own:
+Fourteen dataset layouts are written out of one database, each of them selected by the `IADataExportersContext` descendant instantiated and implemented by an exporter class of its own:
 
 ## Plain text
 
@@ -39,6 +39,8 @@ Thirteen dataset layouts are written out of one database, each of them selected 
 - **Ultralytics YOLO - oriented bounding boxes** (`UltralyticsObbExportContext`) - the same directory and descriptor for the oriented bounding box task, one `class x1 y1 x2 y2 x3 y3 x4 y4` line of the four box corners per rectangle.
 
 - **Ultralytics YOLO - segmentation** (`UltralyticsSegmentExportContext`) - the same directory and descriptor for the instance segmentation task, one `class x1 y1 ... xn yn` polygon line per rectangle.
+
+- **Ultralytics YOLO26 - segmentation** (`Yolo26SegmentExportContext`) - the same directory and descriptor for the segmentation task of the YOLO26 `-seg` models, one `class x1 y1 ... xn yn` polygon line per annotation of its real outline: the polygon of a segment, where the layout above writes the corners of its bounding box, and the four corners of a rectangle.
 
 ## COCO / Pascal VOC / Create ML
 
@@ -162,7 +164,7 @@ cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 246 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 251 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 

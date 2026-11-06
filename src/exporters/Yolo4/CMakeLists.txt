@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # configuration writer it hands its cfg/yolov4-obj.cfg stream to
 
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     Yolo42FolderExporter.cpp
     Yolov4CfgWriter.cpp

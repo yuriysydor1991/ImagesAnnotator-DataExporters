@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.13)
 
 add_library(
-  TemplateProjectRealDefaultLoggerObj OBJECT
+  IADataExportersRealDefaultLoggerObj OBJECT
   RealDefaultLogger.cpp
 )
 
 target_include_directories(
-  TemplateProjectRealDefaultLoggerObj
+  IADataExportersRealDefaultLoggerObj
   PRIVATE
-    ${CMAKE_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}
 )
 
 # The objects end up inside a shared library, so they must be relocatable and
@@ -17,7 +17,7 @@ target_include_directories(
 # detail and its symbols would otherwise clash with the identically named ones
 # of any other library built from this template.
 set_target_properties(
-  TemplateProjectRealDefaultLoggerObj
+  IADataExportersRealDefaultLoggerObj
   PROPERTIES
   POSITION_INDEPENDENT_CODE ON
   CXX_VISIBILITY_PRESET hidden
@@ -29,6 +29,6 @@ set_target_properties(
 # link against it. PRIVATE because the logger is an implementation detail: no
 # installable public header mentions it.
 target_link_libraries(
-  ${PROJECT_LIBRARY_NAME}
-  PRIVATE TemplateProjectRealDefaultLoggerObj
+  ${IADE_LIBRARY_NAME}
+  PRIVATE IADataExportersRealDefaultLoggerObj
 )

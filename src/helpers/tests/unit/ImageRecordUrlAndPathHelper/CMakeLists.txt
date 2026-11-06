@@ -3,14 +3,14 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(
   UTEST_ImageRecordUrlAndPathHelper
   UTEST_ImageRecordUrlAndPathHelper.cpp
-  ${CMAKE_SOURCE_DIR}/src/helpers/ImageRecordUrlAndPathHelper.cpp
+  ${PROJECT_SOURCE_DIR}/src/helpers/ImageRecordUrlAndPathHelper.cpp
   ${IADE_CURL_SRC}
 )
 
 target_include_directories(
   UTEST_ImageRecordUrlAndPathHelper
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
 )
 
 target_link_libraries(

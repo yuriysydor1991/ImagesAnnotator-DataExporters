@@ -8,7 +8,7 @@ add_executable(
 target_include_directories(
   UTEST_TypeHelper
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
 )
 
 target_link_libraries(

@@ -11,7 +11,7 @@ target_include_directories(
   UTEST_Dxxwjz2pAnnotationsWriter
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
   PRIVATE ${GENERAL_MOCKS_ROOT}/project-global-decls
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
   PRIVATE ${IADE_PUBLIC_INCLUDE_DIR}
 )
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     IADataExportersFacade.cpp
     ${IADE_FACADE_SRC}
@@ -9,7 +9,7 @@ target_sources(
 
 install(
   DIRECTORY public/
-  DESTINATION include/${PROJECT_LIBRARY_NAME}
+  DESTINATION include/${IADE_LIBRARY_NAME}
   COMPONENT Development
 )
 

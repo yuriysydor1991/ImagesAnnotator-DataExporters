@@ -3,29 +3,55 @@ cmake_minimum_required(VERSION 3.13)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 add_library(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   SHARED
 )
 
+# The very target name the installed CMake package exports, so a project links
+# the same one whether it finds the installed library or takes it in by the
+# FetchContent.
+add_library(${IADE_LIBRARY_NAME}::${IADE_LIBRARY_NAME} ALIAS ${IADE_LIBRARY_NAME})
+
+# The forwarding headers of the installed paths, so the prefixed includes below
+# work against the sources too. The file(GENERATE) rewrites only the changed
+# ones, a reconfigure recompiles nothing.
+set(IADE_BUILD_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/include")
+
+file(
+  GLOB_RECURSE IADE_PUBLIC_HEADERS
+  RELATIVE "${IADE_PUBLIC_INCLUDE_DIR}"
+  CONFIGURE_DEPENDS "${IADE_PUBLIC_INCLUDE_DIR}/*.h"
+)
+
+foreach(publicHeader IN LISTS IADE_PUBLIC_HEADERS)
+  file(
+    GENERATE
+    OUTPUT "${IADE_BUILD_INCLUDE_DIR}/${IADE_LIBRARY_NAME}/${publicHeader}"
+    CONTENT "#include \"${IADE_PUBLIC_INCLUDE_DIR}/${publicHeader}\"\n"
+  )
+endforeach()
+
 target_include_directories(
-  ${PROJECT_LIBRARY_NAME}
-  PRIVATE ${CMAKE_SOURCE_DIR}
-  PRIVATE ${CMAKE_BINARY_DIR}
+  ${IADE_LIBRARY_NAME}
+  PRIVATE ${PROJECT_SOURCE_DIR}
+  PRIVATE ${PROJECT_BINARY_DIR}
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/facade/public>
     # Both the plain include root and the versioned sub-directory are exported,
-    # so a consumer may write either
+    # of the build tree and of the installation alike, so a consumer may write
+    # either
     #   #include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>  (recommended)
     # or the short
     #   #include <IADataExportersFacade.h>
     # The prefixed form is the safe one: header names such as IExporter.h are
     # generic enough to collide in a busy include path.
+    $<BUILD_INTERFACE:${IADE_BUILD_INCLUDE_DIR}>
+    $<BUILD_INTERFACE:${IADE_PUBLIC_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:include>
-    $<INSTALL_INTERFACE:include/${PROJECT_LIBRARY_NAME}>
+    $<INSTALL_INTERFACE:include/${IADE_LIBRARY_NAME}>
 )
 
 set_target_properties(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PROPERTIES
   VERSION ${PROJECT_VERSION}
   SOVERSION ${PROJECT_VERSION_MAJOR}
@@ -41,7 +67,7 @@ set_target_properties(
 )
 
 target_compile_definitions(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE IMAGES_ANNOTATOR_DATA_EXPORTERS_BUILDING=1
 )
 

@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(
   CTEST_ZlibController
   CTEST_ZlibController.cpp
-  ${CMAKE_SOURCE_DIR}/src/zlib/GzipFileStreams.cpp
-  ${CMAKE_SOURCE_DIR}/src/zlib/ZlibController.cpp
-  ${CMAKE_SOURCE_DIR}/src/log/default-logger/DefaultLogger.cpp
-  ${CMAKE_SOURCE_DIR}/src/log/default-logger/real-default-logger/RealDefaultLogger.cpp
+  ${PROJECT_SOURCE_DIR}/src/zlib/GzipFileStreams.cpp
+  ${PROJECT_SOURCE_DIR}/src/zlib/ZlibController.cpp
+  ${PROJECT_SOURCE_DIR}/src/log/default-logger/DefaultLogger.cpp
+  ${PROJECT_SOURCE_DIR}/src/log/default-logger/real-default-logger/RealDefaultLogger.cpp
 )
 
 # the gzip files of the tests, every test removes its own ones
@@ -17,8 +17,8 @@ target_compile_definitions(
 
 target_include_directories(
   CTEST_ZlibController
-  PRIVATE ${CMAKE_SOURCE_DIR}
-  PRIVATE ${CMAKE_BINARY_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
+  PRIVATE ${PROJECT_BINARY_DIR}
 )
 
 target_link_libraries(

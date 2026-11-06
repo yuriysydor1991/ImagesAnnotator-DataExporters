@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.13)
 add_executable(
   UTEST_LibFactory
   UTEST_LibFactory.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibFactory.cpp
-  ${CMAKE_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
+  ${PROJECT_SOURCE_DIR}/src/lib/libmain/LibFactory.cpp
+  ${PROJECT_SOURCE_DIR}/src/lib/libmain/LibMain.cpp
   ${IADE_FACADE_SRC}
   ${IADE_EXPORTERS_SRC}
   ${IADE_HELPERS_SRC}
@@ -16,7 +16,7 @@ target_include_directories(
   UTEST_LibFactory
   PRIVATE ${GENERAL_MOCKS_ROOT}/log
   PRIVATE ${GENERAL_MOCKS_ROOT}/project-global-decls
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
   PRIVATE ${IADE_PUBLIC_INCLUDE_DIR}
   PRIVATE ${IADE_OPENCV_TEST_INCLUDES}
 )

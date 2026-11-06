@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # without: it is what answers "did this build get a cropper of its own?" at the
 # run time, so that no caller has to repeat the build time condition.
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     ImageCropperFactory.cpp
 )
@@ -14,13 +14,13 @@ target_sources(
 # Vision export keeps asking its consumer for a cropper.
 if (IADE_WITH_OPENCV)
   target_sources(
-    ${PROJECT_LIBRARY_NAME}
+    ${IADE_LIBRARY_NAME}
     PRIVATE
       OpenCVImageCropper.cpp
   )
 
   target_include_directories(
-    ${PROJECT_LIBRARY_NAME}
+    ${IADE_LIBRARY_NAME}
     PRIVATE ${OpenCV_INCLUDE_DIRS}
   )
 endif()

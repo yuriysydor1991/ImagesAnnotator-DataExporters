@@ -1,0 +1,56 @@
+cmake_minimum_required(VERSION 3.13)
+
+option(
+  IADE_ENABLE_DEB
+  "Set to ON to enable the deb package creation from the project build artifacts"
+  OFF
+)
+
+if(NOT IADE_ENABLE_DEB)
+    return()
+endif()
+
+include(InstallRequiredSystemLibraries)
+
+# the Debian name of the destination CPU, the one the CPack DEB generator asks
+# the dpkg for when given none
+execute_process(
+  COMMAND dpkg --print-architecture
+  OUTPUT_VARIABLE dpkgArchitecture
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+set(
+  IADE_DEB_PACKAGE_ARCHITECTURE
+  "${dpkgArchitecture}"
+  CACHE STRING
+  "The destination CPU architecture of the DEB package (e.g. amd64, arm64, armhf, i386)"
+)
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_CONTACT ${IADE_MAINTAINER_EMAIL})
+set(CPACK_DEB_MAINTAINER "${IADE_MAINTAINER} ${IADE_MAINTAINER_EMAIL}")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${IADE_MAINTAINER} ${IADE_MAINTAINER_EMAIL}")
+set(CPACK_DEB_COMPONENT_INSTALL ON)
+set(CPACK_PACKAGE_DESCRIPTION ${PROJECT_DESCRIPTION})
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${IADE_DEB_PACKAGE_ARCHITECTURE})
+
+# The produced shared object links libcurl, the zlib and the
+# ImagesAnnotatorDataDrivers library, so let dpkg-shlibdeps read those
+# dependencies out of the binary instead of spelling distribution package names
+# out here.
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+
+# the CPACK_SYSTEM_NAME of the default file name names the system alone, so the
+# destination CPU takes its place, followed by the name and the version of the
+# destination system
+include(imagesannotator-dataexporters-package-system)
+
+set(
+  CPACK_PACKAGE_FILE_NAME
+  ${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${IADE_DEB_PACKAGE_ARCHITECTURE}${IADE_PACKAGE_SYSTEM_SUFFIX}
+)
+
+include(CPack)

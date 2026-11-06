@@ -36,7 +36,7 @@ class RealDefaultLogger : public logger::ILogger
   inline static constexpr const char* const defaultLogDateFormat =
       "%Y-%m-%d %H:%M:%S";
 
-  // PROJECT_NAME is the versioned library name here (the PROJECT_LIBRARY_NAME
+  // PROJECT_NAME is the versioned library name here (the IADE_LIBRARY_NAME
   // of the build), so it already keeps two minor versions apart and needs no
   // PROJECT_BUILD_VERSION of its own appended.
   inline static const std::string default_log_name =

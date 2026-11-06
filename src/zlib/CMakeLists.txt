@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 # write the files of the hundreds of megabytes a chunk at a time.
 
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     GzipFileStreams.cpp
     ZlibController.cpp

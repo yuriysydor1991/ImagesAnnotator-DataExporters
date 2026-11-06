@@ -11,7 +11,7 @@ add_executable(
 target_link_libraries(
   CTEST_Exporters
   GTest::gtest_main GTest::gmock
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   # the darknetxx documents the test decompresses itself
   ZLIB::ZLIB
 )

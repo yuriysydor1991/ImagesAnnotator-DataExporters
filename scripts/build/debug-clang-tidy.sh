@@ -5,7 +5,7 @@ BUILD_SCRIPTS_ROOT=$(realpath "$(dirname "$0")")
 
 . "${BUILD_SCRIPTS_ROOT}/common.sh"
 
-${BUILD_SCRIPTS_ROOT}/debug-configure.sh -DENABLE_CLANG_TIDY=ON "$@"
+${BUILD_SCRIPTS_ROOT}/debug-configure.sh -DIADE_ENABLE_CLANG_TIDY=ON "$@"
 
 ${BUILD_SCRIPTS_ROOT}/debug-build.sh "$@"
 

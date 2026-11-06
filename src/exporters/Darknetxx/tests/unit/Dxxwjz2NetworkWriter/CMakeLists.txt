@@ -9,7 +9,7 @@ add_executable(
 target_include_directories(
   UTEST_Dxxwjz2NetworkWriter
   PRIVATE ${GENERAL_MOCKS_ROOT}/project-global-decls
-  PRIVATE ${CMAKE_SOURCE_DIR}
+  PRIVATE ${PROJECT_SOURCE_DIR}
 )
 
 target_link_libraries(

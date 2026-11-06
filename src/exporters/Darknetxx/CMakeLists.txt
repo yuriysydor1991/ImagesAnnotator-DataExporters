@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 # dxxwjz3p training projects, with the writers of their documents
 
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     Dxxwjz2FolderExporter.cpp
     Dxxwjz2NetworkWriter.cpp

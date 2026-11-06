@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # every task shares, and the label file line of each task written on top of it
 
 target_sources(
-  ${PROJECT_LIBRARY_NAME}
+  ${IADE_LIBRARY_NAME}
   PRIVATE
     Ultralytics2FolderExporter.cpp
     UltralyticsDetect2FolderExporter.cpp

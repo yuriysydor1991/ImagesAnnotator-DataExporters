@@ -41,6 +41,7 @@ package "ImagesAnnotatorDataExporters015 (installed interface)" {
   class UltralyticsDetectExportContext
   class UltralyticsObbExportContext
   class UltralyticsSegmentExportContext
+  class Yolo26SegmentExportContext
   class CocoExportContext
   class PascalVocExportContext
   class CreateMLExportContext
@@ -65,6 +66,7 @@ package "ImagesAnnotatorDataExporters015 (installed interface)" {
     +{static} UltralyticsDetectExportContextPtr create_ultralytics_detect_library_context()
     +{static} UltralyticsObbExportContextPtr create_ultralytics_obb_library_context()
     +{static} UltralyticsSegmentExportContextPtr create_ultralytics_segment_library_context()
+    +{static} Yolo26SegmentExportContextPtr create_yolo26_segment_library_context()
     +{static} CocoExportContextPtr create_coco_library_context()
     +{static} PascalVocExportContextPtr create_pascal_voc_library_context()
     +{static} CreateMLExportContextPtr create_createml_library_context()
@@ -93,6 +95,7 @@ package "Implementation (hidden symbols)" #F8F8F8 {
     +UltralyticsDetectExportContextPtr create_ultralytics_detect_library_context()
     +UltralyticsObbExportContextPtr create_ultralytics_obb_library_context()
     +UltralyticsSegmentExportContextPtr create_ultralytics_segment_library_context()
+    +Yolo26SegmentExportContextPtr create_yolo26_segment_library_context()
     +CocoExportContextPtr create_coco_library_context()
     +PascalVocExportContextPtr create_pascal_voc_library_context()
     +CreateMLExportContextPtr create_createml_library_context()
@@ -112,12 +115,14 @@ package "Implementation (hidden symbols)" #F8F8F8 {
   abstract class Ultralytics2FolderExporter {
     +bool export_db(IADataExportersContextPtr ectx)
     #{abstract} void express_rectangle_data(std::fstream&, const IndexType&, const NormalizedRect&)
+    #void express_annotation_data(std::fstream&, const IndexType&, const ImageRecordPtr&, const ImageRecordRectPtr&, const NormalizedRect&)
     #{static} void express_corners(std::fstream&, const IndexType&, const NormalizedRect&)
   }
 
   class UltralyticsDetect2FolderExporter
   class UltralyticsObb2FolderExporter
   class UltralyticsSegment2FolderExporter
+  class Yolo26Segment2FolderExporter
 
   class Coco2FolderExporter {
     +bool export_db(IADataExportersContextPtr ectx)
@@ -212,6 +217,13 @@ note bottom of Ultralytics2FolderExporter
   task changes.
 end note
 
+note bottom of Yolo26Segment2FolderExporter
+  The segmentation layout of the
+  outline of every annotation: the
+  polygon of a segment, the four
+  corners of a rectangle.
+end note
+
 note bottom of Coco2FolderExporter
   The one layout read by something
   other than a YOLO run, and the one
@@ -266,6 +278,7 @@ IExporter <|-- PyTorchVisionFolderExporter
 Ultralytics2FolderExporter <|-- UltralyticsDetect2FolderExporter
 Ultralytics2FolderExporter <|-- UltralyticsObb2FolderExporter
 Ultralytics2FolderExporter <|-- UltralyticsSegment2FolderExporter
+UltralyticsSegment2FolderExporter <|-- Yolo26Segment2FolderExporter
 Yolo42FolderExporter <|-- Dxxwjz2FolderExporter
 Dxxwjz2FolderExporter <|-- Dxxwjz3FolderExporter
 Dxxwjz2pProjectExporter <|-- Dxxwjz3pProjectExporter
@@ -281,6 +294,7 @@ LibFactory ..> Yolo42FolderExporter : creates
 LibFactory ..> UltralyticsDetect2FolderExporter : creates
 LibFactory ..> UltralyticsObb2FolderExporter : creates
 LibFactory ..> UltralyticsSegment2FolderExporter : creates
+LibFactory ..> Yolo26Segment2FolderExporter : creates
 LibFactory ..> Coco2FolderExporter : creates
 LibFactory ..> PascalVoc2FolderExporter : creates
 LibFactory ..> CreateML2FolderExporter : creates
@@ -295,6 +309,7 @@ IADataExportersContext <|-- Yolo4ExportContext
 IADataExportersContext <|-- UltralyticsDetectExportContext
 IADataExportersContext <|-- UltralyticsObbExportContext
 IADataExportersContext <|-- UltralyticsSegmentExportContext
+IADataExportersContext <|-- Yolo26SegmentExportContext
 IADataExportersContext <|-- CocoExportContext
 IADataExportersContext <|-- PascalVocExportContext
 IADataExportersContext <|-- CreateMLExportContext
@@ -309,6 +324,7 @@ LibFactory ..> Yolo4ExportContext : creates and casts to pick
 LibFactory ..> UltralyticsDetectExportContext : creates and casts to pick
 LibFactory ..> UltralyticsObbExportContext : creates and casts to pick
 LibFactory ..> UltralyticsSegmentExportContext : creates and casts to pick
+LibFactory ..> Yolo26SegmentExportContext : creates and casts to pick
 LibFactory ..> CocoExportContext : creates and casts to pick
 LibFactory ..> PascalVocExportContext : creates and casts to pick
 LibFactory ..> CreateMLExportContext : creates and casts to pick

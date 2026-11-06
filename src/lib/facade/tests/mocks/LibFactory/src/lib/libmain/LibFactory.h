@@ -23,6 +23,7 @@
 #include "contexts/UltralyticsDetectExportContext.h"
 #include "contexts/UltralyticsObbExportContext.h"
 #include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo26SegmentExportContext.h"
 #include "contexts/Yolo4ExportContext.h"
 
 namespace iade0impl
@@ -53,6 +54,8 @@ class LibFactorySynthParent
       ImagesAnnotatorDataExporters015::UltralyticsObbExportContextPtr;
   using UltralyticsSegmentExportContextPtr =
       ImagesAnnotatorDataExporters015::UltralyticsSegmentExportContextPtr;
+  using Yolo26SegmentExportContextPtr =
+      ImagesAnnotatorDataExporters015::Yolo26SegmentExportContextPtr;
   using CocoExportContextPtr =
       ImagesAnnotatorDataExporters015::CocoExportContextPtr;
   using PascalVocExportContextPtr =
@@ -83,6 +86,8 @@ class LibFactorySynthParent
   create_ultralytics_obb_library_context() = 0;
   virtual UltralyticsSegmentExportContextPtr
   create_ultralytics_segment_library_context() = 0;
+  virtual Yolo26SegmentExportContextPtr
+  create_yolo26_segment_library_context() = 0;
   virtual CocoExportContextPtr create_coco_library_context() = 0;
   virtual PascalVocExportContextPtr create_pascal_voc_library_context() = 0;
   virtual CreateMLExportContextPtr create_createml_library_context() = 0;
@@ -124,6 +129,8 @@ class LibFactory : public LibFactorySynthParent
               create_ultralytics_obb_library_context, (), (override));
   MOCK_METHOD(UltralyticsSegmentExportContextPtr,
               create_ultralytics_segment_library_context, (), (override));
+  MOCK_METHOD(Yolo26SegmentExportContextPtr,
+              create_yolo26_segment_library_context, (), (override));
   MOCK_METHOD(CocoExportContextPtr, create_coco_library_context, (),
               (override));
   MOCK_METHOD(PascalVocExportContextPtr, create_pascal_voc_library_context, (),

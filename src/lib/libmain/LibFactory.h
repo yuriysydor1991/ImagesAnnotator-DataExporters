@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,6 +46,7 @@
 #include "contexts/UltralyticsDetectExportContext.h"
 #include "contexts/UltralyticsObbExportContext.h"
 #include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo26SegmentExportContext.h"
 #include "contexts/Yolo4ExportContext.h"
 
 namespace iade0impl
@@ -78,6 +79,8 @@ class LibFactory
       ImagesAnnotatorDataExporters015::UltralyticsObbExportContextPtr;
   using UltralyticsSegmentExportContextPtr =
       ImagesAnnotatorDataExporters015::UltralyticsSegmentExportContextPtr;
+  using Yolo26SegmentExportContextPtr =
+      ImagesAnnotatorDataExporters015::Yolo26SegmentExportContextPtr;
   using CocoExportContextPtr =
       ImagesAnnotatorDataExporters015::CocoExportContextPtr;
   using PascalVocExportContextPtr =
@@ -148,6 +151,14 @@ class LibFactory
    */
   virtual UltralyticsSegmentExportContextPtr
   create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Creates an empty context of the Ultralytics YOLO26 segmentation
+   * dataset layout.
+   *
+   * @return Returns an empty Yolo26SegmentExportContext instance.
+   */
+  virtual Yolo26SegmentExportContextPtr create_yolo26_segment_library_context();
 
   /**
    * @brief Creates an empty context of the COCO object detection dataset

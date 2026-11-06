@@ -1,3 +1,4 @@
+#include <ImagesAnnotatorDataDrivers-0.15/ImageRecordSegment.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -10,6 +11,7 @@
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsObb2FolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsSegment2FolderExporter.h"
+#include "src/exporters/Ultralytics/Yolo26Segment2FolderExporter.h"
 
 using namespace testing;
 using iannotator::exporters::IADataExportersContext;
@@ -19,6 +21,8 @@ using iannotator::exporters::ImageRecordsSet;
 using iannotator::exporters::UltralyticsDetect2FolderExporter;
 using iannotator::exporters::UltralyticsObb2FolderExporter;
 using iannotator::exporters::UltralyticsSegment2FolderExporter;
+using iannotator::exporters::Yolo26Segment2FolderExporter;
+using ImagesAnnotatorDataDrivers015::ImageRecordSegment;
 
 namespace
 {
@@ -98,6 +102,16 @@ class UTEST_Ultralytics2FolderExporter : public Test
     provider->records.emplace_back(ir);
   }
 
+  /// @brief Puts one record of the given segment into the database
+  void with_segment(int x, int y, int width, int height,
+                    const ImageRecordRect::Points& points)
+  {
+    with_rect("dog", 0, 0, 1, 1);
+    provider->records.back()->rects.back() =
+        std::make_shared<ImageRecordSegment>("dog", x, y, width, height,
+                                             points);
+  }
+
   std::string label_of(const std::string& stem = "a")
   {
     return read_file(dst / "labels" / "train" / (stem + ".txt"));
@@ -169,6 +183,35 @@ TEST_F(UTEST_Ultralytics2FolderExporter, segment_writes_the_polygon_of_the_box)
   EXPECT_TRUE(UltralyticsSegment2FolderExporter{}.export_db(ctx));
 
   EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
+}
+
+TEST_F(UTEST_Ultralytics2FolderExporter, yolo26_writes_the_segment_polygon)
+{
+  with_segment(50, 20, 100, 40, {{0.0, 0.0}, {1.0, 0.0}, {0.5, 1.0}});
+
+  EXPECT_TRUE(Yolo26Segment2FolderExporter{}.export_db(ctx));
+
+  // (50, 20), (150, 20) and (100, 60) of the 200 by 100 image
+  EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.5 0.6");
+}
+
+TEST_F(UTEST_Ultralytics2FolderExporter, yolo26_writes_the_corners_of_a_rect)
+{
+  with_rect("dog", 50, 20, 100, 40);
+
+  EXPECT_TRUE(Yolo26Segment2FolderExporter{}.export_db(ctx));
+
+  EXPECT_EQ(label_of(), "1 0.25 0.2 0.75 0.2 0.75 0.6 0.25 0.6");
+}
+
+TEST_F(UTEST_Ultralytics2FolderExporter, yolo26_moves_the_points_onto_the_edge)
+{
+  with_segment(-50, -20, 100, 40, {{0.0, 0.0}, {1.0, 0.0}, {1.0, 1.0}});
+
+  EXPECT_TRUE(Yolo26Segment2FolderExporter{}.export_db(ctx));
+
+  // (-50, -20), (50, -20) and (50, 20) end up at (0, 0), (50, 0) and (50, 20)
+  EXPECT_EQ(label_of(), "1 0 0 0.25 0 0.25 0.2");
 }
 
 // An Ultralytics release refuses the whole image over a coordinate outside of

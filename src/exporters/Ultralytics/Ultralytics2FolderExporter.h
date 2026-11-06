@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -49,8 +49,8 @@ namespace iannotator::exporters
  * - v8, v11 and the ones after them - kept, whatever the trained task. What the
  * task does change is the single label file line of a rectangle, which is why
  * that line is the one thing this class leaves to its descendants. See
- * UltralyticsDetect2FolderExporter, UltralyticsObb2FolderExporter and
- * UltralyticsSegment2FolderExporter.
+ * UltralyticsDetect2FolderExporter, UltralyticsObb2FolderExporter,
+ * UltralyticsSegment2FolderExporter and Yolo26Segment2FolderExporter.
  *
  * The darknet directory of Yolo42FolderExporter is a different layout
  * altogether: it names its classes in data/obj.names instead of the descriptor,
@@ -94,6 +94,22 @@ class Ultralytics2FolderExporter : virtual public IExporter,
   virtual void express_rectangle_data(std::fstream& ftxt,
                                       const IndexType& index,
                                       const NormalizedRect& nrect) const = 0;
+
+  /**
+   * @brief Writes the single label file line of one annotation of a record:
+   * the line of its rectangle.
+   *
+   * @param ftxt The open label file of the image the annotation belongs to.
+   * @param index The class index of the annotation name.
+   * @param ir The record the annotation belongs to.
+   * @param irr The annotation.
+   * @param nrect The annotation rectangle, already clamped and normalised.
+   */
+  virtual void express_annotation_data(std::fstream& ftxt,
+                                       const IndexType& index,
+                                       const ImageRecordPtr& ir,
+                                       const ImageRecordRectPtr& irr,
+                                       const NormalizedRect& nrect) const;
 
   /**
    * @brief Writes the class index followed by the four corners of the

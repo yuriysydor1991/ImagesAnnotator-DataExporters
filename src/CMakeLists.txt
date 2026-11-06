@@ -36,6 +36,7 @@ set(IADE_ULTRALYTICS_SRC
   ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/UltralyticsDetect2FolderExporter.cpp
   ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/UltralyticsObb2FolderExporter.cpp
   ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/UltralyticsSegment2FolderExporter.cpp
+  ${IADE_EXPORTERS_SRC_DIR}/Ultralytics/Yolo26Segment2FolderExporter.cpp
 )
 
 set(IADE_COCO_SRC

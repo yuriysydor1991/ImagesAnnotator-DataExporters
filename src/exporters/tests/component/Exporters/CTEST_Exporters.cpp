@@ -244,6 +244,33 @@ TEST_F(CTEST_Exporters, ultralytics_segment_export_writes_the_box_polygon)
             ultralyticsCorners);
 }
 
+// A segment the way the ImagesAnnotator draws one: the polygon of its points
+// makes its rectangle the bounding box of them
+TEST_F(CTEST_Exporters, yolo26_segment_export_writes_the_segment_polygon)
+{
+  auto segment = iadd::IADataDriversFacade::create_records_factory()
+                     ->create_image_segment_record();
+
+  segment->name = "dog";
+  segment->add_point(50.0, 20.0);
+  segment->add_point(150.0, 20.0);
+  segment->add_point(100.0, 60.0);
+
+  db->get_images_db().front()->rects.emplace_back(segment);
+
+  auto ctx = context<iade::Yolo26SegmentExportContext>("yolo26-seg");
+
+  auto exporter = iade::IADataExportersFacade::create_exporter(ctx);
+
+  ASSERT_NE(exporter, nullptr);
+  ASSERT_TRUE(exporter->export_db(ctx));
+
+  EXPECT_TRUE(
+      std::filesystem::is_regular_file(root / "yolo26-seg" / "data.yaml"));
+  EXPECT_EQ(read_file(root / "yolo26-seg" / "labels" / "train" / "a.txt"),
+            ultralyticsCorners + "\n0 0.25 0.2 0.75 0.2 0.5 0.6");
+}
+
 TEST_F(CTEST_Exporters, coco_export_writes_the_pixel_bbox_of_the_rectangle)
 {
   auto ctx = context<iade::CocoExportContext>("coco");

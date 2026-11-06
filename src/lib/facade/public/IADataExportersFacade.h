@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -48,6 +48,7 @@
 #include "contexts/UltralyticsDetectExportContext.h"
 #include "contexts/UltralyticsObbExportContext.h"
 #include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo26SegmentExportContext.h"
 #include "contexts/Yolo4ExportContext.h"
 
 /**
@@ -139,6 +140,14 @@ class IADE_API IADataExportersFacade
    */
   static UltralyticsSegmentExportContextPtr
   create_ultralytics_segment_library_context();
+
+  /**
+   * @brief Factory method to create an empty library context of the
+   * Ultralytics YOLO26 segmentation dataset layout.
+   *
+   * @return Returns a new Yolo26SegmentExportContext class instance.
+   */
+  static Yolo26SegmentExportContextPtr create_yolo26_segment_library_context();
 
   /**
    * @brief Factory method to create an empty library context of the COCO

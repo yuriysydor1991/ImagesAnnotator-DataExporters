@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -317,8 +317,8 @@ bool Ultralytics2FolderExporter::express_image_annotations(
       continue;
     }
 
-    express_rectangle_data(ftxt, std::distance(aList.begin(), classIter),
-                           nrect);
+    express_annotation_data(ftxt, std::distance(aList.begin(), classIter), ir,
+                            irr, nrect);
   }
 
   ftxt.close();
@@ -349,6 +349,15 @@ bool Ultralytics2FolderExporter::normalize(const ImageRecordPtr& ir,
   nrect.bottom = std::clamp(y2, 0.0, iheight) / iheight;
 
   return nrect.left < nrect.right && nrect.top < nrect.bottom;
+}
+
+void Ultralytics2FolderExporter::express_annotation_data(
+    std::fstream& ftxt, const IndexType& index,
+    [[maybe_unused]] const ImageRecordPtr& ir,
+    [[maybe_unused]] const ImageRecordRectPtr& irr,
+    const NormalizedRect& nrect) const
+{
+  express_rectangle_data(ftxt, index, nrect);
 }
 
 void Ultralytics2FolderExporter::express_corners(std::fstream& ftxt,

@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -85,6 +85,16 @@ IADataExportersFacade::create_ultralytics_segment_library_context()
   assert(libFactory != nullptr);
 
   return libFactory->create_ultralytics_segment_library_context();
+}
+
+Yolo26SegmentExportContextPtr
+IADataExportersFacade::create_yolo26_segment_library_context()
+{
+  auto libFactory = iade0impl::LibFactory::create_factory();
+
+  assert(libFactory != nullptr);
+
+  return libFactory->create_yolo26_segment_library_context();
 }
 
 CocoExportContextPtr IADataExportersFacade::create_coco_library_context()

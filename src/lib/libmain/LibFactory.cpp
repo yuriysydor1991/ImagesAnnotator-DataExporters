@@ -1,7 +1,7 @@
 /**
  * The "Simplified BSD License"
  *
- * Copyright (c) 2025, Yurii Sydor (yuriysydor1991@gmail.com)
+ * Copyright (c) 2025, 2026, Yurii Sydor (yuriysydor1991@gmail.com)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,7 @@
 #include "contexts/UltralyticsDetectExportContext.h"
 #include "contexts/UltralyticsObbExportContext.h"
 #include "contexts/UltralyticsSegmentExportContext.h"
+#include "contexts/Yolo26SegmentExportContext.h"
 #include "contexts/Yolo4ExportContext.h"
 #include "src/croppers/ImageCropperFactory.h"
 #include "src/exporters/Coco/Coco2FolderExporter.h"
@@ -56,6 +57,7 @@
 #include "src/exporters/Ultralytics/UltralyticsDetect2FolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsObb2FolderExporter.h"
 #include "src/exporters/Ultralytics/UltralyticsSegment2FolderExporter.h"
+#include "src/exporters/Ultralytics/Yolo26Segment2FolderExporter.h"
 #include "src/exporters/Yolo4/Yolo42FolderExporter.h"
 #include "src/lib/libmain/LibMain.h"
 #include "src/log/log.h"
@@ -97,6 +99,12 @@ LibFactory::UltralyticsSegmentExportContextPtr
 LibFactory::create_ultralytics_segment_library_context()
 {
   return std::make_shared<UltralyticsSegmentExportContext>();
+}
+
+LibFactory::Yolo26SegmentExportContextPtr
+LibFactory::create_yolo26_segment_library_context()
+{
+  return std::make_shared<Yolo26SegmentExportContext>();
 }
 
 LibFactory::CocoExportContextPtr LibFactory::create_coco_library_context()
@@ -181,6 +189,11 @@ LibFactory::IExporterPtr LibFactory::create_exporter(
       nullptr) {
     return std::make_shared<
         iannotator::exporters::UltralyticsSegment2FolderExporter>();
+  }
+
+  if (std::dynamic_pointer_cast<Yolo26SegmentExportContext>(ctx) != nullptr) {
+    return std::make_shared<
+        iannotator::exporters::Yolo26Segment2FolderExporter>();
   }
 
   if (std::dynamic_pointer_cast<CocoExportContext>(ctx) != nullptr) {

@@ -17,10 +17,10 @@ Each of the scripts below performs the configure, the build and the install step
 | [release.sh](/scripts/build/release.sh) | the `Release` build |
 | [debug.sh](/scripts/build/debug.sh) | the `Debug` build with the tests, the documentation and the `cppcheck` enabled |
 | [debug-cppcheck.sh](/scripts/build/debug-cppcheck.sh) | the `Debug` build of the `cppcheck` target |
-| [debug-clang-tidy.sh](/scripts/build/debug-clang-tidy.sh) | the `Debug` build with the `ENABLE_CLANG_TIDY` option |
-| [debug-sanitizers.sh](/scripts/build/debug-sanitizers.sh) | the `Debug` build with the `ENABLE_SANITIZERS` option |
-| [debug-sanitizers-threads.sh](/scripts/build/debug-sanitizers-threads.sh) | the `Debug` build with the `ENABLE_SANITIZERS_THREADS` option |
-| [debug-compiler-analyzer.sh](/scripts/build/debug-compiler-analyzer.sh) | the `Debug` build with the `ENABLE_COMPILER_CODE_ANALYZER` option |
+| [debug-clang-tidy.sh](/scripts/build/debug-clang-tidy.sh) | the `Debug` build with the `IADE_ENABLE_CLANG_TIDY` option |
+| [debug-sanitizers.sh](/scripts/build/debug-sanitizers.sh) | the `Debug` build with the `IADE_ENABLE_SANITIZERS` option |
+| [debug-sanitizers-threads.sh](/scripts/build/debug-sanitizers-threads.sh) | the `Debug` build with the `IADE_ENABLE_SANITIZERS_THREADS` option |
+| [debug-compiler-analyzer.sh](/scripts/build/debug-compiler-analyzer.sh) | the `Debug` build with the `IADE_ENABLE_COMPILER_CODE_ANALYZER` option |
 
 The [debug-cppcheck.sh](/scripts/build/debug-cppcheck.sh) script builds a single CMake target which the test executables are not a part of, so it performs no test step at all.
 
@@ -59,7 +59,7 @@ Any `-D<variable>=<value>` argument is passed to the configure step, which makes
 # inside the project root directory
 
 # the Release build with the DEB package generation enabled
-scripts/build/release.sh -DENABLE_DEB=ON
+scripts/build/release.sh -DIADE_ENABLE_DEB=ON
 
 # the same build reusing the already configured build directory,
 # followed by the installation into the /usr prefix

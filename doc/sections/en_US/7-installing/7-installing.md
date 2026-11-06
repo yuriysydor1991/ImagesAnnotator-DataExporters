@@ -143,7 +143,7 @@ which looks like next:
 ```
 # inside the project build directory
 
-cmake ../ -DENABLE_DOC_DOXYGEN=ON -DDOXYGEN_DO_INSTALL=ON
+cmake ../ -DIADE_ENABLE_DOC_DOXYGEN=ON -DIADE_DOXYGEN_DO_INSTALL=ON
 ```
 
 then the generated HTML files are installed under `<prefix>/share/docs` as the

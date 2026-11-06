@@ -27,4 +27,4 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix>
 cmake --build build -j$(nproc)
 ```
 
-Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) для деталей, включно зі змінною `IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE`, яка перевизначає ім'я пакунка, що шукається.
+Переглянь підсекцію [Залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) для деталей, включно зі змінною `IADE_DATA_DRIVERS_PACKAGE`, яка перевизначає ім'я пакунка, що шукається.

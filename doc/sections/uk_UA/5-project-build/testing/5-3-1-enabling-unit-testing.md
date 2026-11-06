@@ -1,9 +1,9 @@
 ### Вмикання юніт-тестів
 
-Для того щоб зробити юніт тестування доступним (для побудови і запуску) необхідно перекорфігурувати проект-шаблон з увімкненою опцією `ENABLE_UNIT_TESTS` за допомогою команди (для GNU/Linux):
+Для того щоб зробити юніт тестування доступним (для побудови і запуску) необхідно перекорфігурувати проект-шаблон з увімкненою опцією `IADE_ENABLE_UNIT_TESTS` за допомогою команди (для GNU/Linux):
 
 ```
 # у кореневій директорії проекту
 
-mkdir -vp build && cd build && cmake ../ -DENABLE_UNIT_TESTS=ON && cmake --build . --target all
+mkdir -vp build && cd build && cmake ../ -DIADE_ENABLE_UNIT_TESTS=ON && cmake --build . --target all
 ```

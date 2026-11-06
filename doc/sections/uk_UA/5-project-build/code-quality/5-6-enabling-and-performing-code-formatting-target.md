@@ -1,11 +1,11 @@
 ## Вмикання підтримки форматування коду
 
-Для того щоб зробити доступною ціль `clang-format` необхідно встановити змінну `ENABLE_CLANGFORMAT` у значення `ON` під час конфігурації проекту-шаблону (для GNU/Linux ОС):
+Для того щоб зробити доступною ціль `clang-format` необхідно встановити змінну `IADE_ENABLE_CLANGFORMAT` у значення `ON` під час конфігурації проекту-шаблону (для GNU/Linux ОС):
 
 ```
 # всередині кореня проекту-шаблону
 
-mkdir -vp build && cd build && cmake ../ -DENABLE_CLANGFORMAT=ON
+mkdir -vp build && cd build && cmake ../ -DIADE_ENABLE_CLANGFORMAT=ON
 ```
 
 Для того щоб виконати форматування коду усього проекту-шаблону у відповідності до стандартів вказаних у файлі `misc/.clang-format` необхідно виконати наступну команду:
@@ -16,4 +16,4 @@ mkdir -vp build && cd build && cmake ../ -DENABLE_CLANGFORMAT=ON
 cmake --build . --target clang-format
 ```
 
-Деталі цілі `clang-format` можна перегляну у файлі `cmake/template-project-clang-format-target.cmake` субмодуля системи CMake.
+Деталі цілі `clang-format` можна перегляну у файлі `cmake/imagesannotator-dataexporters-clang-format-target.cmake` субмодуля системи CMake.

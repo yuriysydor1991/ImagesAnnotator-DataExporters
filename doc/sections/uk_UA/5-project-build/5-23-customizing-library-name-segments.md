@@ -10,9 +10,9 @@
 
 | Опція | За замовчуванням | Ефект |
 |---|---|---|
-| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ON` | Додає `.<minor>` до імені бібліотеки |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `OFF` | Додає `.<micro>` (вмикає прапорець minor неявно) |
-| `-DLIB_NAME_SUFFIX=-dev` | `""` | Додає довільний завершальний суфікс |
+| `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ON` | Додає `.<minor>` до імені бібліотеки |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `OFF` | Додає `.<micro>` (вмикає прапорець minor неявно) |
+| `-DIADE_LIB_NAME_SUFFIX=-dev` | `""` | Додає довільний завершальний суфікс |
 
 Складова minor включена за замовчуванням, оскільки простір імен публічного API
 несе у собі пару "мажорна і мінорна версія" (`ImagesAnnotatorDataExporters015`),
@@ -25,10 +25,10 @@
 | Прапорці конфігурації | Імʼя бібліотеки | Згенерований бінарник |
 |---|---|---|
 | (немає) | `ImagesAnnotatorDataExporters-0.15` | `libImagesAnnotatorDataExporters-0.15.so` |
-| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
-| `-DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
+| `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
+| `-DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
 
 Приклад поєднаної конфігурації:
 
@@ -37,8 +37,8 @@
 
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/шлях/до/префіксу/встановлення/драйверів/даних \
-  -DLIB_INCLUDE_MICRO_IN_NAME=ON \
-  -DLIB_NAME_SUFFIX=-dev
+  -DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON \
+  -DIADE_LIB_NAME_SUFFIX=-dev
 cmake --build build -j$(nproc)
 cmake --install build --prefix /usr/local
 ```
@@ -62,13 +62,13 @@ REQUIRED)` для типового встановлення і має вжива
 `ImagesAnnotatorDataExporters015`, цими опціями не змінюється.
 
 Виведення імʼя реалізоване у
-[cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake)
-і доступне як CMake cache-змінна `PROJECT_LIBRARY_NAME`, яку використовує решта
+[cmake/imagesannotator-dataexporters-misc-variables-declare.cmake](/cmake/imagesannotator-dataexporters-misc-variables-declare.cmake)
+і доступне як CMake cache-змінна `IADE_LIBRARY_NAME`, яку використовує решта
 системи побудови, включно з іменем директорії HTML-виводу Doxygen. Вмикання
-`LIB_INCLUDE_MICRO_IN_NAME` без `LIB_INCLUDE_MINOR_IN_NAME` спричиняє
+`IADE_LIB_INCLUDE_MICRO_IN_NAME` без `IADE_LIB_INCLUDE_MINOR_IN_NAME` спричиняє
 попередження на стадії конфігурування, а прапорець minor вмикається неявно щоб
 згенероване імʼя залишалось синтаксично коректним.
 
 Імʼя [залежності від драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md)
 не залежить від цих опцій: воно обирається окремою cache-змінною
-`IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE`.
+`IADE_DATA_DRIVERS_PACKAGE`.

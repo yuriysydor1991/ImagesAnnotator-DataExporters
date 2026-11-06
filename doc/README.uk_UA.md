@@ -124,7 +124,9 @@ int main(int argc, char** argv)
 
 Імʼя простору імен `ImagesAnnotatorDataExporters015` навмисно несе номери мажорної й мінорної версій бібліотеки: дві версії бібліотеки можуть співіснувати всередині однієї одиниці трансляції без жодного зіткнення символів. Признач йому скорочення, як показано вище, і підняття версії залишиться зміною в один рядок на твоєму боці.
 
-Для встановленого споживача працюють обидва написання - і `#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>`, і просте `#include <IADataExportersFacade.h>`, оскільки бібліотека експортує корінь підключення разом зі своєю версійованою субдиректорією. Рекомендованим є написання з префіксом: `IExporter.h` і `ExportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
+Для встановленого споживача, як і для підключеного через FetchContent, працюють обидва написання - і `#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>`, і просте `#include <IADataExportersFacade.h>`, оскільки бібліотека експортує корінь підключення разом зі своєю версійованою субдиректорією (а її дерево побудови перенаправляє цю субдиректорію до публічних заголовків). Рекомендованим є написання з префіксом: `IExporter.h` і `ExportersAPI.h` достатньо загальні щоб зіткнутись у насиченому шляху підключення, а префікс закріплює версію бібліотеки, з якою розмовляє одиниця трансляції.
+
+Бібліотеку не обов'язково й встановлювати заздалегідь: проект може підключити її через CMake `FetchContent` і лінкувати ту саму ціль, див. частину [Підключення бібліотеки через FetchContent](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md#підключення-бібліотеки-через-fetchcontent) секції використання бібліотеки.
 
 Більше про API і про згенеровані набори даних - у секціях документації [API експортерів наборів даних](/doc/sections/uk_UA/4-project-structure/4-9-the-dataset-exporters-api.md), [розкладки згенерованих наборів даних](/doc/sections/uk_UA/4-project-structure/4-10-the-produced-dataset-layouts.md) і [використання бібліотеки у власному проекті](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md).
 
@@ -135,14 +137,14 @@ int main(int argc, char** argv)
 | CMake-опція | Бібліотека | Навіщо вона потрібна |
 | --- | --- | --- |
 | (завжди увімкнено) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | вона оголошує базу даних анотацій і записи зображень, які читають експортери |
-| `ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | вона попередньо звантажує записи зображень, які вказують на вебадресу замість локального файлу |
-| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | вона компресує gzip-файли dxxwjz [darknetxx](https://github.com/yuriysydor1991/darknetxx), які пишуть розкладки darknetxx |
+| `IADE_ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | вона попередньо звантажує записи зображень, які вказують на вебадресу замість локального файлу |
+| `IADE_ENABLE_ZLIB` | [zlib](https://zlib.net/) | вона компресує gzip-файли dxxwjz [darknetxx](https://github.com/yuriysydor1991/darknetxx), які пишуть розкладки darknetxx |
 
 libcurl спершу шукається у системі, і коли її не знайдено - затягується через CMake `FetchContent`; переглянь секцію [вмикання інтеграції libcurl](/doc/sections/uk_UA/5-project-build/5-14-enabling-libcurl.md) щодо змінних заміни джерела і теґу. Вона лінкується **приватно**: жоден публічний заголовок не відкриває curl-типів.
 
 zlib шукається і завантажується так само і так само лінкується **приватно**. Бібліотека звертається до неї через `ZlibController` з [src/zlib](/src/zlib), компонент контролера zlib з гілки `appZlib` [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) в адаптації, яку зробив з нього darknetxx - див. секцію [вмикання бібліотеки zlib](/doc/sections/uk_UA/5-project-build/5-39-enabling-the-zlib-library.md).
 
-Бібліотека драйверів даних відрізняється. Вона має бути встановлена заздалегідь, знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.15 REQUIRED CONFIG)` і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
+Бібліотека драйверів даних відрізняється. Вона або встановлюється заздалегідь і знаходиться через `find_package(ImagesAnnotatorDataDrivers-0.15 REQUIRED CONFIG)`, або підключається через FetchContent проекту, що підключає цю бібліотеку, перед нею, і лінкується **публічно**, оскільки встановлювані заголовки цієї бібліотеки згадують її типи записів. Вкажи конфігуруванню її префікс встановлення за допомогою `-DCMAKE_PREFIX_PATH=<prefix>`, коли вона не міститься у типовому системному префіксі. Секція [залежність від бібліотеки драйверів даних](/doc/sections/uk_UA/5-project-build/5-36-the-data-drivers-dependency.md) розкриває це повністю, включно з іменем пакунка.
 
 Компонент журналювання компілюється прямо у спільну бібліотеку, тож споживач не має надавати жодної реалізації журналювання.
 
@@ -159,12 +161,12 @@ cmake --build build -j$(nproc)
 
 ```
 cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/iadd-install \
-  -DENABLE_UNIT_TESTS=ON -DENABLE_COMPONENT_TESTS=ON
+  -DIADE_ENABLE_UNIT_TESTS=ON -DIADE_ENABLE_COMPONENT_TESTS=ON
 cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-З обома увімкненими опціями набір містить 251 тестовий випадок. Цілі `ENABLE_UNIT_TESTS` компілюються прямо із сирців проти gmock-замінників з [src/tests/mocks](/src/tests/mocks), тоді як `CTEST_Exporters` з `ENABLE_COMPONENT_TESTS` лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки - точно як це робить проект нижче за течією.
+З обома увімкненими опціями набір містить 251 тестовий випадок. Цілі `IADE_ENABLE_UNIT_TESTS` компілюються прямо із сирців проти gmock-замінників з [src/tests/mocks](/src/tests/mocks), тоді як `CTEST_Exporters` з `IADE_ENABLE_COMPONENT_TESTS` лінкує справжню спільну бібліотеку і керує нею винятково через публічні заголовки - точно як це робить проект нижче за течією.
 
 Встановлення - звичайне `sudo cmake --install build`, докладно описане у секції [встановлення](/doc/sections/uk_UA/7-installing/7-installing.md).
 

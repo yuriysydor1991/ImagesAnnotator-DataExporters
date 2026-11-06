@@ -17,10 +17,10 @@
 | [release.sh](/scripts/build/release.sh) | побудову `Release` |
 | [debug.sh](/scripts/build/debug.sh) | побудову `Debug` з увімкненими тестами, документацією і `cppcheck` |
 | [debug-cppcheck.sh](/scripts/build/debug-cppcheck.sh) | побудову `Debug` цілі `cppcheck` |
-| [debug-clang-tidy.sh](/scripts/build/debug-clang-tidy.sh) | побудову `Debug` з параметром `ENABLE_CLANG_TIDY` |
-| [debug-sanitizers.sh](/scripts/build/debug-sanitizers.sh) | побудову `Debug` з параметром `ENABLE_SANITIZERS` |
-| [debug-sanitizers-threads.sh](/scripts/build/debug-sanitizers-threads.sh) | побудову `Debug` з параметром `ENABLE_SANITIZERS_THREADS` |
-| [debug-compiler-analyzer.sh](/scripts/build/debug-compiler-analyzer.sh) | побудову `Debug` з параметром `ENABLE_COMPILER_CODE_ANALYZER` |
+| [debug-clang-tidy.sh](/scripts/build/debug-clang-tidy.sh) | побудову `Debug` з параметром `IADE_ENABLE_CLANG_TIDY` |
+| [debug-sanitizers.sh](/scripts/build/debug-sanitizers.sh) | побудову `Debug` з параметром `IADE_ENABLE_SANITIZERS` |
+| [debug-sanitizers-threads.sh](/scripts/build/debug-sanitizers-threads.sh) | побудову `Debug` з параметром `IADE_ENABLE_SANITIZERS_THREADS` |
+| [debug-compiler-analyzer.sh](/scripts/build/debug-compiler-analyzer.sh) | побудову `Debug` з параметром `IADE_ENABLE_COMPILER_CODE_ANALYZER` |
 
 Скрипт [debug-cppcheck.sh](/scripts/build/debug-cppcheck.sh) будує окрему ціль CMake, до складу якої виконувані файли тестів не входять, отож він кроку тестування не виконує зовсім.
 
@@ -59,7 +59,7 @@ scripts/build/release.sh
 # в середині кореневої директорії проекту
 
 # побудова Release з увімкненою генерацією DEB-пакунка
-scripts/build/release.sh -DENABLE_DEB=ON
+scripts/build/release.sh -DIADE_ENABLE_DEB=ON
 
 # та ж побудова з повторним використанням вже сконфігурованої
 # директорії побудови і наступним встановленням у префікс /usr

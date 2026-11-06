@@ -55,7 +55,7 @@ sudo cmake --install . --prefix "/usr/bin"
 ```
 # з директорії побудови проекту
 
-cmake ../ -DENABLE_DOC_DOXYGEN=ON -DDOXYGEN_DO_INSTALL=ON
+cmake ../ -DIADE_ENABLE_DOC_DOXYGEN=ON -DIADE_DOXYGEN_DO_INSTALL=ON
 ```
 
 Команда інсталяції (наприклад, та яка показана у секції [Встановлення в директорію по замовчуванню](#встановлення-в-директорію-по-замовчуванню)) встановить згенеровану HTML документацію у відповідні директорії.

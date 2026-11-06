@@ -10,9 +10,9 @@ parallel installs of distinct versions of the library coexist on the same host
 
 | Option | Default | Effect |
 |---|---|---|
-| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ON` | Appends `.<minor>` to the library name |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `OFF` | Appends `.<micro>` (implies the minor flag) |
-| `-DLIB_NAME_SUFFIX=-dev` | `""` | Appends an arbitrary trailing tag |
+| `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ON` | Appends `.<minor>` to the library name |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `OFF` | Appends `.<micro>` (implies the minor flag) |
+| `-DIADE_LIB_NAME_SUFFIX=-dev` | `""` | Appends an arbitrary trailing tag |
 
 The minor segment is included by default because the public API namespace
 carries the major and the minor version pair (`ImagesAnnotatorDataExporters015`)
@@ -26,10 +26,10 @@ Resulting names for this `0.15.0` project:
 | Configure flags | Library name | Produced binary |
 |---|---|---|
 | (none) | `ImagesAnnotatorDataExporters-0.15` | `libImagesAnnotatorDataExporters-0.15.so` |
-| `-DLIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
-| `-DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
-| `-DLIB_INCLUDE_MICRO_IN_NAME=ON -DLIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
+| `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
+| `-DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
 
 Combined configure example:
 
@@ -38,8 +38,8 @@ Combined configure example:
 
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
-  -DLIB_INCLUDE_MICRO_IN_NAME=ON \
-  -DLIB_NAME_SUFFIX=-dev
+  -DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON \
+  -DIADE_LIB_NAME_SUFFIX=-dev
 cmake --build build -j$(nproc)
 cmake --install build --prefix /usr/local
 ```
@@ -64,13 +64,13 @@ when the segments were changed. The C++ namespace of the sources,
 `ImagesAnnotatorDataExporters015`, is not affected by these options.
 
 The derivation lives in
-[cmake/template-project-misc-variables-declare.cmake](/cmake/template-project-misc-variables-declare.cmake)
-and is published as the `PROJECT_LIBRARY_NAME` CMake cache entry that the rest
+[cmake/imagesannotator-dataexporters-misc-variables-declare.cmake](/cmake/imagesannotator-dataexporters-misc-variables-declare.cmake)
+and is published as the `IADE_LIBRARY_NAME` CMake cache entry that the rest
 of the build system consumes, including the Doxygen HTML output directory name.
-Enabling `LIB_INCLUDE_MICRO_IN_NAME` without `LIB_INCLUDE_MINOR_IN_NAME`
+Enabling `IADE_LIB_INCLUDE_MICRO_IN_NAME` without `IADE_LIB_INCLUDE_MINOR_IN_NAME`
 triggers a configure-time warning and the minor flag is enabled implicitly to
 keep the produced name syntactically valid.
 
 The name of the [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md)
 is independent from these options: it is chosen with the separate
-`IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE` cache variable.
+`IADE_DATA_DRIVERS_PACKAGE` cache variable.

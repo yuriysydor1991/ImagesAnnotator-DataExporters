@@ -124,7 +124,9 @@ int main(int argc, char** argv)
 
 The `ImagesAnnotatorDataExporters015` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>` and a plain `#include <IADataExportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
+Both `#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>` and a plain `#include <IADataExportersFacade.h>` work for an installed consumer and for a FetchContent one alike, since the library exports the include root along with its versioned subdirectory (and its build tree forwards that subdirectory to the public headers). The prefixed form is the recommended one: `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
+
+The library does not have to be installed beforehand either: a project may take it in by the CMake `FetchContent` and link the very same target, see the [Taking the library in by the FetchContent](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md#taking-the-library-in-by-the-fetchcontent) part of the using the library section.
 
 More on the API and on the produced datasets is in the [dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md), the [produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) and the [using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) documentation sections.
 
@@ -135,14 +137,14 @@ All three of the following are **mandatory** for the library to build:
 | CMake option | Library | Why it is needed |
 | --- | --- | --- |
 | (always on) | [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) | it defines the annotations database and the image records the exporters read |
-| `ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | it preloads the image records that point at a web URL instead of a local file |
-| `ENABLE_ZLIB` | [zlib](https://zlib.net/) | it compresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts write |
+| `IADE_ENABLE_LIBCURL` | [libcurl](https://curl.se/libcurl/) | it preloads the image records that point at a web URL instead of a local file |
+| `IADE_ENABLE_ZLIB` | [zlib](https://zlib.net/) | it compresses the gzip [darknetxx](https://github.com/yuriysydor1991/darknetxx) dxxwjz files the darknetxx layouts write |
 
 The libcurl is first probed system wide and, when it is not found, is pulled by the CMake `FetchContent` - see the [enabling the libcurl](/doc/sections/en_US/5-project-build/5-14-enabling-libcurl.md) section for the source and tag overriding variables. It is linked **privately**: no public header exposes a curl type.
 
 The zlib is probed and fetched the same way and linked **privately** as well. It is reached through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 
-The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.15 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library is different. It is either installed beforehand and resolved with `find_package(ImagesAnnotatorDataDrivers-0.15 REQUIRED CONFIG)`, or taken in by the FetchContent of the including project before this library, and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
 The logging component is compiled straight into the shared library, so no logger implementation has to be supplied by the consumer.
 
@@ -159,12 +161,12 @@ The tests are off by default. To build and run them:
 
 ```
 cmake -S . -B build -DCMAKE_PREFIX_PATH=$HOME/iadd-install \
-  -DENABLE_UNIT_TESTS=ON -DENABLE_COMPONENT_TESTS=ON
+  -DIADE_ENABLE_UNIT_TESTS=ON -DIADE_ENABLE_COMPONENT_TESTS=ON
 cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```
 
-With both options on the suite holds 251 test cases. The `ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
+With both options on the suite holds 251 test cases. The `IADE_ENABLE_UNIT_TESTS` targets are compiled straight from the sources against the gmock stand-ins of [src/tests/mocks](/src/tests/mocks), while the `IADE_ENABLE_COMPONENT_TESTS` `CTEST_Exporters` links the real shared library and drives it through the public headers only - exactly the way a downstream project does.
 
 Installing is a usual `sudo cmake --install build`, described in detail in the [installing](/doc/sections/en_US/7-installing/7-installing.md) section.
 

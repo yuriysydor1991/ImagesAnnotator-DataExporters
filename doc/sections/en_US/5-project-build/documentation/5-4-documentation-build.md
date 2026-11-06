@@ -5,14 +5,14 @@ auto-generate an API reference with the Doxygen tool from the comments of the
 sources and of the installable public headers.
 
 To add the Doxygen CMake target during the configure stage set the
-`ENABLE_DOC_DOXYGEN` CMake variable to `ON` (GNU/Linux based):
+`IADE_ENABLE_DOC_DOXYGEN` CMake variable to `ON` (GNU/Linux based):
 
 ```
 # inside the project root directory
 
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
-  -DENABLE_DOC_DOXYGEN=ON
+  -DIADE_ENABLE_DOC_DOXYGEN=ON
 ```
 
 The configure fails when no Doxygen is installed, because
@@ -31,27 +31,27 @@ That generates the `doc/ImagesAnnotatorDataExporters-0.15-html` directory (the
 `doc/*-html` pattern is already in `.gitignore`) holding the HTML
 documentation; open its `index.html` file to examine the result.
 
-The directory name is `<PROJECT_LIBRARY_NAME>-html`, so it follows the
+The directory name is `<IADE_LIBRARY_NAME>-html`, so it follows the
 installable library name: a configure with
-`-DLIB_INCLUDE_MINOR_IN_NAME=ON` produces
+`-DIADE_LIB_INCLUDE_MINOR_IN_NAME=ON` produces
 `doc/ImagesAnnotatorDataExporters-0.15-html` instead - see
 [Customizing the installable library name segments](/doc/sections/en_US/5-project-build/5-23-customizing-library-name-segments.md).
-The name can also be set directly with the `DOXYGEN_OUT_HTML_NAME` cache
-variable, and the parent directory with `DOXYGEN_OUTPUT_DIR` (it defaults to
+The name can also be set directly with the `IADE_DOXYGEN_OUT_HTML_NAME` cache
+variable, and the parent directory with `IADE_DOXYGEN_OUTPUT_DIR` (it defaults to
 the `doc` directory of the source tree).
 
-The output language is selected with `DOXYGEN_OUTPUT_LANGUAGE`, which defaults
+The output language is selected with `IADE_DOXYGEN_OUTPUT_LANGUAGE`, which defaults
 to `English`. Setting it to `Ukrainian` also switches the documentation home
 page to `doc/README.uk_UA.md`; otherwise the page is taken from the file named
-by `DOXYGEN_MAIN_PAGE_MD`, by default the top level `README.md`.
+by `IADE_DOXYGEN_MAIN_PAGE_MD`, by default the top level `README.md`.
 
 ```
 # inside the project root directory
 
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
-  -DENABLE_DOC_DOXYGEN=ON \
-  -DDOXYGEN_OUTPUT_LANGUAGE=Ukrainian
+  -DIADE_ENABLE_DOC_DOXYGEN=ON \
+  -DIADE_DOXYGEN_OUTPUT_LANGUAGE=Ukrainian
 cmake --build build --target Doxygen-doc
 ```
 

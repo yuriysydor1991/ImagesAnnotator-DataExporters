@@ -26,4 +26,4 @@ installed into a location CMake searches by default, for example `/usr` or
 
 There is no application to launch: the project produces a shared library, so
 the `Run` button is only useful for the test executables built with
-`ENABLE_UNIT_TESTS` or `ENABLE_COMPONENT_TESTS`.
+`IADE_ENABLE_UNIT_TESTS` or `IADE_ENABLE_COMPONENT_TESTS`.

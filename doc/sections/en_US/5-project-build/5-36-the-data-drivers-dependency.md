@@ -12,11 +12,11 @@ does not configure.
 
 ### How CMake resolves it
 
-The [cmake/enablers/template-project-data-drivers-enabler.cmake](/cmake/enablers/template-project-data-drivers-enabler.cmake)
+The [cmake/enablers/imagesannotator-dataexporters-data-drivers-enabler.cmake](/cmake/enablers/imagesannotator-dataexporters-data-drivers-enabler.cmake)
 module resolves the package with
 
 ```
-find_package(${IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
+find_package(${IADE_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
 ```
 
 It runs during the pre-`src/` enabler pass, that is before the library target
@@ -25,20 +25,26 @@ link the imported target directly. The module also composes the imported target
 name into the `IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET` variable, which by default
 expands to `ImagesAnnotatorDataDrivers-0.15::ImagesAnnotatorDataDrivers-0.15`.
 
-### The IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE cache variable
+The `find_package()` is skipped when that target exists already: a project which
+takes both the data drivers and this library in by the FetchContent (the data
+drivers first) builds them together, see the [Taking the library in by the
+FetchContent](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md#taking-the-library-in-by-the-fetchcontent)
+part of the using the library section.
+
+### The IADE_DATA_DRIVERS_PACKAGE cache variable
 
 The package name is not hardcoded. It sits in the
-`IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE` cache variable, whose default value is
+`IADE_DATA_DRIVERS_PACKAGE` cache variable, whose default value is
 `ImagesAnnotatorDataDrivers-0.15` - the name a stock data drivers install
-carries, because that project ships with `LIB_INCLUDE_MINOR_IN_NAME=ON` just
+carries, because that project ships with `IADD_LIB_INCLUDE_MINOR_IN_NAME=ON` just
 like this one. Override it when building against an install whose name segments
 were customised, for instance one configured with
-`LIB_INCLUDE_MINOR_IN_NAME=OFF` or with a `LIB_NAME_SUFFIX`:
+`IADD_LIB_INCLUDE_MINOR_IN_NAME=OFF` or with a `IADD_LIB_NAME_SUFFIX`:
 
 ```
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
-  -DIMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE=ImagesAnnotatorDataDrivers-0
+  -DIADE_DATA_DRIVERS_PACKAGE=ImagesAnnotatorDataDrivers-0
 ```
 
 The imported target name follows the overridden package name automatically. The
@@ -96,7 +102,7 @@ CMake Error: Could not find a package configuration file provided by
 
 Unlike every other dependency of this project, the data drivers library is
 linked `PUBLIC` by
-[cmake/enablers/template-project-data-drivers-linker.cmake](/cmake/enablers/template-project-data-drivers-linker.cmake).
+[cmake/enablers/imagesannotator-dataexporters-data-drivers-linker.cmake](/cmake/enablers/imagesannotator-dataexporters-data-drivers-linker.cmake).
 The installable headers `IADataExportersContext.h` and `IImageCropperFacility.h` under
 [src/lib/facade/public](/src/lib/facade/public) name the data drivers record
 types, so a consumer of this library needs both its include directories and its

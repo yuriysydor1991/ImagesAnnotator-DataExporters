@@ -7,20 +7,20 @@ A consumer that has no imaging stack to lend was stuck. So, when the build finds
 ### The option
 
 ```
-cmake -S . -B build -DENABLE_OPENCV=ON
+cmake -S . -B build -DIADE_ENABLE_OPENCV=ON
 ```
 
-`ENABLE_OPENCV` defaults to `ON`, and `ON` means *probe*, not *require*. The dependency is optional in both directions:
+`IADE_ENABLE_OPENCV` defaults to `ON`, and `ON` means *probe*, not *require*. The dependency is optional in both directions:
 
 | Situation | Result |
 | --- | --- |
 | OpenCV is installed | the cropper is compiled in and the library links `core` and `imgcodecs` |
 | OpenCV is not installed | the configure succeeds, prints why, and the library is built without the cropper |
-| `-DENABLE_OPENCV=OFF` | the probe is skipped entirely, with the same result |
+| `-DIADE_ENABLE_OPENCV=OFF` | the probe is skipped entirely, with the same result |
 
 Nothing fails a configure over it. A missing OpenCV only means the export keeps asking its consumer for a cropper, exactly as it did before this one existed.
 
-Point the probe at a prefix of your own with `-DOpenCV_DIR=<dir>` when the installation is not in a system default place, and narrow or widen the components it asks for with `-DTEMPLATE_APP_OPENCV_COMPONENTS="core;imgcodecs"`.
+Point the probe at a prefix of your own with `-DOpenCV_DIR=<dir>` when the installation is not in a system default place, and narrow or widen the components it asks for with `-DIADE_OPENCV_COMPONENTS="core;imgcodecs"`.
 
 ### Which cropper an export uses
 

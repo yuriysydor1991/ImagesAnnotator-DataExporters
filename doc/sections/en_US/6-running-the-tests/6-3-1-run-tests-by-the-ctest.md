@@ -1,13 +1,13 @@
 ### Run tests by the ctest
 
 The tests are built only when the project was configured with the
-`ENABLE_UNIT_TESTS` and/or the `ENABLE_COMPONENT_TESTS` variable switched on:
+`IADE_ENABLE_UNIT_TESTS` and/or the `IADE_ENABLE_COMPONENT_TESTS` variable switched on:
 
 ```
 # from the project root
 
 cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers install prefix> \
-      -DENABLE_UNIT_TESTS=ON -DENABLE_COMPONENT_TESTS=ON
+      -DIADE_ENABLE_UNIT_TESTS=ON -DIADE_ENABLE_COMPONENT_TESTS=ON
 cmake --build build -j$(nproc)
 ```
 

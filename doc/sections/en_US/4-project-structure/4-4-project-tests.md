@@ -2,7 +2,7 @@
 
 The project carries two kinds of tests, each behind its own CMake option.
 
-The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the components straight from the tree against the gmock stand-ins under [src/tests/mocks](/src/tests/mocks), `src/lib/facade/tests/mocks` and `src/lib/libmain/tests/mocks`, so a component is exercised with its neighbours replaced:
+The unit tests are built with `-DIADE_ENABLE_UNIT_TESTS=ON`. They compile the components straight from the tree against the gmock stand-ins under [src/tests/mocks](/src/tests/mocks), `src/lib/facade/tests/mocks` and `src/lib/libmain/tests/mocks`, so a component is exercised with its neighbours replaced:
 
 | Binary | Under test | Sources |
 |---|---|---|
@@ -31,7 +31,7 @@ The unit tests are built with `-DENABLE_UNIT_TESTS=ON`. They compile the compone
 
 The `UTEST_ImageLoader` cases stay offline on purpose: they drive the local record, the already cached record and the null record paths, none of which reaches `CURLController::download()`.
 
-The component tests are built with `-DENABLE_COMPONENT_TESTS=ON`:
+The component tests are built with `-DIADE_ENABLE_COMPONENT_TESTS=ON`:
 
 | Binary | Scope |
 |---|---|
@@ -49,7 +49,7 @@ With both options on the suite counts 251 test cases:
 
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=<the data drivers install prefix> \
-  -DENABLE_UNIT_TESTS=ON -DENABLE_COMPONENT_TESTS=ON
+  -DIADE_ENABLE_UNIT_TESTS=ON -DIADE_ENABLE_COMPONENT_TESTS=ON
 cmake --build build -j$(nproc)
 ctest --test-dir build
 ```

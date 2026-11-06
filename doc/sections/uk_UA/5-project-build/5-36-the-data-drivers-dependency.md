@@ -12,11 +12,11 @@
 
 ### Як CMake її знаходить
 
-Модуль [cmake/enablers/template-project-data-drivers-enabler.cmake](/cmake/enablers/template-project-data-drivers-enabler.cmake)
+Модуль [cmake/enablers/imagesannotator-dataexporters-data-drivers-enabler.cmake](/cmake/enablers/imagesannotator-dataexporters-data-drivers-enabler.cmake)
 знаходить пакунок за допомогою
 
 ```
-find_package(${IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
+find_package(${IADE_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
 ```
 
 Він виконується під час проходу активаторів до `src/`, тобто ще до того як
@@ -26,20 +26,26 @@ find_package(${IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE} REQUIRED CONFIG)
 `IMAGES_ANNOTATOR_DATA_DRIVERS_TARGET`, яка за замовчуванням розгортається у
 `ImagesAnnotatorDataDrivers-0.15::ImagesAnnotatorDataDrivers-0.15`.
 
-### Cache-змінна IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE
+`find_package()` пропускається, коли ця ціль уже існує: проект, що підключає
+через FetchContent і драйвери даних, і цю бібліотеку (драйвери даних першими),
+будує їх разом, див. частину [Підключення бібліотеки через
+FetchContent](/doc/sections/uk_UA/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md#підключення-бібліотеки-через-fetchcontent)
+секції використання бібліотеки.
+
+### Cache-змінна IADE_DATA_DRIVERS_PACKAGE
 
 Імʼя пакунка не зашите у код. Воно міститься у cache-змінній
-`IMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE`, значення якої за замовчуванням -
+`IADE_DATA_DRIVERS_PACKAGE`, значення якої за замовчуванням -
 `ImagesAnnotatorDataDrivers-0.15`, тобто імʼя, яке несе типове встановлення
-драйверів даних, адже той проект постачається з `LIB_INCLUDE_MINOR_IN_NAME=ON`
+драйверів даних, адже той проект постачається з `IADD_LIB_INCLUDE_MINOR_IN_NAME=ON`
 так само як і цей. Заміни його, якщо будуєшся проти встановлення, складові імені
-якого були змінені, наприклад сконфігурованого з `LIB_INCLUDE_MINOR_IN_NAME=OFF`
-або з `LIB_NAME_SUFFIX`:
+якого були змінені, наприклад сконфігурованого з `IADD_LIB_INCLUDE_MINOR_IN_NAME=OFF`
+або з `IADD_LIB_NAME_SUFFIX`:
 
 ```
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/шлях/до/префіксу/встановлення/драйверів/даних \
-  -DIMAGES_ANNOTATOR_DATA_DRIVERS_PACKAGE=ImagesAnnotatorDataDrivers-0
+  -DIADE_DATA_DRIVERS_PACKAGE=ImagesAnnotatorDataDrivers-0
 ```
 
 Імʼя імпортованої цілі слідує за заміненим імʼям пакунка автоматично. А от рядки
@@ -96,7 +102,7 @@ CMake Error: Could not find a package configuration file provided by
 
 На відміну від усіх інших залежностей цього проекту, бібліотека драйверів даних
 лінкується як `PUBLIC` модулем
-[cmake/enablers/template-project-data-drivers-linker.cmake](/cmake/enablers/template-project-data-drivers-linker.cmake).
+[cmake/enablers/imagesannotator-dataexporters-data-drivers-linker.cmake](/cmake/enablers/imagesannotator-dataexporters-data-drivers-linker.cmake).
 Встановлювані заголовки `IADataExportersContext.h` і `IImageCropperFacility.h` з
 [src/lib/facade/public](/src/lib/facade/public) згадують типи записів драйверів
 даних, тому споживачу цієї бібліотеки потрібні і її директорії заголовків, і її

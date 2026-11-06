@@ -35,8 +35,8 @@ A release build with the tests and a trial install into a local prefix:
 cmake -S . -B build \
   -DCMAKE_PREFIX_PATH=/path/to/data-drivers-install-prefix \
   -DCMAKE_BUILD_TYPE=Release \
-  -DENABLE_UNIT_TESTS=ON \
-  -DENABLE_COMPONENT_TESTS=ON
+  -DIADE_ENABLE_UNIT_TESTS=ON \
+  -DIADE_ENABLE_COMPONENT_TESTS=ON
 cmake --build build -j$(nproc)
 cd build && ctest --output-on-failure
 ```

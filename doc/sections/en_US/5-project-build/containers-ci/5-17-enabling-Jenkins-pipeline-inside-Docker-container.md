@@ -7,7 +7,7 @@ In order to enable the [Jenkins](https://www.jenkins.io/) pipeline execution ins
 # Inside the source root directory
 
 # Configuring the project to support Docker with Jenkins targets
-cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DCMAKE_BUILD_TYPE=Debug -DENABLE_DOCKER=ON -DENABLE_JENKINS_DOCKER_PIPELINE=ON
+cmake -S . -B build -DCMAKE_PREFIX_PATH=<data drivers prefix> -DCMAKE_BUILD_TYPE=Debug -DIADE_ENABLE_DOCKER=ON -DIADE_ENABLE_JENKINS_DOCKER_PIPELINE=ON
 
 # Building and starting Jenkins' pipeline Docker container
 # or restarting it
@@ -41,9 +41,9 @@ Go to `http://127.0.0.1:8080` (port may change) address with the help of prefere
 
 After successfull installation and configuration of the [Jenkins](https://www.jenkins.io/) create appropriate pipeline for the project inside the [Jenkins](https://www.jenkins.io/) Web GUI panel.
 
-All the [Jenkins](https://www.jenkins.io/) pipeline CMake build scripts are located at [cmake/enablers/dockerers/template-project-docker-Jenkins-pipeline-runner-target.cmake](/cmake/enablers/dockerers/template-project-docker-Jenkins-pipeline-runner-target.cmake) file. The pipeline script located at [misc/Jenkinsfile](/misc/Jenkinsfile) which should be specified in the pipeline source script at the [Jenkins](https://www.jenkins.io/) Web GUI pipelines configuration page. The [Jenkins](https://www.jenkins.io/) Web GUI Docker container port may be changed by specifying a new value for the `JENKINS_PIPELINES_PANEL_HTTP_PORT` CMake variable.
+All the [Jenkins](https://www.jenkins.io/) pipeline CMake build scripts are located at [cmake/enablers/dockerers/imagesannotator-dataexporters-docker-Jenkins-pipeline-runner-target.cmake](/cmake/enablers/dockerers/imagesannotator-dataexporters-docker-Jenkins-pipeline-runner-target.cmake) file. The pipeline script located at [misc/Jenkinsfile](/misc/Jenkinsfile) which should be specified in the pipeline source script at the [Jenkins](https://www.jenkins.io/) Web GUI pipelines configuration page. The [Jenkins](https://www.jenkins.io/) Web GUI Docker container port may be changed by specifying a new value for the `IADE_JENKINS_PIPELINES_PANEL_HTTP_PORT` CMake variable.
 
-The [cmake/enablers/dockerers/template-project-docker-Jenkins-pipeline-runner-target.cmake](/cmake/enablers/dockerers/template-project-docker-Jenkins-pipeline-runner-target.cmake) CMake script of the [Jenkins](https://www.jenkins.io/) pipeline Docker container builder by default will restart previously built contianer if target build launched repeatedly.
+The [cmake/enablers/dockerers/imagesannotator-dataexporters-docker-Jenkins-pipeline-runner-target.cmake](/cmake/enablers/dockerers/imagesannotator-dataexporters-docker-Jenkins-pipeline-runner-target.cmake) CMake script of the [Jenkins](https://www.jenkins.io/) pipeline Docker container builder by default will restart previously built contianer if target build launched repeatedly.
 
 ### Starter scripts
 
@@ -60,7 +60,7 @@ The [scripts/docker](/scripts/docker) directory holds the shortcuts which perfor
 scripts/docker/jenkins-run.sh
 ```
 
-Each of them configures the `build/release` directory with both the `ENABLE_DOCKER` and the `ENABLE_JENKINS_DOCKER_PIPELINE` options set to `ON` and then builds the target of interest, so no `docker` command of its own is ever issued. The `jenkins-pipeline-docker-run` CMake target depends on the `jenkins-pipeline-docker-build` one, which means the [jenkins-run.sh](/scripts/docker/jenkins-run.sh) script builds the image as well and the [jenkins-build.sh](/scripts/docker/jenkins-build.sh) one is only needed to build the image without starting the interactive container.
+Each of them configures the `build/release` directory with both the `IADE_ENABLE_DOCKER` and the `IADE_ENABLE_JENKINS_DOCKER_PIPELINE` options set to `ON` and then builds the target of interest, so no `docker` command of its own is ever issued. The `jenkins-pipeline-docker-run` CMake target depends on the `jenkins-pipeline-docker-build` one, which means the [jenkins-run.sh](/scripts/docker/jenkins-run.sh) script builds the image as well and the [jenkins-build.sh](/scripts/docker/jenkins-build.sh) one is only needed to build the image without starting the interactive container.
 
 The scripts accept the very same parameters as the [Quick build scripts](/doc/sections/en_US/5-project-build/5-38-quick-build-scripts.md) ones, since they are their callers:
 
@@ -68,7 +68,7 @@ The scripts accept the very same parameters as the [Quick build scripts](/doc/se
 # inside the project root directory
 
 # changes the Jenkins Web GUI port of the container
-scripts/docker/jenkins-run.sh -DJENKINS_PIPELINES_PANEL_HTTP_PORT=9090
+scripts/docker/jenkins-run.sh -DIADE_JENKINS_PIPELINES_PANEL_HTTP_PORT=9090
 ```
 
 Whether the already built image and the already created container are reused or rebuilt is decided by the CMake script at the configure step, so the `--no-reconfigure` parameter keeps the decision of the previous configure run.
@@ -89,7 +89,7 @@ The container image built from [misc/Dockerfiles/Dockerfile.Jenkins.pipeline.in]
 After the checkout and the dependency stage the pipeline runs:
 
 - a `clang-format` configure and build, failing the run when a tracked file is left unformatted;
-- a `Debug` configure and build with `ENABLE_UNIT_TESTS=ON`, `ENABLE_COMPONENT_TESTS=ON`, `ENABLE_SANITIZERS=ON`, `ENABLE_CPPCHECK=ON` and `MAX_LOG_LEVEL=5`;
+- a `Debug` configure and build with `IADE_ENABLE_UNIT_TESTS=ON`, `IADE_ENABLE_COMPONENT_TESTS=ON`, `IADE_ENABLE_SANITIZERS=ON`, `IADE_ENABLE_CPPCHECK=ON` and `IADE_MAX_LOG_LEVEL=5`;
 - the `cppcheck` target, which is opt-in through the `RUN_CPPCHECK` boolean parameter;
 - the unit tests in parallel, one stage per target: `UTEST_IADataExportersFacade`, `UTEST_LibFactory`, `UTEST_LibMain`, `UTEST_PlainTxt2FolderExporter`, `UTEST_Yolo42FolderExporter`, `UTEST_Yolov4CfgWriter` and `UTEST_PyTorchVisionFolderExporter`;
 - the component tests in parallel: `CTEST_DefaultLogger` and `CTEST_Exporters` (the latter links the produced shared library and drives it through the installed public headers only);

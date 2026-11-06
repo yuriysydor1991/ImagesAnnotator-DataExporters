@@ -32,7 +32,7 @@ The fourteen remaining ones are the layout specific `IADataExportersContext` des
 
 Each of the fourteen reaches the six above through a `../` include, which is what keeps them resolving once installed: the include root of a consumer is the directory holding `ImagesAnnotatorDataExporters-0.15/`, so a plain `#include "IADataExportersContext.h"` from within `contexts/` would look for it at that root and miss. None of that concerns a consumer, which reaches all fourteen through `IADataExportersFacade.h` - it includes them - and only a project spelling a layout header out directly names the `contexts/` component itself.
 
-[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${PROJECT_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataExporters-0.15/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
+[src/lib/facade/CMakeLists.txt](/src/lib/facade/CMakeLists.txt) installs the directory as a whole under `include/${IADE_LIBRARY_NAME}`, which for the current name and version is `include/ImagesAnnotatorDataExporters-0.15/`. Both that sub-directory and the plain include root are exported by the library target, so a consumer may write either form:
 
 ```cpp
 #include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>  // recommended

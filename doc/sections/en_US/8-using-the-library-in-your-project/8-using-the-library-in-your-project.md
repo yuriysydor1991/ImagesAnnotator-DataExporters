@@ -4,7 +4,7 @@ The library is meant to be consumed by other projects: it produces no executable
 
 ## What has to be installed first
 
-Two things have to be installed before a consumer may be configured:
+Two things have to be installed before a consumer may be configured (or taken in by the FetchContent, see the [Taking the library in by the FetchContent](#taking-the-library-in-by-the-fetchcontent) part below):
 
 - the [ImagesAnnotatorDataDrivers](https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git) library, which defines the annotations database and the image records this library reads - see the [The data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) subsection;
 - this library itself, built and installed as described in the [Installing](/doc/sections/en_US/7-installing/7-installing.md) section.
@@ -53,9 +53,51 @@ cmake -S . -B build -DCMAKE_PREFIX_PATH="/opt/iadd;/opt/iade"
 
 The very same variable is what this library itself needs at its own configure time to find the data drivers.
 
+## Taking the library in by the FetchContent
+
+The libraries do not have to be installed beforehand: a project may take their sources in by the CMake `FetchContent` (or add them by the `add_subdirectory()`) and build them together with itself. The target to link and the include lines are the very same ones as of the installed packages:
+
+```cmake
+cmake_minimum_required(VERSION 3.14)
+
+project(MyExportingTool LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  ImagesAnnotator-DataDrivers
+  GIT_REPOSITORY https://github.com/yuriysydor1991/ImagesAnnotator-DataDrivers.git
+  GIT_TAG        main
+)
+FetchContent_Declare(
+  ImagesAnnotator-DataExporters
+  GIT_REPOSITORY https://github.com/yuriysydor1991/ImagesAnnotator-DataExporters.git
+  GIT_TAG        main
+)
+FetchContent_MakeAvailable(ImagesAnnotator-DataDrivers ImagesAnnotator-DataExporters)
+
+add_executable(my-exporting-tool main.cpp)
+
+target_link_libraries(
+  my-exporting-tool
+  PRIVATE ImagesAnnotatorDataExporters-0.15::ImagesAnnotatorDataExporters-0.15
+)
+```
+
+- **The data drivers come first.** This library links the `ImagesAnnotatorDataDrivers-0.15::ImagesAnnotatorDataDrivers-0.15` target (of the `IADE_DATA_DRIVERS_PACKAGE` name): made available before it, the data drivers are built along, otherwise the installed ones are found by the `find_package()` as usual - drop their `FetchContent_Declare()` then.
+- **The library builds alone.** Taken in by another project it is not the top level one (see the `IADE_IS_TOP_LEVEL` of its root `CMakeLists.txt`), so it builds the shared library and none of its tests, tools (the `clang-format`, `cppcheck` and the other such targets), packages, Docker images and documentation: those targets of your project stay yours, and so does its CPack.
+- **The options of the library are its own.** Every option and cache variable of the library carries the `IADE_` prefix (and of the data drivers the `IADD_` one), so the `ENABLE_*` options of your project (of every project made of the cpp-app-template included) never reach it. Change one by a cache entry: the `-DIADE_ENABLE_OPENCV=OFF` on the command line of your configure, or the `set(IADE_ENABLE_OPENCV OFF CACHE BOOL "")` before the `FetchContent_MakeAvailable()`.
+- **The names follow the version of the library**, whatever the version of your project: the target, the shared library and the headers directory are the `ImagesAnnotatorDataExporters-0.15` ones.
+- **Your `cmake --install` installs the libraries too**: the shared libraries, their public headers and their CMake packages.
+
+The `FetchContent_MakeAvailable()` needs the CMake 3.14 or newer.
+
 ## Including the headers
 
-Two include roots are exported, so both spellings compile:
+Two include roots are exported, of the installation and of the build tree of the library alike (the latter forwards the versioned sub-directory to the public headers), so both spellings compile for an installed consumer and for a FetchContent one:
 
 ```cpp
 #include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>  // recommended
@@ -140,4 +182,4 @@ LD_LIBRARY_PATH=/opt/iade/lib:/opt/iadd/lib ./my-exporting-tool
 
 ## A worked example inside this project
 
-The `CTEST_Exporters` component test, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp), links the produced shared library and drives it through the installable headers only, exactly the way a downstream project does - including a small `IImageCropperFacility` implementation. Enable it with the `ENABLE_COMPONENT_TESTS` CMake option described in the [Project build](/doc/sections/en_US/5-project-build/5-project-build.md) section.
+The `CTEST_Exporters` component test, [src/exporters/tests/component/Exporters/CTEST_Exporters.cpp](/src/exporters/tests/component/Exporters/CTEST_Exporters.cpp), links the produced shared library and drives it through the installable headers only, exactly the way a downstream project does - including a small `IImageCropperFacility` implementation. Enable it with the `IADE_ENABLE_COMPONENT_TESTS` CMake option described in the [Project build](/doc/sections/en_US/5-project-build/5-project-build.md) section.

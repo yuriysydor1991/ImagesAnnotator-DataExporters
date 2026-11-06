@@ -7,8 +7,8 @@
 
 using namespace testing;
 using iannotator::exporters::helpers::ImageRecordUrlAndPathHelper;
-using ImagesAnnotatorDataDrivers014::ImageRecord;
-using ImagesAnnotatorDataDrivers014::ImageRecordPtr;
+using ImagesAnnotatorDataDrivers015::ImageRecord;
+using ImagesAnnotatorDataDrivers015::ImageRecordPtr;
 
 namespace
 {

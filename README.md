@@ -62,7 +62,7 @@ Thirteen dataset layouts are written out of one database, each of them selected 
 
 - **No image codec of its own** - the library copies image files as they are. The one format that has to cut rectangles out asks the consuming project to do it through the `IImageCropperFacility` interface, over whatever imaging stack that project already links.
 
-- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.14` major and minor pair, so two minor releases install side by side.
+- **A versioned installable interface** - the namespace, the binary, the header directory and the CMake package all carry the `0.15` major and minor pair, so two minor releases install side by side.
 
 # Usage example
 
@@ -75,22 +75,22 @@ project(MyTool LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(ImagesAnnotatorDataExporters-0.14 REQUIRED)
+find_package(ImagesAnnotatorDataExporters-0.15 REQUIRED)
 
 add_executable(mytool main.cpp)
-target_link_libraries(mytool ImagesAnnotatorDataExporters-0.14::ImagesAnnotatorDataExporters-0.14)
+target_link_libraries(mytool ImagesAnnotatorDataExporters-0.15::ImagesAnnotatorDataExporters-0.15)
 ```
 
 ```cpp
-#include <ImagesAnnotatorDataDrivers-0.14/IADataDriversFacade.h>
-#include <ImagesAnnotatorDataExporters-0.14/IADataExportersFacade.h>
+#include <ImagesAnnotatorDataDrivers-0.15/IADataDriversFacade.h>
+#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>
 
 #include <filesystem>
 #include <iostream>
 #include <memory>
 
-namespace iadd = ImagesAnnotatorDataDrivers014;
-namespace iade = ImagesAnnotatorDataExporters014;
+namespace iadd = ImagesAnnotatorDataDrivers015;
+namespace iade = ImagesAnnotatorDataExporters015;
 
 int main(int argc, char** argv)
 {
@@ -120,9 +120,9 @@ int main(int argc, char** argv)
 }
 ```
 
-The `ImagesAnnotatorDataExporters014` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
+The `ImagesAnnotatorDataExporters015` namespace name carries the library major and minor version numbers on purpose: two library versions may coexist inside a single translation unit without any symbol clash. Alias it, as shown above, and the version bump stays a one line change on your side.
 
-Both `#include <ImagesAnnotatorDataExporters-0.14/IADataExportersFacade.h>` and a plain `#include <IADataExportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
+Both `#include <ImagesAnnotatorDataExporters-0.15/IADataExportersFacade.h>` and a plain `#include <IADataExportersFacade.h>` work for an installed consumer, since the library exports the include root along with its versioned subdirectory. The prefixed form is the recommended one: `IExporter.h` and `ExportersAPI.h` are generic enough to collide in a busy include path, and the prefix pins the library version a translation unit is talking to.
 
 More on the API and on the produced datasets is in the [dataset exporters API](/doc/sections/en_US/4-project-structure/4-9-the-dataset-exporters-api.md), the [produced dataset layouts](/doc/sections/en_US/4-project-structure/4-10-the-produced-dataset-layouts.md) and the [using the library in your project](/doc/sections/en_US/8-using-the-library-in-your-project/8-using-the-library-in-your-project.md) documentation sections.
 
@@ -140,7 +140,7 @@ The libcurl is first probed system wide and, when it is not found, is pulled by 
 
 The zlib is probed and fetched the same way and linked **privately** as well. It is reached through the `ZlibController` of [src/zlib](/src/zlib), the zlib controller component of the [cpp-app-template](https://github.com/yuriysydor1991/cpp-app-template) `appZlib` branch in the adaptation the darknetxx made of it - see the [enabling the zlib library](/doc/sections/en_US/5-project-build/5-39-enabling-the-zlib-library.md) section.
 
-The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.14 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
+The data drivers library is different. It has to be installed beforehand, it is resolved with `find_package(ImagesAnnotatorDataDrivers-0.15 REQUIRED CONFIG)` and it is linked **publicly**, because the installable headers of this library name its record types. Point the configure at its install prefix with `-DCMAKE_PREFIX_PATH=<prefix>` when it does not sit in a system default one. The [data drivers dependency](/doc/sections/en_US/5-project-build/5-36-the-data-drivers-dependency.md) section covers it in full, the package name included.
 
 The logging component is compiled straight into the shared library, so no logger implementation has to be supplied by the consumer.
 

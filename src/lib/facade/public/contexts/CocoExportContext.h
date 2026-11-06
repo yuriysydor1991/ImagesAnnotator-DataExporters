@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 /**
@@ -62,6 +62,6 @@ class IADE_API CocoExportContext : public IADataExportersContext
 
 using CocoExportContextPtr = CocoExportContext::CocoExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_COCOEXPORTCONTEXT_CLASS_H

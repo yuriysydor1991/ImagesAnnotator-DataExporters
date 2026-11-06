@@ -1,6 +1,6 @@
 @startuml
 
-package "ImagesAnnotatorDataDrivers014 (dependency)" #EEEEEE {
+package "ImagesAnnotatorDataDrivers015 (dependency)" #EEEEEE {
   abstract class "IImagesPathsDBProvider" as IProvider {
     +{abstract} ImageRecordsSet& get_images_db()
     +{abstract} AnnotationsList get_available_annotations()
@@ -14,7 +14,7 @@ package "ImagesAnnotatorDataDrivers014 (dependency)" #EEEEEE {
   }
 }
 
-package "ImagesAnnotatorDataExporters014 (installed interface)" {
+package "ImagesAnnotatorDataExporters015 (installed interface)" {
   abstract class IExporter {
     +{abstract} bool export_db(IADataExportersContextPtr ectx)
   }

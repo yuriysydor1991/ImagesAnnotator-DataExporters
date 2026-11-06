@@ -27,7 +27,7 @@
 
 #include "contexts/PyTorchExportContext.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 const IImageCropperFacilityPtr& PyTorchExportContext::get_cropper() const
@@ -41,4 +41,4 @@ void PyTorchExportContext::set_cropper(
   cropper = newCropper;
 }
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015

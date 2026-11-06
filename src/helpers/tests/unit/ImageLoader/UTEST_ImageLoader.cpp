@@ -8,7 +8,7 @@
 
 using namespace testing;
 using iannotator::exporters::helpers::ImageLoader;
-using ImagesAnnotatorDataDrivers014::ImageRecord;
+using ImagesAnnotatorDataDrivers015::ImageRecord;
 
 TEST(UTEST_ImageLoader, create_returns_a_valid_instance)
 {

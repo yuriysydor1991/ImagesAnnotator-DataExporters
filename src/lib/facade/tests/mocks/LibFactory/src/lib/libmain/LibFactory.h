@@ -36,40 +36,40 @@ class LibFactorySynthParent
 {
  public:
   using IADataExportersLibPtr =
-      ImagesAnnotatorDataExporters014::IADataExportersLibPtr;
+      ImagesAnnotatorDataExporters015::IADataExportersLibPtr;
   using IADataExportersContextPtr =
-      ImagesAnnotatorDataExporters014::IADataExportersContextPtr;
+      ImagesAnnotatorDataExporters015::IADataExportersContextPtr;
   using IADataExportersContext =
-      ImagesAnnotatorDataExporters014::IADataExportersContext;
+      ImagesAnnotatorDataExporters015::IADataExportersContext;
   using PlainTxtExportContextPtr =
-      ImagesAnnotatorDataExporters014::PlainTxtExportContextPtr;
+      ImagesAnnotatorDataExporters015::PlainTxtExportContextPtr;
   using Yolo4ExportContextPtr =
-      ImagesAnnotatorDataExporters014::Yolo4ExportContextPtr;
+      ImagesAnnotatorDataExporters015::Yolo4ExportContextPtr;
   using PyTorchExportContextPtr =
-      ImagesAnnotatorDataExporters014::PyTorchExportContextPtr;
+      ImagesAnnotatorDataExporters015::PyTorchExportContextPtr;
   using UltralyticsDetectExportContextPtr =
-      ImagesAnnotatorDataExporters014::UltralyticsDetectExportContextPtr;
+      ImagesAnnotatorDataExporters015::UltralyticsDetectExportContextPtr;
   using UltralyticsObbExportContextPtr =
-      ImagesAnnotatorDataExporters014::UltralyticsObbExportContextPtr;
+      ImagesAnnotatorDataExporters015::UltralyticsObbExportContextPtr;
   using UltralyticsSegmentExportContextPtr =
-      ImagesAnnotatorDataExporters014::UltralyticsSegmentExportContextPtr;
+      ImagesAnnotatorDataExporters015::UltralyticsSegmentExportContextPtr;
   using CocoExportContextPtr =
-      ImagesAnnotatorDataExporters014::CocoExportContextPtr;
+      ImagesAnnotatorDataExporters015::CocoExportContextPtr;
   using PascalVocExportContextPtr =
-      ImagesAnnotatorDataExporters014::PascalVocExportContextPtr;
+      ImagesAnnotatorDataExporters015::PascalVocExportContextPtr;
   using CreateMLExportContextPtr =
-      ImagesAnnotatorDataExporters014::CreateMLExportContextPtr;
+      ImagesAnnotatorDataExporters015::CreateMLExportContextPtr;
   using Dxxwjz2ExportContextPtr =
-      ImagesAnnotatorDataExporters014::Dxxwjz2ExportContextPtr;
+      ImagesAnnotatorDataExporters015::Dxxwjz2ExportContextPtr;
   using Dxxwjz3ExportContextPtr =
-      ImagesAnnotatorDataExporters014::Dxxwjz3ExportContextPtr;
+      ImagesAnnotatorDataExporters015::Dxxwjz3ExportContextPtr;
   using Dxxwjz2pExportContextPtr =
-      ImagesAnnotatorDataExporters014::Dxxwjz2pExportContextPtr;
+      ImagesAnnotatorDataExporters015::Dxxwjz2pExportContextPtr;
   using Dxxwjz3pExportContextPtr =
-      ImagesAnnotatorDataExporters014::Dxxwjz3pExportContextPtr;
-  using IExporterPtr = ImagesAnnotatorDataExporters014::IExporterPtr;
+      ImagesAnnotatorDataExporters015::Dxxwjz3pExportContextPtr;
+  using IExporterPtr = ImagesAnnotatorDataExporters015::IExporterPtr;
   using IImageCropperFacilityPtr =
-      ImagesAnnotatorDataExporters014::IImageCropperFacilityPtr;
+      ImagesAnnotatorDataExporters015::IImageCropperFacilityPtr;
 
   virtual ~LibFactorySynthParent() = default;
   LibFactorySynthParent() = default;

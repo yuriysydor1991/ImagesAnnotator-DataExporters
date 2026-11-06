@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 /**
@@ -63,6 +63,6 @@ class IADE_API Dxxwjz3ExportContext : public IADataExportersContext
 
 using Dxxwjz3ExportContextPtr = Dxxwjz3ExportContext::Dxxwjz3ExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_DXXWJZ3EXPORTCONTEXT_CLASS_H

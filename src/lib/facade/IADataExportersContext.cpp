@@ -30,7 +30,7 @@
 #include <memory>
 #include <string>
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 const std::string& IADataExportersContext::get_export_path() const
@@ -65,4 +65,4 @@ void IADataExportersContext::set_exporter(const IExporterPtr& newExporter)
   exporter = newExporter;
 }
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015

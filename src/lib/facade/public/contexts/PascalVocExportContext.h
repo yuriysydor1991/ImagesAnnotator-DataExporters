@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 /**
@@ -65,6 +65,6 @@ class IADE_API PascalVocExportContext : public IADataExportersContext
 using PascalVocExportContextPtr =
     PascalVocExportContext::PascalVocExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PASCALVOCEXPORTCONTEXT_CLASS_H

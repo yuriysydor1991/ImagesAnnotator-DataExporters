@@ -11,12 +11,12 @@
 namespace iade0impl
 {
 
-class LibMain : public ImagesAnnotatorDataExporters014::IADataExportersLib
+class LibMain : public ImagesAnnotatorDataExporters015::IADataExportersLib
 {
  public:
   using LibMainPtr = std::shared_ptr<LibMain>;
   using IADataExportersContextPtr =
-      ImagesAnnotatorDataExporters014::IADataExportersContextPtr;
+      ImagesAnnotatorDataExporters015::IADataExportersContextPtr;
 
   virtual ~LibMain() = default;
   LibMain() = default;

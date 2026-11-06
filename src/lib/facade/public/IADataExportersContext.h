@@ -28,7 +28,7 @@
 #ifndef IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H
 #define IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H
 
-#include <ImagesAnnotatorDataDrivers-0.14/IImagesPathsDBProvider.h>
+#include <ImagesAnnotatorDataDrivers-0.15/IImagesPathsDBProvider.h>
 
 #include <memory>
 #include <string>
@@ -36,7 +36,7 @@
 #include "ExportersAPI.h"
 #include "IExporter.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 /**
@@ -61,7 +61,7 @@ class IADE_API IADataExportersContext
  public:
   using IADataExportersContextPtr = std::shared_ptr<IADataExportersContext>;
   using IImagesPathsDBProviderPtr =
-      ImagesAnnotatorDataDrivers014::IImagesPathsDBProviderPtr;
+      ImagesAnnotatorDataDrivers015::IImagesPathsDBProviderPtr;
 
   virtual ~IADataExportersContext() = default;
   IADataExportersContext() = default;
@@ -88,6 +88,6 @@ class IADE_API IADataExportersContext
 using IADataExportersContextPtr =
     IADataExportersContext::IADataExportersContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_IADATAEXPORTERSCONTEXT_CLASS_H

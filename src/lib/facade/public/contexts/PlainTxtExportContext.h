@@ -33,7 +33,7 @@
 #include "../ExportersAPI.h"
 #include "../IADataExportersContext.h"
 
-namespace ImagesAnnotatorDataExporters014
+namespace ImagesAnnotatorDataExporters015
 {
 
 /**
@@ -55,6 +55,6 @@ class IADE_API PlainTxtExportContext : public IADataExportersContext
 using PlainTxtExportContextPtr =
     PlainTxtExportContext::PlainTxtExportContextPtr;
 
-}  // namespace ImagesAnnotatorDataExporters014
+}  // namespace ImagesAnnotatorDataExporters015
 
 #endif  // IMAGES_ANNOTATOR_DATA_EXPORTERS_PROJECT_PLAINTXTEXPORTCONTEXT_CLASS_H

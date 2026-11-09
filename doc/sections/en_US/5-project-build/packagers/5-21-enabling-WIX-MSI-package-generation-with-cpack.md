@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack -C Release
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.15.0` the package name may look like `ImagesAnnotatorDataExporters-0.15.0-x64-windows-10.0.26100.msi` (the architecture part is the `IADE_WIX_ARCHITECTURE` variable below).
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.15.1` the package name may look like `ImagesAnnotatorDataExporters-0.15.1-x64-windows-10.0.26100.msi` (the architecture part is the `IADE_WIX_ARCHITECTURE` variable below).
 
 Unless the project is cross compiled, the architecture is followed by the name and the version of the destination operating system, that is of the build host itself: the Microsoft Windows has no `/etc/os-release` file, so the `CMAKE_SYSTEM_NAME` and the `CMAKE_SYSTEM_VERSION` of the CMake name it, e.g. `windows-10.0.26100`. The `IADE_PACKAGE_SYSTEM` cache variable, shared by every packager of the project, holds it. A cross compiled build leaves it empty, so its package names the architecture alone; set it to name the destination system yourself (e.g. `-DIADE_PACKAGE_SYSTEM=windows-11`), or to an empty string to name none.
 

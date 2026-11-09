@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.15.0` the package name may look like `ImagesAnnotatorDataExporters-0.15.0-x86_64-fedora-42.rpm`.
+The package file should be generated inside the project build root directory. For example, if the project name wasn't changed and its version is `0.15.1` the package name may look like `ImagesAnnotatorDataExporters-0.15.1-x86_64-fedora-42.rpm`.
 
 Unless the project is cross compiled, the architecture is followed by the name and the version of the destination operating system, that is of the build host itself: the `ID` and the `VERSION_ID` fields of its `/etc/os-release` file, e.g. `fedora-42` or `rhel-9.6`. The `IADE_PACKAGE_SYSTEM` cache variable, shared by every packager of the project, holds it. A cross compiled build leaves it empty, so its package names the architecture alone; set it to name the destination system yourself (e.g. `-DIADE_PACKAGE_SYSTEM=rhel-9.6`), or to an empty string to name none.
 

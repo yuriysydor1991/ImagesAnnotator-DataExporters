@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(
   ImagesAnnotatorDataExporters
-  VERSION 0.15.0
+  VERSION 0.15.1
   DESCRIPTION "The ImagesAnnotator annotations dataset exporters library"
   HOMEPAGE_URL "http://www.kytok.org.ua/"
   LANGUAGES CXX

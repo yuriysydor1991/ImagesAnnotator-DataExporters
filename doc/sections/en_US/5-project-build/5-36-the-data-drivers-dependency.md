@@ -55,7 +55,7 @@ same spelling.
 
 ### Why no version is requested
 
-The `find_package` call deliberately asks for no version. The 0.15.0 release of
+The `find_package` call deliberately asks for no version. The 0.15.1 release of
 the data drivers library installs its package `Config.cmake` file without the
 companion `<package>ConfigVersion.cmake`, and `find_package` only reads the
 version from that companion file, so any versioned request would fail to match

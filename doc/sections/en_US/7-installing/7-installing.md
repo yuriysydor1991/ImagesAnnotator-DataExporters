@@ -55,7 +55,7 @@ For the default `ImagesAnnotatorDataExporters-0.15` library name a prefix receiv
 exactly the following files:
 
 ```
-<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.0
+<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.1
 <prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0
 <prefix>/lib/libImagesAnnotatorDataExporters-0.15.so
 
@@ -85,7 +85,7 @@ exactly the following files:
 <prefix>/lib/cmake/ImagesAnnotatorDataExporters-0.15/ImagesAnnotatorDataExporters-0.15Targets-<config>.cmake
 ```
 
-The `.so.0.15.0` file is the library itself, `.so.0` is the `SONAME` link the
+The `.so.0.15.1` file is the library itself, `.so.0` is the `SONAME` link the
 dynamic linker resolves and the bare `.so` link is the development one the
 compiler follows. The headers are the nineteen public ones of the
 [src/lib/facade/public](/src/lib/facade/public) directory, described in
@@ -108,7 +108,7 @@ all four path segments above change together if the name is customised, see
 ## Install components
 
 The installed files are split into two components. `Runtime` holds what a
-program needs to run, that is the `.so.0.15.0` file and its `SONAME` link.
+program needs to run, that is the `.so.0.15.1` file and its `SONAME` link.
 `Development` holds what a project needs to build against the library, that is
 the bare `.so` link, the headers and the CMake package files. Either one may be
 installed alone:

@@ -24,7 +24,7 @@ Finally, execute the `cpack` command inside the project build directory:
 cpack
 ```
 
-The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is 0.15.0 so the package name may look like `ImagesAnnotatorDataExporters-0.15.0-amd64-ubuntu-24.04.deb`.
+The package file should be generated inside the project build root directory. For example, if project name wasn't changed and it's version is 0.15.1 so the package name may look like `ImagesAnnotatorDataExporters-0.15.1-amd64-ubuntu-24.04.deb`.
 
 After the version the package name carries the destination CPU architecture, the one of the package `Architecture` field as well. The `IADE_DEB_PACKAGE_ARCHITECTURE` cache variable holds it (default: the `dpkg --print-architecture` output, e.g. `amd64` or `arm64`), so override it when cross compiling the project or packaging it on a host without the `dpkg`.
 

@@ -52,7 +52,7 @@ namespace iannotator::exporters
  * {
  *   "format": "dxxwjz2p",
  *   "version": 1,
- *   "generator": "ImagesAnnotatorDataExporters-0.15 0.15.0",
+ *   "generator": "ImagesAnnotatorDataExporters-0.15 0.15.1",
  *   "network": {"cfg": "[net]\nbatch=64\n...", "classes": [
  *     {"index": 0, "name": "cat"}
  *   ]},

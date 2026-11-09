@@ -21,7 +21,7 @@ set(
   "${IADE_DATA_DRIVERS_PACKAGE}::${IADE_DATA_DRIVERS_PACKAGE}"
 )
 
-# No version is requested on purpose: the 0.15.0 release of the data drivers
+# No version is requested on purpose: the 0.15.1 release of the data drivers
 # library installs its package Config file without the companion
 # <package>ConfigVersion.cmake, so a versioned find_package() would never
 # match it. The package name already carries the major and the minor version.

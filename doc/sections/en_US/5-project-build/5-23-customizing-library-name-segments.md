@@ -5,7 +5,7 @@ The library name that downstream consumers see (the shared object, the
 directory and the imported target namespace exported through
 `install(EXPORT ...)`) is derived from three optional CMake options. They let
 parallel installs of distinct versions of the library coexist on the same host
-- for example `include/ImagesAnnotatorDataExporters-0.15.0-dev/` next to
+- for example `include/ImagesAnnotatorDataExporters-0.15.1-dev/` next to
 `include/ImagesAnnotatorDataExporters-0.15/`.
 
 | Option | Default | Effect |
@@ -21,15 +21,15 @@ names itself the very same way. Two minor releases therefore install completely
 side by side - their binaries, their header directories and their CMake packages
 all differ.
 
-Resulting names for this `0.15.0` project:
+Resulting names for this `0.15.1` project:
 
 | Configure flags | Library name | Produced binary |
 |---|---|---|
 | (none) | `ImagesAnnotatorDataExporters-0.15` | `libImagesAnnotatorDataExporters-0.15.so` |
 | `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
-| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.1` | `libImagesAnnotatorDataExporters-0.15.1.so` |
 | `-DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
-| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.1-dev` | `libImagesAnnotatorDataExporters-0.15.1-dev.so` |
 
 Combined configure example:
 
@@ -47,7 +47,7 @@ cmake --install build --prefix /usr/local
 The same name is used consistently for every installed artefact. With the
 default configure that gives:
 
-- `<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.0` with the
+- `<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.1` with the
   `libImagesAnnotatorDataExporters-0.15.so.0` soname symlink (the `SOVERSION`
   stays the major version) and the development `.so` namelink,
 - `<prefix>/include/ImagesAnnotatorDataExporters-0.15/*.h` - the public headers of

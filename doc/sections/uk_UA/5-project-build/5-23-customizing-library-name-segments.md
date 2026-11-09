@@ -5,7 +5,7 @@
 імен імпортованої цілі що експортується через `install(EXPORT ...)`) виводиться
 з трьох опціональних CMake-опцій. Вони дозволяють паралельним встановленням
 різних версій бібліотеки співіснувати у системі - наприклад
-`include/ImagesAnnotatorDataExporters-0.15.0-dev/` поруч з
+`include/ImagesAnnotatorDataExporters-0.15.1-dev/` поруч з
 `include/ImagesAnnotatorDataExporters-0.15/`.
 
 | Опція | За замовчуванням | Ефект |
@@ -20,15 +20,15 @@
 іменує себе точно так само. Тому два мінорні випуски встановлюються цілком
 паралельно - їхні бінарники, директорії заголовків і CMake-пакунки відрізняються.
 
-Приклади імен бібліотеки для проекту `0.15.0`:
+Приклади імен бібліотеки для проекту `0.15.1`:
 
 | Прапорці конфігурації | Імʼя бібліотеки | Згенерований бінарник |
 |---|---|---|
 | (немає) | `ImagesAnnotatorDataExporters-0.15` | `libImagesAnnotatorDataExporters-0.15.so` |
 | `-DIADE_LIB_INCLUDE_MINOR_IN_NAME=OFF` | `ImagesAnnotatorDataExporters-0` | `libImagesAnnotatorDataExporters-0.so` |
-| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.0` | `libImagesAnnotatorDataExporters-0.15.0.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON` | `ImagesAnnotatorDataExporters-0.15.1` | `libImagesAnnotatorDataExporters-0.15.1.so` |
 | `-DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15-dev` | `libImagesAnnotatorDataExporters-0.15-dev.so` |
-| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.0-dev` | `libImagesAnnotatorDataExporters-0.15.0-dev.so` |
+| `-DIADE_LIB_INCLUDE_MICRO_IN_NAME=ON -DIADE_LIB_NAME_SUFFIX=-dev` | `ImagesAnnotatorDataExporters-0.15.1-dev` | `libImagesAnnotatorDataExporters-0.15.1-dev.so` |
 
 Приклад поєднаної конфігурації:
 
@@ -46,7 +46,7 @@ cmake --install build --prefix /usr/local
 Однакове імʼя послідовно використовується для кожного встановлюваного артефакту.
 За замовчуванням це дає:
 
-- `<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.0` разом із
+- `<prefix>/lib/libImagesAnnotatorDataExporters-0.15.so.0.15.1` разом із
   символьним посиланням soname `libImagesAnnotatorDataExporters-0.15.so.0`
   (`SOVERSION` залишається мажорною версією) і `.so`-посиланням для розробки,
 - `<prefix>/include/ImagesAnnotatorDataExporters-0.15/*.h` - публічні заголовки з

@@ -5,7 +5,7 @@ The library name, the project version, the git commit the build was configured f
 | Constant | Filled from |
 |---|---|
 | `PROJECT_NAME` | `IADE_LIBRARY_NAME`, i.e. `ImagesAnnotatorDataExporters-0.15` |
-| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.15.0` |
+| `PROJECT_BUILD_VERSION` | `PROJECT_VERSION` of the root `project()` command - `0.15.1` |
 | `PROJECT_BUILD_COMMIT` | `git rev-parse HEAD`, read by [cmake/enablers/imagesannotator-dataexporters-git-enabler.cmake](/cmake/enablers/imagesannotator-dataexporters-git-enabler.cmake) |
 | `PROJECT_CONFIGURE_DATE` | the configure time `string(TIMESTAMP ...)` value |
 
